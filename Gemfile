@@ -1,5 +1,12 @@
 source 'https://rubygems.org'
 
+# sufia stuff!
+gem 'sufia', '6.0.0.rc4'
+# required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
+gem 'kaminari', git: 'https://github.com/harai/kaminari.git', branch: 'route_prefix_prototype'
+# there's a problem using 5.10 with rc4
+gem 'blacklight', '~> 5.9.0'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
