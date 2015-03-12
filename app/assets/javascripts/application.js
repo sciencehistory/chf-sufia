@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//
+// Required by Blacklight
+//= require blacklight/blacklight
+//= require sufia

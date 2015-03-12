@@ -145,6 +145,9 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-guests (0.3.3)
+      devise
+    diff-lcs (1.2.5)
     dropbox-sdk (1.6.4)
       json
     ebnf (0.3.6)
@@ -417,6 +420,23 @@ GEM
     retriable (1.4.1)
     rsolr (1.0.12)
       builder (>= 2.1.2)
+    rspec-core (3.2.2)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-rails (3.2.1)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
     ruby-box (1.15.0)
       addressable
       json
@@ -559,10 +579,14 @@ DEPENDENCIES
   blacklight (~> 5.9.0)
   byebug
   coffee-rails (~> 4.1.0)
+  devise
+  devise-guests (~> 0.3)
   jbuilder (~> 2.0)
+  jettywrapper
   jquery-rails
   kaminari!
   rails (= 4.2.0)
+  rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
