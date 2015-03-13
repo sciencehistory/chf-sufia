@@ -18,3 +18,5 @@
 
 # human-generated below!
 /jetty
+/.vagrant
+/ansible
