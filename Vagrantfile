@@ -70,8 +70,13 @@ Vagrant.configure(2) do |config|
   # SHELL
   config.vm.provision "ansible" do |ansible|
     #ansible.verbose = 'vvv'
+    ansible.groups = {
+      "vagrant" => ["default"],
+      "all_groups:children" => ["group1"],
+    }
     ansible.extra_vars = {
       deploy_user: "vagrant",
+      project_dir: "/vagrant"
     }
     ansible.playbook = "ansible/playbook.yml"
   end
