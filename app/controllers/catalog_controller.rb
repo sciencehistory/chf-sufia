@@ -1,25 +1,16 @@
 # -*- coding: utf-8 -*-
 # -*- encoding : utf-8 -*-
-require 'blacklight/catalog'
-require 'blacklight_advanced_search'
-
-# bl_advanced_search 1.2.4 is doing unitialized constant on these because we're calling ParseBasicQ directly
-require 'parslet'
-require 'parsing_nesting/tree'
 
 class CatalogController < ApplicationController
 
   helper Openseadragon::OpenseadragonHelper
-  include Blacklight::Catalog
-  # Extend Blacklight::Catalog with Hydra behaviors (primarily editing).
-  include Hydra::Controller::ControllerBehavior
-  include BlacklightAdvancedSearch::ParseBasicQ
+  include Hydra::Catalog
   include Sufia::Catalog
 
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
   # This applies appropriate access controls to all solr queries
-  CatalogController.solr_search_params_logic += [:add_access_controls_to_solr_params]
+  CatalogController.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr]
 
   skip_before_filter :default_html_head
 
