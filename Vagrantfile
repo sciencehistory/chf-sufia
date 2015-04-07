@@ -22,13 +22,13 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.network "forwarded_port", guest: 3000, host: 8080 # rails s
-  config.vm.network "forwarded_port", guest: 8983, host: 8031 # fedora
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8983, host: 8031 # jetty
+  config.vm.network "forwarded_port", guest: 3000, host: 8032 # webrick
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  #config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -41,6 +41,9 @@ Vagrant.configure(2) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
 
+  # change to NFS filesharing
+  #config.vm.synced_folder ".", "/vagrant", type: "nfs", owner:"vagrant", group:"vagrant"
+
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
@@ -49,7 +52,8 @@ Vagrant.configure(2) do |config|
     # Display the VirtualBox GUI when booting the machine
     #vb.gui = true
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = 2048
+    vb.cpus = 2
   end
 
   # View the documentation for the provider you are using for more
@@ -73,12 +77,16 @@ Vagrant.configure(2) do |config|
     #ansible.verbose = 'vvv'
     ansible.groups = {
       "vagrant" => ["default"],
+#      "vagrant-basic" => ["default"],
       "all_groups:children" => ["group1"],
     }
     ansible.extra_vars = {
       deploy_user: "vagrant",
-      project_dir: "/vagrant"
+      project_dir: "/vagrant",
+      server_name: "localhost",
+      rails_env: "development",
+      bundle_path: "~/.bundle"
     }
-    ansible.playbook = "ansible/playbook.yml"
+    ansible.playbook = "../ansible-sufia/playbook.yml"
   end
 end
