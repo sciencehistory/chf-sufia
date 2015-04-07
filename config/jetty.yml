@@ -1,4 +1,5 @@
 default:
+  jetty_home: "/usr/local/jetty"
   startup_wait: 90
   jetty_port: 8983
   java_opts:
