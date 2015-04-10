@@ -52,5 +52,6 @@ gem 'devise'
 gem 'devise-guests', '~> 0.3'
 group :development, :test do
   gem 'rspec-rails'
+  gem 'capybara'
   gem 'jettywrapper'
 end
