@@ -3,7 +3,9 @@
 # The generated `.rspec` file contains `--require spec_helper` which will cause
 # this file to always be loaded, without a need to explicitly require it in any
 # files.
-#
+
+ENV["RAILS_ENV"] ||= 'test'
+
 # Given that it is always loaded, you are encouraged to keep this file as
 # light-weight as possible. Requiring heavyweight dependencies from this file
 # will add to the boot time of your test suite on EVERY test run, even for an
@@ -11,7 +13,20 @@
 # a separate helper file that requires the additional dependencies and performs
 # the additional setup, and require it from the spec files that actually need
 # it.
-#
+
+require File.expand_path("../../config/environment", __FILE__)
+require 'rspec/rails'
+require 'capybara/rspec'
+require 'capybara/poltergeist'
+require 'database_cleaner'
+
+require 'devise'
+
+require 'support/features'
+
+Capybara.default_driver = :rack_test      # This is a faster driver
+Capybara.javascript_driver = :poltergeist # This is slower
+
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
 #
@@ -84,4 +99,21 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.include Warden::Test::Helpers, type: :feature
+  config.after(:each, type: :feature) { Warden.test_reset! }
+
+  config.before :each do |example|
+    if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+    end
+  end
+
+  config.after do
+    DatabaseCleaner.clean
+  end
+
 end
