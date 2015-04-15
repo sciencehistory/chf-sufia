@@ -1,0 +1,3 @@
+<% # replace the TOS checkbox with a hidden 'true' field;
+   # it's a lie but it keeps our changeset smaller %>
+<%= hidden_field_tag(:terms_of_service, 1) %>
