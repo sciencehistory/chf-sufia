@@ -8,9 +8,10 @@
 * cd into your clone of this repo and run 'vagrant up'
 
 ## Run Tests
+vagrant ssh
+cd /vagrant
 rake jetty:start
 bundle exec rspec
-#TODO: bundle exec rake db:migrate RAILS_ENV=test
 
 ## Deploy
 I'll let you know once I've done it.
