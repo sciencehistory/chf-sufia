@@ -5,6 +5,9 @@ gem 'sufia', ' ~> 6.0.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
+# extras
+gem "hydra-role-management"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use sqlite3 as the database for Active Record
