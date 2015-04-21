@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe "Uploading files via web form", :type => :feature do
   before do
-    sign_in
-    #sign_in :user
+    sign_in :depositor
     click_link "Upload"
   end
 
