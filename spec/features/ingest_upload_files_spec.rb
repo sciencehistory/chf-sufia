@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "Uploading files via web form", :type => :feature do
   background do
-    sign_in :depositor
+    sign_in FactoryGirl.create(:depositor)
     click_link "Upload"
   end
 
