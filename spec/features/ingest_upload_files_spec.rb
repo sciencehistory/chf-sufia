@@ -12,7 +12,7 @@ feature "Uploading files via web form", :type => :feature do
   end
 
   scenario "upload button is enabled, with no hover message", :js do
-    attach_file("files[]", File.dirname(__FILE__)+"/../../spec/fixtures/image.png")
+    attach_file("files[]", "#{Rails.root.to_s}/spec/fixtures/image.png")
     expect(page).not_to have_css("button#main_upload_start[disabled]")
     find('#main_upload_start_span').hover
     expect(page).not_to have_text "Please accept Deposit Agreement before you can upload."
