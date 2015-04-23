@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-feature "Uploading files via web form", :type => :feature do
+RSpec.feature "Uploading files via web form", :type => :feature do
   background do
     sign_in FactoryGirl.create(:depositor)
     click_link "Upload"

@@ -1,0 +1,2 @@
+files in this dir should not end in _spec.rb; else they will be auto-run as
+individual tests and thus run twice.
