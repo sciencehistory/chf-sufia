@@ -1,0 +1,9 @@
+- name: provision basic vagrant box
+  hosts: vagrant
+  sudo: true
+  roles:
+    - prerequisites
+    - ruby-rails
+    - app-config
+    - hydra-jetty
+    - services

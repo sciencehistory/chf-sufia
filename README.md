@@ -3,7 +3,6 @@
 ## Set up a dev environment
 * Create workspace directory
 * Clone this repo
-* Also clone the (currently private) ansible repo
 * Install virtualbox and vagrant
 * cd into your clone of this repo and run 'vagrant up'
 

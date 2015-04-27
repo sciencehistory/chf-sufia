@@ -78,7 +78,6 @@ Vagrant.configure(2) do |config|
     #ansible.verbose = 'vvv'
     ansible.groups = {
       "vagrant" => ["default"],
-#      "vagrant-basic" => ["default"],
       "all_groups:children" => ["group1"],
     }
     ansible.extra_vars = {
@@ -88,6 +87,6 @@ Vagrant.configure(2) do |config|
       rails_env: "development",
       bundle_path: "~/.bundle"
     }
-    ansible.playbook = "../ansible-sufia/playbook.yml"
+    ansible.playbook = "provisioning/vagrant.yml"
   end
 end
