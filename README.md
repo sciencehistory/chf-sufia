@@ -13,7 +13,7 @@ rake jetty:start
 bundle exec rspec
 
 ## Run tests continuously from vagrant machine using Guard
-guard -p -l 10
+bundle exec guard -p -l 10
 
 ## Deploy
 I'll let you know once I've done it.
