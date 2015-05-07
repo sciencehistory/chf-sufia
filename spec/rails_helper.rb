@@ -7,6 +7,7 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'database_cleaner'
+require 'active_fedora/cleaner'
 require 'devise'
 require 'support/features'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
@@ -25,6 +26,8 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
     end
+
+    ActiveFedora::Cleaner.clean!
   end
   config.after do
     DatabaseCleaner.clean
