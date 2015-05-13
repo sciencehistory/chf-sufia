@@ -17,6 +17,7 @@ Capybara.javascript_driver = :poltergeist # This is slower
 
 RSpec.configure do |config|
   config.include Warden::Test::Helpers, type: :feature
+  config.include Devise::TestHelpers, type: :controller
   config.after(:each, type: :feature) { Warden.test_reset! }
 
   config.before :each do |example|
