@@ -17,14 +17,16 @@
     #- libreoffice # not mentioned in sufia; ualberta uses
     #- GraphicsMagick # not mentioned in sufia; ualberta uses
 
-- name: download fits zip
-  get_url: url=http://projects.iq.harvard.edu/files/fits/files/fits-0.8.4_0.zip dest=~
-
-- name: unpack fits
-  unarchive: src=~/fits-0.8.4_0.zip dest=/usr/local/bin/ creates=/usr/local/bin/fits-0.8.4 copy=no
+- name: copy fits zip
+  unarchive: src=fits-0.8.4_0.zip dest=/usr/local/bin/ creates=/usr/local/bin/fits-0.8.4
 
 - name: make fits executable
   file: path=/usr/local/bin/fits-0.8.4/fits.sh mode=0755
+
+- name: put fits on the PATH
+  sudo: no
+  remote_user: "{{ deploy_user }}"
+  lineinfile: dest=~/.profile line='export PATH=$PATH:/usr/local/bin/fits-0.8.4'
 
 - name: download phantomjs tarball (for testing)
   get_url: url=https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2 dest=~
