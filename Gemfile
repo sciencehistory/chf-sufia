@@ -1,12 +1,16 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', ' ~> 6.0.0'
+#gem 'sufia', ' ~> 6.0'
+gem 'sufia', github: 'projecthydra/sufia', :ref => 'eb714c' # master pre-pcdm integration
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
 # extras
-gem "hydra-role-management"
+gem 'hydra-role-management'
+
+# local upgrades!
+gem 'active-fedora', '~> 9.1.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
