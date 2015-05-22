@@ -449,6 +449,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-rails (0.3.4)
+      pry (>= 0.9.10)
     rack (1.6.0)
     rack-protection (1.5.3)
       rack
@@ -704,6 +706,8 @@ DEPENDENCIES
   jquery-rails
   kaminari!
   poltergeist (~> 1.5)
+  pry
+  pry-rails
   rails (= 4.2.0)
   rsolr (~> 1.0.6)
   rspec-rails (~> 3.1)
