@@ -21,28 +21,28 @@ RSpec.describe BatchEditsController do
       it "should include genre, empty" do
         get :edit
         expect(response).to be_successful
-        expect(assigns[:terms]).to include :genre
-        expect(assigns[:generic_file].genre).to eq [""]
+        expect(assigns[:terms]).to include :genre_string
+        expect(assigns[:generic_file].genre_string).to eq [""]
       end
     end
 
     context "when the file does have initial genre" do
       before do
-        files[0].genre = ['Photograph']
+        files[0].genre_string = ['Photograph']
         files[0].save!
       end
       it "should prepopulate form fields" do
         get :edit
         expect(response).to be_successful
-        expect(assigns[:terms]).to include :genre
-        expect(assigns[:generic_file].genre).to eq ["Photograph"]
+        expect(assigns[:terms]).to include :genre_string
+        expect(assigns[:generic_file].genre_string).to eq ["Photograph"]
       end
     end
   end
 
   describe "update" do
     let(:attributes) {
-      { genre: ["Photograph", "Print"] }
+      { genre_string: ["Photograph", "Print"] }
     }
 
     # note: this test was passing when I didn't expect it to;
@@ -51,7 +51,7 @@ RSpec.describe BatchEditsController do
     it "should update the records" do
       put :update, update_type: "update", generic_file: attributes
       expect(response).to be_redirect
-      expect(GenericFile.find(files[0].id).genre).to eq ["Photograph", "Print"]
+      expect(GenericFile.find(files[0].id).genre_string).to eq ["Photograph", "Print"]
     end
   end
 

@@ -15,7 +15,7 @@ RSpec.describe GenericFilesController do
     it "includes genre" do
       get :edit, id: @file.id
       expect(response).to be_successful
-      expect(assigns['form'].genre).to eq [""]
+      expect(assigns['form'].genre_string).to eq [""]
     end
   end
 
@@ -27,15 +27,15 @@ RSpec.describe GenericFilesController do
       @file.reload
       expect(@file.resource_type).to eq ['Image']
       # why is it an empty string in the form but an empty array here??
-      expect(@file.genre).to eq []
+      expect(@file.genre_string).to eq []
 
       post :update, id: @file, generic_file: {
-        genre: ['Photograph']
+        genre_string: ['Photograph']
       }
       @file.reload
       expect(@file.resource_type).to eq ['Image']
       # why is it an empty string in the form but an empty array here??
-      expect(@file.genre).to eq ['Photograph']
+      expect(@file.genre_string).to eq ['Photograph']
     end
   end
 

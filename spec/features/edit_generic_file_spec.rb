@@ -12,6 +12,7 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
   scenario "the single file edit form has a field for genre, required" do
     visit "/files/#{@file.id}/edit"
     expect(page).to have_text('Genre')
+    expect(page).not_to have_text('Genre string')
     expect(find('label', text: 'Genre')['class']).to include('required')
   end
 
@@ -24,12 +25,14 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     batch.generic_files << @file
     visit "/batches/#{batch.id}/edit"
     expect(page).to have_text('Genre')
+    expect(page).not_to have_text('Genre string')
     expect(find('label', text: 'Genre')['class']).to include('required')
   end
 
   scenario "the batch edit form has a field for genre, required" do
     visit "/batch_edits/edit?batch_document_ids[]=#{@file.id}"
     expect(page).to have_text('Genre')
+    expect(page).not_to have_text('Genre string')
   end
 
 #  # this test should pass with out-of-the-box sufia behavior

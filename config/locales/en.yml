@@ -20,4 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  simple_form:
+    labels:
+      generic_file:
+        genre_string: "Genre"
+    metadata_help:
+      generic_file:
+        alternative: "Genre of the file."
