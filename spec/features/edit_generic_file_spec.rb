@@ -16,6 +16,13 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     expect(find('label', text: 'Genre')['class']).to include('required')
   end
 
+  scenario "the single file edit form has our local options", focus: true do
+    visit "/files/#{@file.id}/edit"
+    form_field = find('#generic_file_resource_type')
+    expect(form_field).to have_content 'Still Image'
+    expect(form_field).not_to have_content 'Article'
+  end
+
   scenario "the batch upload form has a field for genre, required" do
     batch = Batch.create
     @file.label = 'file.jpg'

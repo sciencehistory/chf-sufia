@@ -25,49 +25,19 @@ Sufia.config do |config|
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
 
   config.resource_types = {
-    "Article" => "Article",
-    "Audio" => "Audio",
-    "Book" => "Book",
-    "Capstone Project" => "Capstone Project",
-    "Conference Proceeding" => "Conference Proceeding",
-    "Dataset" => "Dataset",
-    "Dissertation" => "Dissertation",
-    "Image" => "Image",
-    "Journal" => "Journal",
-    "Map or Cartographic Material" => "Map or Cartographic Material",
-    "Masters Thesis" => "Masters Thesis",
-    "Part of Book" => "Part of Book",
-    "Poster" => "Poster",
-    "Presentation" => "Presentation",
-    "Project" => "Project",
-    "Report" => "Report",
-    "Research Paper" => "Research Paper",
-    "Software or Program Code" => "Software or Program Code",
-    "Video" => "Video",
-    "Other" => "Other",
+    "Moving Image" => "Moving Image",
+    "Still Image" => "Still Image",
+    "Physical Object" => "Physical Object",
+    "Sound" => "Sound",
+    "Text" => "Text"
   }
 
   config.resource_types_to_schema = {
-    "Article" => "http://schema.org/Article",
-    "Audio" => "http://schema.org/AudioObject",
-    "Book" => "http://schema.org/Book",
-    "Capstone Project" => "http://schema.org/CreativeWork",
-    "Conference Proceeding" => "http://schema.org/ScholarlyArticle",
-    "Dataset" => "http://schema.org/Dataset",
-    "Dissertation" => "http://schema.org/ScholarlyArticle",
-    "Image" => "http://schema.org/ImageObject",
-    "Journal" => "http://schema.org/CreativeWork",
-    "Map or Cartographic Material" => "http://schema.org/Map",
-    "Masters Thesis" => "http://schema.org/ScholarlyArticle",
-    "Part of Book" => "http://schema.org/Book",
-    "Poster" => "http://schema.org/CreativeWork",
-    "Presentation" => "http://schema.org/CreativeWork",
-    "Project" => "http://schema.org/CreativeWork",
-    "Report" => "http://schema.org/CreativeWork",
-    "Research Paper" => "http://schema.org/ScholarlyArticle",
-    "Software or Program Code" => "http://schema.org/Code",
-    "Video" => "http://schema.org/VideoObject",
-    "Other" => "http://schema.org/CreativeWork",
+    "Moving Image"    => "http://purl.org/dc/dcmitype/MovingImage",
+    "Still Image"     => "http://purl.org/dc/dcmitype/StillImage",
+    "Physical Object" => "http://purl.org/dc/dcmitype/PhysicalObject",
+    "Sound"           => "http://purl.org/dc/dcmitype/Sound",
+    "Text"            => "http://purl.org/dc/dcmitype/Text"
   }
 
   config.permission_levels = {
