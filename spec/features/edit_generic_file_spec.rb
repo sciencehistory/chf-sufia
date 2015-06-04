@@ -9,21 +9,21 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     @file.save!
   end
 
-  scenario "the single file edit form has a field for genre, required" do
+  scenario "the single file edit form has our locally-added fields" do
     visit "/files/#{@file.id}/edit"
-    expect(page).to have_text('Genre')
+    # genre field
     expect(page).not_to have_text('Genre string')
-    expect(find('label', text: 'Genre')['class']).to include('required')
-  end
-
-  scenario "the single file edit form has our local options", focus: true do
-    visit "/files/#{@file.id}/edit"
+    genre_div = find('div.generic_file_genre_string')
+    expect(genre_div.find('label', text: 'Genre')['class']).to include('required')
+    # resource types
     form_field = find('#generic_file_resource_type')
     expect(form_field).to have_content 'Still Image'
     expect(form_field).not_to have_content 'Article'
+    # creator / contributor fields
+    interviewee_div = find('div.generic_file_interviewee')
   end
 
-  scenario "the batch upload form has a field for genre, required" do
+  scenario "the batch upload form has our locally-added fields" do
     batch = Batch.create
     @file.label = 'file.jpg'
     @file.title = ['file.jpg']
@@ -34,12 +34,14 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     expect(page).to have_text('Genre')
     expect(page).not_to have_text('Genre string')
     expect(find('label', text: 'Genre')['class']).to include('required')
+    expect(page).to have_text('Interviewee')
   end
 
   scenario "the batch edit form has a field for genre, required" do
     visit "/batch_edits/edit?batch_document_ids[]=#{@file.id}"
     expect(page).to have_text('Genre')
     expect(page).not_to have_text('Genre string')
+    expect(page).to have_text('Interviewee')
   end
 
 #  # this test should pass with out-of-the-box sufia behavior
