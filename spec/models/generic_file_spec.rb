@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe GenericFile, focus: true do
+RSpec.describe GenericFile do
   it { is_expected.to respond_to(:interviewee) }
 
   describe 'marc relator creator / contributor fields' do
