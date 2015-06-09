@@ -49,15 +49,8 @@ fi
 
 case "$1" in
     start)
-        banner "starting resque-pool"
-        cd $APP_ROOT
-        su $USER -c "bundle exec resque-pool --daemon --environment $ENV start"
-
-        if [ "$?" != 0 ]; then
-                echo "$NAME failed to start"
-        else
-                echo "$NAME running, pool master started"
-        fi
+        # restart to make sure we clear orphaned pid files.
+        $0 restart
     ;;
     stop)
         banner "killing resque-pool"
@@ -68,16 +61,24 @@ case "$1" in
     ;;
     restart)
         $0 stop
-        $0 start
-    ;;
-    status)
-        if [ -f $PIDFILE ]; then
-            PID=$(cat $PIDFILE)
-            echo "$NAME is running with pid $PID"
+        banner "starting resque-pool"
+        cd $APP_ROOT
+        su $USER -c "bundle exec resque-pool --daemon --environment $ENV start"
+
+        if [ "$?" != 0 ]; then
+                echo "$NAME failed to start"
         else
-            echo "$NAME is stopped"
+                echo "$NAME running, pool master started"
         fi
     ;;
+#    status)
+#        if [ -f $PIDFILE ]; then
+#            PID=$(cat $PIDFILE)
+#            echo "$NAME is running with pid $PID"
+#        else
+#            echo "$NAME is stopped"
+#        fi
+#    ;;
     *)
         echo "Usage: $0 {start|stop|restart|status}"
     ;;

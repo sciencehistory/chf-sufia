@@ -6,4 +6,4 @@
   template: src=pool_q dest=/etc/init.d/resque-pool mode=0755
 
 - name: start resque
-  service: name=resque-pool state=started enabled=yes
+  service: name=resque-pool state=started enabled=yes pattern=resque-pool
