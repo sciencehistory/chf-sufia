@@ -12,6 +12,11 @@ require 'devise'
 require 'support/features'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, timeout: 240, js_errors: false)
+end
+Capybara.default_wait_time = 240
+
 Capybara.default_driver = :rack_test      # This is a faster driver
 Capybara.javascript_driver = :poltergeist # This is slower
 
