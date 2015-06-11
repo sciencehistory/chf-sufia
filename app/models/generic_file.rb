@@ -14,7 +14,6 @@ class GenericFile < ActiveFedora::Base
     interviewer:  ::RDF::Vocab::MARCRelators.ivr,
     manufacturer: ::RDF::Vocab::MARCRelators.mfr,
     photographer: ::RDF::Vocab::MARCRelators.pht,
-    other:        ::RDF::Vocab::MARCRelators.oth
   }
 
   Creator_contributors.each do |field_name, predicate|
