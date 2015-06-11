@@ -4,11 +4,16 @@ RSpec.describe GenericFile do
   # test for new fields
   it { is_expected.to respond_to(:artist) }
 
-  it 'uses the right predicate for overriden fields', focus: true do
+  it 'uses the right predicate for overriden fields' do
     {
       artist: 'http://id.loc.gov/vocabulary/relators/art',
       creator: 'http://purl.org/dc/elements/1.1/creator',
-      contributor: 'http://purl.org/dc/elements/1.1/contributor'
+      contributor: 'http://purl.org/dc/elements/1.1/contributor',
+      date_created: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#dateCreated',
+      language: 'http://purl.org/dc/elements/1.1/language',
+      publisher: 'http://purl.org/dc/elements/1.1/publisher',
+      resource_type: 'http://purl.org/dc/elements/1.1/type',
+      rights: 'http://purl.org/dc/elements/1.1/rights',
     }.each do |field_name, uri|
       predicate = GenericFile.reflect_on_property(field_name).predicate.to_s
       expect(predicate).to eq uri
