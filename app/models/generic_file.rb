@@ -21,6 +21,12 @@ class GenericFile < ActiveFedora::Base
       index.as :stored_searchable
     end
   end
+  property :creator, predicate: ::RDF::DC11.creator do |index|
+    index.as :stored_searchable, :facetable
+  end
+  property :contributor, predicate: ::RDF::DC11.contributor do |index|
+    index.as :stored_searchable, :facetable
+  end
 
   # TODO: make this work either via linked data or nested attributes
 #  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|

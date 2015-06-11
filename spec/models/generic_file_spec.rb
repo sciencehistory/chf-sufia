@@ -1,7 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe GenericFile do
-  it { is_expected.to respond_to(:interviewee) }
+  # test for new fields
+  it { is_expected.to respond_to(:artist) }
+
+  it 'uses the right predicate for overriden fields', focus: true do
+    {
+      artist: 'http://id.loc.gov/vocabulary/relators/art',
+      creator: 'http://purl.org/dc/elements/1.1/creator',
+      contributor: 'http://purl.org/dc/elements/1.1/contributor'
+    }.each do |field_name, uri|
+      predicate = GenericFile.reflect_on_property(field_name).predicate.to_s
+      expect(predicate).to eq uri
+    end
+  end
 
   describe 'marc relator creator / contributor fields' do
     let :generic_file do
@@ -15,4 +27,6 @@ RSpec.describe GenericFile do
       expect(generic_file.interviewee).to include 'Beckett, Samuel'
     end
   end
+
+
 end
