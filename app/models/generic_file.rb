@@ -83,7 +83,7 @@ class GenericFile < ActiveFedora::Base
   property :rights, predicate: ::RDF::DC11.rights do |index|
     index.as :stored_searchable
   end
-  property :rights_holder, predicate: ::RDF::DC.rightsHolder, multiple: false do |index|
+  property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/rightsHolder"), multiple: false do |index|
     index.as :stored_searchable
   end
 

@@ -32,7 +32,7 @@ RSpec.describe GenericFile do
     place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
     provenance: 'http://purl.org/dc/terms/provenance',
-    rights_holder: 'http://purl.org/dc/terms/rightsHolder',
+    rights_holder: 'http://chemheritage.org/ns/rightsHolder',
     table_of_contents: 'http://purl.org/dc/terms/tableOfContents',
   }
 
