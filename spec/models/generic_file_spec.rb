@@ -26,8 +26,7 @@ RSpec.describe GenericFile do
     extent: 'http://purl.org/dc/terms/extent',
     inscription: 'http://chemheritage.org/ns/inscription',
     medium: 'http://purl.org/dc/terms/medium',
-    #physical_container:
-    #physical_location:
+    physical_container: 'http://bibframe.org/vocab/materialHierarchicalLevel',
     place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
     place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',

@@ -59,6 +59,9 @@ class GenericFile < ActiveFedora::Base
   property :medium, predicate: ::RDF::DC.medium do |index|
     index.as :stored_searchable
   end
+  property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialHierarchicalLevel, multiple: false do |index|
+    index.as :stored_searchable
+  end
 
   property :place_of_interview, predicate: ::RDF::Vocab::MARCRelators.evp do |index|
     index.as :stored_searchable
