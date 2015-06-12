@@ -25,6 +25,15 @@ RSpec.describe GenericFile do
     end
   end
 
+  it 'uses a different predicate for each field' do
+    f = GenericFile.new
+    predicates = f.resource.fields.map do |attr|
+      GenericFile.reflect_on_property(attr).predicate.to_s
+    end
+    dup = predicates.select{ |element| predicates.count(element) > 1 }
+    expect(dup).to be_empty
+  end
+
   it 'uses the right predicate for overriden fields' do
     {
       creator: 'http://purl.org/dc/elements/1.1/creator',
