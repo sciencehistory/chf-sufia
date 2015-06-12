@@ -10,6 +10,7 @@ RSpec.describe GenericFile do
     publisher: 'http://purl.org/dc/elements/1.1/publisher',
     resource_type: 'http://purl.org/dc/elements/1.1/type',
     rights: 'http://purl.org/dc/elements/1.1/rights',
+    subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
     abstract: 'http://purl.org/dc/terms/abstract',
     #access:

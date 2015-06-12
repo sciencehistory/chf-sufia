@@ -87,6 +87,9 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :subject, predicate: ::RDF::DC11.subject do |index|
+    index.as :stored_searchable, :facetable
+  end
   property :table_of_contents, predicate: ::RDF::DC.tableOfContents, multiple: false do |index|
     index.as :stored_searchable
   end
