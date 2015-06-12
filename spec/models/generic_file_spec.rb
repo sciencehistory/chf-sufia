@@ -1,12 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe GenericFile do
-  # test for new fields
-  it { is_expected.to respond_to(:artist) }
+  it 'contains local new fields' do
+    [
+      :abstract,
+      #:access,
+      :artist,
+      :date_original,
+      :date_published,
+      :depicted,
+      :extent,
+      :inscription,
+      :medium,
+      #:physical_container,
+      #:physical_location,
+      :place_of_interview,
+      :place_of_manufacture,
+      :place_of_publication,
+      :provenance,
+      :rights_holder,
+      :table_of_contents,
+    ].each do |f|
+      expect(subject).to respond_to(f)
+    end
+  end
 
   it 'uses the right predicate for overriden fields' do
     {
-      artist: 'http://id.loc.gov/vocabulary/relators/art',
       creator: 'http://purl.org/dc/elements/1.1/creator',
       contributor: 'http://purl.org/dc/elements/1.1/contributor',
       date_created: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#dateCreated',
