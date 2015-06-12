@@ -1,29 +1,39 @@
 require 'rails_helper'
 
 RSpec.describe GenericFile do
-  it 'contains local new fields' do
-    [
-      :abstract,
-      #:access,
-      :artist,
-      :date_original,
-      :date_published,
-      :depicted,
-      :extent,
-      :inscription,
-      :medium,
-      #:physical_container,
-      #:physical_location,
-      :place_of_interview,
-      :place_of_manufacture,
-      :place_of_publication,
-      :provenance,
-      :rights_holder,
-      :table_of_contents,
-    ].each do |f|
-      expect(subject).to respond_to(f)
-    end
-  end
+  MyFields = {
+    # overriden fields
+    creator: 'http://purl.org/dc/elements/1.1/creator',
+    contributor: 'http://purl.org/dc/elements/1.1/contributor',
+    date_created: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#dateCreated',
+    language: 'http://purl.org/dc/elements/1.1/language',
+    publisher: 'http://purl.org/dc/elements/1.1/publisher',
+    resource_type: 'http://purl.org/dc/elements/1.1/type',
+    rights: 'http://purl.org/dc/elements/1.1/rights',
+    # new fields
+    abstract: 'http://purl.org/dc/terms/abstract',
+    #access:
+    artist: 'http://id.loc.gov/vocabulary/relators/art',
+    author: 'http://id.loc.gov/vocabulary/relators/aut',
+    interviewee: 'http://id.loc.gov/vocabulary/relators/ive',
+    interviewer: 'http://id.loc.gov/vocabulary/relators/ivr',
+    manufacturer: 'http://id.loc.gov/vocabulary/relators/mfr',
+    photographer: 'http://id.loc.gov/vocabulary/relators/pht',
+    date_original: 'http://purl.org/dc/terms/date',
+    date_published: 'http://purl.org/dc/terms/issued',
+    depicted: 'http://id.loc.gov/vocabulary/relators/dpc',
+    extent: 'http://purl.org/dc/terms/extent',
+    inscription: 'http://chemheritage.org/ns/inscription',
+    medium: 'http://purl.org/dc/terms/medium',
+    #physical_container:
+    #physical_location:
+    place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
+    place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
+    place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
+    provenance: 'http://purl.org/dc/terms/provenance',
+    rights_holder: 'http://purl.org/dc/terms/rightsHolder',
+    table_of_contents: 'http://purl.org/dc/terms/tableOfContents',
+  }
 
   it 'uses a different predicate for each field' do
     f = GenericFile.new
@@ -34,31 +44,27 @@ RSpec.describe GenericFile do
     expect(dup).to be_empty
   end
 
-  it 'uses the right predicate for overriden fields' do
-    {
-      creator: 'http://purl.org/dc/elements/1.1/creator',
-      contributor: 'http://purl.org/dc/elements/1.1/contributor',
-      date_created: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#dateCreated',
-      language: 'http://purl.org/dc/elements/1.1/language',
-      publisher: 'http://purl.org/dc/elements/1.1/publisher',
-      resource_type: 'http://purl.org/dc/elements/1.1/type',
-      rights: 'http://purl.org/dc/elements/1.1/rights',
-    }.each do |field_name, uri|
+  it 'uses the right predicate for new and overriden fields' do
+    MyFields.each do |field_name, uri|
       predicate = GenericFile.reflect_on_property(field_name).predicate.to_s
       expect(predicate).to eq uri
     end
   end
 
-  describe 'marc relator creator / contributor fields' do
+  describe 'Correctly populates one new and one overriden field' do
     let :generic_file do
       described_class.create(title: ['title1']) do |gf|
         gf.apply_depositor_metadata('dpt')
-        gf.interviewee = ['Beckett, Samuel']
+        gf.creator = ['Beckett, Samuel']
+        gf.table_of_contents = "I can't go on I'll go on"
       end
     end
-    it 'has a single interviewee' do
-      expect(generic_file.interviewee.count).to eq 1
-      expect(generic_file.interviewee).to include 'Beckett, Samuel'
+    it 'has a single creator' do
+      expect(generic_file.creator.count).to eq 1
+      expect(generic_file.creator).to include 'Beckett, Samuel'
+    end
+    it 'has a toc' do
+      expect(generic_file.table_of_contents).to eq "I can't go on I'll go on"
     end
   end
 

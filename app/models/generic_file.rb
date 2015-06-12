@@ -22,7 +22,7 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
-  property :abstract, predicate: ::RDF::DC.abstract do |index|
+  property :abstract, predicate: ::RDF::DC.abstract, multiple: false do |index|
     index.as :stored_searchable
   end
 
@@ -63,14 +63,14 @@ class GenericFile < ActiveFedora::Base
   property :place_of_interview, predicate: ::RDF::Vocab::MARCRelators.evp do |index|
     index.as :stored_searchable
   end
-  property :place_of_manufacture, predicate: ::RDF::Vocab::MARCRelators.mfr do |index|
+  property :place_of_manufacture, predicate: ::RDF::Vocab::MARCRelators.mfp do |index|
     index.as :stored_searchable
   end
   property :place_of_publication, predicate: ::RDF::Vocab::MARCRelators.pup do |index|
     index.as :stored_searchable
   end
 
-  property :provenance, predicate: ::RDF::DC.provenance do |index|
+  property :provenance, predicate: ::RDF::DC.provenance, multiple: false do |index|
     index.as :stored_searchable
   end
   property :publisher, predicate: ::RDF::DC11.publisher do |index|
@@ -83,11 +83,11 @@ class GenericFile < ActiveFedora::Base
   property :rights, predicate: ::RDF::DC11.rights do |index|
     index.as :stored_searchable
   end
-  property :rights_holder, predicate: ::RDF::DC.rightsHolder do |index|
+  property :rights_holder, predicate: ::RDF::DC.rightsHolder, multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :table_of_contents, predicate: ::RDF::DC.tableOfContents do |index|
+  property :table_of_contents, predicate: ::RDF::DC.tableOfContents, multiple: false do |index|
     index.as :stored_searchable
   end
 
