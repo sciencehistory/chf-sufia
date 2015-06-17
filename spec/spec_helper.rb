@@ -30,6 +30,7 @@ RSpec.configure do |config|
   # `:focus` metadata. When nothing is tagged with `:focus`, all examples
   # get run.
   config.filter_run :focus
+  config.filter_run_excluding :exclude
   config.run_all_when_everything_filtered = true
 
   # Limits the available syntax to the non-monkey patched syntax that is

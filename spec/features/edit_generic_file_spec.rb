@@ -37,7 +37,15 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     expect(page).to have_text('Interviewee')
   end
 
-  scenario "the batch edit form has a field for genre, required" do
+  scenario "dashboard has no link to batch edits" do
+    visit "/dashboard/files"
+    find("#check_all").click
+    expect(find('.batch-info')).to have_button('Delete Selected')
+    expect(find('.batch-info')).not_to have_button('Edit Selected')
+  end
+
+  #disable; we're not supporting batch edits yet and they're not working right
+  scenario "the batch edits form has a field for genre, required", exclude: true do
     visit "/batch_edits/edit?batch_document_ids[]=#{@file.id}"
     expect(page).to have_text('Genre')
     expect(page).not_to have_text('Genre string')

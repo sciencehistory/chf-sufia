@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe BatchEditsController do
+#disable; we're not supporting batch edits yet and they're not working right
+RSpec.describe BatchEditsController, exclude: true do
 
   let (:files) { [] }
   let (:user) { FactoryGirl.create(:depositor) }
