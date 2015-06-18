@@ -1,7 +1,7 @@
 class GenericFilePresenter < Sufia::GenericFilePresenter
 
   self.terms = [:title, :resource_type, :genre_string, :creator,
-      :contributor, :description, :extent, :tag, :rights,
+      :contributor, :description, :extent, :rights,
       :publisher, :date_original, :date_published, :subject,
       :language, :identifier, :related_url, :artist,
       :author, :interviewee, :interviewer, :manufacturer, :medium,

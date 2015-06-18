@@ -11,6 +11,9 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
 
   scenario "the single file edit form has our locally-added fields" do
     visit "/files/#{@file.id}/edit"
+    # fields removed from work
+    expect(page).not_to have_text('Keyword')
+    expect(page).not_to have_text('Date created')
     # genre field
     expect(page).not_to have_text('Genre string')
     genre_div = find('div.generic_file_genre_string')
