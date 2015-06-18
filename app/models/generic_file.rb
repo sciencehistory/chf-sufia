@@ -22,18 +22,11 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
-  property :abstract, predicate: ::RDF::DC.abstract, multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   property :creator, predicate: ::RDF::DC11.creator do |index|
     index.as :stored_searchable, :facetable
   end
   property :contributor, predicate: ::RDF::DC11.contributor do |index|
     index.as :stored_searchable, :facetable
-  end
-  property :date_created, predicate: ::RDF::Vocab::EBUCore.dateCreated do |index|
-    index.as :stored_searchable
   end
   property :date_original, predicate: ::RDF::DC.date do |index|
     index.as :stored_searchable
@@ -42,16 +35,9 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :depicted, predicate: ::RDF::Vocab::MARCRelators.dpc do |index|
-    index.as :stored_searchable
-  end
   property :extent, predicate: ::RDF::DC.extent do |index|
     index.as :stored_searchable
   end
-  property :inscription, predicate: ::RDF::URI.new("http://chemheritage.org/ns/inscription") do |index|
-    index.as :stored_searchable, :facetable
-  end
-
 
   property :language, predicate: ::RDF::DC11.language do |index|
     index.as :stored_searchable, :facetable
@@ -92,9 +78,6 @@ class GenericFile < ActiveFedora::Base
 
   property :subject, predicate: ::RDF::DC11.subject do |index|
     index.as :stored_searchable, :facetable
-  end
-  property :table_of_contents, predicate: ::RDF::DC.tableOfContents, multiple: false do |index|
-    index.as :stored_searchable
   end
 
 

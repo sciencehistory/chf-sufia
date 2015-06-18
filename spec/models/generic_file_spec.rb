@@ -5,15 +5,12 @@ RSpec.describe GenericFile do
     # overriden fields
     creator: 'http://purl.org/dc/elements/1.1/creator',
     contributor: 'http://purl.org/dc/elements/1.1/contributor',
-    date_created: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#dateCreated',
     language: 'http://purl.org/dc/elements/1.1/language',
     publisher: 'http://purl.org/dc/elements/1.1/publisher',
     resource_type: 'http://purl.org/dc/elements/1.1/type',
     rights: 'http://purl.org/dc/elements/1.1/rights',
     subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
-    abstract: 'http://purl.org/dc/terms/abstract',
-    #access:
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',
     interviewee: 'http://id.loc.gov/vocabulary/relators/ive',
@@ -22,9 +19,7 @@ RSpec.describe GenericFile do
     photographer: 'http://id.loc.gov/vocabulary/relators/pht',
     date_original: 'http://purl.org/dc/terms/date',
     date_published: 'http://purl.org/dc/terms/issued',
-    depicted: 'http://id.loc.gov/vocabulary/relators/dpc',
     extent: 'http://purl.org/dc/terms/extent',
-    inscription: 'http://chemheritage.org/ns/inscription',
     medium: 'http://purl.org/dc/terms/medium',
     physical_container: 'http://bibframe.org/vocab/materialHierarchicalLevel',
     place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
@@ -32,7 +27,6 @@ RSpec.describe GenericFile do
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
     provenance: 'http://purl.org/dc/terms/provenance',
     rights_holder: 'http://chemheritage.org/ns/rightsHolder',
-    table_of_contents: 'http://purl.org/dc/terms/tableOfContents',
   }
 
   it 'uses a different predicate for each field' do
@@ -56,7 +50,7 @@ RSpec.describe GenericFile do
       described_class.create(title: ['title1']) do |gf|
         gf.apply_depositor_metadata('dpt')
         gf.creator = ['Beckett, Samuel']
-        gf.table_of_contents = "I can't go on I'll go on"
+        gf.extent = ["infinitely long"]
       end
     end
     it 'has a single creator' do
@@ -64,7 +58,7 @@ RSpec.describe GenericFile do
       expect(generic_file.creator).to include 'Beckett, Samuel'
     end
     it 'has a toc' do
-      expect(generic_file.table_of_contents).to eq "I can't go on I'll go on"
+      expect(generic_file.extent).to eq ["infinitely long"]
     end
   end
 
