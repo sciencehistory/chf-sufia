@@ -1,3 +1,8 @@
+# using an ssh-config entry to set the user, key, and address of the machine
+set :stage, :producton
+set :rails_env, 'production'
+server 'chf-prod', roles: [:web, :app, :db, :resque_worker]
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
