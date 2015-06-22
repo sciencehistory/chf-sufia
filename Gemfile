@@ -44,7 +44,10 @@ gem 'devise-guests', '~> 0.3'
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'capistrano', '3.4.0', group: :development
+gem 'capistrano-bundler', '1.1.4', group: :development
+gem 'capistrano-passenger', '0.1.0', group: :development
+gem 'capistrano-rails', '1.1.3', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
