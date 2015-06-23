@@ -1,8 +1,8 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+set :application, 'sufia'
+set :repo_url, 'https://github.com/chemheritage/chf-sufia.git'
 
 # using 'touch tmp/restart.txt to restart passenger
 set :passenger_restart_with_touch, true
