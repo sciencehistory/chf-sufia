@@ -1,7 +1,8 @@
 # using an ssh-config entry to set the user, key, and address of the machine
 set :stage, :producton
 set :rails_env, 'production'
-server 'chf-prod', roles: [:web, :app, :db, :resque_worker]
+server 'chf1', roles: [:web, :app, :db]
+# server 'ec2-52-7-231-167.compute-1.amazonaws.com', user: 'deploy', roles: [:web, :app, :db]
 
 # server-based syntax
 # ======================
