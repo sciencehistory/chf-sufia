@@ -1,0 +1,56 @@
+<h2>Individual Titles  </h2>
+<div id="" class="well">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>Applies to individual files uploaded</h3>
+      <%= content_tag :p, t('sufia.batch.help.title'), class: "help-block" %>
+      <% @batch.generic_files.sort! { |a,b| a.label.downcase <=> b.label.downcase }.each_with_index  do |gen_f, index| %>
+        <div class="form-group">
+          <%= f.input_label :title, as: :multi_value_with_help, label: "Title #{index + 1}" %>
+          <div id="additional_title_clone">
+            <%= f.text_field :title, name: "title[#{gen_f.id}][]", value: gen_f.label, class: 'form-control', required: true %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-sm-4">
+      <!-- put metadata about file being edited here -->
+    </div>
+  </div>
+</div>
+
+<%= hidden_field_tag(:extra_description_count, "1") %>
+<div id="descriptions_display">
+  <h2>Bulk Descriptions</h2>
+  <div class="well">
+    <div class="row">
+      <div class="col-sm-6">
+      <h3>Applies to all files just uploaded</h3>
+
+      <%# chf edit: change all these fields around %>
+      <% f.object.hidden_field_terms.each do |term| %>
+        <%= "<input type=\"hidden\" name=\"generic_file[#{term}][]\" id=\"generic_file_#{term}\" value class=\"partial\">".html_safe %>
+      <% end %>
+
+      <% (f.object.above_fold_terms - [:rights]).each do |term| %>
+        <%= render_edit_field_partial(term, f: f) %>
+      <% end %>
+
+      <%# we can't use the partial because this :select_with_modal_help
+          doesn't work in the file edit form (makes it a dropdown and then 
+          they start to multiply  %>
+      <%= f.input :rights, as: :select_with_modal_help, collection: Sufia.config.cc_licenses,
+          input_html: { class: 'form-control', multiple: true } %>
+
+      <%= render "generic_files/rights_modal" %>
+
+      <button id="show_addl_descriptions" class="btn btn-default" aria-label="reveal additional metadata description fields">Show Additional Fields</button>
+      <!-- hidden on initial load -->
+
+      <%= render 'more_metadata', f: f %>
+
+      </div> <!-- /col-sm-8 -->
+    </div> <!-- /row -->
+  </div><!-- /well -->
+</div> <!-- /row -->

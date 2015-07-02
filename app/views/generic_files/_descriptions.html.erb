@@ -1,0 +1,24 @@
+<div id="descriptions_display" class="tab-pane active">
+  <%= simple_form_for [sufia, @form], html: { multipart: true } do |f| %>
+    <%= hidden_field_tag('redirect_tab', 'descriptions') %>
+    <h1>Descriptions <span class="pull-right required"><abbr title="required">*</abbr> indicates required fields</span></h1>
+      <div class="well">
+
+
+        <%# chf: :maker encompasses a bunch of fields we don't want repeated. %>
+        <%# chf: However, we include them as hidden fields or else they can't be removed %>
+        <% f.object.hidden_field_terms.each do |term| %>
+          <%= "<input type=\"hidden\" name=\"generic_file[#{term}][]\" id=\"generic_file_#{term}\" value class=\"partial\">".html_safe %>
+        <% end %>
+        <% f.object.edit_field_terms.each do |term| %>
+          <%= render_edit_field_partial(term, f: f) %>
+        <% end %>
+
+      </div><!-- /well -->
+    <div>
+      <%= f.submit class: 'btn btn-primary', onclick: "confirmation_needed = false;", id: "upload_submit", name: "update_descriptions" do %>
+        <i class="glyphicon glyphicon-floppy-disk"></i> Save Descriptions
+      <% end %>
+    </div>
+  <% end %>
+</div>
