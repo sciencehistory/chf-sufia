@@ -5,29 +5,13 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
-
   #Set up a bunch of MARC Relator codes as properties
-  Creator_contributors = {
-    artist:       ::RDF::Vocab::MARCRelators.art,
-    author:       ::RDF::Vocab::MARCRelators.aut,
-    interviewee:  ::RDF::Vocab::MARCRelators.ive,
-    interviewer:  ::RDF::Vocab::MARCRelators.ivr,
-    manufacturer: ::RDF::Vocab::MARCRelators.mfr,
-    photographer: ::RDF::Vocab::MARCRelators.pht,
-  }
-
-  Creator_contributors.each do |field_name, predicate|
+  Sufia.config.makers.each do |field_name, predicate|
     property field_name, predicate: predicate do |index|
       index.as :stored_searchable
     end
   end
 
-  property :creator, predicate: ::RDF::DC11.creator do |index|
-    index.as :stored_searchable, :facetable
-  end
-  property :contributor, predicate: ::RDF::DC11.contributor do |index|
-    index.as :stored_searchable, :facetable
-  end
   property :date_original, predicate: ::RDF::DC.date do |index|
     index.as :stored_searchable
   end

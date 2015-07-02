@@ -10,6 +10,17 @@ Sufia.config do |config|
 
   config.max_notifications_for_dashboard = 5
 
+  config.makers = {
+    artist:       ::RDF::Vocab::MARCRelators.art,
+    author:       ::RDF::Vocab::MARCRelators.aut,
+    creator:      ::RDF::DC11.creator,
+    contributor:  ::RDF::DC11.contributor,
+    interviewee:  ::RDF::Vocab::MARCRelators.ive,
+    interviewer:  ::RDF::Vocab::MARCRelators.ivr,
+    manufacturer: ::RDF::Vocab::MARCRelators.mfr,
+    photographer: ::RDF::Vocab::MARCRelators.pht,
+  }
+
   config.cc_licenses = {
     'Attribution 3.0 United States' => 'http://creativecommons.org/licenses/by/3.0/us/',
     'Attribution-ShareAlike 3.0 United States' => 'http://creativecommons.org/licenses/by-sa/3.0/us/',
