@@ -17,8 +17,9 @@ RSpec.describe GenericFile do
     interviewer: 'http://id.loc.gov/vocabulary/relators/ivr',
     manufacturer: 'http://id.loc.gov/vocabulary/relators/mfr',
     photographer: 'http://id.loc.gov/vocabulary/relators/pht',
-    date_original: 'http://purl.org/dc/terms/date',
-    date_published: 'http://purl.org/dc/terms/issued',
+    # TODO: test these predicates elsewhere? can't access the same way
+#    date_of_work: 'http://purl.org/dc/terms/date',
+#    date_of_publication: 'http://purl.org/dc/terms/issued',
     extent: 'http://purl.org/dc/terms/extent',
     medium: 'http://purl.org/dc/terms/medium',
     physical_container: 'http://bibframe.org/vocab/materialOrganization',
@@ -46,22 +47,43 @@ RSpec.describe GenericFile do
     end
   end
 
-  describe 'Correctly populates one new and one overriden field' do
+  describe 'Correctly populates fields' do
     let :generic_file do
-      described_class.create(title: ['title1']) do |gf|
+      GenericFile.create(title: ['title1']) do |gf|
         gf.apply_depositor_metadata('dpt')
         gf.creator = ['Beckett, Samuel']
         gf.extent = ["infinitely long"]
       end
     end
+
     it 'has a single creator' do
       expect(generic_file.creator.count).to eq 1
       expect(generic_file.creator).to include 'Beckett, Samuel'
     end
+
     it 'has a toc' do
       expect(generic_file.extent).to eq ["infinitely long"]
     end
+
+    describe "add a Date Range" do
+      before do
+        generic_file.date_of_work_attributes = [{start: "2003", finish: "2015"}]
+        generic_file.date_of_publication_attributes = [{start: "2003", finish: "2015"}]
+      end
+      it "uses TimeSpan class" do
+        expect(generic_file.date_of_work.first).to be_kind_of TimeSpan
+        expect(generic_file.date_of_publication.first).to be_kind_of TimeSpan
+      end
+    end
+
+    describe "retrieve a Date Range" do
+      it "finds the nested attributes" do
+        generic_file.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
+        generic_file.save!
+        expect(GenericFile.find(generic_file.id).date_of_work.count).to eq 2 #returns both
+        expect(GenericFile.load_instance_from_solr(generic_file.id).date_of_work.count).to eq 2 #returns both
+      end
+    end
+
   end
-
-
 end
