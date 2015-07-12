@@ -85,7 +85,7 @@ Vagrant.configure(2) do |config|
       project_dir: "/vagrant",
       server_name: "localhost",
       rails_env: "development",
-      bundle_path: "~/.bundle"
+      bundle_options: "--path=~/.bundle --without production"
     }
     ansible.playbook = "provisioning/vagrant.yml"
   end

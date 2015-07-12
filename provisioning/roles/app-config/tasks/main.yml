@@ -3,7 +3,7 @@
   sudo: no
   remote_user: "{{ deploy_user }}"
   # TODO: this is for development; look into bundle --deployment
-  shell: cd {{ project_dir }}; bundle install --path={{ bundle_path }}
+  shell: cd {{ project_dir }}; bundle install {{ bundle_options }}
 
 #TODO: manage env variables for this separately
 #- name: make sure blacklight has a key
