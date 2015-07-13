@@ -10,6 +10,7 @@ require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'devise'
 require 'support/features'
+require 'support/rake'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 Capybara.register_driver :poltergeist do |app|
