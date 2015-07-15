@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-#gem 'sufia', ' ~> 6.0'
-gem 'sufia', github: 'projecthydra/sufia', :ref => 'eb714c' # master pre-pcdm integration
+gem 'sufia', '6.2.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
