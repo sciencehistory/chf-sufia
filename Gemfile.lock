@@ -127,10 +127,8 @@ GEM
       sass-rails
       skydrive
     builder (3.2.2)
-    byebug (3.5.1)
-      columnize (~> 0.8)
-      debugger-linecache (~> 1.2)
-      slop (~> 3.6)
+    byebug (5.0.0)
+      columnize (= 0.9.0)
     cancancan (1.12.0)
     capistrano (3.4.0)
       i18n
@@ -172,7 +170,6 @@ GEM
     columnize (0.9.0)
     daemons (1.2.3)
     database_cleaner (1.4.1)
-    debugger-linecache (1.2.0)
     deprecation (0.2.2)
       activesupport
     devise (3.5.1)
@@ -430,6 +427,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.2.0)
+      byebug (~> 5.0)
+      pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     rack (1.6.4)
@@ -712,7 +712,6 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora (~> 9.1.0)
-  byebug
   capistrano (= 3.4.0)
   capistrano-bundler (= 1.1.4)
   capistrano-passenger (= 0.1.0)
@@ -734,6 +733,7 @@ DEPENDENCIES
   pg
   poltergeist (~> 1.5)
   pry
+  pry-byebug
   pry-rails
   rails (= 4.2.2)
   rdf-vocab
