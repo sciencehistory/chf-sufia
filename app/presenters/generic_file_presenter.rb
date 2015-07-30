@@ -4,10 +4,11 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   allowing the fields to be edited
   #   showing the fields on the item page
   self.terms = [:identifier, :title, :resource_type, :genre_string,
-      :description, :extent, :rights,
+      :description, :extent, :rights, :rights_holder,
       :publisher, :date_original, :date_published, :subject,
       :language, :related_url,
       :medium, :place_of_interview, :place_of_manufacture,
+      :series_arrangement, :physical_container,
       :place_of_publication, :provenance].concat Sufia.config.makers.keys
 
   # Add a new list for creating form elements on the edit pages
