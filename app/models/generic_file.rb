@@ -29,7 +29,7 @@ class GenericFile < ActiveFedora::Base
   property :medium, predicate: ::RDF::DC.medium do |index|
     index.as :stored_searchable
   end
-  property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialHierarchicalLevel, multiple: false do |index|
+  property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialOrganization, multiple: false do |index|
     index.as :stored_searchable
   end
 
@@ -58,6 +58,10 @@ class GenericFile < ActiveFedora::Base
   end
   property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/rightsHolder"), multiple: false do |index|
     index.as :stored_searchable
+  end
+
+  property :series_arrangement, predicate: ::RDF::Vocab::Bibframe.materialHierarchicalLevel do |index|
+    index.as :stored
   end
 
   property :subject, predicate: ::RDF::DC11.subject do |index|

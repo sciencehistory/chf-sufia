@@ -21,12 +21,13 @@ RSpec.describe GenericFile do
     date_published: 'http://purl.org/dc/terms/issued',
     extent: 'http://purl.org/dc/terms/extent',
     medium: 'http://purl.org/dc/terms/medium',
-    physical_container: 'http://bibframe.org/vocab/materialHierarchicalLevel',
+    physical_container: 'http://bibframe.org/vocab/materialOrganization',
     place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
     place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
     provenance: 'http://purl.org/dc/terms/provenance',
     rights_holder: 'http://chemheritage.org/ns/rightsHolder',
+    series_arrangement: 'http://bibframe.org/vocab/materialHierarchicalLevel',
   }
 
   it 'uses a different predicate for each field' do
