@@ -19,6 +19,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :publisher, :date_of_work, :date_of_publication, :subject,
       :language, :related_url,
       :medium, :place_of_interview, :place_of_manufacture,
+      :physical_container,
       :place_of_publication, :provenance]
   end
 

@@ -28,6 +28,7 @@ RSpec.describe GenericFilesController do
       file.reload
       expect(file.resource_type).to eq ['Image']
       # why is it an empty string in the form but an empty array here??
+      #   - the model doesn't save empty strings as values
       expect(file.genre_string).to eq []
 
       patch :update, id: file, generic_file: {
@@ -35,7 +36,6 @@ RSpec.describe GenericFilesController do
       }
       file.reload
       expect(file.resource_type).to eq ['Image']
-      # why is it an empty string in the form but an empty array here??
       expect(file.genre_string).to eq ['Photograph']
     end
 
@@ -180,6 +180,18 @@ RSpec.describe GenericFilesController do
         end
       end
     end  # context dates
+    context 'parsed fields' do
+
+      it 'turns box, etc into coded string' do
+        patch :update, id: file, generic_file: {
+          box: '2',
+          folder: '3',
+        }
+
+        file.reload
+        expect(file.physical_container).to eq 'b2|f3'
+      end
+    end # context parsed fields
   end # update
 
 end
