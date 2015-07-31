@@ -15,7 +15,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   (since we've combined many of the fields into 'maker')
   def edit_field_terms
     [:identifier, :title, :maker, :resource_type, :genre_string,
-      :description, :extent, :rights,
+      :description, :extent, :rights, :rights_holder,
       :publisher, :date_original, :date_published, :subject,
       :language, :related_url,
       :medium, :place_of_interview, :place_of_manufacture,
