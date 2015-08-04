@@ -389,7 +389,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
-    noid (0.7.1)
+    noid (0.7.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     nom-xml (0.5.2)
