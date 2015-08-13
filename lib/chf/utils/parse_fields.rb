@@ -11,6 +11,7 @@ module CHF
       # turn something like "b9879|f9876655|v65464|p24" into 
       #   something like {"b"=>"9879", "f"=>"9876655", "v"=>"65464", "p"=>"24"}
       def self.parse_physical_container(str)
+        return {} unless str.present?
         components = str.split('|')
         pc_hash = {}
         components.each do |s|
