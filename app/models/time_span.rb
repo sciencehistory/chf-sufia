@@ -51,7 +51,11 @@ class TimeSpan < ActiveFedora::Base
   def display_label
     start_string = qualified_date(start, start_qualifier)
     finish_string = qualified_date(finish, finish_qualifier)
-    [start_string, finish_string].compact.join(' - ')
+    date_string = [start_string, finish_string].compact.join(' - ')
+    if note.present?
+      date_string << " (#{note})"
+    end
+    date_string
   end
 
   def qualified_date(date, qualifier)

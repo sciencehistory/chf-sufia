@@ -106,6 +106,16 @@ RSpec.describe TimeSpan do
         expect(subject.display_label).to eq 'after 1956-06-28 - before 1958-01-01'
       end
     end
+
+    context 'when there is a note' do
+      before do
+        subject.start = '1956'
+        subject.note = 'weird date format'
+      end
+      it 'appends the note to the date range' do
+        expect(subject.display_label).to eq '1956 (weird date format)'
+      end
+    end
   end  # display_label
 
   describe 'TimeSpan.start_qualifiers' do
