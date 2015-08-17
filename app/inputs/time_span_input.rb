@@ -7,11 +7,11 @@ class TimeSpanInput < MultiValueWithHelpInput
 
   protected
 
-    LabelCol = "  <div class='col-md-2'>"
-    TextCol = "  <div class='col-md-4'>"
-    DropCol = "  <div class='col-md-3'>"
-    LongTextCol = "  <div class='col-md-7'>"
-    CheckCol = "  <div class='col-md-3'>"
+    LabelCol = "  <div class='col-md-3'>"
+    TextCol = "  <div class='col-md-5'>"
+    DropCol = "  <div class='col-md-4'>"
+    LongTextCol = "  <div class='col-md-9'>"
+    CheckCol = "  <div class='col-md-9 col-md-offset-3'>"
 
     # Delegate this completely to the form.
     def collection
@@ -117,13 +117,15 @@ class TimeSpanInput < MultiValueWithHelpInput
       out << LongTextCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name))
       out << "  </div>"
+      out << "</div>" # class=row
 
       # delete checkbox
+      out << "<div class='row'>"
       out << CheckCol
       out << destroy_widget(attribute_name, index)
       out << "  </div>"
+      out << "</div>" # class=row
 
-      out << "</div>"
       out
     end
 

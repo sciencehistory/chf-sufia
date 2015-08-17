@@ -1,5 +1,5 @@
 // overrides for maker field
-.listing {
+.form-group {
   .double-input {
     select {
       width: 40%;
@@ -10,8 +10,16 @@
   }
   .row {
     margin: 0;
-    .col-md-2, .col-md-3, .col-md-4, .col-md-7 {
+    .col-md-5, .col-md-3, .col-md-4, .col-md-9 {
       padding: 0;
+      label {
+        padding-left: 15px;
+      }
     }
+  }
+}
+.generic_file_physical_container {
+  .listing {
+    max-width: 40em;
   }
 }
