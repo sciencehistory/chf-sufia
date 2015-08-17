@@ -9,11 +9,11 @@ module NestedDates
     end
 
     def permitted_time_span_params
-      [ :id, :_destroy, :start, :start_qualifier, :finish, :finish_qualifier, :label, :note ]
+      [ :id, :_destroy, :start, :start_qualifier, :finish, :finish_qualifier, :note ]
       # tests break when I use this nested structure which I see in other code bases
       #   (probably related to the fact that they are using multivalued fields)
       #[ :id, :_destroy, {
-      #  :start => nil, :start_qualifier => nil, :finish => nil, :finish_qualifier => nil, :label => nil, :note => nil
+      #  :start => nil, :start_qualifier => nil, :finish => nil, :finish_qualifier => nil, :note => nil
       #}]
     end
 

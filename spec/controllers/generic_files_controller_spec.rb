@@ -46,7 +46,6 @@ RSpec.describe GenericFilesController do
           start_qualifier: "",
           finish: "",
           finish_qualifier: "",
-          label: "",
           note: "",
         }
       end

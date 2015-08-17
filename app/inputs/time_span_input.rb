@@ -105,20 +105,6 @@ class TimeSpanInput < MultiValueWithHelpInput
 
       out << "</div>" # class=row
 
-      out << "<div class='row'>"
-      field = :label
-      field_name = singular_input_name_for(attribute_name, index, field)
-      field_value = time_span.send(field)
-
-      out << LabelCol
-      out << template.label_tag(field_name, field.to_s.humanize, required: false)
-      out << "  </div>"
-
-      out << LongTextCol
-      out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name))
-      out << "  </div>"
-      out << "</div>"
-
       field = :note
       field_value = time_span.send(field)
       field_name = singular_input_name_for(attribute_name, index, field)

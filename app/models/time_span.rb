@@ -20,7 +20,6 @@ class TimeSpan < ActiveFedora::Base
   property :finish, predicate: ::RDF::Vocab::EDM.end, multiple: false
   property :start_qualifier, predicate: ::RDF::Vocab::CRM.P79_beginning_is_qualified_by, multiple: false
   property :finish_qualifier, predicate: ::RDF::Vocab::CRM.P80_end_is_qualified_by, multiple: false
-  property :label, predicate: ::RDF::SKOS.prefLabel, multiple: false
   property :note, predicate: ::RDF::SKOS.note, multiple: false
 
   # DACS date qualifiers
@@ -50,13 +49,9 @@ class TimeSpan < ActiveFedora::Base
   # TODO: this produces 'circa YYYY - circa YYYY'
   # Return a string for display of this record
   def display_label
-    if label.present?
-      label
-    else
-      start_string = qualified_date(start, start_qualifier)
-      finish_string = qualified_date(finish, finish_qualifier)
-      [start_string, finish_string].compact.join(' - ')
-    end
+    start_string = qualified_date(start, start_qualifier)
+    finish_string = qualified_date(finish, finish_qualifier)
+    [start_string, finish_string].compact.join(' - ')
   end
 
   def qualified_date(date, qualifier)
