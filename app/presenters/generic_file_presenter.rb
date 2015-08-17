@@ -5,7 +5,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   showing the fields on the item page
   self.terms = [:identifier, :title, :resource_type, :genre_string,
       :description, :extent, :rights, :rights_holder,
-      :publisher, :date_of_work, :date_of_publication, :subject,
+      :publisher, :date_of_work, :subject,
       :language, :related_url,
       :medium, :place_of_interview, :place_of_manufacture,
       :series_arrangement, :physical_container,
@@ -16,7 +16,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   def edit_field_terms
     [:identifier, :title, :maker, :resource_type, :genre_string,
       :description, :extent, :rights, :rights_holder,
-      :publisher, :date_of_work, :date_of_publication, :subject,
+      :publisher, :date_of_work, :subject,
       :language, :related_url,
       :medium, :place_of_interview, :place_of_manufacture,
       :physical_container,
@@ -33,7 +33,6 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   def above_fold_terms
     [:maker,
      :date_of_work,
-     :date_of_publication,
      :resource_type,
      :genre_string,
      :identifier,

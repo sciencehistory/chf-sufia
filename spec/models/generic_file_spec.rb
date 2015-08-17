@@ -17,9 +17,6 @@ RSpec.describe GenericFile do
     interviewer: 'http://id.loc.gov/vocabulary/relators/ivr',
     manufacturer: 'http://id.loc.gov/vocabulary/relators/mfr',
     photographer: 'http://id.loc.gov/vocabulary/relators/pht',
-    # TODO: test these predicates elsewhere? can't access the same way
-#    date_of_work: 'http://purl.org/dc/terms/date',
-#    date_of_publication: 'http://purl.org/dc/terms/issued',
     extent: 'http://purl.org/dc/terms/extent',
     medium: 'http://purl.org/dc/terms/medium',
     physical_container: 'http://bibframe.org/vocab/materialOrganization',
@@ -68,11 +65,9 @@ RSpec.describe GenericFile do
     describe "add a Date Range" do
       before do
         generic_file.date_of_work_attributes = [{start: "2003", finish: "2015"}]
-        generic_file.date_of_publication_attributes = [{start: "2003", finish: "2015"}]
       end
       it "uses TimeSpan class" do
         expect(generic_file.date_of_work.first).to be_kind_of TimeSpan
-        expect(generic_file.date_of_publication.first).to be_kind_of TimeSpan
       end
     end
 

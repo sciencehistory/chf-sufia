@@ -25,6 +25,7 @@ en:
       generic_file:
         genre_string: "Genre"
         identifier: "External ID"
+        date_of_work: "Date"
     metadata_help:
       generic_file:
         alternative: "Genre of the file."
