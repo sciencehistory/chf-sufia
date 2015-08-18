@@ -20,6 +20,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights_holder,
       :provenance,
       :related_url,
+      :admin_notes,
       ])
 
   # Add a new list for creating form elements on the edit pages
@@ -40,6 +41,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights_holder,
       :provenance,
       :related_url,
+      :admin_notes,
     ]
   end
 
