@@ -12,14 +12,14 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
-  property :extent, predicate: ::RDF::DC.extent do |index|
+  property :extent, predicate: ::RDF::URI.new("http://chemheritage.org/ns/extent") do |index|
     index.as :stored_searchable
   end
 
   property :language, predicate: ::RDF::DC11.language do |index|
     index.as :stored_searchable, :facetable
   end
-  property :medium, predicate: ::RDF::DC.medium do |index|
+  property :medium, predicate: ::RDF::URI.new("http://chemheritage.org/ns/medium") do |index|
     index.as :stored_searchable
   end
   property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialOrganization, multiple: false do |index|
