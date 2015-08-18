@@ -19,7 +19,6 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights,
       :rights_holder,
       :provenance,
-      :publisher, # move to maker
       :related_url,
       ])
 
@@ -40,7 +39,6 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights,
       :rights_holder,
       :provenance,
-      :publisher, # move to maker
       :related_url,
     ]
   end

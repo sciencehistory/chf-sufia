@@ -19,6 +19,7 @@ Sufia.config do |config|
     interviewer:  ::RDF::Vocab::MARCRelators.ivr,
     manufacturer: ::RDF::Vocab::MARCRelators.mfr,
     photographer: ::RDF::Vocab::MARCRelators.pht,
+    publisher:    ::RDF::DC11.publisher,
   }
 
   config.cc_licenses = {

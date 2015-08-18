@@ -39,9 +39,6 @@ class GenericFile < ActiveFedora::Base
   property :provenance, predicate: ::RDF::DC.provenance, multiple: false do |index|
     index.as :stored_searchable
   end
-  property :publisher, predicate: ::RDF::DC11.publisher do |index|
-    index.as :stored_searchable, :facetable
-  end
 
   property :resource_type, predicate: ::RDF::DC11.type do |index|
     index.as :stored_searchable, :facetable
