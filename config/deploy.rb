@@ -37,4 +37,13 @@ namespace :deploy do
     end
   end
 
+  # Restart resque-pool.
+  desc "Restart resque-pool"
+  task :resquepoolrestart do
+    on roles(:web) do
+      execute :sudo, "/usr/sbin/service resque-pool restart"
+    end
+  end
+  before :restart, :resquepoolrestart
+
 end
