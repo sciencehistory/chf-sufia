@@ -37,8 +37,8 @@ Sufia.config do |config|
   config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
 
   config.resource_types = {
+    "Image" => "Image",
     "Moving Image" => "Moving Image",
-    "Still Image" => "Still Image",
     "Physical Object" => "Physical Object",
     "Sound" => "Sound",
     "Text" => "Text"
@@ -46,7 +46,7 @@ Sufia.config do |config|
 
   config.resource_types_to_schema = {
     "Moving Image"    => "http://purl.org/dc/dcmitype/MovingImage",
-    "Still Image"     => "http://purl.org/dc/dcmitype/StillImage",
+    "Image"     => "http://purl.org/dc/dcmitype/StillImage",
     "Physical Object" => "http://purl.org/dc/dcmitype/PhysicalObject",
     "Sound"           => "http://purl.org/dc/dcmitype/Sound",
     "Text"            => "http://purl.org/dc/dcmitype/Text"

@@ -23,7 +23,7 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       expect(genre_div.find('label', text: 'Genre')['class']).not_to include('required')
       # resource types
       form_field = find('#generic_file_resource_type')
-      expect(form_field).to have_content 'Still Image'
+      expect(form_field).to have_content 'Image'
       expect(form_field).not_to have_content 'Article'
       # creator / contributor fields
       # identifier is required
