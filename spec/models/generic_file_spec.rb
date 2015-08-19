@@ -14,6 +14,7 @@ RSpec.describe GenericFile do
     admin_notes: 'http://chemheritage.org/ns/adminNotes',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',
+    file_creator: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasCreator',
     interviewee: 'http://id.loc.gov/vocabulary/relators/ive',
     interviewer: 'http://id.loc.gov/vocabulary/relators/ivr',
     manufacturer: 'http://id.loc.gov/vocabulary/relators/mfr',

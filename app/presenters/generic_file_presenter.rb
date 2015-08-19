@@ -20,6 +20,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights_holder,
       :provenance,
       :related_url,
+      :file_creator,
       :admin_notes,
       ])
 
@@ -41,6 +42,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights_holder,
       :provenance,
       :related_url,
+      :file_creator,
       :admin_notes,
     ]
   end

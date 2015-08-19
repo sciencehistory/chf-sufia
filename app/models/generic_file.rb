@@ -5,6 +5,10 @@ class GenericFile < ActiveFedora::Base
     index.as :stored
   end
 
+  property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
+    index.as :stored
+  end
+
   property :genre_string, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasGenre") do |index|
     index.as :stored_searchable, :facetable
   end
