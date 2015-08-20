@@ -29,3 +29,7 @@ en:
     metadata_help:
       generic_file:
         alternative: "Genre of the file."
+  sufia:
+    product_name:       "CHF Digital Collections (Alpha)"
+    institution_name:   "CHF"
+    institution_name_full: "The Chemical Heritage Foundation"
