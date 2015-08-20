@@ -1,3 +1,9 @@
+// front page overrides
+#home_header  {
+  background-image: image-url('molecules_that_matter.jpg') !important;
+  background-position: 50% 50% !important;
+}
+
 // overrides for maker field
 .form-group {
   .double-input {
