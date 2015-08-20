@@ -180,7 +180,6 @@ RSpec.describe GenericFilesController do
       end
     end  # context dates
     context 'parsed fields' do
-
       it 'turns box, etc into coded string' do
         patch :update, id: file, generic_file: {
           box: '2',
@@ -190,9 +189,16 @@ RSpec.describe GenericFilesController do
         file.reload
         expect(file.physical_container).to eq 'b2|f3'
       end
+
+      it 'turns external ids into coded strings' do
+        patch :update, id: file, generic_file: {
+          object_external_id: ['2008.043.002']
+        }
+
+        file.reload
+        expect(file.identifier).to eq ['object-2008.043.002']
+      end
     end # context parsed fields
   end # update
 
 end
-
-

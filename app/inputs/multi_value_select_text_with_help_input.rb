@@ -83,7 +83,7 @@ class MultiValueSelectTextWithHelpInput < MultiValueWithHelpInput #< MultiValueI
 
     def build_text_field(pair)
       key, value = pair
-      key = key.empty? ? attribute_name : key
+      key = key.present? ? key : attribute_name
       options = input_html_options.dup
       options[:name] = "#{object_name}[#{key.to_s}][]"
       options[:value] = value

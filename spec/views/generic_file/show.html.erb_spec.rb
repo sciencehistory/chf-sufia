@@ -12,6 +12,7 @@ RSpec.describe 'generic_files/show.html.erb', :type => :view do
       depositor: user.user_key,
       title: ['The Thinks You Can Think'],
       physical_container: 'b2|f3|v4|p5',
+      identifier: ['object-2004', 'bib-b123456789', 'object-2004-09.003']
     )
   end
 
@@ -38,6 +39,15 @@ RSpec.describe 'generic_files/show.html.erb', :type => :view do
     end
     it 'shows the parsed info' do
       expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5/
+    end
+  end
+
+  describe 'external ID data' do
+    before do
+      render template: 'generic_files/show.html.erb', layout: 'layouts/sufia-one-column'
+    end
+    it 'shows the parsed info' do
+      expect(rendered).to match /Object ID: 2004<br\/>\s+Bibliographic No.: b123456789<br\/>\s+Object ID: 2004-09.003/
     end
   end
 

@@ -5,12 +5,16 @@ class GenericFileEditForm < GenericFilePresenter
   include ApplicationHelper
 
   attr_accessor :maker, :box, :folder, :volume, :part
+  CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
+    attr_accessor "#{k}_external_id".to_s
+  end
 
   self.required_fields = [:title, :identifier]
 
   def self.model_attributes(params)
     clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
     clean_params["physical_container"] = encode_physical_container params
+    clean_params["identifier"] = encode_external_id params
     clean_params
   end
 
@@ -45,6 +49,20 @@ class GenericFileEditForm < GenericFilePresenter
         result << "#{k[0]}#{params[k]}" if params[k].present?
       end
       result.join('|')
+    end
+
+    # It's a multi-value field
+    def self.encode_external_id(params)
+      result = []
+      CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
+        param = "#{k}_external_id"
+        if params[param].present?
+          params[param].each do |id_value|
+            result << "#{k}-#{id_value}" unless id_value.empty?
+          end
+        end
+      end
+      result
     end
 
 end

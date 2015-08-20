@@ -13,6 +13,8 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
   context "the single file edit form" do
 
     scenario "has our locally-added fields" do
+      @file.identifier = ['object-2008.043.002']
+      @file.save!
       visit "/files/#{@file.id}/edit"
       # fields removed from work
       expect(page).not_to have_text('Keyword')
@@ -29,6 +31,8 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       # identifier is required
       id_div = find('div.generic_file_identifier')
       expect(id_div.find('label', text: 'External ID')['class']).to include('required')
+      expect(id_div.first('li')).to have_select('generic_file_identifier', selected: 'Object ID')
+      expect(id_div.first('li')).to have_field('generic_file_object_external_id', with: '2008.043.002')
       pc_div = find('div.generic_file_physical_container')
       expect(pc_div).to have_text 'Box'
       expect(pc_div).to have_text 'Part'
@@ -44,6 +48,16 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       click_button 'Update Generic file'
       expect(page.find('div.generic_file_maker').first('input').value).to eq('Zeldog')
     end
+
+#    # this test passing erroneously
+#    scenario "saves a new external id field", js: true  do
+#      visit "/files/#{@file.id}/edit"
+#      select 'Bibliographic No.', from: 'generic_file_identifier'
+#      fill_in 'generic_file_bib_external_id', with: 'b123456789'
+#      click_button 'Update Generic file'
+#      id_div = find('div.generic_file_identifier')
+#      expect(id_div.first('li')).to have_field('generic_file_bib_external_id', with: 'b123456789')
+#    end
 
     # This test giving false negatives. basically any test which involves
     # submitting the form and then viewing the results isn't working right.
