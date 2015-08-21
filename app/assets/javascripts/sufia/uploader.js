@@ -59,6 +59,8 @@ var filestoupload =0;
         $($('#fileupload .files .cancel button')[data.context[0].rowIndex]).click(); 
       }
       var total_sz = parseInt($('#total_upload_size').val()) + data.files[0].size;
+      // CHF edit 2015-08: submitted as https://github.com/projecthydra/sufia/pull/1288
+      $('#total_upload_size').val( total_sz );
       // is file size too big
       if (data.files[0].size > max_file_size) {
         $($('#fileupload .files .cancel button')[data.context[0].rowIndex]).click(); 
@@ -69,6 +71,8 @@ var filestoupload =0;
       else if( total_sz > max_total_file_size) {
         if (first_file_after_max == '') first_file_after_max = data.files[0].name;
         $($('#fileupload .files .cancel button')[data.context[0].rowIndex]).click(); 
+        // CHF edit 2015-08: a hack to make the error message true
+        $('#total_upload_size').val( max_total_file_size );
         $("#errmsg").html("All files selected from " + first_file_after_max + " and after will not be uploaded because your total upload is too big. You may not upload more than " + max_total_file_size_str + " in one upload.");
         $("#errmsg").fadeIn('slow');
       }
@@ -77,9 +81,6 @@ var filestoupload =0;
         $($('#fileupload .files .cancel button')[data.context[0].rowIndex]).click(); 
         $("#errmsg").html("All files selected from " + first_file_after_max + " and after will not be uploaded because your total number of files is too big. You may not upload more than " + max_file_count + " files in one upload.");
         $("#errmsg").fadeIn('slow');
-      }
-      else {
-        $('#total_upload_size').val( parseInt($('#total_upload_size').val()) + data.files[0].size );
       }
     }
 
