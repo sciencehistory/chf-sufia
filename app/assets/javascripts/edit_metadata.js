@@ -49,26 +49,26 @@ Blacklight.onLoad(function() {
   };
   $("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
 
-  var autocomplete_vocab = new Object();
-
-  autocomplete_vocab.url_var = ['subject', 'language'];   // the url variable to pass to determine the vocab to attach to
-  autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
-
-  // loop over the autocomplete fields and attach the
-  // events for autocomplete and create other array values for autocomplete
-  for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
-    autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
-    // autocompletes
-    $("input." + autocomplete_vocab.field_name[i])
-        // don't navigate away from the field on tab when selecting an item
-        .bind( "keydown", function( event ) {
-            if ( event.keyCode === $.ui.keyCode.TAB &&
-                    $( this ).data( "autocomplete" ).menu.active ) {
-                event.preventDefault();
-            }
-        })
-        .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
-  }
+//  var autocomplete_vocab = new Object();
+//
+//  autocomplete_vocab.url_var = ['language'];   // the url variable to pass to determine the vocab to attach to
+//  autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
+//
+//  // loop over the autocomplete fields and attach the
+//  // events for autocomplete and create other array values for autocomplete
+//  for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
+//    autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
+//    // autocompletes
+//    $("input." + autocomplete_vocab.field_name[i])
+//        // don't navigate away from the field on tab when selecting an item
+//        .bind( "keydown", function( event ) {
+//            if ( event.keyCode === $.ui.keyCode.TAB &&
+//                    $( this ).data( "autocomplete" ).menu.active ) {
+//                event.preventDefault();
+//            }
+//        })
+//        .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
+//  }
 
 
   // attach an auto complete based on the field
@@ -78,10 +78,11 @@ Blacklight.onLoad(function() {
     // duplicated when you press the plus button. This is not valid html.
     if ($cloneElem.attr("id") == 'generic_file_based_near') {
       $cloneElem.autocomplete(cities_autocomplete_opts);
-    } else if ( (index = $.inArray($cloneElem.attr("id"), autocomplete_vocab.field_name)) != -1 ) {
-      $cloneElem.autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
+//    } else if ( (index = $.inArray($cloneElem.attr("id"), autocomplete_vocab.field_name)) != -1 ) {
+//      $cloneElem.autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
     }
   }
+
   // chf edit: configure text field 'name' and 'id' based on selected option from dropdown.
   function link_field_pair($select) {
     var $text = $select.next();
