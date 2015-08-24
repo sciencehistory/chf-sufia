@@ -47,7 +47,9 @@ Blacklight.onLoad(function() {
     },
     minLength: 2
   };
-  $("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
+  $("input.generic_file_place_of_manufacture").autocomplete(fast_autocomplete_opts('geographic'));
+  $("input.generic_file_place_of_interview").autocomplete(fast_autocomplete_opts('geographic'));
+  $("input.generic_file_place_of_publication").autocomplete(fast_autocomplete_opts('geographic'));
 
 //  var autocomplete_vocab = new Object();
 //
@@ -71,11 +73,11 @@ Blacklight.onLoad(function() {
 //  }
 
   // CHF edit: add FAST autocomplete to subject field
-  function subject_autocomplete_opts() {
+  function fast_autocomplete_opts(index) {
     var autocomplete_opts = {
       minLength: 2,
       source: function( request, response ) {
-        $.getJSON( "/qa/search/assign_fast/all", {
+        $.getJSON( "/qa/search/assign_fast/" + index, {
           q: request.term
         }, response );
       },
@@ -99,18 +101,18 @@ Blacklight.onLoad(function() {
             event.preventDefault();
         }
     })
-    .autocomplete( subject_autocomplete_opts());
+    .autocomplete( fast_autocomplete_opts('all'));
 
   // attach an auto complete based on the field
   function setup_autocomplete(e, cloneElem) {
     var $cloneElem = $(cloneElem);
     // FIXME this code (comparing the id) depends on a bug. Each input has an id and the id is
     // duplicated when you press the plus button. This is not valid html.
-    if ($cloneElem.attr("id") == 'generic_file_based_near') {
-      $cloneElem.autocomplete(cities_autocomplete_opts);
+    if (($cloneElem.attr("id") == 'generic_file_place_of_manufacture') || ($cloneElem.attr("id") == 'generic_file_place_of_interview') || ($cloneElem.attr("id") == 'generic_file_place_of_publication')) {
+      $cloneElem.autocomplete(fast_autocomplete_opts('geographic'));
     } else if ($cloneElem.attr("id") == 'generic_file_subject') {
       // CHF edit - add FAST for subject
-      $cloneElem.autocomplete(subject_autocomplete_opts());
+      $cloneElem.autocomplete(fast_autocomplete_opts('all'));
 //    } else if ( (index = $.inArray($cloneElem.attr("id"), autocomplete_vocab.field_name)) != -1 ) {
 //      $cloneElem.autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
     }
