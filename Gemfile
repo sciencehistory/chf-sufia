@@ -9,6 +9,7 @@ gem 'rsolr', '~> 1.0.6'
 gem 'hydra-role-management'
 gem "rdf-vocab"
 gem 'hydra-editor', github: 'projecthydra/hydra-editor', :ref => '7c8983'
+gem 'qa', github: 'projecthydra-labs/questioning_authority'
 
 # local upgrades!
 gem 'active-fedora', '~> 9.1.0'

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Qa::Engine => '/qa'
+
   
   blacklight_for :catalog
   devise_for :users
