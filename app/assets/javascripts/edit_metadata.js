@@ -1,76 +1,5 @@
 Blacklight.onLoad(function() {
-  // TODO: all this autocomplete code should be refactored into its own 
-  //   file as a plugin.
-  function get_autocomplete_opts(field) {
-    var autocomplete_opts = {
-      minLength: 2,
-      source: function( request, response ) {
-        $.getJSON( "/authorities/generic_files/" + field, {
-          q: request.term
-        }, response );
-      },
-      focus: function() {
-        // prevent value inserted on focus
-        return false;
-      },
-      complete: function(event) {
-        $('.ui-autocomplete-loading').removeClass("ui-autocomplete-loading");
-      }
-    };
-    return autocomplete_opts;
-  }
-
-    // there are two levels of vocabulary auto complete.
-    // currently we have this externally hosted vocabulary
-    // for geonames.  I'm not going to make these any easier
-    // to implement for an external url (it's all hard coded)
-    // because I'm guessing we'll get away from the hard coding
-  var cities_autocomplete_opts = {
-    source: function( request, response ) {
-      $.ajax( {
-        url: "http://ws.geonames.org/searchJSON",
-        dataType: "jsonp",
-        data: {
-          featureClass: "P",
-          style: "full",
-          maxRows: 12,
-          name_startsWith: request.term
-        },
-        success: function( data ) {        response( $.map( data.geonames, function( item ) {
-            return {
-              label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-              value: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName
-            };
-          }));
-        },
-      });
-    },
-    minLength: 2
-  };
-  $("input.generic_file_place_of_manufacture").autocomplete(fast_autocomplete_opts('geographic'));
-  $("input.generic_file_place_of_interview").autocomplete(fast_autocomplete_opts('geographic'));
-  $("input.generic_file_place_of_publication").autocomplete(fast_autocomplete_opts('geographic'));
-
-//  var autocomplete_vocab = new Object();
-//
-//  autocomplete_vocab.url_var = ['language'];   // the url variable to pass to determine the vocab to attach to
-//  autocomplete_vocab.field_name = new Array(); // the form name to attach the event for autocomplete
-//
-//  // loop over the autocomplete fields and attach the
-//  // events for autocomplete and create other array values for autocomplete
-//  for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
-//    autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
-//    // autocompletes
-//    $("input." + autocomplete_vocab.field_name[i])
-//        // don't navigate away from the field on tab when selecting an item
-//        .bind( "keydown", function( event ) {
-//            if ( event.keyCode === $.ui.keyCode.TAB &&
-//                    $( this ).data( "autocomplete" ).menu.active ) {
-//                event.preventDefault();
-//            }
-//        })
-//        .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
-//  }
+  // CHF edit: basically this entire file has now been replaced.
 
   // CHF edit: add FAST autocomplete to subject field
   function fast_autocomplete_opts(index) {
@@ -103,6 +32,10 @@ Blacklight.onLoad(function() {
     })
     .autocomplete( fast_autocomplete_opts('all'));
 
+  $("input.generic_file_place_of_manufacture").autocomplete(fast_autocomplete_opts('geographic'));
+  $("input.generic_file_place_of_interview").autocomplete(fast_autocomplete_opts('geographic'));
+  $("input.generic_file_place_of_publication").autocomplete(fast_autocomplete_opts('geographic'));
+
   // attach an auto complete based on the field
   function setup_autocomplete(e, cloneElem) {
     var $cloneElem = $(cloneElem);
@@ -113,8 +46,6 @@ Blacklight.onLoad(function() {
     } else if ($cloneElem.attr("id") == 'generic_file_subject') {
       // CHF edit - add FAST for subject
       $cloneElem.autocomplete(fast_autocomplete_opts('all'));
-//    } else if ( (index = $.inArray($cloneElem.attr("id"), autocomplete_vocab.field_name)) != -1 ) {
-//      $cloneElem.autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
     }
   }
 
