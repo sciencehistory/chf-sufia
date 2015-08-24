@@ -70,6 +70,36 @@ Blacklight.onLoad(function() {
 //        .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
 //  }
 
+  // CHF edit: add FAST autocomplete to subject field
+  function subject_autocomplete_opts() {
+    var autocomplete_opts = {
+      minLength: 2,
+      source: function( request, response ) {
+        $.getJSON( "/qa/search/assign_fast/all", {
+          q: request.term
+        }, response );
+      },
+      focus: function() {
+        // prevent value inserted on focus
+        return false;
+      },
+      complete: function(event) {
+        $('.ui-autocomplete-loading').removeClass("ui-autocomplete-loading");
+      }
+    };
+    return autocomplete_opts;
+  }
+
+  // CHF edit: hard-code subject to use new fast qa endpoint
+  $("#generic_file_subject")
+    // don't navigate away from the field on tab when selecting an item
+    .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+                $( this ).data( "autocomplete" ).menu.active ) {
+            event.preventDefault();
+        }
+    })
+    .autocomplete( subject_autocomplete_opts());
 
   // attach an auto complete based on the field
   function setup_autocomplete(e, cloneElem) {
@@ -78,6 +108,9 @@ Blacklight.onLoad(function() {
     // duplicated when you press the plus button. This is not valid html.
     if ($cloneElem.attr("id") == 'generic_file_based_near') {
       $cloneElem.autocomplete(cities_autocomplete_opts);
+    } else if ($cloneElem.attr("id") == 'generic_file_subject') {
+      // CHF edit - add FAST for subject
+      $cloneElem.autocomplete(subject_autocomplete_opts());
 //    } else if ( (index = $.inArray($cloneElem.attr("id"), autocomplete_vocab.field_name)) != -1 ) {
 //      $cloneElem.autocomplete(get_autocomplete_opts(autocomplete_vocab.url_var[index]));
     }
