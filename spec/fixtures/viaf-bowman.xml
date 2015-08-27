@@ -1,0 +1,1424 @@
+<?xml version="1.0"  encoding="UTF-8"?> 
+<searchRetrieveResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/zing/srw/ http://www.loc.gov/standards/sru/sru1-1archive/xml-files/srw-types.xsd" xmlns="http://www.loc.gov/zing/srw/"><version xsi:type="xsd:string">1.1</version><numberOfRecords xsi:type="xsd:nonNegativeInteger">43</numberOfRecords><resultSetIdleTime xsi:type="xsd:positiveInteger">1</resultSetIdleTime><records xsi:type="ns1:recordsType" xmlns:ns1="http://www.loc.gov/zing/srw/"><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">10018740</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob, 1960-....</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>BNE</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert M. J. (Robert Middlename James)</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>LAC</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert Maxwell James</v:text>
+         <v:sources>
+            <v:s>NDL</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob (music writer)</v:text>
+         <v:sources>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob 1957-....</v:text>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Rob Bowman</v:text>
+         <v:sources>
+            <v:s>WKP</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>The amazing Maleeni, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Apocrypha</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The Band a musical history.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Beck's Futures 2005 : Lali Chetwynd, Luke Fowler, Ryan Gander, Christina Mackie, Daria Martin, Donald Urquhart</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The best of 8th Day</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The best of Glass House</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The best of Rufus Thomas the singles, 1968-1975.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The best of the Fatback band 21 karat</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The blues the best of 1920-1996.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>California girl Down to earth</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Can't get away from this dog</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Castle</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Chimera, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>The complete Stax/Volt soul singles, 1968-1971 volume 2.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Damifiknow Memphis experience</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Did you heard me? Crown prince of dance</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Elektra</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Fight club, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>First person shooter, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Four thousand volts of Stax and Satellite</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Ghetto misfortune's wealth</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>The Goldberg variation, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Greatest hits</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Hidden gems</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Hollywood A.D., anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Hungry, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Incubi e deliri</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>It's not just sentimental</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The last soul company Malaco : a thirty-year retrospective.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>A little something extra</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Live in Europe.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Live Meadowbrook, Rochester, Michigan : 12th September 1971</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>MacGyver la serie completa</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Movin' on up the music and message of Curtis Mayfield &amp; The Impressions</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Open city : street photographs since 1950</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Pesadillas y alucinaciones de las historias de Stephen King = Nightmares &amp; dreamscapes : from the stories of Stephen King.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Piper Maru</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Play the hip hits</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Le r&#xE8;gne du feu</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Reign of fire</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Rocking out</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Rolling Stones</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Sein und Zeit, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Signs &amp; wonders, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>The sixth extinction, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Soulsville, U.S.A., c1997.  Rob Bowman.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>NTA</v:s>
+            <v:s>LAC</v:s>
+            <v:s>BNF</v:s>
+            <v:s>NDL</v:s>
+         </v:sources>
+         <v:title>Soulsville U.S.A.the story of Stax records</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>Star Trek, the next generation</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Stax 50th anniversary celebration</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Stax Records.  Full name.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Stax revue live at the 5/4 ballroom</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>Stay out of the kitchen</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Two fathers</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LAC</v:s>
+         </v:sources>
+         <v:title>A whole nother radio active thang</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>X-cops, anglais</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>BNE</v:s>
+         </v:sources>
+         <v:title>The X-files</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">1</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">100917452</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob, 1960-</v:text>
+         <v:sources>
+            <v:s>NLP</v:s>
+            <v:s>NKC</v:s>
+            <v:s>DNB</v:s>
+            <v:s>ISNI</v:s>
+            <v:s>NUKAT</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob</v:text>
+         <v:sources>
+            <v:s>RERO</v:s>
+            <v:s>DBC</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Rob Bowman American film director and producer</v:text>
+         <v:sources>
+            <v:s>WKP</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Rob, 1957-....</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Aux frontie&#x300;res du re&#x301;el</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>avantposte</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Biogeneza</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>RERO</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Castle.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>confins de la galaxie</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DBC</v:s>
+         </v:sources>
+         <v:title>Daredevil</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DBC</v:s>
+         </v:sources>
+         <v:title>Dragej&#xE6;gerne</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>NLP</v:s>
+            <v:s>DBC</v:s>
+            <v:s>BNF</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Elektra</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>Elektra Twentieth Century Fox/Regency Enterprises zeigen ; ein Rob-Bowman-Film</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Kolonia</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>London in six easy steps [this publication accompanies the Exhibition London in Six Easy Steps, 16 August - 25 September 2005, Institute of Contemporary Arts, London ; six curators, six weeks, six perspectives]</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Meteoryt tunguski</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Movin' on up the music and message of Curtis Mayfield &amp; the Impressions</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Piper Maru, 1998:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>re&#x300;gne du feu</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Reign of fire</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Soulsville, USA : the story of Stax records / Rob Bowman, 1997</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Star Trek the Next ge&#x301;ne&#x301;ration [Images anime&#x301;es]</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Starship troopers. BFG0018422 SC2A (EDV 202)</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Stax 50th anniversary celebration</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Syn</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Tempus fugit</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Utajnione akta</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>W&#x142;adcy ognia</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>X files la sixie&#x300;me extinction</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+            <v:s>RERO</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>X-Files, le film</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+            <v:s>DBC</v:s>
+            <v:s>LC</v:s>
+            <v:s>NUKAT</v:s>
+            <v:s>RERO</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>X-Files the album</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+         </v:sources>
+         <v:title>Z archiwum X</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLP</v:s>
+         </v:sources>
+         <v:title>Z archwium X: Pokonac&#x301; przysz&#x142;os&#x301;c&#x301;</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">2</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">114746668</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert, 1925-</v:text>
+         <v:sources>
+            <v:s>BNF</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert</v:text>
+         <v:sources>
+            <v:s>NSK</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert Irvin</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert, 1925-2006</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert I. 1925-2006</v:text>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>50 interpretazioni liriche indimenticabili</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>barbiere di Siviglia the acclaimed Royal opera house performance 21 May 1960</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NSK</v:s>
+         </v:sources>
+         <v:title>La boheme</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Fiddler on the roof</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>The Gala&#x301;pagos : proceedings of the symposia of the Gala&#x301;pagos International Scientific Project</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NSK</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Lucia di Lammermoor</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Moby Dick.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Morphological differentiation and adaptation in the Gala&#x301;pagos finches</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>[Religious music from Campus Christians]</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Report on a biological reconnaissance of the Galapagos islands during 1957</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Salome</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Salome&#x301; [Enregistrement sonore] : drame musical en 1 acte</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>sonnambula</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NSK</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>Tosca</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">3</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">84768651</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bruce, Robert B. 1963-....</v:text>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>BNF</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bruce, Robert Bowman, 1963-....</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>NDL</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bruce, Robert B. (Robert Bowman), 1963-</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>NKC</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Abraham Lincoln's changing views on slavery, c2001:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NKC</v:s>
+         </v:sources>
+         <v:title>Bojov&#xE9; techniky obdob&#xED; napoleonsk&#xFD;ch v&#xE1;lek 1792-1815 : vybaven&#xED;, bojeschopnost a taktika</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Fighting techniques of the imperial age 1776-1914 : equipment, combat skills and tactics</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Fighting techniques of the Napoleonic world, 1792-1815</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>DNB</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>LC</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+         <v:title>A fraternity of arms : America and France in the Great War</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>NKC</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Pe&#x301;tain : Verdun to Vichy</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Te&#x301;cnicas be&#x301;licas de la e&#x301;poca colonial 1776-1914, equipamiento, te&#x301;cnicas y ta&#x301;cticas de combate</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+         </v:sources>
+         <v:title>Vojny i sra&#x17E;eni&#xE2; &#xE8;pohi Napoleona : 1792-1815</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">4</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">11017703</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert M.</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert M. 1957-</v:text>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Jehovah's Witnesses, Jesus Christ, and the Gospel of John, c1988:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Orthodoxy &amp; heresy : a biblical guide to doctrinal discernment</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Putting Jesus in his place : the case for the deity of Christ</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Sense and nonsense about angels and demons</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Twenty compelling evidences that God exists</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>An unchanging faith in a changing world : understanding and responding to critical issues that Christians face today</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Understanding Jehovah's Witnesses : why they read the Bible the way they do</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Why you should believe in the Trinity : an answer to Jehovah's Witnesses</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">5</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">115947750</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Hudson, Robert B., 1944-....</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>DNB</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>ISNI</v:s>
+            <v:s>NUKAT</v:s>
+            <v:s>BNF</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The Aging in politics, c1981 (a.e.)</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>BNF</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Boomer bust ? economic and political issues of the graying society</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>boomers and their future</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The future of age-based public policy</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>SUDOC</v:s>
+            <v:s>BNF</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>new politics of old age policy</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Perspectives on the boomers</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">6</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">72728559</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert P.</v:text>
+         <v:sources>
+            <v:s>DNB</v:s>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Children helping children--becoming friendly helpers</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>How Grinner became a winner</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The magic counselor, c2004:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Stretch the long-necked rabbit</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Two hundred one mind bogglers that can be used to teach kids critical lessons about learning &amp; life</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">7</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">11457908</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert Edward 1928-</v:text>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert E.</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert E. 1928-</v:text>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert E. (Robert Edward), 1928-</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>NUKAT</v:s>
+            <v:s>NTA</v:s>
+            <v:s>LC</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>Biochemistry of brain and behavior</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">8</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">53048929</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert I.</v:text>
+         <v:sources>
+            <v:s>NLI</v:s>
+            <v:s>NLA</v:s>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The Gala&#x301;pagos; proceedings of the symposia of the Gala&#x301;pagos international scientific project</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Morphological differentiation and adaptation in the Gala&#x301;pagos finches.</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>NLI</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Patterns of evolution in Galapagos organisms, 1983:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Report of a biological reconnaissance of the Gala&#x301;pagos Islands during 1957</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">9</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">88078454</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert</v:text>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert, 1925-....</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Il barbiere di Siviglia</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>Fiddler on the roof</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>holy sonnets of John Donne</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>Maria Callas live at Covent Garden</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>Salome</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+         </v:sources>
+         <v:title>La  sonnambula</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>DNB</v:s>
+         </v:sources>
+         <v:title>Tosca</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">10</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">48231087</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert, 1934-</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Robert M. Bowman US Air Force officer</v:text>
+         <v:sources>
+            <v:s>WKP</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Star wars, 1986:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Star Wars : a defense insider's case against the Strategic Defense Initiative</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Terrorstorm, 2006 :</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">11</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">28595636</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert C., 1934-</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>1 &amp; 2 Kings : kings and their prophets</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>First and Second Kings</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>A light for my path, c1988:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Sermon on the mount, 1988:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">12</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">23718798</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert Goldthwait</v:text>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert G. (Robert Goldthwait), 1912-</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>North America, 1985</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>SUDOC</v:s>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Prospects for settlement in North-Eastern New Guinea</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">13</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">94311450</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert, 1951-</v:text>
+         <v:sources>
+            <v:s>NLA</v:s>
+            <v:s>LC</v:s>
+            <v:s>N6I</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>N6I</v:s>
+         </v:sources>
+         <v:title>An account of the mutiny on H.M.S. Bounty, 1981:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">14</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">70402791</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert J.</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The house of blue lights, 1987:</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The screaming Buddha</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">15</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">77771074</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, John Robert, 1947-</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The organization of spontaneous adult social play, 1983:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">16</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">183385017</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Deering, Robert Bowman, 1920-2010</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+            <v:s>ISNI</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>Planning the garden, 1953?:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">17</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">76218871</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>The invisible might</v:title>
+      </v:work>
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>A lady of Russia, 1915:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">18</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">287987868</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert S.</v:text>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>NTA</v:s>
+         </v:sources>
+         <v:title>Effects of agriculture on groundwater</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">19</recordPosition></record><record xsi:type="ns1:recordType"><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><recordPacking xsi:type="xsd:string">xml</recordPacking><recordData xsi:type="ns1:stringOrXmlFragment"><v:VIAFCluster xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:srw="http://www.loc.gov/zing/srw/" xmlns:v="http://viaf.org/viaf/terms#">
+   <v:viafID xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">269388999</v:viafID>
+   <v:nameType xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">Personal</v:nameType>
+   <v:mainHeadings>
+      <v:data xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+         <v:text>Bowman, Robert C.</v:text>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+      </v:data>
+   </v:mainHeadings>
+   <v:titles xmlns="http://viaf.org/viaf/terms#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:void="http://rdfs.org/ns/void#">
+      <v:work>
+         <v:sources>
+            <v:s>LC</v:s>
+         </v:sources>
+         <v:title>NATO Advanced Study Institute on Hydrogen in Disordered and Amorphous Solids (1985 : Rhodes, Greece). Hydrogen in disordered and amorphous solids, c1986:</v:title>
+      </v:work>
+   </v:titles>
+</v:VIAFCluster></recordData><recordPosition xsi:type="xsd:positiveInteger">20</recordPosition></record></records><nextRecordPosition xsi:type="xsd:positiveInteger">21</nextRecordPosition><echoedSearchRetrieveRequest xsi:type="ns2:echoedSearchRetrieveRequestType" xmlns:ns2="http://www.loc.gov/zing/srw/"><version xsi:type="xsd:string">1.1</version><query xsi:type="xsd:string">local.personalNames = &quot;bowman, robert&quot;</query><xQuery><ns3:searchClause xsi:type="ns3:searchClauseType" xmlns:ns3="http://www.loc.gov/zing/cql/xcql/"><ns3:index xsi:type="xsd:string">local.personalNames</ns3:index><ns3:relation xsi:type="ns3:relationType"><ns3:value xsi:type="xsd:string">=</ns3:value></ns3:relation><ns3:term xsi:type="xsd:string">bowman, robert</ns3:term></ns3:searchClause></xQuery><startRecord xsi:type="xsd:positiveInteger">1</startRecord><maximumRecords xsi:type="xsd:nonNegativeInteger">20</maximumRecords><recordSchema xsi:type="xsd:string">http://viaf.org/BriefVIAFCluster</recordSchema><sortKeys xsi:type="xsd:string">holdingscount</sortKeys></echoedSearchRetrieveRequest><extraResponseData xsi:type="ns4:extraDataType" xmlns:ns4="http://www.loc.gov/zing/srw/"><ns5:extraData xmlns="http://oclc.org/srw/extraData" xmlns:ns5="http://oclc.org/srw/extraData"><ns5:databaseTitle>VIAF: The Virtual International Authority File</ns5:databaseTitle></ns5:extraData></extraResponseData></searchRetrieveResponse>

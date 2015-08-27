@@ -80,4 +80,5 @@ group :test do
   gem 'poltergeist', '~> 1.5'
   gem 'jasmine', '~> 2.3'
   gem 'rspec-activemodel-mocks'
+  gem 'webmock'
 end

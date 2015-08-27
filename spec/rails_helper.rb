@@ -4,6 +4,7 @@ require 'spec_helper'
 require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'webmock/rspec'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'database_cleaner'
@@ -43,4 +44,11 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  # Allow local http connections
+  WebMock.disable_net_connect!(:allow_localhost => true)
+end
+
+def webmock_fixture fixture
+    File.new File.expand_path(File.join("../fixtures", fixture),  __FILE__)
 end
