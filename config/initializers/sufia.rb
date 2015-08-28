@@ -35,6 +35,13 @@ Sufia.config do |config|
     'Voelkel, James',
   ]
 
+  config.divisions = [
+    'Center for Oral History',
+    'Museum',
+    'Othmer Library of Chemical History',
+    'Archives',
+  ]
+
   config.cc_licenses = {
     'Attribution 3.0 United States' => 'http://creativecommons.org/licenses/by/3.0/us/',
     'Attribution-ShareAlike 3.0 United States' => 'http://creativecommons.org/licenses/by-sa/3.0/us/',

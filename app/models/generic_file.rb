@@ -5,6 +5,10 @@ class GenericFile < ActiveFedora::Base
     index.as :displayable
   end
 
+  property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/division"), multiple: false do |index|
+    index.as :displayable
+  end
+
   property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
     index.as :displayable
   end

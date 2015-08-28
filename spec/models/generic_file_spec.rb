@@ -12,6 +12,7 @@ RSpec.describe GenericFile do
     # new fields
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
     admin_notes: 'http://chemheritage.org/ns/adminNotes',
+    division: 'http://chemheritage.org/ns/division',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',
     file_creator: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasCreator',
