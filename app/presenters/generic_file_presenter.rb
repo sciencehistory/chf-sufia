@@ -16,10 +16,10 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :subject,
       :series_arrangement,
       :physical_container,
+      :related_url,
       :rights,
       :rights_holder,
       :provenance,
-      :related_url,
       :file_creator,
       :admin_notes,
       ])
@@ -38,10 +38,10 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :subject,
       :series_arrangement,
       :physical_container,
+      :related_url,
       :rights,
       :rights_holder,
       :provenance,
-      :related_url,
       :file_creator,
       :admin_notes,
     ]
