@@ -23,11 +23,16 @@ Sufia.config do |config|
   }
 
   config.file_creators = [
-    'DiMeo',
-    'Kativa',
-    'Lu',
-    'Newhouse',
-    'Voelkel',
+    'Brown, Will',
+    'DiMeo, Michelle',
+    'George Blood Audio LP',
+    'Kativa, Hillary',
+    'Lockard, Douglas',
+    'Lu, Cathleen',
+    'Newhouse, Sarah',
+    'Penn Libraries',
+    'Tobias, Gregory',
+    'Voelkel, James',
   ]
 
   config.cc_licenses = {
