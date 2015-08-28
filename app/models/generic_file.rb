@@ -2,11 +2,11 @@ class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
 
   property :admin_notes, predicate: ::RDF::URI.new("http://chemheritage.org/ns/adminNotes") do |index|
-    index.as :stored
+    index.as :displayable
   end
 
   property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
-    index.as :stored
+    index.as :displayable
   end
 
   property :genre_string, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasGenre") do |index|
@@ -59,7 +59,7 @@ class GenericFile < ActiveFedora::Base
   end
 
   property :series_arrangement, predicate: ::RDF::Vocab::Bibframe.materialHierarchicalLevel do |index|
-    index.as :stored
+    index.as :displayable
   end
 
   property :subject, predicate: ::RDF::DC11.subject do |index|
