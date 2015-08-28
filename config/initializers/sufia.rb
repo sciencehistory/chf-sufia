@@ -22,6 +22,14 @@ Sufia.config do |config|
     publisher:    ::RDF::DC11.publisher,
   }
 
+  config.file_creators = [
+    'DiMeo',
+    'Kativa',
+    'Lu',
+    'Newhouse',
+    'Voelkel',
+  ]
+
   config.cc_licenses = {
     'Attribution 3.0 United States' => 'http://creativecommons.org/licenses/by/3.0/us/',
     'Attribution-ShareAlike 3.0 United States' => 'http://creativecommons.org/licenses/by-sa/3.0/us/',
