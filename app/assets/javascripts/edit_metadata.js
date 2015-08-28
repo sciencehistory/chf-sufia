@@ -1,12 +1,35 @@
+// why not set up a local namespace
+var chf = chf || {}
+chf.autocompletes = chf.autocompletes || {
+  generic_file_subject: 'assign_fast/all',
+  generic_file_place_of_manufacture: 'assign_fast/geographic',
+  generic_file_place_of_interview: 'assign_fast/geographic',
+  generic_file_place_of_publication: 'assign_fast/geographic',
+  generic_file_artist:          'local/pn_viaf',
+  generic_file_author:          'local/pn_viaf',
+  generic_file_creator_of_work: 'local/pn_viaf',
+  generic_file_contributor:     'local/pn_viaf',
+  generic_file_interviewee:     'local/pn_viaf',
+  generic_file_interviewer:     'local/pn_viaf',
+  generic_file_manufacturer:    'local/pn_viaf',
+  generic_file_photographer:    'local/pn_viaf',
+  generic_file_publisher:       'local/pn_viaf',
+  // currently we're not using the specific field in the class, which
+  // is how the autocomplete setup code accesses it.
+  // If we want different fields to access different indicex, we'll have
+  // to change the class as well as the id in link_field_pair.
+  generic_file_maker:       'local/pn_viaf',
+}
+
 Blacklight.onLoad(function() {
   // CHF edit: basically this entire file has now been replaced.
 
-  // CHF edit: add FAST autocomplete to subject field
-  function fast_autocomplete_opts(index) {
+  // CHF edit: use qa as source of autocomplete data
+  function qa_autocomplete_opts(auth_path) {
     var autocomplete_opts = {
       minLength: 2,
       source: function( request, response ) {
-        $.getJSON( "/qa/search/assign_fast/" + index, {
+        $.getJSON( "/qa/search/" + auth_path, {
           q: request.term
         }, response );
       },
@@ -21,31 +44,33 @@ Blacklight.onLoad(function() {
     return autocomplete_opts;
   }
 
-  // CHF edit: hard-code subject to use new fast qa endpoint
-  $("input.generic_file_subject")
-    // don't navigate away from the field on tab when selecting an item
-    .bind( "keydown", function( event ) {
-        if ( event.keyCode === $.ui.keyCode.TAB &&
-                $( this ).data( "autocomplete" ).menu.active ) {
-            event.preventDefault();
-        }
-    })
-    .autocomplete( fast_autocomplete_opts('all'));
+  // loop over the autocomplete fields and attach the
+  // events for autocomplete and create other array values for autocomplete
+  for (var prop in chf.autocompletes) {
+    set_autocomplete($("input." + prop), chf.autocompletes[prop]);
+  }
 
-  $("input.generic_file_place_of_manufacture").autocomplete(fast_autocomplete_opts('geographic'));
-  $("input.generic_file_place_of_interview").autocomplete(fast_autocomplete_opts('geographic'));
-  $("input.generic_file_place_of_publication").autocomplete(fast_autocomplete_opts('geographic'));
+  function set_autocomplete($elem, authority) {
+    $elem
+        // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+            if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).data( "autocomplete" ).menu.active ) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete( qa_autocomplete_opts( authority ));
+  }
 
   // attach an auto complete based on the field
   function setup_autocomplete(e, cloneElem) {
     var $cloneElem = $(cloneElem);
     // FIXME this code (comparing the id) depends on a bug. Each input has an id and the id is
     // duplicated when you press the plus button. This is not valid html.
-    if (($cloneElem.attr("id") == 'generic_file_place_of_manufacture') || ($cloneElem.attr("id") == 'generic_file_place_of_interview') || ($cloneElem.attr("id") == 'generic_file_place_of_publication')) {
-      $cloneElem.autocomplete(fast_autocomplete_opts('geographic'));
-    } else if ($cloneElem.attr("id") == 'generic_file_subject') {
-      // CHF edit - add FAST for subject
-      $cloneElem.autocomplete(fast_autocomplete_opts('all'));
+    for (var prop in chf.autocompletes) {
+      if ($cloneElem.hasClass(prop)) {
+        set_autocomplete($cloneElem, chf.autocompletes[prop]);
+      }
     }
   }
 
@@ -60,6 +85,7 @@ Blacklight.onLoad(function() {
     var suffix = matches[1];
     $text.attr('id', old_id.replace(suffix, attribute));
     $text.attr('name', old_name.replace(suffix, attribute));
+    setup_autocomplete(null, $text);
   }
   $('.double-input select').change(function() { link_field_pair($(this)) });
 
