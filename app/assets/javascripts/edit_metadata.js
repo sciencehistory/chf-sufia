@@ -22,7 +22,7 @@ Blacklight.onLoad(function() {
   }
 
   // CHF edit: hard-code subject to use new fast qa endpoint
-  $("#generic_file_subject")
+  $("input.generic_file_subject")
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
