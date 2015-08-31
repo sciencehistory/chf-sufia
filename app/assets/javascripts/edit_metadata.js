@@ -11,14 +11,9 @@ chf.autocompletes = chf.autocompletes || {
   generic_file_contributor:     'local/pn_viaf',
   generic_file_interviewee:     'local/pn_viaf',
   generic_file_interviewer:     'local/pn_viaf',
-  generic_file_manufacturer:    'local/pn_viaf',
+  generic_file_manufacturer:    'local/cn_viaf',
   generic_file_photographer:    'local/pn_viaf',
-  generic_file_publisher:       'local/pn_viaf',
-  // currently we're not using the specific field in the class, which
-  // is how the autocomplete setup code accesses it.
-  // If we want different fields to access different indicex, we'll have
-  // to change the class as well as the id in link_field_pair.
-  generic_file_maker:       'local/pn_viaf',
+  generic_file_publisher:       'local/cn_viaf',
 }
 
 Blacklight.onLoad(function() {
@@ -79,12 +74,16 @@ Blacklight.onLoad(function() {
     var $text = $select.next();
     var attribute = $select.val();
     var old_name = $select.attr("name");
+    // since we're taking the id from the <select> field it always has the name of the form element
+    //   (this means it will be the same as the 'old' class)
     var old_id = $select.attr("id");
     var suffix_regex = /_([a-zA-Z]+)$/;
     var matches = suffix_regex.exec(old_id);
     var suffix = matches[1];
-    $text.attr('id', old_id.replace(suffix, attribute));
+    var new_id = old_id.replace(suffix, attribute);
+    $text.attr('id', new_id);
     $text.attr('name', old_name.replace(suffix, attribute));
+    $text.removeClass(old_id).addClass(new_id);
     setup_autocomplete(null, $text);
   }
   $('.double-input select').change(function() { link_field_pair($(this)) });
