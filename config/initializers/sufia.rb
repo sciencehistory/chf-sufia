@@ -35,6 +35,26 @@ Sufia.config do |config|
     'Voelkel, James',
   ]
 
+  config.genres = [
+    'Advertisements',
+    'Artifacts',
+    'Chemistry sets',
+    'Correspondence',
+    'Engravings',
+    'Etchings',
+    'Handbooks, manuals, etc.',
+    'Manuscripts',
+    'Oral histories',
+    'Paintings',
+    'Photographs',
+    'Portraits',
+    'Plastics',
+    'Prints',
+    'Rare books',
+    'Scientific apparatus and instruments',
+    'Slides',
+  ]
+
   config.divisions = [
     'Center for Oral History',
     'Museum',
