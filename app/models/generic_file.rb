@@ -28,7 +28,7 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :language, predicate: ::RDF::DC11.language do |index|
+  property :language, predicate: ::RDF::Vocab::DC11.language do |index|
     index.as :stored_searchable, :facetable
   end
   property :medium, predicate: ::RDF::URI.new("http://chemheritage.org/ns/medium") do |index|
@@ -48,14 +48,14 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :provenance, predicate: ::RDF::DC.provenance, multiple: false do |index|
+  property :provenance, predicate: ::RDF::Vocab::DC.provenance, multiple: false do |index|
     index.as :stored_searchable
   end
 
-  property :resource_type, predicate: ::RDF::DC11.type do |index|
+  property :resource_type, predicate: ::RDF::Vocab::DC11.type do |index|
     index.as :stored_searchable, :facetable
   end
-  property :rights, predicate: ::RDF::DC11.rights do |index|
+  property :rights, predicate: ::RDF::Vocab::DC11.rights do |index|
     index.as :stored_searchable
   end
   property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/rightsHolder"), multiple: false do |index|
@@ -66,7 +66,7 @@ class GenericFile < ActiveFedora::Base
     index.as :displayable
   end
 
-  property :subject, predicate: ::RDF::DC11.subject do |index|
+  property :subject, predicate: ::RDF::Vocab::DC11.subject do |index|
     index.as :stored_searchable, :facetable
   end
 

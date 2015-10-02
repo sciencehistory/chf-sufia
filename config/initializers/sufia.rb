@@ -13,13 +13,13 @@ Sufia.config do |config|
   config.makers = {
     artist:       ::RDF::Vocab::MARCRelators.art,
     author:       ::RDF::Vocab::MARCRelators.aut,
-    creator_of_work:      ::RDF::DC11.creator,
-    contributor:  ::RDF::DC11.contributor,
+    creator_of_work:      ::RDF::Vocab::DC11.creator,
+    contributor:  ::RDF::Vocab::DC11.contributor,
     interviewee:  ::RDF::Vocab::MARCRelators.ive,
     interviewer:  ::RDF::Vocab::MARCRelators.ivr,
     manufacturer: ::RDF::Vocab::MARCRelators.mfr,
     photographer: ::RDF::Vocab::MARCRelators.pht,
-    publisher:    ::RDF::DC11.publisher,
+    publisher:    ::RDF::Vocab::DC11.publisher,
   }
 
   config.file_creators = [
