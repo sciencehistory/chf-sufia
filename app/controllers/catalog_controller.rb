@@ -299,6 +299,9 @@ class CatalogController < ApplicationController
       }
     end
 
+    # TODO: These are not configured according to current best practice.
+    #   change them to dereference the solr params from the url, according to
+    #   http://jkeck.github.io/customizing-blacklight/sort_fields/
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
