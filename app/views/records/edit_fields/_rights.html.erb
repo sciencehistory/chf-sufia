@@ -1,0 +1,4 @@
+<% # TODO: watch for this fix upstream %>
+<%= f.input :rights, as: :select, collection: Sufia.config.cc_licenses,
+  input_html: { class: 'form-control', multiple: false, :name => 'generic_file[rights][]'}
+%>
