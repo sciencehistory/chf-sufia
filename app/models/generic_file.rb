@@ -5,6 +5,10 @@ class GenericFile < ActiveFedora::Base
     index.as :displayable
   end
 
+  property :credit_line, predicate: ::RDF::Vocab::Bibframe.creditsNote do |index|
+    index.as :displayable
+  end
+
   property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/division"), multiple: false do |index|
     index.as :displayable
   end
