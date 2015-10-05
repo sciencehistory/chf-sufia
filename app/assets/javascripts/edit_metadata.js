@@ -14,6 +14,7 @@ chf.autocompletes = chf.autocompletes || {
   generic_file_manufacturer:    'local/cn_viaf',
   generic_file_photographer:    'local/pn_viaf',
   generic_file_publisher:       'local/cn_viaf',
+  generic_file_language:       'local/languages',
 }
 
 Blacklight.onLoad(function() {
