@@ -1,3 +1,8 @@
+# using an ssh-config entry to set the user, key, and address of the machine
+set :stage, :staging
+set :rails_env, 'production'
+server 'staging', roles: [:web, :app, :db]
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
