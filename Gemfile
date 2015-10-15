@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', '6.2.0'
+gem 'sufia', '6.3.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
@@ -13,6 +13,8 @@ gem 'qa', github: 'projecthydra-labs/questioning_authority'
 # TODO it should be fine to remove this if PR #1326
 # is accepted into sufia
 gem 'posix-spawn'
+
+#gem 'hydra-head', github: 'hackmastera/hydra-head', branch: 'fix-webrick-split'
 
 # local upgrades!
 gem 'active-fedora', '~> 9.1.0'
