@@ -7,7 +7,7 @@ set :repo_url, 'https://github.com/chemheritage/chf-sufia.git'
 #set :branch, 'master'
 set :deploy_to, '/opt/sufia-project'
 set :format, :pretty
-set :log_level, :debug
+set :log_level, :info
 set :keep_releases, 5
 
 # using 'touch tmp/restart.txt to restart passenger
