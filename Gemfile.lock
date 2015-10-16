@@ -51,17 +51,17 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    active-fedora (9.1.2)
-      active-triples (~> 0.6.0)
+    active-fedora (9.4.3)
+      active-triples (~> 0.7.1)
       activesupport (>= 4.1.0)
       deprecation
-      ldp (~> 0.3.0)
+      ldp (~> 0.4.0)
       linkeddata
       nom-xml (>= 0.5.1)
       om (~> 3.1)
       rdf-rdfxml (~> 1.1.0)
       rsolr (~> 1.0.10)
-    active-triples (0.6.1)
+    active-triples (0.7.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       deprecation (~> 0.1)
@@ -338,7 +338,7 @@ GEM
     jwt (1.5.1)
     launchy (2.4.3)
       addressable (~> 2.3)
-    ldp (0.3.1)
+    ldp (0.4.1)
       faraday
       http_logger
       linkeddata (>= 1.1)
@@ -744,7 +744,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 9.1.0)
+  active-fedora (~> 9.4.0)
   capistrano (= 3.4.0)
   capistrano-bundler (= 1.1.4)
   capistrano-passenger (= 0.1.0)
@@ -763,6 +763,7 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   kaminari!
+  ldp (~> 0.4.0)
   pg
   poltergeist (~> 1.5)
   posix-spawn
