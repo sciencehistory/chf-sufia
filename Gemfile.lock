@@ -19,6 +19,22 @@ GIT
       rest-client
 
 GIT
+  remote: git://github.com/projecthydra/active_fedora.git
+  revision: 137c6524069d82c516c53900d0de0c12b8f1ada0
+  ref: 137c652
+  specs:
+    active-fedora (9.5.0)
+      active-triples (~> 0.7.1)
+      activesupport (>= 4.1.0)
+      deprecation
+      ldp (~> 0.4.0)
+      linkeddata
+      nom-xml (>= 0.5.1)
+      om (~> 3.1)
+      rdf-rdfxml (~> 1.1.0)
+      rsolr (~> 1.0.10)
+
+GIT
   remote: git://github.com/projecthydra/hydra-editor.git
   revision: 7c8983c825a1f21e86b4667fa4f579ee7af6ca40
   ref: 7c8983
@@ -51,17 +67,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    active-fedora (9.4.3)
-      active-triples (~> 0.7.1)
-      activesupport (>= 4.1.0)
-      deprecation
-      ldp (~> 0.4.0)
-      linkeddata
-      nom-xml (>= 0.5.1)
-      om (~> 3.1)
-      rdf-rdfxml (~> 1.1.0)
-      rsolr (~> 1.0.10)
-    active-triples (0.7.1)
+    active-triples (0.7.2)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       deprecation (~> 0.1)
@@ -746,7 +752,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 9.4.0)
+  active-fedora!
   capistrano (= 3.4.0)
   capistrano-bundler (= 1.1.4)
   capistrano-maintenance (~> 1.0)

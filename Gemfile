@@ -17,7 +17,7 @@ gem 'posix-spawn'
 #gem 'hydra-head', github: 'hackmastera/hydra-head', branch: 'fix-webrick-split'
 
 # local upgrades!
-gem 'active-fedora', '~> 9.4.0'
+gem 'active-fedora', github: 'projecthydra/active_fedora', :ref => '137c652'
 gem 'ldp', '~> 0.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

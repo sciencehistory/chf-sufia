@@ -79,9 +79,7 @@ class GenericFile < ActiveFedora::Base
 #    index.as :stored_searchable, :facetable
 #  end
 
-# Class names can be inferred since they are the same as the association name.
-  has_many :date_of_work, inverse_of: :is_work_date_of, as: 'is_work_date_of'
-
+  has_and_belongs_to_many :date_of_work, predicate: ::RDF::Vocab::DC11.date, class_name: "DateOfWork"
   accepts_nested_attributes_for :date_of_work, reject_if: :all_blank, allow_destroy: true
 
 end
