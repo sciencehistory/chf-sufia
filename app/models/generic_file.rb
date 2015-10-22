@@ -82,4 +82,7 @@ class GenericFile < ActiveFedora::Base
   has_and_belongs_to_many :date_of_work, predicate: ::RDF::Vocab::DC11.date, class_name: "DateOfWork"
   accepts_nested_attributes_for :date_of_work, reject_if: :all_blank, allow_destroy: true
 
+  has_and_belongs_to_many :inscription, predicate: ::RDF::URI.new("http://purl.org/vra/hasInscription"), class_name: "Inscription"
+  accepts_nested_attributes_for :inscription, reject_if: :all_blank, allow_destroy: true
+
 end

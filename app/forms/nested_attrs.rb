@@ -1,10 +1,11 @@
 module NestedAttrs
   extend ActiveSupport::Concern
-  
+
   module ClassMethods
     def build_permitted_params
       permitted = super
       permitted << { date_of_work_attributes: permitted_time_span_params }
+      permitted << { inscription_attributes: permitted_inscription_params }
       permitted
     end
 
@@ -17,12 +18,10 @@ module NestedAttrs
       #}]
     end
 
-  end
+    def permitted_inscription_params
+      [ :id, :_destroy, :location, :text ]
+    end
 
-  #  pulled from https://github.com/aic-collections/aicdams-lakeshore but
-  #  not sure exactly what this is supposed to do / fix...
-#  def date_of_work_attributes= attributes
-#    model.date_of_work_attributes= attributes
-#  end
+  end
 
 end

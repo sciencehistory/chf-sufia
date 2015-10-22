@@ -24,6 +24,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :provenance,
       :file_creator,
       :admin_notes,
+      :inscription,
       ])
 
   # Add a new list for creating form elements on the edit pages
@@ -48,6 +49,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :provenance,
       :file_creator,
       :admin_notes,
+      :inscription,
     ]
   end
 
@@ -70,5 +72,12 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   def below_fold_terms
     edit_field_terms - above_fold_terms - [:title]
   end
+
+  #  pulled from https://github.com/aic-collections/aicdams-lakeshore but
+  #  not sure exactly what this is supposed to do / fix...
+#  def date_of_work_attributes= attributes
+#    model.date_of_work_attributes= attributes
+#  end
+  delegate :inscription_attributes=, :to => :model
 
 end

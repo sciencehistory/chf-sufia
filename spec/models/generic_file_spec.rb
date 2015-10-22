@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GenericFile do
   MyAssociations = {
+    inscription: 'http://purl.org/vra/hasInscription',
     date_of_work: ::RDF::Vocab::DC11.date.to_s,
   }
   MyFields = {
@@ -60,38 +61,53 @@ RSpec.describe GenericFile do
   end
 
   describe 'Correctly populates fields' do
-    let :generic_file do
-      GenericFile.create(title: ['title1']) do |gf|
-        gf.apply_depositor_metadata('dpt')
-        gf.creator = ['Beckett, Samuel']
-        gf.extent = ["infinitely long"]
+    let :gf do
+      GenericFile.create(title: ['title1']) do |f|
+        f.apply_depositor_metadata('dpt')
+        f.creator = ['Beckett, Samuel']
+        f.extent = ["infinitely long"]
       end
     end
 
     it 'has a single creator' do
-      expect(generic_file.creator.count).to eq 1
-      expect(generic_file.creator).to include 'Beckett, Samuel'
+      expect(gf.creator.count).to eq 1
+      expect(gf.creator).to include 'Beckett, Samuel'
     end
 
     it 'has a toc' do
-      expect(generic_file.extent).to eq ["infinitely long"]
+      expect(gf.extent).to eq ["infinitely long"]
     end
 
     describe "add a Date Range" do
       before do
-        generic_file.date_of_work_attributes = [{start: "2003", finish: "2015"}]
+        gf.date_of_work_attributes = [{start: "2003", finish: "2015"}]
       end
       it "uses TimeSpan class" do
-        expect(generic_file.date_of_work.first).to be_kind_of TimeSpan
+        expect(gf.date_of_work.first).to be_kind_of TimeSpan
       end
     end
 
     describe "retrieve a Date Range" do
       it "finds the nested attributes" do
-        generic_file.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
-        generic_file.save!
-        expect(GenericFile.find(generic_file.id).date_of_work.count).to eq 2 #returns both
-        expect(GenericFile.load_instance_from_solr(generic_file.id).date_of_work.count).to eq 2 #returns both
+        gf.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
+        gf.save!
+        expect(GenericFile.find(gf.id).date_of_work.count).to eq 2 #returns both
+        expect(GenericFile.load_instance_from_solr(gf.id).date_of_work.count).to eq 2 #returns both
+      end
+    end
+
+    describe "with Nested Inscriptions" do
+
+      it "uses Inscription class" do
+        gf.inscription_attributes = [{location: "inside", text: "for you"}]
+        expect(gf.inscription.first).to be_kind_of Inscription
+      end
+
+      it "finds the nested attributes" do
+        gf.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: 'place', text: 'stuff'}]
+        gf.save!
+        expect(GenericFile.find(gf.id).inscription.count).to eq 2 #returns both
+        expect(GenericFile.load_instance_from_solr(gf.id).inscription.count).to eq 2 #returns both
       end
     end
 

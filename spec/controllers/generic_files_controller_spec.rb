@@ -179,6 +179,144 @@ RSpec.describe GenericFilesController do
         end
       end
     end  # context dates
+
+
+    context "inscriptions" do
+      let(:i_attributes) do
+        {
+          location: "mars",
+          text: "welcome to mars"
+        }
+      end
+      let(:inscrip) { Inscription.new(i_attributes) }
+
+      context "creating a new inscription" do
+        it "persists the nested object" do
+          patch :update, id: file, generic_file: {
+            inscription_attributes: { "0" => i_attributes },
+            resource_type: ['Image']
+          }
+
+          file.reload
+          insc = file.inscription.first
+
+          expect(file.inscription.count).to eq(1)
+          expect(insc.location).to eq("mars")
+          expect(insc).to be_persisted
+        end
+        context "two sets of date data are provided" do
+          let(:i_attributes2) { i_attributes.clone }
+          before do
+            i_attributes2[:location] = 'pluto'
+            patch :update, id: file, generic_file: {
+              inscription_attributes: { "0" => i_attributes, "1" => i_attributes2 },
+              resource_type: ['Image']
+            }
+            file.reload
+          end
+
+          it "persists the nested objects" do
+            insc = file.inscription
+
+            expect(file.inscription.count).to eq(2)
+            expect(insc[0].location).to eq("mars")
+            expect(insc[1].location).to eq("pluto")
+            expect(insc[0]).to be_persisted
+            expect(insc[1]).to be_persisted
+          end
+        end
+
+        context "inscription data is not provided" do
+          it "does not persist a nested object" do
+            i_attributes[:location] = ""
+            i_attributes[:text] = ""
+            patch :update, id: file, generic_file: {
+              inscription_attributes: { "0" => i_attributes },
+              resource_type: ['Image']
+            }
+            file.reload
+            insc = file.inscription.first
+            expect(file.inscription.count).to eq(0)
+            expect(Inscription.all.count).to eq 0
+          end
+        end
+      end
+
+      context "updating an existing inscription" do
+        before do
+          inscrip.save!
+          file.inscription << inscrip
+          file.save!
+        end
+
+        it "allows deletion of the existing timespan" do
+          file.reload
+          expect(file.inscription.count).to eq(1)
+
+          patch :update, id: file, generic_file: {
+            inscription_attributes: {
+              "0" => { id: inscrip.id, _destroy: "true" }
+            }
+          }
+          file.reload
+          expect(file.inscription.count).to eq(0)
+          #TODO: if we want the Inscription to be deleted entirely,
+          #     we may need to define a new association in activefedora.
+          #     see irc conversation 7/8/2015
+          #expect(Inscription.all.count).to eq 0
+        end
+        # just documenting behavior here.. object is not reused.
+        it "Creates a new Inscription object with same data" do
+          file2 = GenericFile.new(title: ['Sal and Baby Bear'])
+          file2.apply_depositor_metadata(user.user_key)
+          file2.save!
+          patch :update, id: file2, generic_file: {
+            inscription_attributes: { "0" => i_attributes },
+          }
+          expect(Inscription.all.count).to eq 2
+        end
+
+        it "allows updating the existing inscription" do
+          patch :update, id: file, generic_file: {
+            inscription_attributes: {
+              "0" => i_attributes.merge(id: inscrip.id, location: "earth")
+            },
+          }
+
+          file.reload
+          expect(file.inscription.count).to eq(1)
+          insc = file.inscription.first
+
+          expect(insc.id).to eq(inscrip.id)
+          expect(insc.location).to eq("earth")
+          expect(insc.text).to eq("welcome to mars")
+        end
+
+        it "allows updating the existing inscription while adding a 2nd inscription" do
+          patch :update, id: file, generic_file: {
+            inscription_attributes: {
+              "0" => i_attributes.merge(id: inscrip.id, location: "earth", text: "blue planet"),
+              "1" => i_attributes.merge(location: "jupiter", text: "")
+            },
+          }
+
+          file.reload
+          expect(file.inscription.count).to eq(2)
+          insc = file.inscription.first
+
+          expect(insc.id).to eq(inscrip.id)
+          expect(insc.location).to eq("earth")
+          expect(insc.text).to eq("blue planet")
+
+          insc = file.inscription.second
+          expect(insc.location).to eq("jupiter")
+          expect(insc.text).to eq("")
+        end
+
+
+      end
+    end  # context inscriptions
+
     context 'parsed fields' do
       it 'turns box, etc into coded string' do
         patch :update, id: file, generic_file: {
