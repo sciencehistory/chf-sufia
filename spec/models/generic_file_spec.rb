@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe GenericFile do
+  MyAssociations = {
+    date_of_work: ::RDF::Vocab::DC11.date.to_s,
+  }
   MyFields = {
     # overriden fields
     contributor: 'http://purl.org/dc/elements/1.1/contributor',
@@ -32,18 +35,26 @@ RSpec.describe GenericFile do
     series_arrangement: 'http://bibframe.org/vocab/materialHierarchicalLevel',
   }
 
+  # TODO: associations may have predicates as well.
+  #   how to account for those without keeping a separate list?
   it 'uses a different predicate for each field' do
     f = GenericFile.new
     predicates = f.resource.fields.map do |attr|
       GenericFile.reflect_on_property(attr).predicate.to_s
     end
+    predicates << MyAssociations.values
     dup = predicates.select{ |element| predicates.count(element) > 1 }
     expect(dup).to be_empty
   end
 
   it 'uses the right predicate for new and overriden fields' do
-    MyFields.each do |field_name, uri|
-      predicate = GenericFile.reflect_on_property(field_name).predicate.to_s
+    MyFields.merge(MyAssociations).each do |field_name, uri|
+      predicate =
+        begin
+          GenericFile.reflect_on_property(field_name).predicate.to_s
+        rescue NoMethodError # associations may have predicates as well
+          GenericFile.reflect_on_association(field_name).predicate.to_s
+        end
       expect(predicate).to eq uri
     end
   end
