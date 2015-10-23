@@ -73,11 +73,8 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
     edit_field_terms - above_fold_terms - [:title]
   end
 
-  #  pulled from https://github.com/aic-collections/aicdams-lakeshore but
-  #  not sure exactly what this is supposed to do / fix...
-#  def date_of_work_attributes= attributes
-#    model.date_of_work_attributes= attributes
-#  end
+  # give form access to attributes methods so it can build nested forms.
+  delegate :date_of_work_attributes=, :to => :model
   delegate :inscription_attributes=, :to => :model
 
 end
