@@ -1,4 +1,4 @@
-module NestedDates
+module NestedAttrs
   extend ActiveSupport::Concern
   
   module ClassMethods

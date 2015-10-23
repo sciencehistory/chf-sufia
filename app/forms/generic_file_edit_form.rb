@@ -1,7 +1,7 @@
 class GenericFileEditForm < GenericFilePresenter
   include HydraEditor::Form
   include HydraEditor::Form::Permissions
-  include NestedDates
+  include NestedAttrs
   include ApplicationHelper
 
   attr_accessor :maker, :box, :folder, :volume, :part
