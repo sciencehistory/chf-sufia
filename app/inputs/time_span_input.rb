@@ -119,29 +119,11 @@ class TimeSpanInput < MultiValueWithHelpInput
       out << "  </div>"
       out << "</div>" # class=row
 
-      # delete checkbox
-      out << "<div class='row'>"
-      out << CheckCol
-      out << destroy_widget(attribute_name, index)
-      out << "  </div>"
-      out << "</div>" # class=row
-
       out
     end
 
     def time_span_qualifier_options
       TimeSpan.qualifiers.map { |q| [q, q] }
-    end
-
-    def destroy_widget(attribute_name, index)
-      out = ''
-      field_name = destroy_name_for(attribute_name, index)
-      out << @builder.check_box(attribute_name,
-                            name: field_name,
-                            id: id_for(attribute_name, index, '_destroy'.freeze),
-                            value: "true", data: { destroy: true })
-      out << template.label_tag(field_name, "Remove", class: "remove_time_span")
-      out
     end
 
     def hidden_id_field(value, index)

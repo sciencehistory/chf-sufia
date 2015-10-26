@@ -100,6 +100,5 @@ Blacklight.onLoad(function() {
     }
   }
 
-  $('.time-span.form-group').manage_time_span_fields();
   $('.multi_value.form-group').manage_fields({add: chf_add});
 });
