@@ -2,6 +2,14 @@ require 'rails_helper'
 
 RSpec.describe TimeSpan do
 
+  describe 'id' do
+    # kind of a sloppy test
+    it 'is a NOID' do
+      subject.save
+      expect(subject.id.length).to eq 9
+    end
+  end
+
   describe "rdf type" do
     subject { described_class.new.type }
     it { is_expected.to eq [::RDF::URI.new('http://www.europeana.eu/schemas/edm/TimeSpan')] }

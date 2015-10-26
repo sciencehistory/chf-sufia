@@ -18,4 +18,12 @@ RSpec.describe Inscription do
     end
   end
 
+  describe 'id' do
+    # kind of a sloppy test
+    it 'is a NOID' do
+      subject.save
+      expect(subject.id.length).to eq 9
+    end
+  end
+
 end
