@@ -31,7 +31,6 @@ RSpec.describe GenericFile do
     place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
     place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
-    provenance: 'http://purl.org/dc/terms/provenance',
     rights_holder: 'http://chemheritage.org/ns/rightsHolder',
     series_arrangement: 'http://bibframe.org/vocab/materialHierarchicalLevel',
   }

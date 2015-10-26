@@ -52,10 +52,6 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :provenance, predicate: ::RDF::Vocab::DC.provenance, multiple: false do |index|
-    index.as :stored_searchable
-  end
-
   property :resource_type, predicate: ::RDF::Vocab::DC11.type do |index|
     index.as :stored_searchable, :facetable
   end
