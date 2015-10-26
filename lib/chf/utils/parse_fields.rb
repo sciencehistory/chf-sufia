@@ -22,8 +22,8 @@ module CHF
 
       def self.external_ids_hash
         {'object' => 'Object ID',
-         'bib' => 'Bibliographic No.',
-         'item' => 'Item No.',
+         'bib' => 'Sierra Bib. No.',
+         'item' => 'Sierra Item No.',
          'accn' => 'Accession No.',
          'aspace' => 'ASpace Reference No.',
          'interview' => 'Oral History Interview No.',

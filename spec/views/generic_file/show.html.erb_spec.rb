@@ -47,7 +47,7 @@ RSpec.describe 'generic_files/show.html.erb', :type => :view do
       render template: 'generic_files/show.html.erb', layout: 'layouts/sufia-one-column'
     end
     it 'shows the parsed info' do
-      expect(rendered).to match /Object ID: 2004<br\/>\s+Bibliographic No.: b123456789<br\/>\s+Object ID: 2004-09.003/
+      expect(rendered).to match /Object ID: 2004<br\/>\s+Sierra Bib. No.: b123456789<br\/>\s+Object ID: 2004-09.003/
     end
   end
 
