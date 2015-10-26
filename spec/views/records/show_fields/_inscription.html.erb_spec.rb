@@ -7,8 +7,8 @@ RSpec.describe "records/show_fields/_inscription.html.erb" do
       [
         {
           "id" => "testid",
-          "location" => ["in a place"],
-          "text" => ["someone notes a thing"]
+          "location" => "in a place",
+          "text" => "someone notes a thing"
         }
       ]
     )
