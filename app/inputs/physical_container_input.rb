@@ -2,8 +2,8 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
   include ApplicationHelper
   include WithHelpIcon
 
-  LabelCol = "  <div class='col-md-3'>"
-  TextCol = "  <div class='col-md-9'>"
+  LabelCol = "  <div class='col-md-2'>"
+  TextCol = "  <div class='col-md-4'>"
 
   #Example html:
   #<input class="string optional form-control" type="text" value="" name="generic_file[provenance]" id="generic_file_provenance">
@@ -13,8 +13,11 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
     @vals = CHF::Utils::ParseFields.parse_physical_container(object.send(attribute_name))
     out = ''
     out << "<div class='listing'>"
-    CHF::Utils::ParseFields.physical_container_fields.values.each do |field|
-      out << build_field(field)
+    CHF::Utils::ParseFields.physical_container_fields.values.each_slice(2) do |pair|
+      out << '<div class=row>'
+      out << build_field(pair[0])
+      out << build_field(pair[1])
+      out << "</div>"
     end
     out << "</div>"
   end
@@ -22,14 +25,12 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
   def build_field(field)
     #options = input_html_options.dup
     out = ''
-    out << '<div class=row>'
     out << LabelCol
 
     out << template.label_tag(id_for(field), field.to_s.humanize, required: false)
     out << "</div>"
     out << TextCol
     out << @builder.text_field(field, @merged_input_options.merge(name: name_for(field), value: @vals[field[0]]))
-    out << "</div>"
     out << "</div>"
     out
   end
