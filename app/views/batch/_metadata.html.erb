@@ -33,17 +33,9 @@
         <%= "<input type=\"hidden\" name=\"generic_file[#{term}][]\" id=\"generic_file_#{term}\" value class=\"partial\">".html_safe %>
       <% end %>
 
-      <% (f.object.above_fold_terms - [:rights]).each do |term| %>
+      <% f.object.above_fold_terms.each do |term| %>
         <%= render_edit_field_partial(term, f: f) %>
       <% end %>
-
-      <%# we can't use the partial because this :select_with_modal_help
-          doesn't work in the file edit form (makes it a dropdown and then 
-          they start to multiply  %>
-      <%= f.input :rights, as: :select_with_modal_help, collection: Sufia.config.cc_licenses,
-          input_html: { class: 'form-control', multiple: true } %>
-
-      <%= render "generic_files/rights_modal" %>
 
       <button id="show_addl_descriptions" class="btn btn-default" aria-label="reveal additional metadata description fields">Show Additional Fields</button>
       <!-- hidden on initial load -->

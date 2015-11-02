@@ -64,7 +64,6 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
      :date_of_work,
      :resource_type,
      :genre_string,
-     :rights,
     ]
   end
   def below_fold_terms
