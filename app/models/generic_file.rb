@@ -1,6 +1,9 @@
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
 
+  # tried this as before_save, but then it didn't show up on metadata form at upload time.
+  after_initialize :set_default_metadata
+
   property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasAdminNote") do |index|
     index.as :displayable
   end
@@ -70,5 +73,11 @@ class GenericFile < ActiveFedora::Base
 
   has_and_belongs_to_many :inscription, predicate: ::RDF::URI.new("http://purl.org/vra/hasInscription"), class_name: "Inscription"
   accepts_nested_attributes_for :inscription, reject_if: :all_blank, allow_destroy: true
+
+  private
+
+    def set_default_metadata
+      self.credit_line = ['Courtesy of CHF Collections']
+    end
 
 end

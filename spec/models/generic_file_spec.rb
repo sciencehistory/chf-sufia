@@ -68,6 +68,10 @@ RSpec.describe GenericFile do
       end
     end
 
+    it 'pre-populates credit line' do
+      expect(gf.credit_line).to eq ['Courtesy of CHF Collections']
+    end
+
     it 'has a single creator' do
       expect(gf.creator.count).to eq 1
       expect(gf.creator).to include 'Beckett, Samuel'
