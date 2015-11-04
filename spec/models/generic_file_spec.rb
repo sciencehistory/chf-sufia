@@ -4,6 +4,7 @@ RSpec.describe GenericFile do
   MyAssociations = {
     inscription: 'http://purl.org/vra/hasInscription',
     date_of_work: ::RDF::Vocab::DC11.date.to_s,
+    additional_credit: 'http://chemheritage.org/ns/hasCredit',
   }
   MyFields = {
     # overriden fields
@@ -111,6 +112,21 @@ RSpec.describe GenericFile do
         gf.save!
         expect(GenericFile.find(gf.id).inscription.count).to eq 2 #returns both
         expect(GenericFile.load_instance_from_solr(gf.id).inscription.count).to eq 2 #returns both
+      end
+    end
+
+    describe "with Nested additional credit" do
+
+      it "uses Credit class" do
+        gf.additional_credit_attributes = [{role: "photographer", name: "Puffins"}]
+        expect(gf.additional_credit.first).to be_kind_of Credit
+      end
+
+      it "finds the nested attributes" do
+        gf.additional_credit_attributes = [{role: "photographer", name: "Puffins"}, {role: 'photographer', name: 'Squirrels'}]
+        gf.save!
+        expect(GenericFile.find(gf.id).additional_credit.count).to eq 2 #returns both
+        expect(GenericFile.load_instance_from_solr(gf.id).additional_credit.count).to eq 2 #returns both
       end
     end
 

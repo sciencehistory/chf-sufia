@@ -74,6 +74,9 @@ class GenericFile < ActiveFedora::Base
   has_and_belongs_to_many :inscription, predicate: ::RDF::URI.new("http://purl.org/vra/hasInscription"), class_name: "Inscription"
   accepts_nested_attributes_for :inscription, reject_if: :all_blank, allow_destroy: true
 
+  has_and_belongs_to_many :additional_credit, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCredit"), class_name: "Credit"
+  accepts_nested_attributes_for :additional_credit, reject_if: :all_blank, allow_destroy: true
+
   private
 
     def set_default_metadata

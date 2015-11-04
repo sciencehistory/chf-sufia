@@ -6,6 +6,7 @@ module NestedAttrs
       permitted = super
       permitted << { date_of_work_attributes: permitted_time_span_params }
       permitted << { inscription_attributes: permitted_inscription_params }
+      permitted << { additional_credit_attributes: permitted_additional_credit_params }
       permitted
     end
 
@@ -20,6 +21,10 @@ module NestedAttrs
 
     def permitted_inscription_params
       [ :id, :_destroy, :location, :text ]
+    end
+
+    def permitted_additional_credit_params
+      [ :id, :_destroy, :role, :name ]
     end
 
   end

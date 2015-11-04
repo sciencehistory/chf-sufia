@@ -41,6 +41,18 @@ Sufia.config do |config|
     'Voelkel, James',
   ]
 
+  config.credit_roles = {
+    'photographer' => 'Photographed by',
+  }
+
+  config.credit_names = [
+    'Douglas Lockard',
+    'Gregory Tobias',
+    'Mark Backrath',
+    'Penn School of Medicine',
+    'Will Brown',
+  ]
+
   config.genres = [
     'Advertisements',
     'Artifacts',

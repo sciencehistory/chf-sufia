@@ -22,6 +22,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights,
       :rights_holder,
       :credit_line,
+      :additional_credit,
       :file_creator,
       :admin_note,
       ])
@@ -45,6 +46,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
       :rights,
       :rights_holder,
       :credit_line,
+      :additional_credit,
       :file_creator,
       :admin_note,
     ]
@@ -72,5 +74,6 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   # give form access to attributes methods so it can build nested forms.
   delegate :date_of_work_attributes=, :to => :model
   delegate :inscription_attributes=, :to => :model
+  delegate :additional_credit_attributes=, :to => :model
 
 end

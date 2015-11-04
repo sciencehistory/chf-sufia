@@ -13,7 +13,7 @@ RSpec.describe "records/show_fields/_inscription.html.erb" do
       ]
     )
     record = GenericFilePresenter.new(file)
-    
+
     render :partial => "records/show_fields/inscription", :locals => {:record => record}
 
     expect(rendered).to have_content "(in a place) \"someone notes a thing\""

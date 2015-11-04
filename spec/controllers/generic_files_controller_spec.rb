@@ -317,6 +317,143 @@ RSpec.describe GenericFilesController do
       end
     end  # context inscriptions
 
+    context "additional credits" do
+      let(:ac_attributes) do
+        {
+          role: "photographer",
+          name: "bears"
+        }
+      end
+      let(:additional_c) { Credit.new(ac_attributes) }
+
+      context "creating a new additional credit" do
+        it "persists the nested object" do
+          patch :update, id: file, generic_file: {
+            additional_credit_attributes: { "0" => ac_attributes },
+            resource_type: ['Image']
+          }
+
+          file.reload
+          ac = file.additional_credit.first
+
+          expect(file.additional_credit.count).to eq(1)
+          expect(ac.role).to eq("photographer")
+          expect(ac).to be_persisted
+        end
+        context "two sets of date data are provided" do
+          let(:ac_attributes2) { ac_attributes.clone }
+          before do
+            ac_attributes2[:name] = 'goldilocks'
+            patch :update, id: file, generic_file: {
+              additional_credit_attributes: { "0" => ac_attributes, "1" => ac_attributes2 },
+              resource_type: ['Image']
+            }
+            file.reload
+          end
+
+          it "persists the nested objects" do
+            ac = file.additional_credit
+
+            expect(file.additional_credit.count).to eq(2)
+            expect(ac[0].name).to eq("bears")
+            expect(ac[1].name).to eq("goldilocks")
+            expect(ac[0]).to be_persisted
+            expect(ac[1]).to be_persisted
+          end
+        end
+
+        context "additional credit data is not provided" do
+          it "does not persist a nested object" do
+            ac_attributes[:role] = ""
+            ac_attributes[:name] = ""
+            patch :update, id: file, generic_file: {
+              additional_credit_attributes: { "0" => ac_attributes },
+              resource_type: ['Image']
+            }
+            file.reload
+            ac = file.additional_credit.first
+            expect(file.additional_credit.count).to eq(0)
+            expect(Credit.all.count).to eq 0
+          end
+        end
+      end
+
+      context "updating an existing additional credit" do
+        before do
+          additional_c.save!
+          file.additional_credit << additional_c
+          file.save!
+        end
+
+        it "allows deletion of the existing timespan" do
+          file.reload
+          expect(file.additional_credit.count).to eq(1)
+
+          patch :update, id: file, generic_file: {
+            additional_credit_attributes: {
+              "0" => { id: additional_c.id, _destroy: "true" }
+            }
+          }
+          file.reload
+          expect(file.additional_credit.count).to eq(0)
+          #TODO: if we want the additional credit to be deleted entirely,
+          #     we may need to define a new association in activefedora.
+          #     see irc conversation 7/8/2015
+          #expect(Credit.all.count).to eq 0
+        end
+        # just documenting behavior here.. object is not reused.
+        it "Creates a new additional credit object with same data" do
+          file2 = GenericFile.new(title: ['Sal and Baby Bear'])
+          file2.apply_depositor_metadata(user.user_key)
+          file2.save!
+          patch :update, id: file2, generic_file: {
+            additional_credit_attributes: { "0" => ac_attributes },
+          }
+          expect(Credit.all.count).to eq 2
+        end
+
+        it "allows updating the existing additional credit" do
+          patch :update, id: file, generic_file: {
+            additional_credit_attributes: {
+              "0" => ac_attributes.merge(id: additional_c.id, name: "3 bears")
+            },
+          }
+
+          file.reload
+          expect(file.additional_credit.count).to eq(1)
+          ac = file.additional_credit.first
+
+          expect(ac.id).to eq(additional_c.id)
+          expect(ac.role).to eq("photographer")
+          expect(ac.name).to eq("3 bears")
+        end
+
+        it "allows updating the existing additional credit while adding a 2nd additional credit" do
+          patch :update, id: file, generic_file: {
+            additional_credit_attributes: {
+              "0" => ac_attributes.merge(id: additional_c.id, role: "photographer", name: "3 bears"),
+              "1" => ac_attributes.merge(role: "photographer", name: "goldilocks")
+            },
+          }
+
+          file.reload
+          expect(file.additional_credit.count).to eq(2)
+          ac = file.additional_credit.first
+
+          expect(ac.id).to eq(additional_c.id)
+          expect(ac.role).to eq("photographer")
+          expect(ac.name).to eq("3 bears")
+
+          ac = file.additional_credit.second
+          expect(ac.role).to eq("photographer")
+          expect(ac.name).to eq("goldilocks")
+        end
+
+
+      end
+    end  # context additional_credits
+
+
     context 'parsed fields' do
       it 'turns box, etc into coded string' do
         patch :update, id: file, generic_file: {
