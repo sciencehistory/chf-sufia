@@ -5,9 +5,9 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   showing the fields on the item page
   self.terms = [:title, :identifier,
     ].concat(Sufia.config.makers.keys).concat(
+      Sufia.config.places.keys).concat(
       [
       :date_of_work,
-      :place_of_interview, :place_of_manufacture, :place_of_publication,
       :resource_type, :genre_string,
       :medium,
       :extent,
@@ -29,9 +29,8 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   # Add a new list for creating form elements on the edit pages
   #   (since we've combined many of the fields into 'maker')
   def edit_field_terms
-    [:title, :identifier, :maker,
+    [:title, :identifier, :maker, :place,
       :date_of_work,
-      :place_of_interview, :place_of_manufacture, :place_of_publication,
       :resource_type, :genre_string,
       :medium,
       :extent,
@@ -53,7 +52,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
 
   # We need these as hidden fields or else data deletion doesn't work.
   def hidden_field_terms
-    Sufia.config.makers.keys
+    Sufia.config.makers.keys.concat(Sufia.config.places.keys)
   end
 
   # post-upload edit form has a "show more" button; we want

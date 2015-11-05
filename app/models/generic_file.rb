@@ -22,7 +22,7 @@ class GenericFile < ActiveFedora::Base
   end
 
   #Set up a bunch of MARC Relator codes as properties
-  Sufia.config.makers.each do |field_name, predicate|
+  Sufia.config.makers.merge(Sufia.config.places).each do |field_name, predicate|
     property field_name, predicate: predicate do |index|
       index.as :stored_searchable
     end
@@ -39,16 +39,6 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable
   end
   property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialOrganization, multiple: false do |index|
-    index.as :stored_searchable
-  end
-
-  property :place_of_interview, predicate: ::RDF::Vocab::MARCRelators.evp do |index|
-    index.as :stored_searchable
-  end
-  property :place_of_manufacture, predicate: ::RDF::Vocab::MARCRelators.mfp do |index|
-    index.as :stored_searchable
-  end
-  property :place_of_publication, predicate: ::RDF::Vocab::MARCRelators.pup do |index|
     index.as :stored_searchable
   end
 

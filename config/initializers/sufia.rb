@@ -10,6 +10,12 @@ Sufia.config do |config|
 
   config.max_notifications_for_dashboard = 5
 
+  config.places = {
+    place_of_interview: ::RDF::Vocab::MARCRelators.evp,
+    place_of_manufacture: ::RDF::Vocab::MARCRelators.mfp,
+    place_of_publication: ::RDF::Vocab::MARCRelators.pup,
+  }
+
   config.makers = {
     artist:       ::RDF::Vocab::MARCRelators.art,
     author:       ::RDF::Vocab::MARCRelators.aut,

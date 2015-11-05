@@ -4,7 +4,7 @@ class GenericFileEditForm < GenericFilePresenter
   include NestedAttrs
   include ApplicationHelper
 
-  attr_accessor :maker, :box, :folder, :volume, :part
+  attr_accessor :maker, :box, :folder, :volume, :part, :place
   CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
     attr_accessor "#{k}_external_id".to_s
   end
