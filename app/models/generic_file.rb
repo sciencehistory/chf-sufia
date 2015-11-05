@@ -1,7 +1,7 @@
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
 
-  property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/adminNotes") do |index|
+  property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasAdminNote") do |index|
     index.as :displayable
   end
 
@@ -9,7 +9,7 @@ class GenericFile < ActiveFedora::Base
     index.as :displayable
   end
 
-  property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/division"), multiple: false do |index|
+  property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasDivision"), multiple: false do |index|
     index.as :displayable
   end
 
@@ -28,14 +28,14 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
-  property :extent, predicate: ::RDF::URI.new("http://chemheritage.org/ns/extent") do |index|
+  property :extent, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasExtent") do |index|
     index.as :stored_searchable
   end
 
   property :language, predicate: ::RDF::Vocab::DC11.language do |index|
     index.as :stored_searchable, :facetable
   end
-  property :medium, predicate: ::RDF::URI.new("http://chemheritage.org/ns/medium") do |index|
+  property :medium, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasMedium") do |index|
     index.as :stored_searchable
   end
   property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialOrganization, multiple: false do |index|
@@ -48,7 +48,7 @@ class GenericFile < ActiveFedora::Base
   property :rights, predicate: ::RDF::Vocab::DC11.rights do |index|
     index.as :stored_searchable
   end
-  property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/rightsHolder"), multiple: false do |index|
+  property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasRightsHolder"), multiple: false do |index|
     index.as :stored_searchable
   end
 

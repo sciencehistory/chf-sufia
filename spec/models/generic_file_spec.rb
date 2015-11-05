@@ -15,8 +15,8 @@ RSpec.describe GenericFile do
     subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
-    admin_note: 'http://chemheritage.org/ns/adminNotes',
-    division: 'http://chemheritage.org/ns/division',
+    admin_note: 'http://chemheritage.org/ns/hasAdminNote',
+    division: 'http://chemheritage.org/ns/hasDivision',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',
     credit_line: 'http://bibframe.org/vocab/creditsNote',
@@ -25,13 +25,13 @@ RSpec.describe GenericFile do
     interviewer: 'http://id.loc.gov/vocabulary/relators/ivr',
     manufacturer: 'http://id.loc.gov/vocabulary/relators/mfr',
     photographer: 'http://id.loc.gov/vocabulary/relators/pht',
-    extent: 'http://chemheritage.org/ns/extent',
-    medium: 'http://chemheritage.org/ns/medium',
+    extent: 'http://chemheritage.org/ns/hasExtent',
+    medium: 'http://chemheritage.org/ns/hasMedium',
     physical_container: 'http://bibframe.org/vocab/materialOrganization',
     place_of_interview: 'http://id.loc.gov/vocabulary/relators/evp',
     place_of_manufacture: 'http://id.loc.gov/vocabulary/relators/mfp',
     place_of_publication: 'http://id.loc.gov/vocabulary/relators/pup',
-    rights_holder: 'http://chemheritage.org/ns/rightsHolder',
+    rights_holder: 'http://chemheritage.org/ns/hasRightsHolder',
     series_arrangement: 'http://bibframe.org/vocab/materialHierarchicalLevel',
   }
 
