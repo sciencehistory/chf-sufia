@@ -15,7 +15,7 @@ RSpec.describe GenericFile do
     subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
-    admin_notes: 'http://chemheritage.org/ns/adminNotes',
+    admin_note: 'http://chemheritage.org/ns/adminNotes',
     division: 'http://chemheritage.org/ns/division',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',

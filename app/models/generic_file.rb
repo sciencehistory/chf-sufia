@@ -1,7 +1,7 @@
 class GenericFile < ActiveFedora::Base
   include Sufia::GenericFile
 
-  property :admin_notes, predicate: ::RDF::URI.new("http://chemheritage.org/ns/adminNotes") do |index|
+  property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/adminNotes") do |index|
     index.as :displayable
   end
 
