@@ -40,10 +40,10 @@ Sufia.config do |config|
   }
 
   config.divisions = [
+    'Archives',
     'Center for Oral History',
     'Museum',
     'Othmer Library of Chemical History',
-    'Archives',
   ]
 
   config.file_creators = [
