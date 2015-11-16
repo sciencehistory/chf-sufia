@@ -54,7 +54,7 @@ Sufia.config do |config|
     'Lockard, Douglas',
     'Lu, Cathleen',
     'Newhouse, Sarah',
-    'Penn Libraries',
+    'The University of Pennsylvania Libraries',
     'Tobias, Gregory',
     'Voelkel, James',
   ]
@@ -80,8 +80,8 @@ Sufia.config do |config|
     'Oral histories',
     'Paintings',
     'Photographs',
-    'Portraits',
     'Plastics',
+    'Portraits',
     'Prints',
     'Rare books',
     'Scientific apparatus and instruments',
