@@ -658,7 +658,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stomp (1.3.4)
-    sufia (6.4.0)
+    sufia (6.5.0)
       blacklight (~> 5.16)
       blacklight-gallery (~> 0.1)
       blacklight_advanced_search (>= 5.1.4, < 6.0)
@@ -677,11 +677,11 @@ GEM
       redlock (~> 0.1.2)
       sass-rails
       select2-rails (~> 3.5.9)
-      sufia-models (= 6.4.0)
+      sufia-models (= 6.5.0)
       tinymce-rails (~> 4.1)
       tinymce-rails-imageupload (~> 4.0.16.beta)
       yaml_db (~> 0.2)
-    sufia-models (6.4.0)
+    sufia-models (6.5.0)
       active-fedora (~> 9.4)
       active_fedora-noid (~> 1.0)
       activerecord-import (~> 0.5)
@@ -784,7 +784,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec (~> 1.0.2)
   sqlite3
-  sufia (= 6.4.0)
+  sufia (= 6.5.0)
   therubyracer
   turbolinks
   uglifier (>= 1.3.0)

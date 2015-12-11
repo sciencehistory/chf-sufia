@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', '6.4.0'
+gem 'sufia', '6.5.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
