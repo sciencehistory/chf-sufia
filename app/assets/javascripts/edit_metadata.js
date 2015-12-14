@@ -1,31 +1,31 @@
 // why not set up a local namespace
 var chf = chf || {}
 chf.autocompletes = chf.autocompletes || {
-  generic_file_subject: 'assign_fast/all',
-  generic_file_place_of_manufacture: 'assign_fast/geographic',
-  generic_file_place_of_interview: 'assign_fast/geographic',
-  generic_file_place_of_publication: 'assign_fast/geographic',
-  generic_file_artist:          'assign_fast/all',
-  generic_file_author:          'assign_fast/all',
-  generic_file_creator_of_work: 'assign_fast/all',
-  generic_file_contributor:     'assign_fast/all',
-  generic_file_interviewee:     'assign_fast/all',
-  generic_file_interviewer:     'assign_fast/all',
-  generic_file_manufacturer:    'assign_fast/all',
-  generic_file_photographer:    'assign_fast/all',
-  generic_file_publisher:       'assign_fast/all',
-  generic_file_language:       'local/languages',
+  generic_file_subject: '/qa/search/assign_fast/all',
+  generic_file_artist:          '/qa/search/assign_fast/all',
+  generic_file_author:          '/qa/search/assign_fast/all',
+  generic_file_creator_of_work: '/qa/search/assign_fast/all',
+  generic_file_contributor:     '/qa/search/assign_fast/all',
+  generic_file_interviewee:     '/qa/search/assign_fast/all',
+  generic_file_interviewer:     '/qa/search/assign_fast/all',
+  generic_file_manufacturer:    '/qa/search/assign_fast/all',
+  generic_file_photographer:    '/qa/search/assign_fast/all',
+  generic_file_publisher:       '/qa/search/assign_fast/all',
+  generic_file_language:       '/qa/search/local/languages',
+  generic_file_place_of_manufacture: '/authorities/geonames/location',
+  generic_file_place_of_interview: '/authorities/geonames/location',
+  generic_file_place_of_publication: '/authorities/geonames/location',
 }
 
 Blacklight.onLoad(function() {
   // CHF edit: basically this entire file has now been replaced.
 
-  // CHF edit: use qa as source of autocomplete data
-  function qa_autocomplete_opts(auth_path) {
+  // CHF edit: generalize source of autocomplete data
+  function autocomplete_opts(auth_path) {
     var autocomplete_opts = {
       minLength: 2,
       source: function( request, response ) {
-        $.getJSON( "/qa/search/" + auth_path, {
+        $.getJSON( auth_path, {
           q: request.term
         }, response );
       },
@@ -40,12 +40,6 @@ Blacklight.onLoad(function() {
     return autocomplete_opts;
   }
 
-  // loop over the autocomplete fields and attach the
-  // events for autocomplete and create other array values for autocomplete
-  for (var prop in chf.autocompletes) {
-    set_autocomplete($("input." + prop), chf.autocompletes[prop]);
-  }
-
   function set_autocomplete($elem, authority) {
     $elem
         // don't navigate away from the field on tab when selecting an item
@@ -55,10 +49,17 @@ Blacklight.onLoad(function() {
                 event.preventDefault();
             }
         })
-        .autocomplete( qa_autocomplete_opts( authority ));
+        .autocomplete( autocomplete_opts( authority ));
   }
 
-  // attach an auto complete based on the field
+  // loop over the autocomplete fields and attach the
+  // events for autocomplete and create other array values for autocomplete
+  for (var prop in chf.autocompletes) {
+    set_autocomplete($("input." + prop), chf.autocompletes[prop]);
+  }
+
+  // attach an autocomplete based on the field
+  // called when new fields are added to the form
   function setup_autocomplete(e, cloneElem) {
     var $cloneElem = $(cloneElem);
     // FIXME this code (comparing the id) depends on a bug. Each input has an id and the id is

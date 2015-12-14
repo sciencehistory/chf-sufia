@@ -93,7 +93,7 @@ Sufia.config do |config|
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # config.analytic_start_date = DateTime.new(2014,9,10)
 
-  config.geonames_username = ''
+  config.geonames_username = 'chemheritage'
 # Where to store tempfiles, leave blank for the system temp directory (e.g. /tmp)
   # config.temp_file_base = '/home/developer1'
 
