@@ -5,9 +5,9 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   showing the fields on the item page
   self.terms = [:title, :identifier,
     ].concat(Sufia.config.makers.keys).concat(
+      [:date_of_work]).concat(
       Sufia.config.places.keys).concat(
       [
-      :date_of_work,
       :resource_type, :genre_string,
       :medium,
       :extent,
@@ -30,8 +30,9 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   # Add a new list for creating form elements on the edit pages
   #   (since we've combined many of the fields into 'maker')
   def edit_field_terms
-    [:title, :identifier, :maker, :place,
+    [:title, :identifier, :maker,
       :date_of_work,
+      :place,
       :resource_type, :genre_string,
       :medium,
       :extent,
