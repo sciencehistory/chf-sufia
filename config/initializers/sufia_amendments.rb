@@ -19,6 +19,7 @@ Sufia.config do |config|
     place_of_interview: ::RDF::Vocab::MARCRelators.evp,
     place_of_manufacture: ::RDF::Vocab::MARCRelators.mfp,
     place_of_publication: ::RDF::Vocab::MARCRelators.pup,
+    place_of_creation: ::RDF::Vocab::MARCRelators.prp,
   }
 
   # form field configuration

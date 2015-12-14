@@ -15,6 +15,7 @@ chf.autocompletes = chf.autocompletes || {
   generic_file_place_of_manufacture: '/authorities/geonames/location',
   generic_file_place_of_interview: '/authorities/geonames/location',
   generic_file_place_of_publication: '/authorities/geonames/location',
+  generic_file_place_of_creation: '/authorities/geonames/location',
 }
 
 Blacklight.onLoad(function() {
