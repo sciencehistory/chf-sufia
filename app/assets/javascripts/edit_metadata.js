@@ -12,10 +12,10 @@ chf.autocompletes = chf.autocompletes || {
   generic_file_photographer:    '/qa/search/assign_fast/all',
   generic_file_publisher:       '/qa/search/assign_fast/all',
   generic_file_language:       '/qa/search/local/languages',
-  generic_file_place_of_manufacture: '/authorities/geonames/location',
-  generic_file_place_of_interview: '/authorities/geonames/location',
-  generic_file_place_of_publication: '/authorities/geonames/location',
-  generic_file_place_of_creation: '/authorities/geonames/location',
+  generic_file_place_of_manufacture: '/qa/search/assign_fast/all',
+  generic_file_place_of_interview: '/qa/search/assign_fast/all',
+  generic_file_place_of_publication: '/qa/search/assign_fast/all',
+  generic_file_place_of_creation: '/qa/search/assign_fast/all',
 }
 
 Blacklight.onLoad(function() {
