@@ -45,7 +45,7 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       expect(page).to have_no_field('generic_file_photographer')
       select 'Artist', from: 'generic_file_maker'
       fill_in 'generic_file_artist', with: 'Zeldog'
-      click_button 'Update Generic file'
+      click_button 'Save Descriptions'
       expect(page.find('div.generic_file_maker').first('input').value).to eq('Zeldog')
     end
 
