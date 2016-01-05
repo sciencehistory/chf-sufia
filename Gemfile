@@ -27,8 +27,8 @@ gem 'rails', '4.2.2'
 # gem 'sqlite3'
 group :production do
   gem 'pg'
-  gem 'therubyracer', platforms: :ruby
 end
+gem 'therubyracer', platforms: :ruby
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
