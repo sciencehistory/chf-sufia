@@ -49,6 +49,8 @@ Sufia.config do |config|
     'Public Domain Mark 1.0' => 'http://creativecommons.org/publicdomain/mark/1.0/',
   }
 
+  config.cc_licenses_reverse = Hash[*config.cc_licenses.to_a.flatten.reverse]
+
   config.divisions = [
     'Archives',
     'Center for Oral History',
