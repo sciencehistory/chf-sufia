@@ -6,7 +6,7 @@ development:
 test:
   user: fedoraAdmin
   password: fedoraAdmin
-  url: http://localhost:8983/fedora/rest
+  url: http://127.0.0.1:8080/fedora/rest
   base_path: /test
 production:
   user: fedoraAdmin
