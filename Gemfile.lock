@@ -268,6 +268,7 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     haml (4.0.7)
       tilt
+    highline (1.7.8)
     hitimes (1.2.2)
     htmlentities (4.3.4)
     httmultiparty (0.3.16)
@@ -759,6 +760,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   factory_girl_rails (~> 4.4.1)
   guard-rspec
+  highline
   hydra-editor!
   hydra-role-management
   jasmine (~> 2.3)
@@ -791,4 +793,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.5
+   1.11.2

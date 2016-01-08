@@ -13,6 +13,7 @@ gem 'qa', github: 'projecthydra-labs/questioning_authority'
 # TODO it should be fine to remove this if PR #1326
 # is accepted into sufia
 gem 'posix-spawn'
+gem 'highline'
 
 #gem 'hydra-head', github: 'hackmastera/hydra-head', branch: 'fix-webrick-split'
 
