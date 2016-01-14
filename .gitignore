@@ -20,3 +20,4 @@
 /jetty
 /.vagrant
 /ansible
+config/secrets.yml
