@@ -1,27 +1,16 @@
 # README
 
-## Set up a dev environment
-* Create workspace directory
-* Clone this repo
-* Install virtualbox and vagrant
-* cd into your clone of this repo and run 'vagrant up'
+## Description
+The Sufia-based application powering CHF's digital collections site. CHF's digitical collections team is currently hard at work ingesting content before making the site publicly available!
+
+## Dependencies
+All system setup for development and production machines is managed and documented via ansible playbooks that use the roles defined in https://github.com/curationexperts/ansible-hydra.
+
+## Deployment
+bundle exec cap deploy [target machine]
 
 ## Run Tests
-vagrant ssh
-cd /vagrant
-rake jetty:start
 bundle exec rspec
 
-## Run tests continuously from vagrant machine using Guard
+## Run tests continuously using Guard
 bundle exec guard -p -l 10
-
-## Deploy
-I'll let you know once I've done it.
-
-## The following are specified by ansible
-* Ruby version
-* System dependencies
-* Configuration
-* Database creation
-* Database initialization
-* Services (job queues, cache servers, search engines, etc.)
