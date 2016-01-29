@@ -76,18 +76,23 @@ Blacklight.onLoad(function() {
   function link_field_pair($select) {
     var $text = $select.next();
     var attribute = $select.val();
-    var old_name = $select.attr("name");
-    // since we're taking the id from the <select> field it always has the name of the form element
-    //   (this means it will be the same as the 'old' class)
-    var old_id = $select.attr("id");
-    var suffix_regex = /_([a-zA-Z]+)$/;
-    var matches = suffix_regex.exec(old_id);
-    var suffix = matches[1];
-    var new_id = old_id.replace(suffix, attribute);
-    $text.attr('id', new_id);
-    $text.attr('name', old_name.replace(suffix, attribute));
-    $text.removeClass(old_id).addClass(new_id);
-    setup_autocomplete(null, $text);
+    if (attribute) {
+      var old_name = $select.attr("name");
+      // since we're taking the id from the <select> field it always has the name of the form element
+      //   (this means it will be the same as the 'old' class)
+      var old_id = $select.attr("id");
+      var suffix_regex = /_([a-zA-Z]+)$/;
+      var matches = suffix_regex.exec(old_id);
+      var suffix = matches[1];
+      var new_id = old_id.replace(suffix, attribute);
+      $text.attr('id', new_id);
+      $text.attr('name', old_name.replace(suffix, attribute));
+      $text.removeClass(old_id).addClass(new_id);
+      setup_autocomplete(null, $text);
+    } else { // when we're going back to a blank field
+      $text.attr('id', $select.attr("id"));
+      $text.attr('name', $select.attr("name"));
+    }
   }
   $('.double-input select').change(function() { link_field_pair($(this)) });
 
