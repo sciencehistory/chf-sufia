@@ -65,6 +65,7 @@ Sufia.config do |config|
     'Kativa, Hillary',
     'Lockard, Douglas',
     'Lu, Cathleen',
+    'Miller, Megan',
     'Newhouse, Sarah',
     'The University of Pennsylvania Libraries',
     'Tobias, Gregory',
