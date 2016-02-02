@@ -1,3 +1,8 @@
 <%= f.input :identifier, as: :external_id,
   include_blank: true, value_method: :to_s, label_method: :to_s
 %>
+<div class='form-group' id='opac_data'>
+<%= button_tag type: 'button', class: 'btn', id: "load_opac_data" do %>
+  Load OPAC data
+<% end %>
+</div>
