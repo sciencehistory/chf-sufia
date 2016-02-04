@@ -101,10 +101,8 @@ Blacklight.onLoad(function() {
   function swap_classes($field, value) {
     var classList = $field.attr('class').split(/\s+/);
     $.each(classList, function(index, item) {
-      console.log(item);
       // WARNING!! HARD-CODED STRING VALUE!
       if (item.lastIndexOf('generic_file_', 0) === 0) {
-        console.log('yes');
         $field.removeClass(item);
       }
     });
