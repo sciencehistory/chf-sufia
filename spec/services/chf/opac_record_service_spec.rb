@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe OpacRecordService do
+RSpec.describe CHF::OpacRecordService do
 
   before do
     json_headers = { "Content-Type" => "application/json;charset=UTF-8" }
@@ -26,14 +26,12 @@ RSpec.describe OpacRecordService do
   end
 
   it 'fails to connect with bad credentials' do
-    opac = OpacRecordService.new(api_key: 'MY_KEY', client_secret: 'BAD_SECRET')
-    data = opac.get_bib('1000001')
-    expect(data).to be_a Hash
-    expect(data.keys).to eq ['error']
+    opac = CHF::OpacRecordService.new(api_key: 'MY_KEY', client_secret: 'BAD_SECRET')
+    expect { opac.get_bib('1000001') }.to raise_error(CHF::OpacConnectionError)
   end
 
   it 'gets a bib' do
-    opac = OpacRecordService.new(api_key: 'MY_KEY', client_secret: 'MY_SECRET')
+    opac = CHF::OpacRecordService.new(api_key: 'MY_KEY', client_secret: 'MY_SECRET')
     data = opac.get_bib('1000001')
     expect(data).to be_a Hash
     expect(data['publishYear']).to eq(1969)
