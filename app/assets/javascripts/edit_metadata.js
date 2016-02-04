@@ -72,29 +72,44 @@ Blacklight.onLoad(function() {
     }
   }
 
-  // chf edit: configure text field 'name' and 'id' based on selected option from dropdown.
-  function link_field_pair($select) {
-    var $text = $select.next();
-    var attribute = $select.val();
+  // chf edit: configure text field name, id, and class based on selected option from dropdown.
+  function link_field_pair($select_field) {
+    var $text_field = $select_field.next();
+    var attribute = $select_field.val();
     if (attribute) {
-      var old_name = $select.attr("name");
+      var old_name = $select_field.attr("name");
       // since we're taking the id from the <select> field it always has the name of the form element
-      //   (this means it will be the same as the 'old' class)
-      var old_id = $select.attr("id");
+      var default_id = $select_field.attr("id");
       var suffix_regex = /_([a-zA-Z]+)$/;
-      var matches = suffix_regex.exec(old_id);
+      var matches = suffix_regex.exec(default_id);
       var suffix = matches[1];
-      var new_id = old_id.replace(suffix, attribute);
-      $text.attr('id', new_id);
-      $text.attr('name', old_name.replace(suffix, attribute));
-      $text.removeClass(old_id).addClass(new_id);
-      setup_autocomplete(null, $text);
+      var new_id = default_id.replace(suffix, attribute);
+      $text_field.attr('id', new_id);
+      $text_field.attr('name', old_name.replace(suffix, attribute));
+      swap_classes($text_field, new_id);
+      setup_autocomplete(null, $text_field);
     } else { // when we're going back to a blank field
-      $text.attr('id', $select.attr("id"));
-      $text.attr('name', $select.attr("name"));
+      var new_id = $select_field.attr("id");
+      $text_field.attr('id', new_id);
+      $text_field.attr('name', $select_field.attr("name"));
+      swap_classes($text_field, new_id);
+      // TODO: clear autocomplete? Doesn't seem like a huge priority..
     }
   }
   $('.double-input select').change(function() { link_field_pair($(this)) });
+
+  function swap_classes($field, value) {
+    var classList = $field.attr('class').split(/\s+/);
+    $.each(classList, function(index, item) {
+      console.log(item);
+      // WARNING!! HARD-CODED STRING VALUE!
+      if (item.lastIndexOf('generic_file_', 0) === 0) {
+        console.log('yes');
+        $field.removeClass(item);
+      }
+    });
+    $field.addClass(value);
+  }
 
   // chf edit: each time a double-input field group is created, the select and text must be linked.
   function chf_add(e, cloneElem) {
