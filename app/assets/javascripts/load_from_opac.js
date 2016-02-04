@@ -3,6 +3,7 @@ var chf = chf || {}
 chf.load_from_opac = function() {
   // get bib number from form
   var bibnum = chf.get_bib_num();
+  if (bibnum === null) { return; }
   // TODO: get resource type from form
   // get json response.
   var request = new XMLHttpRequest();
@@ -16,9 +17,7 @@ chf.load_from_opac = function() {
       chf.display_data(data);
     } else {
       // We reached our target server, but it returned an error
-      data = JSON.parse(request.responseText);
-      data = JSON.stringify(data, null, 2);
-      data = request.status + ': ' + data;
+      data = request.status + ': ' + 'bad request';
       chf.display_data(data);
     }
   };
@@ -33,7 +32,17 @@ chf.load_from_opac = function() {
 
 chf.get_bib_num = function() {
   //return '123';
-  return 'B10691054';
+  //return 'B10691054';
+  var html_col = document.getElementsByClassName('generic_file_bib_external_id');
+  if (html_col.length > 1) {
+    chf.display_data('Too many bib numbers provided');
+    return null;
+  } else if (html_col.length < 1) {
+    chf.display_data('No bib numbers provided');
+    return null;
+  } else {
+    return html_col.item(0).value;
+  }
 };
 
 chf.display_data = function(data) {
