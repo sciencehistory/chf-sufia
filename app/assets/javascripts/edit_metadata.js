@@ -116,6 +116,7 @@ Blacklight.onLoad(function() {
     var $par = $(cloneElem).parent();
     if ($par.hasClass('double-input')) {
       var $select = $par.children(":first");
+      link_field_pair($select); // link once now to set text box
       $select.change(function() { link_field_pair($select) });
     }
   }
