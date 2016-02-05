@@ -47,21 +47,23 @@ chf.get_bib_num = function() {
 
 chf.display_data = function(data) {
   // insert into box below button.
-  p = chf.get_data_box_p();
+  p = chf.get_data_container();
   p.textContent = data;
 };
 
-chf.get_data_box_p = function() {
-  var p = document.getElementById('opac_data_message');
-  if (p === null) {
+chf.get_data_container = function() {
+  var pre = document.getElementById('opac_data_message');
+  if (pre === null) {
     var data_box = document.createElement('div');
     data_box.setAttribute('class', 'well');
     document.getElementById('opac_data').appendChild(data_box);
     p = document.createElement('p');
-    p.setAttribute('id', 'opac_data_message');
     data_box.appendChild(p);
+    pre = document.createElement('pre');
+    p.appendChild(pre);
+    pre.setAttribute('id', 'opac_data_message');
   }
-  return p;
+  return pre;
 }
 
 Blacklight.onLoad(function() {
