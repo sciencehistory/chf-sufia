@@ -2,6 +2,8 @@
 # WARNING: changes may necessitate data migration!!
 Sufia.config do |config|
 
+  config.minter_statefile = Rails.env.production? ? '/var/sufia/minter-state' : '/tmp/minter-state'
+
   # model configuration
   config.makers = {
     artist:       ::RDF::Vocab::MARCRelators.art,
