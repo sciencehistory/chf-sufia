@@ -15,11 +15,12 @@ gem 'qa', github: 'projecthydra-labs/questioning_authority'
 gem 'posix-spawn'
 gem 'highline'
 
-#gem 'hydra-head', github: 'hackmastera/hydra-head', branch: 'fix-webrick-split'
-
 # local upgrades!
-gem 'active-fedora', github: 'projecthydra/active_fedora', :ref => '137c652'
 gem 'ldp', '~> 0.4.0'
+# need fix in noid 1.0.3
+gem 'active_fedora-noid', '~> 1.0', '>= 1.0.3'
+# need fix from 9.6.0
+gem 'active-fedora', '~> 9.0', '>= 9.6.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.2'
