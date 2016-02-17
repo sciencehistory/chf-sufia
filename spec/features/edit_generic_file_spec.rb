@@ -100,33 +100,11 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     expect(find('label', text: 'Genre')['class']).not_to include('required')
   end
 
-  scenario "dashboard has no link to batch edits" do
-    visit "/dashboard/files"
-    find("#check_all").click
-    expect(find('.batch-info')).to have_button('Delete Selected')
-    expect(find('.batch-info')).not_to have_button('Edit Selected')
-  end
-
-  #disable; we're not supporting batch edits yet and they're not working right
-  scenario "the batch edits form has a field for genre", exclude: true do
+  scenario "the batch edits form has a field for genre" do
     visit "/batch_edits/edit?batch_document_ids[]=#{@file.id}"
     expect(page).to have_text('Genre')
     expect(page).not_to have_text('Genre string')
     expect(page).to have_text('Interviewee')
   end
-
-#  # this test should pass with out-of-the-box sufia behavior
-#  scenario "successfully batch edit the keyword (tag) field", js: true do
-#    visit "/batch_edits/edit?batch_document_ids[]=#{@file.id}"
-#    click_link 'Keyword'
-#    fill_in 'generic_file_tag', with: 'llama'
-#    click_button 'Save changes'
-#    expect(page).to have_css('.loading')
-#    sleep 300
-#    save_and_open_screenshot
-#    expect(page.find('.status')).to have_text('saved') # fails here
-#    visit "/files/#{@file.id}"
-#    expect(page).to have_text 'llama'
-#  end
 
 end

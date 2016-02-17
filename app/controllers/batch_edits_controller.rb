@@ -4,7 +4,16 @@ class BatchEditsController < ApplicationController
   include Sufia::BatchEditsControllerBehavior
 
   def terms
-    BatchEditForm.terms
+    BatchEditForm.terms - [
+        :division,
+        :physical_container,
+        :rights_holder,
+        :file_creator,
+        :admin_note,
+        :date_of_work,
+        :inscription,
+        :additional_credit,
+    ]
   end
 
   def generic_file_params
