@@ -4,6 +4,9 @@ Sufia.config do |config|
 
   config.minter_statefile = Rails.env.production? ? '/var/sufia/minter-state' : '/tmp/minter-state'
 
+  # Contact form
+  config.from_email = 'no-reply@chemheritage.org'
+
   # model configuration
   config.makers = {
     artist:       ::RDF::Vocab::MARCRelators.art,
