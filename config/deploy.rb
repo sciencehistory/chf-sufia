@@ -9,6 +9,8 @@ set :deploy_to, '/opt/sufia-project'
 set :format, :pretty
 set :log_level, :info
 set :keep_releases, 5
+# label deploys with server local time instead of utm
+set :deploytag_utc, false
 
 # using 'touch tmp/restart.txt to restart passenger
 set :passenger_restart_with_touch, true
