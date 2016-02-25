@@ -126,4 +126,24 @@ namespace :chf do
     output = args[:output_path] || "related_urls.csv"
     CHF::Metadata::RelatedUrlReport.new.to_csv(output)
   end
+
+  namespace :admin do
+
+    desc 'Grant admin role to existing user.'
+    task :grant, [:email] => :environment do |t, args|
+      begin
+        CHF::Utils::Admin.grant(args[:email])
+      rescue ActiveRecord::RecordNotFound
+        abort("User #{args[:email]} does not exist. Only an existing user can be promoted to admin")
+      end
+      puts "User: #{u.email} is an admin."
+    end
+
+    desc 'Revoke admin role from user.'
+    task :revoke, [:email] => :environment do |t, args|
+      CHF::Utils::Admin.revoke(args[:email])
+      puts "User: #{u.email} is no longer an admin."
+    end
+
+  end
 end
