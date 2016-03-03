@@ -138,8 +138,7 @@ GEM
       sass-rails
       skydrive
     builder (3.2.2)
-    byebug (5.0.0)
-      columnize (= 0.9.0)
+    byebug (8.2.2)
     cancancan (1.13.1)
     capistrano (3.4.0)
       i18n
@@ -171,7 +170,7 @@ GEM
     childprocess (0.5.8)
       ffi (~> 1.0, >= 1.0.11)
     cliver (0.3.2)
-    coderay (1.1.0)
+    coderay (1.1.1)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -180,7 +179,6 @@ GEM
       execjs
     coffee-script-source (1.9.1)
     colorize (0.7.7)
-    columnize (0.9.0)
     concurrent-ruby (1.0.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -447,12 +445,12 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     posix-spawn (0.3.11)
-    pry (0.10.1)
+    pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.2.0)
-      byebug (~> 5.0)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
