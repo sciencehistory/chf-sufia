@@ -13,8 +13,10 @@ class GenericFileEditForm < GenericFilePresenter
 
   def self.model_attributes(params)
     clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
-    clean_params["physical_container"] = encode_physical_container params
-    clean_params["identifier"] = encode_external_id params
+    # Oops; we're blanking out these values when changing permissions and probably versions, too
+    #  -- they don't have these fields in the form at all so they don't get repopulated.
+    clean_params = encode_physical_container(params, clean_params)
+    clean_params = encode_external_id(params, clean_params)
     clean_params
   end
 
@@ -43,26 +45,40 @@ class GenericFileEditForm < GenericFilePresenter
     end
 
     # It's a single-value field
-    def self.encode_physical_container(params)
+    def self.encode_physical_container(params, clean_params)
+      have_data = false
       result = []
       CHF::Utils::ParseFields.physical_container_fields.values.each do |k|
-        result << "#{k[0]}#{params[k]}" if params[k].present?
+        # check for some data
+        if params[k].present?
+          have_data = true
+          result << "#{k[0]}#{params[k]}"
+        end
       end
-      result.join('|')
+      if have_data
+        clean_params['physical_container'] = result.join('|')
+      end
+      clean_params
     end
 
     # It's a multi-value field
-    def self.encode_external_id(params)
+    def self.encode_external_id(params, clean_params)
+    #unless params['identifier'].nil?
+      have_data = false
       result = []
       CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
         param = "#{k}_external_id"
         if params[param].present?
+          have_data = true
           params[param].each do |id_value|
             result << "#{k}-#{id_value}" unless id_value.empty?
           end
         end
       end
-      result
+      if have_data
+        clean_params['identifier'] = result
+      end
+      clean_params
     end
 
 end
