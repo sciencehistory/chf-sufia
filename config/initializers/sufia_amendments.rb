@@ -71,6 +71,7 @@ Sufia.config do |config|
     'Lockard, Douglas',
     'Lu, Cathleen',
     'Miller, Megan',
+    'Muhlin, Jay',
     'Newhouse, Sarah',
     'The University of Pennsylvania Libraries',
     'Tobias, Gregory',
@@ -90,6 +91,7 @@ Sufia.config do |config|
     'Advertisements',
     'Artifacts',
     'Business correspondence',
+    'Catalogs',
     'Chemistry sets',
     'Engravings',
     'Etchings',
@@ -106,6 +108,7 @@ Sufia.config do |config|
     'Prints',
     'Rare books',
     'Records (Documents)',
+    'Sample books',
     'Scientific apparatus and instruments',
     'Slides',
     'Stereographs',
@@ -117,6 +120,7 @@ Sufia.config do |config|
 
   config.resource_types = {
     "Image" => "Image",
+    "Mixed Material" => "Mixed Material",
     "Moving Image" => "Moving Image",
     "Physical Object" => "Physical Object",
     "Sound" => "Sound",
@@ -126,6 +130,7 @@ Sufia.config do |config|
   config.resource_types_to_schema = {
     "Moving Image" => "http://purl.org/dc/dcmitype/MovingImage",
     "Image" => "http://purl.org/dc/dcmitype/StillImage",
+    "Mixed Material" => "http://id.loc.gov/vocabulary/resourceTypes/mix",
     "Physical Object" => "http://purl.org/dc/dcmitype/PhysicalObject",
     "Sound" => "http://purl.org/dc/dcmitype/Sound",
     "Text" => "http://purl.org/dc/dcmitype/Text"
