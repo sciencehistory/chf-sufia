@@ -105,6 +105,7 @@ Sufia.config do |config|
     'Photographs',
     'Plastics',
     'Portraits',
+    'Press releases',
     'Prints',
     'Rare books',
     'Records (Documents)',
