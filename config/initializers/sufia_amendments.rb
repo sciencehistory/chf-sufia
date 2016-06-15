@@ -98,6 +98,7 @@ Sufia.config do |config|
     'Handbooks and manuals',
     'Manuscripts',
     'Minutes (Records)',
+    'Negatives',
     'Oral histories',
     'Paintings',
     'Pamphlets',
