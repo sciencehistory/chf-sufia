@@ -27,6 +27,9 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.after(:each, type: :feature) { Warden.test_reset! }
 
+  config.before :suite do
+    DatabaseCleaner.clean_with(:truncation)
+  end
   config.before :each do |example|
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
       DatabaseCleaner.strategy = :truncation
