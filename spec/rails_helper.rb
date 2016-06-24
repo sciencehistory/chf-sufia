@@ -29,6 +29,7 @@ RSpec.configure do |config|
 
   config.before :suite do
     DatabaseCleaner.clean_with(:truncation)
+    ActiveFedora::Cleaner.clean!
   end
   config.before :each do |example|
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
@@ -37,11 +38,6 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
     end
-
-    ActiveFedora::Cleaner.clean!
-  end
-  config.after do
-    DatabaseCleaner.clean
   end
 
   # The different available types are documented in the features, such as in
