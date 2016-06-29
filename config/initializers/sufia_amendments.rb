@@ -11,6 +11,7 @@ Sufia.config do |config|
   config.makers = {
     artist:       ::RDF::Vocab::MARCRelators.art,
     author:       ::RDF::Vocab::MARCRelators.aut,
+    addressee:    ::RDF::Vocab::MARCRelators.rcp,
     creator_of_work:      ::RDF::Vocab::DC11.creator,
     contributor:  ::RDF::Vocab::DC11.contributor,
     interviewee:  ::RDF::Vocab::MARCRelators.ive,
