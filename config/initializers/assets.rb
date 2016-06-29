@@ -9,3 +9,6 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
+# Adding the below due to complaints on rails upgrade from 4.2.2 to 4.2.3. However, default.png *is*
+#   in the app/assets folder in sufia, so unsure why this was necessary.
+Rails.application.config.assets.precompile += %w( default.png )
