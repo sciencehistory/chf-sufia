@@ -95,6 +95,7 @@ Sufia.config do |config|
     'Catalogs',
     'Chemistry sets',
     'Drawings',
+    'Encyclopedias and dictionaries',
     'Engravings',
     'Ephemera',
     'Etchings',
