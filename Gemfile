@@ -1,36 +1,19 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', '6.5.0'
-gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
+gem 'sufia', github: 'projecthydra/sufia', branch: 'master'
+gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0.6'
 
 # extras
 gem 'hydra-role-management'
-gem 'rdf-vocab'
-gem 'hydra-editor', github: 'projecthydra/hydra-editor', :ref => '7c8983'
-gem 'qa', github: 'projecthydra-labs/questioning_authority'
-# TODO it should be fine to remove this if PR #1326
-# is accepted into sufia
-gem 'posix-spawn'
 gem 'highline'
-
-# local upgrades!
-gem 'ldp', '~> 0.4.0'
-# need fix in noid 1.0.3
-gem 'active_fedora-noid', '~> 1.0', '>= 1.0.3'
-# need fix from 9.6.0
-gem 'active-fedora', '~> 9.0', '>= 9.6.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
-# Use sqlite3 as the database for Active Record
-# moved sqlite gem to development section
-# gem 'sqlite3'
-group :production do
-  gem 'pg'
-end
-gem 'therubyracer', platforms: :ruby
+gem 'devise'
+gem 'devise-guests', '~> 0.3'
+gem 'resque-pool'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -48,15 +31,11 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'devise'
-gem 'devise-guests', '~> 0.3'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+group :production do
+  gem 'pg'
+  gem 'therubyracer', platforms: :ruby
+end
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
 group :development do
   gem 'capistrano', '3.4.0'
   gem 'capistrano-bundler', '1.1.4'
