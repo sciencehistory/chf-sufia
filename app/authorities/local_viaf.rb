@@ -1,5 +1,5 @@
 # use VIAF name authority as a local qa authority
-require 'rest_client'
+require 'rest-client'
 
 # can't actually be used by itself; use as parent of a subauth class.
 class LocalViaf

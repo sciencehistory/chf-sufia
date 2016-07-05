@@ -233,6 +233,8 @@ GEM
     devise-guests (0.5.0)
       devise
     diff-lcs (1.2.5)
+    domain_name (0.5.20160615)
+      unf (>= 0.0.5, < 1.0.0)
     dropbox-sdk (1.6.5)
       json
     ebnf (1.0.0)
@@ -307,6 +309,8 @@ GEM
       httparty (>= 0.7.3)
       mimemagic
       multipart-post
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     http_logger (0.5.1)
     httparty (0.13.7)
       json (~> 1.8)
@@ -462,6 +466,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
+    netrc (0.11.0)
     noid (0.9.0)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -619,6 +624,10 @@ GEM
     resque-pool (0.6.0)
       rake
       resque (~> 1.22)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     retriable (1.4.1)
     rsolr (1.0.13)
       builder (>= 2.1.2)
@@ -745,6 +754,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     vegas (0.1.11)
       rack (>= 1.0.0)
     warden (1.2.6)
@@ -795,6 +807,7 @@ DEPENDENCIES
   pry-rails
   rails (= 4.2.6)
   resque-pool
+  rest-client
   rsolr (~> 1.0.6)
   rspec-activemodel-mocks
   rspec-rails (~> 3.1)

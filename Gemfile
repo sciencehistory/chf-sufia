@@ -8,6 +8,7 @@ gem 'rsolr', '~> 1.0.6'
 # extras
 gem 'hydra-role-management'
 gem 'highline'
+gem 'rest-client'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
