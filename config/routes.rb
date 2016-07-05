@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   mount Qa::Engine => '/qa'
 
   
-  blacklight_for :catalog
   devise_for :users
   mount Hydra::RoleManagement::Engine => '/'
 
@@ -15,6 +14,28 @@ Rails.application.routes.draw do
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'
   root to: 'homepage#index'
+
+  # blacklight routes
+  mount Blacklight::Engine => '/'
+
+  concern :searchable, Blacklight::Routes::Searchable.new
+  concern :exportable, Blacklight::Routes::Exportable.new
+
+  resource :catalog, only: [:index], controller: 'catalog' do
+    concerns :searchable
+  end
+
+  resources :solr_documents, only: [:show], controller: 'catalog' do
+    concerns :exportable
+  end
+
+  resources :bookmarks do
+    concerns :exportable
+
+    collection do
+      delete 'clear'
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
