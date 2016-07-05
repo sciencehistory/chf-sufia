@@ -1,4 +1,4 @@
 <%= f.input :place, as: :multi_value_select_text_with_help,
-  include_blank: true, options: Sufia.config.places.keys,
+  include_blank: true, options: Rails.configuration.places.keys,
   value_method: :to_s, label_method: lambda { |v| v.to_s.humanize }
 %>

@@ -12,6 +12,111 @@ module Chufia
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    #### WARNING: changes may necessitate data migration!!
+    # model configuration
+    config.makers = {
+      artist:       ::RDF::Vocab::MARCRelators.art,
+      author:       ::RDF::Vocab::MARCRelators.aut,
+      addressee:    ::RDF::Vocab::MARCRelators.rcp,
+      creator_of_work:      ::RDF::Vocab::DC11.creator,
+      contributor:  ::RDF::Vocab::DC11.contributor,
+      interviewee:  ::RDF::Vocab::MARCRelators.ive,
+      interviewer:  ::RDF::Vocab::MARCRelators.ivr,
+      manufacturer: ::RDF::Vocab::MARCRelators.mfr,
+      photographer: ::RDF::Vocab::MARCRelators.pht,
+      publisher:    ::RDF::Vocab::DC11.publisher,
+    }
+    config.places = {
+      place_of_interview: ::RDF::Vocab::MARCRelators.evp,
+      place_of_manufacture: ::RDF::Vocab::MARCRelators.mfp,
+      place_of_publication: ::RDF::Vocab::MARCRelators.pup,
+      place_of_creation: ::RDF::Vocab::MARCRelators.prp,
+    }
+
+    # form field configuration
+    config.credit_names = [
+      'Douglas Lockard',
+      'Gregory Tobias',
+      'Mark Backrath',
+      'Penn School of Medicine',
+      'Will Brown',
+    ]
+
+    config.credit_roles = {
+      'photographer' => 'Photographed by',
+    }
+
+    config.divisions = [
+      'Archives',
+      'Center for Oral History',
+      'Museum',
+      'Othmer Library of Chemical History',
+    ]
+
+    config.file_creators = [
+      'Brown, Will',
+      'DiMeo, Michelle',
+      'George Blood Audio LP',
+      'Kativa, Hillary',
+      'Lockard, Douglas',
+      'Lu, Cathleen',
+      'Miller, Megan',
+      'Muhlin, Jay',
+      'Newhouse, Sarah',
+      'The University of Pennsylvania Libraries',
+      'Tobias, Gregory',
+      'Voelkel, James',
+    ]
+
+    config.external_ids_hash = {
+      'object' => 'Object ID',
+      'bib' => 'Sierra Bib. No.',
+      'item' => 'Sierra Item No.',
+      'accn' => 'Accession No.',
+      'aspace' => 'ASpace Reference No.',
+      'interview' => 'Oral History Interview No.',
+    }
+
+    config.genres = [
+      'Advertisements',
+      'Artifacts',
+      'Business correspondence',
+      'Catalogs',
+      'Chemistry sets',
+      'Drawings',
+      'Encyclopedias and dictionaries',
+      'Electronics',
+      'Engravings',
+      'Ephemera',
+      'Etchings',
+      'Handbooks and manuals',
+      'Illustrations',
+      'Manuscripts',
+      'Minutes (Records)',
+      'Molecular models',
+      'Negatives',
+      'Oral histories',
+      'Paintings',
+      'Pamphlets',
+      'Personal correspondence',
+      'Photographs',
+      'Plastics',
+      'Portraits',
+      'Press releases',
+      'Prints',
+      'Rare books',
+      'Records (Documents)',
+      'Sample books',
+      'Scientific apparatus and instruments',
+      'Slides',
+      'Stereographs',
+    ]
+
+    config.physical_container_fields = {
+      'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part', 'g'=>'page'
+    }
+
+
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'

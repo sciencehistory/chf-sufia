@@ -25,7 +25,7 @@ class GenericFile < ActiveFedora::Base
   end
 
   #Set up a bunch of MARC Relator codes as properties
-  Sufia.config.makers.merge(Sufia.config.places).each do |field_name, predicate|
+  Rails.configuration.makers.merge(Rails.configuration.places).each do |field_name, predicate|
     property field_name, predicate: predicate do |index|
       index.as :stored_searchable
     end

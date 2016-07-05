@@ -4,9 +4,9 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
   #   allowing the fields to be edited
   #   showing the fields on the item page
   self.terms = [:title, :identifier,
-    ].concat(Sufia.config.makers.keys).concat(
+    ].concat(Rails.configuration.makers.keys).concat(
       [:date_of_work]).concat(
-      Sufia.config.places.keys).concat(
+      Rails.configuration.places.keys).concat(
       [
       :resource_type, :genre_string,
       :medium,
@@ -55,7 +55,7 @@ class GenericFilePresenter < Sufia::GenericFilePresenter
 
   # We need these as hidden fields or else data deletion doesn't work.
   def hidden_field_terms
-    Sufia.config.makers.keys.concat(Sufia.config.places.keys)
+    Rails.configuration.makers.keys.concat(Rails.configuration.places.keys)
   end
 
   # post-upload edit form has a "show more" button; we want
