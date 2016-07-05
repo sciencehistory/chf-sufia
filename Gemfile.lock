@@ -808,7 +808,7 @@ DEPENDENCIES
   rails (= 4.2.6)
   resque-pool
   rest-client
-  rsolr (~> 1.0.6)
+  rsolr (~> 1.0)
   rspec-activemodel-mocks
   rspec-rails (~> 3.1)
   sass-rails (~> 5.0)

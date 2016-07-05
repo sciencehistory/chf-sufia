@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # sufia stuff!
 gem 'sufia', github: 'projecthydra/sufia', branch: 'master'
 gem 'kaminari_route_prefix'
-gem 'rsolr', '~> 1.0.6'
+gem 'rsolr', '~> 1.0'
 
 # extras
 gem 'hydra-role-management'
