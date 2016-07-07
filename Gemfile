@@ -23,7 +23,7 @@ gem 'active_fedora-noid', '~> 1.0', '>= 1.0.3'
 gem 'active-fedora', '~> 9.0', '>= 9.6.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 # Use sqlite3 as the database for Active Record
 # moved sqlite gem to development section
 # gem 'sqlite3'
