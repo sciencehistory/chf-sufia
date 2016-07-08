@@ -15,8 +15,9 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
     out << "<div class='listing'>"
     CHF::Utils::ParseFields.physical_container_fields.values.each_slice(2) do |pair|
       out << '<div class=row>'
-      out << build_field(pair[0])
-      out << build_field(pair[1])
+      pair.each do |field|
+        out << build_field(field)
+      end
       out << "</div>"
     end
     out << "</div>"

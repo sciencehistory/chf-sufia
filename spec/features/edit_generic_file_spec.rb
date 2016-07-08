@@ -33,11 +33,13 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       expect(id_div.find('label', text: 'External ID')['class']).to include('required')
       expect(id_div.first('li')).to have_select('generic_file_identifier', selected: 'Object ID')
       expect(id_div.first('li')).to have_field('generic_file_object_external_id', with: '2008.043.002')
+      # physical container form fields
       pc_div = find('div.generic_file_physical_container')
       expect(pc_div).to have_text 'Box'
       expect(pc_div).to have_text 'Part'
       expect(pc_div.first('input#generic_file_volume').value).to eq '8'
       expect(pc_div.first('input#generic_file_page').value).to eq '100'
+      page.assert_selector('input.physical_container', :count => 5)
     end
 
     scenario "saves a new maker field", js: true  do
