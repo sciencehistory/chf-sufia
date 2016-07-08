@@ -459,10 +459,11 @@ RSpec.describe GenericFilesController do
         patch :update, id: file, generic_file: {
           box: '2',
           folder: '3',
+          page: '14',
         }
 
         file.reload
-        expect(file.physical_container).to eq 'b2|f3'
+        expect(file.physical_container).to eq 'b2|f3|g14'
       end
 
       it 'turns external ids into coded strings' do

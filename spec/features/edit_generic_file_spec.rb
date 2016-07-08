@@ -6,7 +6,7 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
     sign_in @user
     @file = GenericFile.new
     @file.apply_depositor_metadata(@user.user_key)
-    @file.physical_container = 'v8|p2'
+    @file.physical_container = 'v8|p2|g100'
     @file.save!
   end
 
@@ -37,6 +37,7 @@ RSpec.feature "Editing metadata of generic file", :type => :feature do
       expect(pc_div).to have_text 'Box'
       expect(pc_div).to have_text 'Part'
       expect(pc_div.first('input#generic_file_volume').value).to eq '8'
+      expect(pc_div.first('input#generic_file_page').value).to eq '100'
     end
 
     scenario "saves a new maker field", js: true  do

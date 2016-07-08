@@ -11,7 +11,7 @@ RSpec.describe 'generic_files/show.html.erb', :type => :view do
     stub_model(GenericFile, id: '123',
       depositor: user.user_key,
       title: ['The Thinks You Can Think'],
-      physical_container: 'b2|f3|v4|p5',
+      physical_container: 'b2|f3|v4|p5|g234',
       identifier: ['object-2004', 'bib-b123456789', 'object-2004-09.003']
     )
   end
@@ -38,7 +38,7 @@ RSpec.describe 'generic_files/show.html.erb', :type => :view do
       render template: 'generic_files/show.html.erb', layout: 'layouts/sufia-one-column'
     end
     it 'shows the parsed info' do
-      expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5/
+      expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
     end
   end
 
