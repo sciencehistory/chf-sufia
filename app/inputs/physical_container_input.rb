@@ -30,7 +30,8 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
     out << template.label_tag(id_for(field), field.to_s.humanize, required: false)
     out << "</div>"
     out << TextCol
-    out << @builder.text_field(field, @merged_input_options.merge(name: name_for(field), value: @vals[field[0]]))
+    out << @builder.text_field(field, @merged_input_options.merge(name: name_for(field),
+      value: @vals[CHF::Utils::ParseFields.physical_container_fields_reverse[field]]))
     out << "</div>"
     out
   end

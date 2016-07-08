@@ -46,16 +46,14 @@ class GenericFileEditForm < GenericFilePresenter
 
     # It's a single-value field
     def self.encode_physical_container(params, clean_params)
-      have_data = false
       result = []
       CHF::Utils::ParseFields.physical_container_fields.values.each do |k|
         # check for some data
         if params[k].present?
-          have_data = true
-          result << "#{k[0]}#{params[k]}"
+          result << "#{CHF::Utils::ParseFields.physical_container_fields_reverse[k]}#{params[k]}"
         end
       end
-      if have_data
+      unless result.empty?
         clean_params['physical_container'] = result.join('|')
       end
       clean_params
