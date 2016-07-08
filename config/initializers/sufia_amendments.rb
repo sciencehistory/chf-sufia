@@ -124,7 +124,7 @@ Sufia.config do |config|
   ]
 
   config.physical_container_fields = {
-    'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part'
+    'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part', 'g'=>'page'
   }
 
   config.resource_types = {
