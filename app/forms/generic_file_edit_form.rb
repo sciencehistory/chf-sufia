@@ -62,18 +62,16 @@ class GenericFileEditForm < GenericFilePresenter
     # It's a multi-value field
     def self.encode_external_id(params, clean_params)
     #unless params['identifier'].nil?
-      have_data = false
       result = []
       CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
         param = "#{k}_external_id"
         if params[param].present?
-          have_data = true
           params[param].each do |id_value|
             result << "#{k}-#{id_value}" unless id_value.empty?
           end
         end
       end
-      if have_data
+      unless result.empty?
         clean_params['identifier'] = result
       end
       clean_params
