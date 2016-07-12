@@ -4,7 +4,7 @@ class Credit < ActiveFedora::Base
   before_save :compose_label
 
   type ::RDF::URI.new("http://chemheritage.org/ns/credit")
-  has_many :generic_files, inverse_of: :additional_credit, class_name: "GenericFile"
+  has_many :generic_works, inverse_of: :additional_credit, class_name: "GenericWork"
 
   property :role, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCreditRole"), multiple: false
   property :name, predicate: ::RDF::Vocab::FOAF.name, multiple: false

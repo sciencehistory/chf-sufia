@@ -1,4 +1,4 @@
-class GenericFilePresenter < Sufia::GenericFilePresenter
+class WorkShowPresenter < Sufia::WorkShowPresenter
 
   # this list of terms is used for:
   #   allowing the fields to be edited

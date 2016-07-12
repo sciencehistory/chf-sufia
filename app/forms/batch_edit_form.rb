@@ -1,2 +1,0 @@
-class BatchEditForm < GenericFileEditForm
-end
