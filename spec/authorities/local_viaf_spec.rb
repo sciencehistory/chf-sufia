@@ -23,7 +23,7 @@ RSpec.describe LocalViaf do
       # server returns results but no results header
       let :results do
         stub_request(:get, "http://viaf.org/viaf/search?httpAccept=text/xml&maximumRecords=20&query=local.personalNames%20=%20%22%22&recordSchema=http://viaf.org/BriefVIAFCluster&sortKeys=holdingscount&startRecord=1").
-          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip, deflate'}).
           to_return(:body => webmock_fixture("viaf-blank.xml"), :status => 200, :headers => {})
         authority.search_subauthority('personalNames', "")
        end
@@ -35,7 +35,7 @@ RSpec.describe LocalViaf do
     context "with results" do
       let :results do
         stub_request(:get, "http://viaf.org/viaf/search?httpAccept=text/xml&maximumRecords=20&query=local.personalNames%20=%20%22bowman,%20robert%22&recordSchema=http://viaf.org/BriefVIAFCluster&sortKeys=holdingscount&startRecord=1").
-          with(:headers => {'Accept'=>'*/*; q=0.5, application/xml', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip, deflate'}).
           to_return(:body => webmock_fixture("viaf-bowman.xml"), :status => 200, :headers => {})
         authority.search_subauthority('personalNames', "bowman, robert")
       end
