@@ -1,5 +1,5 @@
 class Credit < ActiveFedora::Base
-  include Sufia::Noid
+  include CurationConcerns::Noid
 
   before_save :compose_label
 
@@ -11,7 +11,7 @@ class Credit < ActiveFedora::Base
   property :label, predicate: ::RDF::SKOS.prefLabel, multiple:false
 
   def self.role_options
-    Sufia.config.credit_roles
+    Rails.configuration.credit_roles
   end
 
   def self.name_options

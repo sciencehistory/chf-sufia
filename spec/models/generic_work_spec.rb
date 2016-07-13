@@ -103,25 +103,6 @@ RSpec.describe GenericWork do
       end
     end
 
-    describe "drop related_files" do
-      before do
-        @gf2 = GenericWork.create(title: ['title2']) do |f|
-          f.apply_depositor_metadata('dpt')
-          f.creator = ['Beckett, Samuel']
-          f.extent = ["infinitely short"]
-        end
-        b = Batch.create
-        gf.batch_id = b.id
-        gf.save
-        @gf2.batch_id = b.id
-        @gf2.save
-      end
-      it "finds no related files" do
-        expect(gf.related_files.count).to eq 0
-        expect(@gf2.related_files.count).to eq 0
-      end
-    end
-
     describe "with Nested Inscriptions" do
 
       it "uses Inscription class" do

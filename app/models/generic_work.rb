@@ -9,6 +9,11 @@ class GenericWork < ActiveFedora::Base
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
 
+  # TODO: better way to achieve this?
+  # sufia 6 used DC.creator and sufia 7 changed this to DC11.creator, which we were already using.
+  property :creator, predicate: ::RDF::Vocab::DC.creator do |index|
+    index.as :stored_searchable, :facetable
+  end
 
   # tried this as before_save, but then it didn't show up on metadata form at upload time.
   after_initialize :set_default_metadata
@@ -90,9 +95,12 @@ class GenericWork < ActiveFedora::Base
   # Override this from sufia-models/app/models/concerns/sufia/generic_file/batches.rb
   # It's meaningless to define related_files in terms of what sufia6 calls 'batches' ('UploadSets' in sufia 7)
   # However, let's not lose track of the batch_id altgoether just in case we want it for some reason later.
-  def related_files
-    []
-  end
+  # word on the street is that this behavior is replaced by works
+  # related_files now pulls all sibling relationships
+  # https://github.com/projecthydra/curation_concerns/blob/master/app/models/concerns/curation_concerns/file_set/belongs_to_works.rb#L27
+  #def related_files
+  #  []
+  #end
 
   private
 

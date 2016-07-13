@@ -1,5 +1,5 @@
 class Inscription < ActiveFedora::Base
-  include Sufia::Noid
+  include CurationConcerns::Noid
 
   type ::RDF::URI.new("http://purl.org/vra/Inscription")
   has_many :generic_works, inverse_of: :inscription, class_name: "GenericWork"

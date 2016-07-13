@@ -14,7 +14,7 @@
 #
 #IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 class TimeSpan < ActiveFedora::Base
-  include Sufia::Noid
+  include CurationConcerns::Noid
 
   type ::RDF::Vocab::EDM.TimeSpan
 
@@ -22,7 +22,7 @@ class TimeSpan < ActiveFedora::Base
   property :finish, predicate: ::RDF::Vocab::EDM.end, multiple: false
   property :start_qualifier, predicate: ::RDF::Vocab::CRM.P79_beginning_is_qualified_by, multiple: false
   property :finish_qualifier, predicate: ::RDF::Vocab::CRM.P80_end_is_qualified_by, multiple: false
-  property :note, predicate: ::RDF::SKOS.note, multiple: false
+  property :note, predicate: ::RDF::Vocab::SKOS.note, multiple: false
 
   # DACS date qualifiers
   # http://www2.archivists.org/standards/DACS/part_I/chapter_2/4_date
