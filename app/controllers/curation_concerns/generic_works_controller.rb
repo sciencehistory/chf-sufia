@@ -3,14 +3,15 @@
 
 module CurationConcerns
   class GenericWorksController < ApplicationController
-  include CurationConcerns::CurationConcernController
-  # Adds Sufia behaviors to the controller.
-  include Sufia::WorksControllerBehavior
+    include CurationConcerns::CurationConcernController
+    # Adds Sufia behaviors to the controller.
+    include Sufia::WorksControllerBehavior
 
-  self.curation_concern_type = GenericWork
+    self.curation_concern_type = GenericWork
+    #self.show_presenter = WorkShowPresenter
 
-  # not sure whether I need these..
-  #self.presenter_class = GenericFilePresenter
-  #self.edit_form_class = GenericFileEditForm
+    # not sure whether I need these.. (from sufia 6)
+    #self.presenter_class = GenericFilePresenter
+    #self.edit_form_class = GenericFileEditForm
   end
 end
