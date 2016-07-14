@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 describe CurationConcerns::GenericWorksController do
-  routes { Sufia::Engine.routes }
 
   let (:user) { FactoryGirl.create(:depositor) }
   let (:work) { GenericWork.new(title: ['Blueberries for Sal']) }
