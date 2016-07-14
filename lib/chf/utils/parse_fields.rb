@@ -32,14 +32,14 @@ module CHF
       end
 
       def self.physical_container_fields
-        Sufia.config.physical_container_fields
+        Rails.configuration.physical_container_fields
       end
       def self.physical_container_fields_reverse
         Hash[*CHF::Utils::ParseFields.physical_container_fields.to_a.flatten.reverse]
       end
 
       def self.external_ids_hash
-        Sufia.config.external_ids_hash
+        Rails.configuration.external_ids_hash
       end
 
     end

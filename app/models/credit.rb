@@ -15,7 +15,7 @@ class Credit < ActiveFedora::Base
   end
 
   def self.name_options
-    Sufia.config.credit_names
+    Rails.configuration.credit_names
   end
 
   private
