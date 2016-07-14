@@ -22,7 +22,7 @@ describe CurationConcerns::GenericWorksController do
   end
 
   describe "update" do
-    it "changes to resource_type are independent from changes to genre", focus: true do
+    it "changes to resource_type are independent from changes to genre" do
       patch :update, id: work, generic_work: {
         resource_type: ['Image']
       }
