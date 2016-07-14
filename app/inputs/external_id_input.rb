@@ -1,4 +1,4 @@
-class ExternalIdInput < MultiValueSelectTextWithHelpInput
+class ExternalIdInput < MultiValueSelectTextInput
   include ApplicationHelper
 
   # instead of using model fields, use the list of dummy fields in the form.

@@ -1,4 +1,4 @@
-class TimeSpanInput < MultiValueWithHelpInput
+class TimeSpanInput < MultiValueInput
   FORMAT_PLACEHOLDER = 'YYYY-MM-DD'
 
   def input(wrapper_options)

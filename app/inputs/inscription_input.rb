@@ -1,4 +1,4 @@
-class InscriptionInput < MultiValueWithHelpInput
+class InscriptionInput < MultiValueInput
 
   def input(wrapper_options)
     super

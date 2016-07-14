@@ -1,4 +1,4 @@
-class AdditionalCreditInput < MultiValueWithHelpInput
+class AdditionalCreditInput < MultiValueInput
 
   def input(wrapper_options)
     super

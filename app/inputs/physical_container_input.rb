@@ -1,6 +1,5 @@
 class PhysicalContainerInput < SimpleForm::Inputs::TextInput
   include ApplicationHelper
-  include WithHelpIcon
 
   LabelCol = "  <div class='col-md-2'>"
   TextCol = "  <div class='col-md-4'>"

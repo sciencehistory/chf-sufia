@@ -1,6 +1,5 @@
 # multivalue, but dropdowns instead of text fields
-class MultiValueSelectInput < MultiValueInput #(defined in hydra-editor)
-  include WithHelpIcon
+class MultiValueSelectLocalInput < MultiValueInput #(defined in hydra-editor)
 
   def build_field_options(value, index)
     options = input_html_options.dup

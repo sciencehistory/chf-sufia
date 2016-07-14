@@ -1,4 +1,4 @@
-<%= f.input :genre_string, as: :multi_value_select,
+<%= f.input :genre_string, as: :multi_value_select_local,
   include_blank: true, options: Rails.configuration.genres,
   value_method: :to_s, label_method: :to_s
 %>

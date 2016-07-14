@@ -6,8 +6,8 @@
 #     the actual model fields you want to populate.
 #   specify the list of fields as the 'options'
 #   for an example see app/views/records/edit_fields/_maker.html.erb
-class MultiValueSelectTextWithHelpInput < MultiValueWithHelpInput #< MultiValueInput (defined in hydra-editor)
-  include WithHelpIcon
+# TODO: see curation concerns 'multivalueselectinput'
+class MultiValueSelectTextInput < MultiValueInput #(defined in hydra-editor)
 
   # call to super hits MultiValueInput (defined in hydra-editor)
   def input(wrapper_options = nil)
