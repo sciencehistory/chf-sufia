@@ -34,15 +34,7 @@ describe CurationConcerns::GenericWorksController do
   describe "update" do
     it "changes to resource_type are independent from changes to genre" do
       patch :update, id: work, generic_work: {
-        resource_type: ['Image']
-      }
-      work.reload
-      expect(work.resource_type).to eq ['Image']
-      # why is it an empty string in the form but an empty array here??
-      #   - the model doesn't save empty strings as values
-      expect(work.genre_string).to eq []
-
-      patch :update, id: work, generic_work: {
+        resource_type: ['Image'],
         genre_string: ['Photographs']
       }
       work.reload
