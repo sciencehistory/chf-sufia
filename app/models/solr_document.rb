@@ -28,4 +28,8 @@ class SolrDocument
   # Do content negotiation for AF models. 
 
   use_extension( Hydra::ContentNegotiation )
+
+  def genre_string
+    self[Solrizer.solr_name('genre_string')]
+  end
 end

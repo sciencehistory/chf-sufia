@@ -2,6 +2,8 @@ module CurationConcerns
   class GenericWorkShowPresenter < Sufia::WorkShowPresenter
     # There's no such thing as self.terms in the presenter anymore.
 
+    delegate :genre_string, to: :solr_document
+
     #self.terms += [:title, :identifier,
     #  ].concat(Rails.configuration.makers.keys).concat(
     #    [:date_of_work]).concat(
