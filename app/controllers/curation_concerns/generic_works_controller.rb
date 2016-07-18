@@ -8,7 +8,7 @@ module CurationConcerns
     include Sufia::WorksControllerBehavior
 
     self.curation_concern_type = GenericWork
-    #self.show_presenter = WorkShowPresenter
+    self.show_presenter = CurationConcerns::GenericWorkShowPresenter
 
     # not sure whether I need these.. (from sufia 6)
     #self.presenter_class = GenericFilePresenter

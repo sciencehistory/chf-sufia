@@ -13,6 +13,16 @@ describe CurationConcerns::GenericWorksController do
     work.save!
   end
 
+  describe "#show" do
+    context "with a public user" do
+      it "uses our presenter" do
+        get :show, id: work.id
+        expect(assigns(:presenter)).to be_kind_of CurationConcerns::GenericWorkShowPresenter
+        expect(assigns(:presenter)).to be_kind_of Sufia::WorkShowPresenter
+      end
+    end
+  end
+
   describe "#edit" do
     it "includes genre" do
       get :edit, id: work.id
