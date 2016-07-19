@@ -20,24 +20,24 @@ module Chufia
 
     #### WARNING: changes may necessitate data migration!!
     # model configuration
-    config.makers = {
-      artist:       ::RDF::Vocab::MARCRelators.art,
-      author:       ::RDF::Vocab::MARCRelators.aut,
-      addressee:    ::RDF::Vocab::MARCRelators.rcp,
-      creator_of_work:      ::RDF::Vocab::DC11.creator,
-      contributor:  ::RDF::Vocab::DC11.contributor,
-      interviewee:  ::RDF::Vocab::MARCRelators.ive,
-      interviewer:  ::RDF::Vocab::MARCRelators.ivr,
-      manufacturer: ::RDF::Vocab::MARCRelators.mfr,
-      photographer: ::RDF::Vocab::MARCRelators.pht,
-      publisher:    ::RDF::Vocab::DC11.publisher,
-    }
-    config.places = {
-      place_of_interview: ::RDF::Vocab::MARCRelators.evp,
-      place_of_manufacture: ::RDF::Vocab::MARCRelators.mfp,
-      place_of_publication: ::RDF::Vocab::MARCRelators.pup,
-      place_of_creation: ::RDF::Vocab::MARCRelators.prp,
-    }
+    config.makers = [
+      :artist,
+      :author,
+      :addressee,
+      :creator_of_work,
+      :contributor,
+      :interviewee,
+      :interviewer,
+      :manufacturer,
+      :photographer,
+      :publisher,
+    ]
+    config.places = [
+      :place_of_interview,
+      :place_of_manufacture,
+      :place_of_publication,
+      :place_of_creation,
+    ]
 
     # form field configuration
     config.credit_names = [

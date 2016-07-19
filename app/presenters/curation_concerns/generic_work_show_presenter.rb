@@ -5,9 +5,9 @@ module CurationConcerns
     delegate :genre_string, to: :solr_document
 
     #self.terms += [:title, :identifier,
-    #  ].concat(Rails.configuration.makers.keys).concat(
+    #  ].concat(Rails.configuration.makers).concat(
     #    [:date_of_work]).concat(
-    #    Rails.configuration.places.keys).concat(
+    #    Rails.configuration.places).concat(
     #    [
     #    :resource_type, :genre_string,
     #    :medium,
