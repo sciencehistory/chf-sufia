@@ -3,11 +3,26 @@
 require 'rails_helper'
 
 describe CurationConcerns::GenericWorkForm do
-  subject { GenericFileEditForm.new(file) }
-  let(:file) { GenericFile.new }
+  let(:user)   { FactoryGirl.create(:user) }
+  let(:work)    { GenericWork.new }
+  let(:ability) { Ability.new(user) }
+  let(:form)    { described_class.new(work, ability) }
+
+  describe "form terms" do
+    it "are all above the fold" do
+      expect(form.secondary_terms).to be_empty
+    end
+    it "exclude defaults" do
+      expect(form.primary_terms.count).to eq 23
+      expect(form.primary_terms).not_to include :keyword
+    end
+    it "include local fields" do
+      expect(form.primary_terms).to include :admin_note
+    end
+  end
 
   describe ".build_permitted_params" do
-    it "should permit nested field attributes" do
+    it "permits nested field attributes" do
       expect(described_class.build_permitted_params).to include(
         { :inscription_attributes => [ :id, :_destroy, :location, :text ] }
       )
@@ -18,20 +33,12 @@ describe CurationConcerns::GenericWorkForm do
   end
 
   describe "field instantiation" do
-    it "should build a nested inscription" do
-      subject
-
-      expect(subject.model.inscription.to_a.count).to eq 1
-    end
-    it "should build a nested date_of_work" do
-      subject
-
-      expect(subject.model.date_of_work.to_a.count).to eq 1
-    end
-    it "should build a nested additional_credit" do
-      subject
-
-      expect(subject.model.additional_credit.to_a.count).to eq 1
+    xit "builds nested fields" do
+      # expect it to  look like:
+      # [#<Inscription id: nil, location: nil, text: nil>]
+      expect(form.model.inscription.to_a.count).to eq 1
+      expect(form.model.date_of_work.to_a.count).to eq 1
+      expect(form.model.additional_credit.to_a.count).to eq 1
     end
   end
 

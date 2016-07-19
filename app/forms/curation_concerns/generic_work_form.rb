@@ -8,33 +8,7 @@ module CurationConcerns
     #   allowing the fields to be edited
     #   TODO: dry this up? was previous in a presenter. do something like
     #   https://github.com/aic-collections/aicdams-lakeshore/blob/cf197cab2b2f65f0841cbc61573ed8ef7c576c48/app/presenters/work_presenter.rb?
-    self.terms += [:title, :identifier,
-      ].concat(Rails.configuration.makers.keys).concat(
-        [:date_of_work]).concat(
-        Rails.configuration.places.keys).concat(
-        [
-        :resource_type, :genre_string,
-        :medium,
-        :extent,
-        :language,
-        :description,
-        :inscription,
-        :subject,
-        :division,
-        :series_arrangement,
-        :physical_container,
-        :related_url,
-        :rights,
-        :rights_holder,
-        :credit_line,
-        :additional_credit,
-        :file_creator,
-        :admin_note,
-        ])
-
-    # Add a new list for creating form elements on the edit pages
-    #   (since we've combined many of the fields into 'maker')
-    def edit_field_terms
+    def self.chf_terms
       [:title, :identifier, :maker,
         :date_of_work,
         :place,
@@ -58,23 +32,20 @@ module CurationConcerns
       ]
     end
 
-    # We need these as hidden fields or else data deletion doesn't work.
-    def hidden_field_terms
-      Rails.configuration.makers.keys.concat(Rails.configuration.places.keys)
+    self.terms += chf_terms
+    self.required_fields = [:title, :identifier]
+
+    def primary_terms
+      self.class.chf_terms
     end
 
-    # post-upload edit form has a "show more" button; we want
-    # to control order independently here.
-    def above_fold_terms
-      [:identifier,
-      :maker,
-      :date_of_work,
-      :resource_type,
-      :genre_string,
-      ]
+    def secondary_terms
+      []
     end
-    def below_fold_terms
-      edit_field_terms - above_fold_terms - [:title]
+
+    # We need these as hidden fields or else data deletion doesn't work.
+    def hidden_field_terms
+      Rails.configuration.makers.concat(Rails.configuration.places)
     end
 
     # give form access to attributes methods so it can build nested forms.
@@ -90,8 +61,6 @@ module CurationConcerns
     CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|
       attr_accessor "#{k}_external_id".to_s
     end
-
-    self.required_fields = [:title, :identifier]
 
     def self.model_attributes(params)
       clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
