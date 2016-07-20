@@ -19,6 +19,9 @@ describe CurationConcerns::GenericWorkForm do
     it "include local fields" do
       expect(form.primary_terms).to include :admin_note
     end
+    it "requires 2 fields" do
+      expect(form.required_fields.count).to eq 2
+    end
   end
 
   describe ".build_permitted_params" do
