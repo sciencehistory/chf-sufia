@@ -70,6 +70,8 @@ group :test do
   gem 'jasmine', '~> 2.3'
   gem 'rspec-activemodel-mocks'
   gem 'webmock'
+  gem 'phantomjs', '~> 2.1.1'
+  gem 'capybara-screenshot'
 end
 
 group :development, :test do

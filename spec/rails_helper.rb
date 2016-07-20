@@ -7,6 +7,8 @@ require 'rspec/rails'
 require 'webmock/rspec'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
+#This is off for now since capybara is 100% problems
+#require 'capybara-screenshot/rspec'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'devise'
@@ -15,12 +17,12 @@ require 'support/rake'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, js_errors: false)
+  Capybara::Poltergeist::Driver.new(app, js_errors: false, phantomjs: Phantomjs.path)
 end
-#Capybara.default_wait_time = 240
 
 Capybara.default_driver = :rack_test      # This is a faster driver
 Capybara.javascript_driver = :poltergeist # This is slower
+#Capybara.default_wait_time = 20
 
 RSpec.configure do |config|
   config.include Warden::Test::Helpers, type: :feature
