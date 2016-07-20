@@ -13,21 +13,22 @@ RSpec.describe DashboardController, type: :controller do
     context 'with transfers' do
       let(:another_user) { FactoryGirl.create(:user) }
       context 'when incoming' do
-        let!(:incoming_file) do
-          GenericFile.new.tap do |f|
+        let!(:incoming_work) do
+          GenericWork.new.tap do |f|
             f.apply_depositor_metadata(another_user.user_key)
+            f.title = ['A title is required']
             f.save!
           end
         end
 
         before do
-          pdr = ProxyDepositRequest.new(generic_file_id: incoming_file.id, sending_user: another_user,
+          pdr = ProxyDepositRequest.new(work_id: incoming_work.id, sending_user: another_user,
             receiving_user: user, status: 'pending')
           pdr.save
-          approved_file = GenericFile.new
-          approved_file.apply_depositor_metadata another_user
-          approved_file.save
-          pdr = ProxyDepositRequest.new(generic_file_id: approved_file.id, sending_user: another_user,
+          approved_work = GenericWork.new
+          approved_work.apply_depositor_metadata another_user
+          approved_work.save
+          pdr = ProxyDepositRequest.new(work_id: approved_work.id, sending_user: another_user,
             receiving_user: user, status: 'accepted')
           pdr.save
         end
@@ -37,7 +38,7 @@ RSpec.describe DashboardController, type: :controller do
           expect(response).to be_success
           expect(assigns[:incoming].count).to eq 1
           expect(assigns[:incoming].first).to be_kind_of ProxyDepositRequest
-          expect(assigns[:incoming].first.generic_file_id).to eq(incoming_file.id)
+          expect(assigns[:incoming].first.work_id).to eq(incoming_work.id)
         end
       end
     end
