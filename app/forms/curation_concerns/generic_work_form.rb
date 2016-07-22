@@ -86,15 +86,14 @@ module CurationConcerns
 
     protected
 
-#      # Override HydraEditor::Form to treat nested attbriutes accordingly
-#      def initialize_field(key)
-#        if reflection = model_class.reflect_on_association(key)
-#          raise ArgumentError, "Association ''#{key}'' is not a collection" unless reflection.collection?
-#          build_association(key)
-#        else
-#          super
-#        end
-#      end
+      # Override HydraEditor::Form to treat nested attbriutes accordingly
+      def initialize_field(key)
+        if [:inscription, :additional_credit, :date_of_work].include? key
+          build_association(key)
+        else
+          super
+        end
+      end
 
     private
 

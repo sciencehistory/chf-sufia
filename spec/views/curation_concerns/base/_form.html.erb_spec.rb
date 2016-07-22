@@ -29,6 +29,11 @@ describe 'curation_concerns/base/_form.html.erb' do
     expect(page.all("input[type='hidden']", visible: false).count).to eq 19
   end
 
+  it "renders a nested attribute field" do
+    expect(page).to have_selector "#generic_work_inscription_attributes_0_location"
+    expect(page).to have_selector "#generic_work_inscription_attributes_0_text"
+  end
+
   #TODO: it's not a multiple selector; it's a dropdown with a "more" button. (FIXME)
   xit "should render a single-select rights field" do
     expect(page).to have_selector "select[name='generic_work[rights][]']"

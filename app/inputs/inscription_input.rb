@@ -51,19 +51,21 @@ class InscriptionInput < MultiValueInput
 
       field_value = insc.send(field)
       field_name = singular_input_name_for(attribute_name, index, field)
+      field_id = id_for(attribute_name, index, field)
 
       out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
 
       out << InputCol
-      out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name))
+      out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name, id: field_id))
       out << "  </div>"
 
       # --- Text
       field = :text
       field_value = insc.send(field)
       field_name = singular_input_name_for(attribute_name, index, field)
+      field_id = id_for(attribute_name, index, field)
 
       out << "<div class='row'>"
       out << LabelCol
@@ -71,7 +73,7 @@ class InscriptionInput < MultiValueInput
       out << "  </div>"
 
       out << InputCol
-      out << @builder.text_area(field_name, options.merge(value: field_value, name: field_name, rows: 2))
+      out << @builder.text_area(field_name, options.merge(value: field_value, name: field_name, rows: 2, id: field_id))
       out << "  </div>"
       out << "</div>" # class=row
 
