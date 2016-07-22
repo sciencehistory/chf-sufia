@@ -19,12 +19,16 @@ module CHF
       def self.parse_external_ids(list)
         parsed_ids = []
         list.each do |str|
-          unless str.empty?
-            components = str.split('-', 2)
-            parsed_ids << [components[0], components[1]]
-          end
+          parsed_ids << parse_external_id(str) unless str.empty?
         end
         parsed_ids
+      end
+
+      # return an array like ['object', '2008.043.003']
+      # TODO: Or return...? parse error?
+      def self.parse_external_id(str)
+        components = str.split('-', 2)
+        [components[0], components[1]]
       end
 
       def self.parse_external_ids_for_form(list)

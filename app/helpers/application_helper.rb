@@ -8,13 +8,4 @@ module ApplicationHelper
     display = pc_hash.map { |k,v| [CHF::Utils::ParseFields.physical_container_fields[k].capitalize, v].flatten.join(' ') }.flatten.join(', ')
   end
 
-  # turn something like ['object-2008.043.002', 'object-2008.043.003']
-  # into ['Object ID: 2008.043.002', 'Object ID: 2008.043.003']
-  def display_external_ids(list)
-    ids = CHF::Utils::ParseFields.parse_external_ids(list)
-    ids.map do |pair|
-      "#{CHF::Utils::ParseFields.external_ids_hash[pair[0]]}: #{pair[1]}"
-    end
-  end
-
 end
