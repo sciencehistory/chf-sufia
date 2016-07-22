@@ -45,7 +45,20 @@ module CurationConcerns
 
     # We need these as hidden fields or else data deletion doesn't work.
     def hidden_field_terms
-      Rails.configuration.makers.concat(Rails.configuration.places)
+      [:artist,
+      :author,
+      :addressee,
+      :creator_of_work,
+      :contributor,
+      :interviewee,
+      :interviewer,
+      :manufacturer,
+      :photographer,
+      :publisher,
+      :place_of_interview,
+      :place_of_manufacture,
+      :place_of_publication,
+      :place_of_creation]
     end
 
     # give form access to attributes methods so it can build nested forms.
