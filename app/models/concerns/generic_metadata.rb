@@ -6,22 +6,16 @@ module GenericMetadata
     # tried this as before_save, but then it didn't show up on metadata form at upload time.
     after_initialize :set_default_metadata
 
-    # default properties that we also use
+    # default properties that we didn't need to delete
     property :label, predicate: ActiveFedora::RDF::Fcrepo::Model.downloadFilename, multiple: false
     property :relative_path, predicate: ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath'), multiple: false
     property :import_url, predicate: ::RDF::URI.new('http://scholarsphere.psu.edu/ns#importUrl'), multiple: false do |index|
       index.as :symbol
     end
     property :part_of, predicate: ::RDF::Vocab::DC.isPartOf
-    property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
-      index.as :stored_searchable, :facetable
-    end
     property :description, predicate: ::RDF::Vocab::DC11.description do |index|
       index.type :text
       index.as :stored_searchable
-    end
-    property :publisher, predicate: ::RDF::Vocab::DC11.publisher do |index|
-      index.as :stored_searchable, :facetable
     end
     property :date_created, predicate: ::RDF::Vocab::DC.created do |index|
       index.as :stored_searchable
@@ -52,6 +46,7 @@ module GenericMetadata
     # local properties
 
     # sufia 6 used DC.creator and sufia 7 changed this to DC11.creator, which we were already using.
+    # Is this still used by sufia internally?
     property :creator, predicate: ::RDF::Vocab::DC.creator do |index|
       index.as :stored_searchable, :facetable
     end
@@ -150,11 +145,6 @@ module GenericMetadata
       index.as :displayable
     end
 
-    # TODO: make this work either via linked data or nested attributes
-  #  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
-  #    index.as :stored_searchable, :facetable
-  #  end
-
     has_and_belongs_to_many :date_of_work, predicate: ::RDF::Vocab::DC11.date, class_name: "DateOfWork"
     accepts_nested_attributes_for :date_of_work, reject_if: :all_blank, allow_destroy: true
 
@@ -168,8 +158,7 @@ module GenericMetadata
     # Override this from sufia-models/app/models/concerns/sufia/generic_file/batches.rb
     # It's meaningless to define related_files in terms of what sufia6 calls 'batches' ('UploadSets' in sufia 7)
     # However, let's not lose track of the batch_id altgoether just in case we want it for some reason later.
-    # word on the street is that this behavior is replaced by works
-    # related_files now pulls all sibling relationships
+    # Note 2016-07: that this behavior is replaced by works related_files now pulls all sibling relationships
     # https://github.com/projecthydra/curation_concerns/blob/master/app/models/concerns/curation_concerns/file_set/belongs_to_works.rb#L27
     #def related_files
     #  []

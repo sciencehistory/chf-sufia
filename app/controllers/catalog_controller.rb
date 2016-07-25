@@ -106,7 +106,6 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
     config.add_show_field solr_name("format", :stored_searchable), label: "File Format"
     config.add_show_field solr_name("identifier", :stored_searchable), label: "Identifier"
-    config.add_show_field solr_name("genre_string", :stored_searchable), label: "Genre"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
