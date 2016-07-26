@@ -8,10 +8,10 @@ module CurationConcerns
       :place_of_manufacture, :place_of_creation, :place_of_publication,
       :extent, :division, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
+      :inscription,
       to: :solr_document
 
     # TODO
     # :date_of_work
-    # :inscription,
   end
 end

@@ -98,5 +98,8 @@ class SolrDocument
   def admin_note
     self[Solrizer.solr_name('admin_note')]
   end
+  def inscription
+    self[Solrizer.solr_name('inscription')]
+  end
 
 end

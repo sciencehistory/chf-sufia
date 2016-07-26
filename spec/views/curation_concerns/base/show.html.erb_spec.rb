@@ -32,7 +32,7 @@ describe 'curation_concerns/base/show.html.erb' do
       extent_tesim: ['Infinity'],
       language_tesim: ['Mute'],
       description_tesim: ['Fun'],
-      #inscription
+      inscription_tesim: ['(side of cartridge) Ravioli'],
       subject_tesim: ['gold coins'],
       division_tesim: ['Nintendo'],
       series_arrangement_tesim: ['Ongoing'],
@@ -94,7 +94,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Infinity/
       expect(rendered).to match /Mute/
       expect(rendered).to match /Fun/
-      #inscription
+      expect(rendered).to match /\(side of cartridge\) Ravioli/
       expect(rendered).to match /gold coins/
       expect(rendered).to match /Nintendo/
       expect(rendered).to match /Ongoing/

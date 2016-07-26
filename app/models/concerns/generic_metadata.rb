@@ -159,6 +159,9 @@ module GenericMetadata
         additional_credit.each do |credit|
           doc[ActiveFedora.index_field_mapper.solr_name("additional_credit", type: :string)] = credit.label
         end
+        inscription.each do |insc|
+          doc[ActiveFedora.index_field_mapper.solr_name("inscription", type: :string)] = "(#{insc['location']}) #{insc['text']}"
+        end
       end
     end
 
