@@ -165,6 +165,10 @@ module GenericMetadata
         date_of_work.each do |dow|
           doc[ActiveFedora.index_field_mapper.solr_name("date_of_work_display", type: :string)] = dow.display_label
         end
+        unless physical_container.nil?
+          require_dependency Rails.root.join('lib','chf','utils','parse_fields')
+          doc[ActiveFedora.index_field_mapper.solr_name("physical_container", type: :string)] = CHF::Utils::ParseFields.display_physical_container(physical_container)
+        end
       end
     end
 

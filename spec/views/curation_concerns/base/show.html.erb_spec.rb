@@ -8,7 +8,7 @@ describe 'curation_concerns/base/show.html.erb' do
       has_model_ssim: ['GenericWork'],
       human_readable_type_tesim: ['Generic Work'],
       title_tesim: ['Super Mario'],
-      physical_container_tesim: ['b2|f3|v4|p5|g234'],
+      physical_container_tesim: ["Box 2, Folder 3, Volume 4, Part 5, Page 234"],
       identifier_tesim: ['object-2004', 'bib-b123456789', 'object-2004-09.003'],
       creator_of_work_tesim: ['Chain Chomp'],
       contributor_tesim: ['Blooper'],
@@ -62,15 +62,13 @@ describe 'curation_concerns/base/show.html.erb' do
   end
 
   describe 'local fields display' do
-    xit 'parses physical container' do
-      expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
-    end
     it 'parses external ID' do
       expect(rendered).to match /Object ID: 2004/
       expect(rendered).to match /Sierra Bib. No.: b123456789/
       expect(rendered).to match /Object ID: 2004-09.003/
     end
     it 'displays all fields' do
+      expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
       expect(rendered).to match /Chain Chomp/
       expect(rendered).to match /Blooper/
       expect(rendered).to match /Boo/

@@ -42,6 +42,13 @@ module CHF
         Hash[*CHF::Utils::ParseFields.physical_container_fields.to_a.flatten.reverse]
       end
 
+      # turn something like "b9879|f9876655|v65464|p24" into
+      #   something like "Box 9879, Folder 9876655, Volume 65464, Part 24"
+      def self.display_physical_container(str)
+        pc_hash = parse_physical_container str
+        display = pc_hash.map { |k,v| [physical_container_fields[k].capitalize, v].flatten.join(' ') }.flatten.join(', ')
+      end
+
       def self.external_ids_hash
         Rails.configuration.external_ids_hash
       end
