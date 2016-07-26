@@ -154,6 +154,14 @@ module GenericMetadata
     has_and_belongs_to_many :additional_credit, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCredit"), class_name: "Credit"
     accepts_nested_attributes_for :additional_credit, reject_if: :all_blank, allow_destroy: true
 
+    def to_solr(solr_doc = {})
+      super.tap do |doc|
+        additional_credit.each do |credit|
+          doc[ActiveFedora.index_field_mapper.solr_name("additional_credit", type: :string)] = credit.label
+        end
+      end
+    end
+
     # chf edit 2016-02-01 ah
     # Override this from sufia-models/app/models/concerns/sufia/generic_file/batches.rb
     # It's meaningless to define related_files in terms of what sufia6 calls 'batches' ('UploadSets' in sufia 7)

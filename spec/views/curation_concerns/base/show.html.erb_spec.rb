@@ -40,7 +40,7 @@ describe 'curation_concerns/base/show.html.erb' do
       rights_tesim: ['http://rightsstatements.org/vocab/InC/1.0/'],
       rights_holder_tesim: ['Luigi'],
       credit_line_tesim: ['Courtesy of CHF Collections'],
-      #additional_credit:
+      additional_credit_tesim: ['Photographed by Bowser'],
       file_creator_tesim: ['Miyamoto'],
       admin_note_tesim: ['Mario Kart'],
     )
@@ -102,7 +102,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /rightsstatements\.org/
       expect(rendered).to match /Luigi/
       expect(rendered).to match /Courtesy of CHF Collections/
-      #additional_credit:
+      expect(rendered).to match /Photographed by Bowser/
       expect(rendered).to match /Miyamoto/
       expect(rendered).to match /Mario Kart/
     end
