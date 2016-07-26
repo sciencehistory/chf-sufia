@@ -101,5 +101,8 @@ class SolrDocument
   def inscription
     self[Solrizer.solr_name('inscription')]
   end
+  def date_of_work
+    self[Solrizer.solr_name('date_of_work_display')]
+  end
 
 end

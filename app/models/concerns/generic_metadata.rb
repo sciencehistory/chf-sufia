@@ -162,6 +162,9 @@ module GenericMetadata
         inscription.each do |insc|
           doc[ActiveFedora.index_field_mapper.solr_name("inscription", type: :string)] = "(#{insc['location']}) #{insc['text']}"
         end
+        date_of_work.each do |dow|
+          doc[ActiveFedora.index_field_mapper.solr_name("date_of_work_display", type: :string)] = dow.display_label
+        end
       end
     end
 

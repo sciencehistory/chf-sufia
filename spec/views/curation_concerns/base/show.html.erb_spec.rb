@@ -20,8 +20,7 @@ describe 'curation_concerns/base/show.html.erb' do
       manufacturer_tesim: ['Piranha Plant'],
       photographer_tesim: ['Sparky'],
       publisher_tesim: ['Hammer Bro'],
-      #date_of_work: ['February 9, 1990'],
-      #date_created
+      date_of_work_display_tesim: ['1990-02-09'],
       place_of_interview_tesim: ['Underwater'],
       place_of_manufacture_tesim: ['Cloudland'],
       place_of_publication_tesim: ['Pyramid'],
@@ -82,8 +81,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Piranha Plant/
       expect(rendered).to match /Sparky/
       expect(rendered).to match /Hammer Bro/
-      #date_of_work: ['February 9, 1990'],
-      #date_created
+      expect(rendered).to match /1990-02-09/
       expect(rendered).to match /Underwater/
       expect(rendered).to match /Cloudland/
       expect(rendered).to match /Pyramid/
