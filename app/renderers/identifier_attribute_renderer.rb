@@ -1,4 +1,5 @@
 class IdentifierAttributeRenderer < CurationConcerns::Renderers::AttributeRenderer
+  require_dependency Rails.root.join('lib','chf','utils','parse_fields')
 
   # turn something like 'object-2008.043.002'
   # into 'Object ID: 2008.043.002'
