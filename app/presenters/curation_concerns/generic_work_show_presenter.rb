@@ -2,30 +2,16 @@ module CurationConcerns
   class GenericWorkShowPresenter < Sufia::WorkShowPresenter
     # There's no such thing as self.terms in the presenter anymore.
 
-    delegate :genre_string, to: :solr_document
+    delegate :genre_string, :medium, :physical_container, :creator_of_work,
+      :artist, :author, :addressee, :interviewee, :interviewer,
+      :manufacturer, :photographer, :place_of_interview,
+      :place_of_manufacture, :place_of_creation, :place_of_publication,
+      :extent, :division, :series_arrangement, :rights_holder,
+      :credit_line, :additional_credit, :file_creator, :admin_note,
+      to: :solr_document
 
-    #self.terms += [:title, :identifier,
-    #  ].concat(Rails.configuration.makers).concat(
-    #    [:date_of_work]).concat(
-    #    Rails.configuration.places).concat(
-    #    [
-    #    :resource_type, :genre_string,
-    #    :medium,
-    #    :extent,
-    #    :language,
-    #    :description,
-    #    :inscription,
-    #    :subject,
-    #    :division,
-    #    :series_arrangement,
-    #    :physical_container,
-    #    :related_url,
-    #    :rights,
-    #    :rights_holder,
-    #    :credit_line,
-    #    :additional_credit,
-    #    :file_creator,
-    #    :admin_note,
-    #    ])
+    # TODO
+    # :date_of_work
+    # :inscription,
   end
 end
