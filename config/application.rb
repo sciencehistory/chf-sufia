@@ -108,6 +108,7 @@ module Chufia
       'Photographs',
       'Plastics',
       'Portraits',
+      'Postage stamps',
       'Press releases',
       'Prints',
       'Rare books',
