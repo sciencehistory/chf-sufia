@@ -1,60 +1,30 @@
 require 'rails_helper'
 
-#disable; we're not supporting batch edits yet and they're not working right
-RSpec.describe BatchEditsController, exclude: true do
-
-  let (:files) { [] }
-  let (:user) { FactoryGirl.create(:depositor) }
+describe BatchEditsController do
+  let(:user) { FactoryGirl.create(:user) }
   before do
     sign_in user
-    2.times { files << GenericFile.new.tap do |f|
-        f.resource_type = ['Image']
-        f.apply_depositor_metadata(user.user_key)
-        f.save!
-      end
-    }
-    controller.batch = files.map { |f| f.id }
+    allow_any_instance_of(User).to receive(:groups).and_return([])
+    request.env["HTTP_REFERER"] = 'test.host/original_page'
   end
 
-
-  describe "edit" do
-    context "when the file had no initial genre" do
-      it "should include genre, empty" do
-        get :edit
-        expect(response).to be_successful
-        expect(assigns[:terms]).to include :genre_string
-        expect(assigns[:generic_file].genre_string).to eq [""]
-      end
+  describe "#edit" do
+    let(:one) { FactoryGirl.create(:work, creator: ["Fred"], title: ["abc"], language: ['en']) }
+    let(:two) { FactoryGirl.create(:work, creator: ["Wilma"], title: ["abc2"], publisher: ['Rand McNally'], language: ['en'], resource_type: ['bar']) }
+    before do
+      controller.batch = [one.id, two.id]
+      expect(controller).to receive(:can?).with(:edit, one.id).and_return(true)
+      expect(controller).to receive(:can?).with(:edit, two.id).and_return(true)
     end
 
-    context "when the file does have initial genre" do
-      before do
-        files[0].genre_string = ['Photograph']
-        files[0].save!
-      end
-      it "should prepopulate form fields" do
-        get :edit
-        expect(response).to be_successful
-        expect(assigns[:terms]).to include :genre_string
-        expect(assigns[:generic_file].genre_string).to eq ["Photograph"]
-      end
+    it "is successful" do
+      allow(controller.request).to receive(:referer).and_return('foo')
+      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.my.works'), Sufia::Engine.routes.url_helpers.dashboard_works_path)
+      get :edit
+      expect(response).to be_successful
+      expect(assigns[:form].terms).not_to include :keyword
+      expect(assigns[:form].class).to eq BatchEditForm
     end
   end
-
-  describe "update" do
-    let(:attributes) {
-      { genre_string: ["Photograph", "Print"] }
-    }
-
-    # note: this test was passing when I didn't expect it to;
-    # didn't get to the bottom of it and moving on for now since
-    # batch edits are going to change drastically post-PCDM
-    it "should update the records" do
-      put :update, update_type: "update", generic_file: attributes
-      expect(response).to be_redirect
-      expect(GenericFile.find(files[0].id).genre_string).to eq ["Photograph", "Print"]
-    end
-  end
-
 end
-
