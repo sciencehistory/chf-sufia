@@ -9,9 +9,11 @@ RSpec.describe OpacDataController do
       # token body
       body = "{\"access_token\":\"A_TOKEN\",\"token_type\":\"bearer\",\"expires_in\":3600}"
       # token request: credentials in url
-      stub_request(:post, "https://MY_KEY:MY_SECRET@sandbox.iii.com/iii/sierra-api/v2/token").
+      stub_request(:post, "https://sandbox.iii.com/iii/sierra-api/v2/token").
         with(:body => {"grant_type"=>"client_credentials"},
-          :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+          :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization'=>'Basic TVlfS0VZOk1ZX1NFQ1JFVA==',
+              'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(:status => 200, :body => body, :headers => json_headers)
       # bib body
       body = "{\"id\":\"1069105\",\"updatedDate\":\"2015-01-13T13:34:40Z\",\"createdDate\":\"2014-02-11T16:48:17Z\",\"deleted\":false,\"suppressed\":false,\"lang\":{\"code\":\"n/a\"},\"title\":\"Norda Essential Oil and Chemical Company Photograph Collection,\",\"author\":\"Norda Essential Oil and Chemical Company, creator\",\"materialType\":{\"code\":\"k\",\"value\":\"Photos\"},\"bibLevel\":{\"code\":\"c\",\"value\":\"COLLECTION\"},\"catalogDate\":\"2014-02-11\",\"country\":{\"code\":\"xx \",\"name\":\"Unknown or undetermined\"}}"
