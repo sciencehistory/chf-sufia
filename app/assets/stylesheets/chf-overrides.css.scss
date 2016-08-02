@@ -29,3 +29,8 @@
     max-width: 40em;
   }
 }
+
+// fit the preview modal to the contained image
+.preview-modal .modal-dialog {
+  display: table;
+}

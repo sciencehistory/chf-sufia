@@ -1,0 +1,13 @@
+<div class="modal fade preview-modal" id="preview-<%= @generic_file.id %>" tabindex='-1'>
+  <div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-body">
+       <%= image_tag sufia.download_path(@generic_file, file: "preview") %>
+     </div>
+     <div class="modal-footer">
+       <p><%= @generic_file.title.first %></p>
+     </div>
+   </div>
+  </div>
+</div>
+</div>
