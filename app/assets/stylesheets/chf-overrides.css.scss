@@ -33,4 +33,10 @@
 // fit the preview modal to the contained image
 .preview-modal .modal-dialog {
   display: table;
+  width: 1%;
+}
+// this bizarre hack keeps long titles from making the modal wider
+.preview-modal .modal-body {
+  height: auto;
+  overflow: hidden;
 }
