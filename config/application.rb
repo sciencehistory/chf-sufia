@@ -97,6 +97,7 @@ module Chufia
       'Etchings',
       'Handbooks and manuals',
       'Illustrations',
+      'Lithographs',
       'Manuscripts',
       'Minutes (Records)',
       'Molecular models',
