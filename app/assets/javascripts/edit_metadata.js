@@ -1,21 +1,21 @@
 // why not set up a local namespace
 var chf = chf || {}
 chf.autocompletes = chf.autocompletes || {
-  generic_file_subject: '/qa/search/assign_fast/all',
-  generic_file_artist:          '/qa/search/assign_fast/all',
-  generic_file_author:          '/qa/search/assign_fast/all',
-  generic_file_creator_of_work: '/qa/search/assign_fast/all',
-  generic_file_contributor:     '/qa/search/assign_fast/all',
-  generic_file_interviewee:     '/qa/search/assign_fast/all',
-  generic_file_interviewer:     '/qa/search/assign_fast/all',
-  generic_file_manufacturer:    '/qa/search/assign_fast/all',
-  generic_file_photographer:    '/qa/search/assign_fast/all',
-  generic_file_publisher:       '/qa/search/assign_fast/all',
-  generic_file_language:       '/qa/search/local/languages',
-  generic_file_place_of_manufacture: '/qa/search/assign_fast/all',
-  generic_file_place_of_interview: '/qa/search/assign_fast/all',
-  generic_file_place_of_publication: '/qa/search/assign_fast/all',
-  generic_file_place_of_creation: '/qa/search/assign_fast/all',
+  generic_work_subject: '/qa/search/assign_fast/all',
+  generic_work_artist:          '/qa/search/assign_fast/all',
+  generic_work_author:          '/qa/search/assign_fast/all',
+  generic_work_creator_of_work: '/qa/search/assign_fast/all',
+  generic_work_contributor:     '/qa/search/assign_fast/all',
+  generic_work_interviewee:     '/qa/search/assign_fast/all',
+  generic_work_interviewer:     '/qa/search/assign_fast/all',
+  generic_work_manufacturer:    '/qa/search/assign_fast/all',
+  generic_work_photographer:    '/qa/search/assign_fast/all',
+  generic_work_publisher:       '/qa/search/assign_fast/all',
+  generic_work_language:       '/qa/search/local/languages',
+  generic_work_place_of_manufacture: '/qa/search/assign_fast/all',
+  generic_work_place_of_interview: '/qa/search/assign_fast/all',
+  generic_work_place_of_publication: '/qa/search/assign_fast/all',
+  generic_work_place_of_creation: '/qa/search/assign_fast/all',
 }
 
 Blacklight.onLoad(function() {
@@ -102,7 +102,7 @@ Blacklight.onLoad(function() {
     var classList = $field.attr('class').split(/\s+/);
     $.each(classList, function(index, item) {
       // WARNING!! HARD-CODED STRING VALUE!
-      if (item.lastIndexOf('generic_file_', 0) === 0) {
+      if (item.lastIndexOf('generic_work_', 0) === 0) {
         $field.removeClass(item);
       }
     });

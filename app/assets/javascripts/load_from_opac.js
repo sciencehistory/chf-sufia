@@ -33,7 +33,7 @@ chf.load_from_opac = function() {
 chf.get_bib_num = function() {
   //return '123';
   //return 'B10691054';
-  var html_col = document.getElementsByClassName('generic_file_bib_external_id');
+  var html_col = document.getElementsByClassName('generic_work_bib_external_id');
   if (html_col.length > 1) {
     chf.display_data('Too many bib numbers provided');
     return null;
