@@ -1,25 +1,21 @@
 <% id = document.id %>
-<tr id="document_<%= id %>" class="<%= cycle("", "zebra") %>">
-  <% gf = document.to_model%>
+<tr id="document_<%= id %>">
   <td>&nbsp;
-    <%# This block is for adding/removing the magic wand while batch updates are processing %>
-    <% if gf.processing? %>
-      <i class="glyphicon glyphicon-time <%= 'ss-'+gf.batch.id %>"/>
-    <% elsif current_user and gf.depositor != current_user.user_key %>
+    <% if current_user and document.depositor != current_user.user_key %>
       <i class="glyphicon glyphicon-share-alt"/>
     <% end %>
   </td>
   <td>
     <div class="media">
-      <%= link_to sufia.generic_file_path(document), class: "media-left" do %>
+      <%= link_to document, class: "media-left" do %>
         <%= render_thumbnail_tag document, { class: "hidden-xs file_listing_thumbnail" }, { suppress_link: true } %>
       <% end %>
       <div class="media-body">
         <h4 class="media-heading">
-          <%= link_to document.title_or_label, sufia.generic_file_path(document), id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}" %>
+          <%= link_to document.title_or_label, document, id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}" %>
           <%# CHF: remove 'click for more details' / expanded-details row %>
         </h4>
-        <%= render_collection_list(gf) %>
+        <%= render_collection_links(document) %>
       </div>
     </div>
   </td>
@@ -28,6 +24,6 @@
     <%= render_visibility_link(document) %>
   </td>
   <td class="text-center">
-    <%= render partial: 'show_document_list_menu', locals: { id: id, gf: gf } %>
+    <%= render'show_document_list_menu', document: document %>
   </td>
 </tr>
