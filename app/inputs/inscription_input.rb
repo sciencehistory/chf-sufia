@@ -1,5 +1,9 @@
 class InscriptionInput < MultiValueInput
 
+  def input_type
+    'multi_value'.freeze
+  end
+
   def input(wrapper_options)
     super
   end
