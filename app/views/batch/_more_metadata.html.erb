@@ -1,7 +1,0 @@
-<div id="more_descriptions">
-  <button id="hide_addl_descriptions" class="btn btn-default" aria-label="hide additional metadata description fields">Hide Additional Fields</button>
-  <%# chf: fields are organized in the presenter %>
-  <% (f.object.below_fold_terms).each do |term| %>
-    <%= render_edit_field_partial(term, f: f) %>
-  <% end %>
-</div> <!-- /more_descriptions -->
