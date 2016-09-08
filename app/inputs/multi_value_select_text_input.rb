@@ -9,6 +9,12 @@
 # TODO: see curation concerns 'multivalueselectinput'
 class MultiValueSelectTextInput < MultiValueInput #(defined in hydra-editor)
 
+  # Overriding this so that the class is correct and the javascript for multivalue will work on this.
+  # (gives 'multi_value' class)
+  def input_type
+    'multi_value'.freeze
+  end
+
   # call to super hits MultiValueInput (defined in hydra-editor)
   def input(wrapper_options = nil)
     # save this since we actually use it later; parents did not
