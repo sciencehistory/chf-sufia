@@ -4,9 +4,6 @@ class PhysicalContainerInput < SimpleForm::Inputs::TextInput
   LabelCol = "  <div class='col-md-2'>"
   TextCol = "  <div class='col-md-4'>"
 
-  #Example html:
-  #<input class="string optional form-control" type="text" value="" name="generic_file[provenance]" id="generic_file_provenance">
-
   def input(wrapper_options = nil)
     @merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
     @vals = CHF::Utils::ParseFields.parse_physical_container(object.send(attribute_name))
