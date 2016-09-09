@@ -69,5 +69,5 @@ chf.get_data_container = function() {
 Blacklight.onLoad(function() {
   // attach action to button
   var el = document.getElementById('load_opac_data');
-  el.addEventListener('click', chf.load_from_opac);
+  if (el) { el.addEventListener('click', chf.load_from_opac) };
 });
