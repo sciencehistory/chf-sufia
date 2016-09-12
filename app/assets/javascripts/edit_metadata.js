@@ -1,24 +1,26 @@
 // why not set up a local namespace
 var chf = chf || {}
 chf.autocompletes = chf.autocompletes || {
-  generic_work_subject: '/qa/search/assign_fast/all',
-  generic_work_artist:          '/qa/search/assign_fast/all',
-  generic_work_author:          '/qa/search/assign_fast/all',
-  generic_work_creator_of_work: '/qa/search/assign_fast/all',
-  generic_work_contributor:     '/qa/search/assign_fast/all',
-  generic_work_interviewee:     '/qa/search/assign_fast/all',
-  generic_work_interviewer:     '/qa/search/assign_fast/all',
-  generic_work_manufacturer:    '/qa/search/assign_fast/all',
-  generic_work_photographer:    '/qa/search/assign_fast/all',
-  generic_work_publisher:       '/qa/search/assign_fast/all',
-  generic_work_language:       '/qa/search/local/languages',
-  generic_work_place_of_manufacture: '/qa/search/assign_fast/all',
-  generic_work_place_of_interview: '/qa/search/assign_fast/all',
-  generic_work_place_of_publication: '/qa/search/assign_fast/all',
-  generic_work_place_of_creation: '/qa/search/assign_fast/all',
+  generic_work_subject: '/authorities/search/assign_fast/all',
+  generic_work_artist:          '/authorities/search/assign_fast/all',
+  generic_work_author:          '/authorities/search/assign_fast/all',
+  generic_work_creator_of_work: '/authorities/search/assign_fast/all',
+  generic_work_contributor:     '/authorities/search/assign_fast/all',
+  generic_work_interviewee:     '/authorities/search/assign_fast/all',
+  generic_work_interviewer:     '/authorities/search/assign_fast/all',
+  generic_work_manufacturer:    '/authorities/search/assign_fast/all',
+  generic_work_photographer:    '/authorities/search/assign_fast/all',
+  generic_work_publisher:       '/authorities/search/assign_fast/all',
+  generic_work_language:       '/authorities/search/local/languages',
+  generic_work_place_of_manufacture: '/authorities/search/assign_fast/all',
+  generic_work_place_of_interview: '/authorities/search/assign_fast/all',
+  generic_work_place_of_publication: '/authorities/search/assign_fast/all',
+  generic_work_place_of_creation: '/authorities/search/assign_fast/all',
 }
 
+
 Blacklight.onLoad(function() {
+  Sufia.autocomplete = function() {}
   // CHF edit: basically this entire file has now been replaced.
 
   // CHF edit: generalize source of autocomplete data
@@ -121,5 +123,6 @@ Blacklight.onLoad(function() {
     }
   }
 
+  Sufia.initialize();
   $('.multi_value.form-group').manage_fields({add: chf_add});
 });
