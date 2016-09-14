@@ -113,9 +113,9 @@ module CurationConcerns
       [ :id, :_destroy, :role, :name ]
     end
 
-
-    # TODO: I think we can delete this with the new form design.
     def self.model_attributes(params)
+      # model expects this as multi-value
+      params[:rights] = Array(params[:rights])
       clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
       # Oops; we're blanking out these values when changing permissions and probably versions, too
       #  -- they don't have these fields in the form at all so they don't get repopulated.
