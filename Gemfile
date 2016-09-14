@@ -1,9 +1,15 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', github: 'projecthydra/sufia', branch: 'master'
+gem 'sufia', '7.0.0'
 gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0'
+
+# Preserve order
+gem 'rdf', '~> 1.99'
+
+# locking for sufia 7.0
+gem 'active-fedora', '~>10.1'
 
 # extras
 gem 'hydra-role-management'
