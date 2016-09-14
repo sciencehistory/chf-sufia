@@ -25,8 +25,22 @@ describe 'curation_concerns/base/_form.html.erb' do
 
   it "renders hidden fields" do
     expect(page).to have_selector "input#generic_work_artist[type='hidden']", visible: false
-    # 5? are sufia-supplied (resource_type?)
-    expect(page.all("input[type='hidden']", visible: false).count).to eq 19
+    inputs_hidden = page.all("input[type='hidden']", visible: false)
+    names = inputs_hidden.map { |ih|  ih['name'] }
+    expect(names).to include "generic_work[artist][]"
+    expect(names).to include "generic_work[author][]"
+    expect(names).to include "generic_work[addressee][]"
+    expect(names).to include "generic_work[creator_of_work][]"
+    expect(names).to include "generic_work[contributor][]"
+    expect(names).to include "generic_work[interviewee][]"
+    expect(names).to include "generic_work[interviewer][]"
+    expect(names).to include "generic_work[manufacturer][]"
+    expect(names).to include "generic_work[photographer][]"
+    expect(names).to include "generic_work[publisher][]"
+    expect(names).to include "generic_work[place_of_interview][]"
+    expect(names).to include "generic_work[place_of_manufacture][]"
+    expect(names).to include "generic_work[place_of_publication][]"
+    expect(names).to include "generic_work[place_of_creation][]"
   end
 
   it "renders a nested attribute field" do
