@@ -8,7 +8,7 @@ class Credit < ActiveFedora::Base
 
   property :role, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCreditRole"), multiple: false
   property :name, predicate: ::RDF::Vocab::FOAF.name, multiple: false
-  property :label, predicate: ::RDF::SKOS.prefLabel, multiple:false
+  property :label, predicate: ::RDF::Vocab::SKOS.prefLabel, multiple:false
 
   def self.role_options
     Rails.configuration.credit_roles
