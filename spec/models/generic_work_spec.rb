@@ -39,6 +39,17 @@ RSpec.describe GenericWork do
     series_arrangement: 'http://bibframe.org/vocab/materialHierarchicalLevel',
   }
 
+  let(:gf) do
+    GenericWork.create(title: ['title1']) do |f|
+      f.apply_depositor_metadata('dpt')
+      f.creator = ['Beckett, Samuel']
+      f.extent = ["infinitely long"]
+      f.date_of_work_attributes = [{start: "2003", finish: "2015"}]
+      f.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: 'place', text: 'stuff'}]
+      f.additional_credit_attributes = [{role: "photographer", name: "Puffins"}, {role: 'photographer', name: 'Squirrels'}]
+    end
+  end
+
   # TODO: associations may have predicates as well.
   #   how to account for those without keeping a separate list?
   it 'uses a different predicate for each field' do
@@ -64,13 +75,6 @@ RSpec.describe GenericWork do
   end
 
   describe 'Correctly populates fields' do
-    let :gf do
-      GenericWork.create(title: ['title1']) do |f|
-        f.apply_depositor_metadata('dpt')
-        f.creator = ['Beckett, Samuel']
-        f.extent = ["infinitely long"]
-      end
-    end
 
     it 'pre-populates credit line' do
       expect(gf.credit_line).to eq ['Courtesy of CHF Collections']
@@ -85,51 +89,30 @@ RSpec.describe GenericWork do
       expect(gf.extent).to eq ["infinitely long"]
     end
 
-    describe "add a Date Range" do
-      before do
-        gf.date_of_work_attributes = [{start: "2003", finish: "2015"}]
-      end
-      it "uses TimeSpan class" do
+    describe "with nested Dates" do
+      it "retrieves a TimeSpan object" do
+        expect(GenericWork.find(gf.id).date_of_work.count).to eq 1
         expect(gf.date_of_work.first).to be_kind_of TimeSpan
       end
     end
 
-    describe "retrieve a Date Range" do
-      it "finds the nested attributes" do
-        gf.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
-        gf.save!
-        expect(GenericWork.find(gf.id).date_of_work.count).to eq 2 #returns both
-        expect(GenericWork.load_instance_from_solr(gf.id).date_of_work.count).to eq 2 #returns both
-      end
-    end
-
     describe "with Nested Inscriptions" do
-
       it "uses Inscription class" do
-        gf.inscription_attributes = [{location: "inside", text: "for you"}]
         expect(gf.inscription.first).to be_kind_of Inscription
       end
 
       it "finds the nested attributes" do
-        gf.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: 'place', text: 'stuff'}]
-        gf.save!
-        expect(GenericWork.find(gf.id).inscription.count).to eq 2 #returns both
-        expect(GenericWork.load_instance_from_solr(gf.id).inscription.count).to eq 2 #returns both
+        expect(GenericWork.find(gf.id).inscription.count).to eq 2
       end
     end
 
     describe "with Nested additional credit" do
-
       it "uses Credit class" do
-        gf.additional_credit_attributes = [{role: "photographer", name: "Puffins"}]
         expect(gf.additional_credit.first).to be_kind_of Credit
       end
 
       it "finds the nested attributes" do
-        gf.additional_credit_attributes = [{role: "photographer", name: "Puffins"}, {role: 'photographer', name: 'Squirrels'}]
-        gf.save!
-        expect(GenericWork.find(gf.id).additional_credit.count).to eq 2 #returns both
-        expect(GenericWork.load_instance_from_solr(gf.id).additional_credit.count).to eq 2 #returns both
+        expect(GenericWork.find(gf.id).additional_credit.count).to eq 2
       end
     end
 
