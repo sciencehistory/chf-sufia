@@ -1,8 +1,16 @@
+require 'resque/server'
+
 Rails.application.routes.draw do
   Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
 
-
+  # Administrative URLs
+  namespace :admin do
+    # Job monitoring
+    constraints ResqueAdmin do
+      mount Resque::Server, at: 'queues'
+    end
+  end
   
   mount Blacklight::Engine => '/'
   
