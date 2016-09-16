@@ -17,7 +17,7 @@ gem 'highline'
 gem 'rest-client'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.6'
+gem 'rails', '~> 4.2.6'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'resque-pool'
