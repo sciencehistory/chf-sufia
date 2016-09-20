@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160711174245) do
+ActiveRecord::Schema.define(version: 20160920141650) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20160711174245) do
 
   create_table "checksum_audit_logs", force: :cascade do |t|
     t.string   "file_set_id"
-    t.string   "dsid"
+    t.string   "file_id"
     t.string   "version"
     t.integer  "pass"
     t.string   "expected_result"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20160711174245) do
     t.datetime "updated_at"
   end
 
-  add_index "checksum_audit_logs", ["file_set_id", "dsid"], name: "by_pid_and_dsid"
+  add_index "checksum_audit_logs", ["file_set_id", "file_id"], name: "by_file_set_id_and_file_id"
 
   create_table "content_blocks", force: :cascade do |t|
     t.string   "name"
