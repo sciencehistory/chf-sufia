@@ -10,11 +10,13 @@ module CHF
           Sufia.config.divisions[1] => :oral,
           Sufia.config.divisions[2] => :museum,
           Sufia.config.divisions[3] => :library,
+          "Rare Books" => :rare_books,
           "" => :unknown
         }
         @have_titles = lookup.values.inject({}) { |h, k| h.merge({k => 0}) }
         @complete = have_titles.deep_dup
         @totals = have_titles.deep_dup
+        @rb_curator = 'jvoelkel@chemheritage.org'
       end
 
       def run
@@ -25,13 +27,19 @@ module CHF
           puts "Analyzing file #{i} of #{total}: #{f.id} #{f.title.first}"
 
           division = f.division.nil? ? "" : f.division
-          unless division.nil?
-            @totals[lookup[division]] = totals[lookup[division]] + 1
-            if has_title(f)
-              @have_titles[lookup[division]] = have_titles[lookup[division]] + 1
-              if has_description(f)
-                @complete[lookup[division]] = complete[lookup[division]] + 1
-              end
+          if lookup[division] == :library
+            # figure out who can edit
+            can_edit = []
+            f.permissions.each do |perm|
+              can_edit << perm.agent_name if perm.access == "edit"
+            end
+            division = "Rare Books" if can_edit.include? @rb_curator
+          end
+          @totals[lookup[division]] = totals[lookup[division]] + 1
+          if has_title(f)
+            @have_titles[lookup[division]] = have_titles[lookup[division]] + 1
+            if has_description(f)
+              @complete[lookup[division]] = complete[lookup[division]] + 1
             end
           end
         end
