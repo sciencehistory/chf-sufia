@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# lock for migration; update to 6.x-stable
+gem 'rdf', '1.99'
+
 # sufia stuff!
 gem 'sufia', '6.5.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'

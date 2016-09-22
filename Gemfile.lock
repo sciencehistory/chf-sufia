@@ -493,7 +493,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    rdf (1.99.1)
+    rdf (1.99.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (1.99.0)
       rdf (~> 1.99)
@@ -784,6 +784,7 @@ DEPENDENCIES
   pry-rails
   qa!
   rails (= 4.2.6)
+  rdf (= 1.99)
   rdf-vocab
   rsolr (~> 1.0.6)
   rspec-activemodel-mocks
