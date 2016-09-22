@@ -2,9 +2,18 @@ source 'https://rubygems.org'
 
 # lock for migration; update to 6.x-stable
 gem 'rdf', '1.99'
+gem 'blacklight-gallery', '0.4.0' # after this it depends on blacklight 6 which is giving bundler problems
+gem 'deprecation', '0.1' # not sure why this is a problem...
+gem 'google_drive', '1.0.6'
+#gem 'rdf-tabular', '0.3'
+#gem 'active-fedora', '9.8.2'
+#gem 'active-triples', '0.7.4'
+gem 'blacklight', '5.16.4' # updating this broke metadata form
 
 # sufia stuff!
-gem 'sufia', '6.5.0'
+#gem 'sufia', '6.5.0'
+#gem 'sufia', '6.6.0'
+gem 'sufia', github: 'projecthydra/sufia', branch: '6.x-stable'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
@@ -23,7 +32,7 @@ gem 'ldp', '~> 0.4.0'
 # need fix in noid 1.0.3
 gem 'active_fedora-noid', '~> 1.0', '>= 1.0.3'
 # need fix from 9.6.0
-gem 'active-fedora', '~> 9.0', '>= 9.6.0'
+#gem 'active-fedora', '~> 9.0', '>= 9.6.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
