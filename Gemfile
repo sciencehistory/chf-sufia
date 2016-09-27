@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', '7.0.0'
+gem 'sufia', '7.1'
 gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0'
 
@@ -10,7 +10,7 @@ gem 'rdf', '~> 1.99'
 
 # locking for sufia 7.0
 gem 'active-fedora', '~>10.1'
-gem 'curation_concerns', '1.3.0'
+gem 'curation_concerns', '1.3.3'
 gem 'blacklight', '6.3.3'
 
 # extras
