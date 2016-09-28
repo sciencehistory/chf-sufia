@@ -89,6 +89,7 @@ Sufia.config do |config|
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
   #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
+  config.upload_path = ->() { Pathname.new('/tmp') }
 
   # If browse-everything has been configured, load the configs.  Otherwise, set to nil.
   begin
