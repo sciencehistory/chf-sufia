@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module Chufia
   class Application < Rails::Application
+
+    config.autoload_paths << "#{Rails.root}/app/forms/concerns"
     
     config.generators do |g|
       g.test_framework :rspec, :spec => true
