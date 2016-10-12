@@ -8,6 +8,8 @@ RSpec.describe Chf::Export::CreditConverter do
   subject { described_class.new(credit).to_json }
 
   describe "to_json" do
-    it { is_expected.to eq json }
+    it "converts" do
+      expect(subject).to eq json
+    end
   end
 end
