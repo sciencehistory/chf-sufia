@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416194156) do
+ActiveRecord::Schema.define(version: 20160706132422) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -237,6 +237,15 @@ ActiveRecord::Schema.define(version: 20150416194156) do
   end
 
   add_index "subject_local_authority_entries", ["lowerLabel"], name: "entries_by_lower_label"
+
+  create_table "sufia_migration_survey_items", force: :cascade do |t|
+    t.string   "object_id"
+    t.string   "object_class"
+    t.text     "object_title"
+    t.integer  "migration_status"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
   create_table "tinymce_assets", force: :cascade do |t|
     t.string   "file"
