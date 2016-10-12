@@ -20,7 +20,7 @@ gem 'rsolr', '~> 1.0.6'
 # extras
 gem 'hydra-role-management'
 gem 'rdf-vocab'
-gem 'hydra-editor', github: 'projecthydra/hydra-editor', :ref => '7c8983'
+gem 'hydra-editor', '1.2.0'
 gem 'qa', github: 'projecthydra-labs/questioning_authority'
 # TODO it should be fine to remove this if PR #1326
 # is accepted into sufia

@@ -19,17 +19,6 @@ GIT
       rest-client
 
 GIT
-  remote: git://github.com/projecthydra/hydra-editor.git
-  revision: 7c8983c825a1f21e86b4667fa4f579ee7af6ca40
-  ref: 7c8983
-  specs:
-    hydra-editor (1.0.4)
-      active-fedora (>= 9.0.0)
-      cancancan (~> 1.8)
-      rails (~> 4.1)
-      simple_form (~> 3.1.0)
-
-GIT
   remote: git://github.com/projecthydra/sufia.git
   revision: 8320b15a2b26742775fda6b5aab009ccc3c05d53
   branch: 6.x-stable
@@ -349,6 +338,11 @@ GEM
       hydra-file_characterization (~> 0.3)
       mime-types (>= 1)
       mini_magick (>= 3.2, < 5)
+    hydra-editor (1.2.0)
+      active-fedora (>= 9.0.0)
+      cancancan (~> 1.8)
+      rails (~> 4.1)
+      simple_form (~> 3.1.0)
     hydra-file_characterization (0.3.3)
       activesupport (>= 3.0.0)
     hydra-head (9.4.1)
@@ -444,7 +438,7 @@ GEM
     mimemagic (0.3.2)
     mini_magick (4.5.1)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
+    minitest (5.9.1)
     mono_logger (1.1.0)
     multi_json (1.12.1)
     multi_xml (0.5.5)
@@ -458,9 +452,8 @@ GEM
     net-ssh (2.9.2)
     netrc (0.10.3)
     noid (0.9.0)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     nom-xml (0.6.0)
       activesupport (>= 3.2.18)
       i18n
@@ -488,7 +481,6 @@ GEM
       blankslate (>= 2.0, <= 4.0)
     pg (0.18.2)
     phantomjs (1.9.8.0)
-    pkg-config (1.1.7)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -779,7 +771,7 @@ DEPENDENCIES
   google_drive (= 1.0.6)
   guard-rspec
   highline
-  hydra-editor!
+  hydra-editor (= 1.2.0)
   hydra-role-management
   jasmine (~> 2.3)
   jbuilder (~> 2.0)

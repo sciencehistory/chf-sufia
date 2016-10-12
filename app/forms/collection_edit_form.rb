@@ -1,12 +1,10 @@
-class CollectionEditForm
+class CollectionEditForm < Sufia::Forms::CollectionEditForm
+
   include HydraEditor::Form
-  self.model_class = ::Collection
-  self.terms = [:title, :description, :related_url]
+  include HydraEditor::Form::Permissions
+
+  self.terms = [:title, :description, :related_url, :visibility]
   self.required_fields = [:title]
-  # Test to see if the given field is required
-  # @param [Symbol] key a field
-  # @return [Boolean] is it required or not
-  def required?(key)
-    model_class.validators_on(key).any?{|v| v.kind_of? ActiveModel::Validations::PresenceValidator}
-  end
+
+  self.model_class = ::Collection
 end
