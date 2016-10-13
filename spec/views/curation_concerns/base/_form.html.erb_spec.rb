@@ -9,12 +9,15 @@ describe 'curation_concerns/base/_form.html.erb' do
   let(:form) do
     CurationConcerns::GenericWorkForm.new(work, ability)
   end
+  let(:service) { instance_double CurationConcerns::AdminSetService, select_options: [] }
 
   before do
     view.lookup_context.view_paths.push 'app/views/curation_concerns'
     allow(work).to receive(:member_ids).and_return([1, 2])
     #allow(view).to receive(:curation_concern).and_return(work)
     allow(controller).to receive(:current_user).and_return(stub_model(User))
+    allow(view).to receive(:available_collections).and_return([])
+    allow(CurationConcerns::AdminSetService).to receive(:new).with(controller).and_return(service)
     assign(:form, form)
   end
 

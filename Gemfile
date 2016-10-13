@@ -1,17 +1,15 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-gem 'sufia', '7.1'
+gem 'sufia', '7.2.0'
 gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0'
 
+# required for sufia 7.2
+gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
+
 # Preserve order
 gem 'rdf', '~> 1.99'
-
-# locking for sufia 7.0
-gem 'active-fedora', '~>10.1'
-gem 'curation_concerns', '1.3.3'
-gem 'blacklight', '6.3.3'
 
 # extras
 gem 'hydra-role-management'

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   # Adds CurationConcerns behaviors to the application controller.
   include CurationConcerns::ApplicationControllerBehavior
   include CurationConcerns::ThemedLayoutController
-  layout 'sufia-one-column'
+  with_themed_layout '1_column'
 
 
   # Adds a few additional behaviors into the application controller 
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   # Please be sure to impelement current_user and user_session. Blacklight depends on 
   # these methods in order to perform user specific actions. 
 
-  layout 'sufia-one-column'
+  with_themed_layout '1_column'
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

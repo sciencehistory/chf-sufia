@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  *= require_self
  *= require sufia
  *= require chf-overrides

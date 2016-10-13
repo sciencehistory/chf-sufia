@@ -30,7 +30,7 @@
           <%= check_box_tag 'agreement', 1, f.object.agreement_accepted, required: true %>
           <%= t('sufia.active_consent_to_agreement') %><br>
           <%= link_to t('sufia.deposit_agreement'),
-                      sufia.static_path('agreement'),
+                      sufia.agreement_path,
                       target: '_blank' %>
         </label>
     <% end %> <%# CHF: else nothing; we don't want a deposit agreement at all. %>
