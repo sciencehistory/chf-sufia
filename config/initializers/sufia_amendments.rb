@@ -94,6 +94,7 @@ Sufia.config do |config|
     'Business correspondence',
     'Catalogs',
     'Chemistry sets',
+    'Clothing & Dress',
     'Diagrams',
     'Drawings',
     'Encyclopedias and dictionaries',
@@ -124,6 +125,7 @@ Sufia.config do |config|
     'Scientific apparatus and instruments',
     'Slides',
     'Stereographs',
+    'Textiles',
   ]
 
   config.physical_container_fields = {
