@@ -2,62 +2,57 @@ require 'rails_helper'
 require_dependency Rails.root.join('lib','chf','reports','metadata_completion_report')
 
 RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
+  let(:depositor) { FactoryGirl.create(:depositor) }
+  let(:curator) { 'jvoelkel@chemheritage.org' }
   # just title
-  let(:f5) do
+  before do
     GenericWork.new.tap do |w|
-      w.apply_depositor_metadata 'user@example.com'
+      w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.title = ['Kettle']
       w.save!
     end
-  end
   # title and description
-  let(:f1) do
     GenericWork.new.tap do |w|
-      w.apply_depositor_metadata 'user@example.com'
+      w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.title = ['Teapot']
       w.description = ['handle, spout']
       w.save!
     end
-  end
   # just description
-  let(:f2) do
     GenericWork.new.tap do |w|
-      w.apply_depositor_metadata 'user@example.com'
+      w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.description = ['cataloged out of order']
       w.title = ['bunnies.tif']
       w.save!
     end
-  end
   # neither
-  let(:f3) do
     GenericWork.new.tap do |w|
-      w.apply_depositor_metadata 'user@example.com'
+      w.apply_depositor_metadata depositor
       w.title = ['bears.tif']
       w.division = 'Archives'
       w.save!
     end
-  end
   # both, different division
-  let(:f4) do
     GenericWork.new.tap do |w|
-      w.apply_depositor_metadata 'user@example.com'
-      w.division = 'Museum'
+      w.apply_depositor_metadata depositor
+      w.division = nil
       w.title = ['Toothbrush']
       w.description = ['handle, bristles']
       w.save!
     end
-  end
-
-  # not sure why i'm having to do this :(
-  before do
-    f1.reload
-    f2.reload
-    f3.reload
-    f4.reload
-    f5.reload
+    # both, transferred object
+    GenericWork.new.tap do |w|
+      w.apply_depositor_metadata depositor
+      w.division = 'Othmer Library of Chemical History'
+      w.title = ['Book of some kind']
+      w.description = ['useful for historical research']
+      w.permissions = [Hydra::AccessControls::Permission.new(type: 'person', name: curator, access: 'edit'),
+                       Hydra::AccessControls::Permission.new(type: 'person', name: depositor, access: 'edit')]
+      w.save!
+    end
   end
 
   it 'counts completed objects' do
@@ -67,6 +62,8 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
     expect(report.have_titles[:archives]).to eq 2
     expect(report.complete[:archives]).to eq 1
     expect(report.totals[:archives]).to eq 4
+    expect(report.totals[:library]).to eq 0
+    expect(report.totals[:rare_books]).to eq 1
   end
 
   it 'calculates percentages' do
