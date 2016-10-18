@@ -91,6 +91,7 @@ module Chufia
       'Business correspondence',
       'Catalogs',
       'Chemistry sets',
+      'Clothing & dress',
       'Diagrams',
       'Drawings',
       'Encyclopedias and dictionaries',
@@ -121,6 +122,7 @@ module Chufia
       'Scientific apparatus and instruments',
       'Slides',
       'Stereographs',
+      'Textiles'
     ]
 
     config.physical_container_fields = {
