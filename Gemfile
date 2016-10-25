@@ -11,6 +11,9 @@ gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 # Preserve order
 gem 'rdf', '~> 1.99'
 
+# Lock this to fix FAST until post-10.2 release is cut
+gem 'qa', git: 'https://github.com/projecthydra-labs/questioning_authority.git', ref: 'baf581f17bdd8470176514c8f48467d5932833e0'
+
 # extras
 gem 'hydra-role-management'
 gem 'highline'

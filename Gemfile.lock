@@ -6,6 +6,18 @@ GIT
     flipflop (2.2.1)
       activesupport (>= 4.0)
 
+GIT
+  remote: https://github.com/projecthydra-labs/questioning_authority.git
+  revision: baf581f17bdd8470176514c8f48467d5932833e0
+  ref: baf581f17bdd8470176514c8f48467d5932833e0
+  specs:
+    qa (0.10.2)
+      activerecord-import
+      deprecation
+      faraday
+      nokogiri (~> 1.6.0)
+      rails (>= 4.2.0, < 6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -493,12 +505,6 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-    qa (0.10.1)
-      activerecord-import
-      deprecation
-      faraday
-      nokogiri (~> 1.6.0)
-      rails (>= 4.2.0, < 6.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -827,6 +833,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  qa!
   rails (~> 4.2.6)
   rdf (~> 1.99)
   resque-pool
