@@ -96,6 +96,11 @@ Sufia.config do |config|
   #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
   config.upload_path = ->() { Pathname.new('/tmp') }
 
+  # Location on local file system where derivatives will be stored.
+  # If you use a multi-server architecture, this MUST be a shared volume.
+  # config.derivatives_path = File.join(Rails.root, 'tmp', 'derivatives')
+  config.derivatives_path = '/var/sufia/derivatives'
+
   # If browse-everything has been configured, load the configs.  Otherwise, set to nil.
   begin
     if defined? BrowseEverything
