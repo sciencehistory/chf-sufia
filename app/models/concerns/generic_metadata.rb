@@ -100,19 +100,19 @@ module GenericMetadata
     # end places
 
     property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasAdminNote") do |index|
-      index.as :displayable
+      index.as :stored_searchable
     end
 
     property :credit_line, predicate: ::RDF::Vocab::Bibframe.creditsNote do |index|
-      index.as :displayable
+      index.as :stored_searchable
     end
 
     property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasDivision"), multiple: false do |index|
-      index.as :displayable
+      index.as :stored_searchable
     end
 
     property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
-      index.as :displayable
+      index.as :stored_searchable
     end
 
     property :genre_string, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasGenre") do |index|
@@ -142,7 +142,7 @@ module GenericMetadata
     end
 
     property :series_arrangement, predicate: ::RDF::Vocab::Bibframe.materialHierarchicalLevel do |index|
-      index.as :displayable
+      index.as :stored_searchable
     end
 
     has_and_belongs_to_many :date_of_work, predicate: ::RDF::Vocab::DC11.date, class_name: "DateOfWork"

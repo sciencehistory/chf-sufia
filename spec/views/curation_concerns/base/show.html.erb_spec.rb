@@ -1,49 +1,49 @@
 require 'rails_helper'
 
+# This has really become an integration test now
 describe 'curation_concerns/base/show.html.erb' do
-  let(:solr_document) {
-    SolrDocument.new(
-      id: '999',
-      object_profile_ssm: ["{\"id\":\"999\"}"],
-      has_model_ssim: ['GenericWork'],
-      human_readable_type_tesim: ['Generic Work'],
-      title_tesim: ['Super Mario'],
-      physical_container_tesim: ["Box 2, Folder 3, Volume 4, Part 5, Page 234"],
-      identifier_tesim: ['object-2004', 'bib-b123456789', 'object-2004-09.003'],
-      creator_of_work_tesim: ['Chain Chomp'],
-      contributor_tesim: ['Blooper'],
-      artist_tesim: ['Boo'],
-      author_tesim: ['Cheep Cheep'],
-      addressee_tesim: ['Koopa'],
-      interviewee_tesim: ['Birdo'],
-      interviewer_tesim: ['Thwomp'],
-      manufacturer_tesim: ['Piranha Plant'],
-      photographer_tesim: ['Sparky'],
-      publisher_tesim: ['Hammer Bro'],
-      date_of_work_display_tesim: ['1990-02-09'],
-      place_of_interview_tesim: ['Underwater'],
-      place_of_manufacture_tesim: ['Cloudland'],
-      place_of_publication_tesim: ['Pyramid'],
-      place_of_creation_tesim: ['Castle'],
-      resource_type_tesim: ['Mushroom'],
-      genre_string_tesim: ['Platformer'],
-      medium_tesim: ['Digital'],
-      extent_tesim: ['Infinity'],
-      language_tesim: ['Mute'],
-      description_tesim: ['Fun'],
-      inscription_tesim: ['(side of cartridge) Ravioli'],
-      subject_tesim: ['gold coins'],
-      division_tesim: ['Nintendo'],
-      series_arrangement_tesim: ['Ongoing'],
-      related_url_tesim: ['example.com'],
-      rights_tesim: ['http://rightsstatements.org/vocab/InC/1.0/'],
-      rights_holder_tesim: ['Luigi'],
-      credit_line_tesim: ['Courtesy of CHF Collections'],
-      additional_credit_tesim: ['Photographed by Bowser'],
-      file_creator_tesim: ['Miyamoto'],
-      admin_note_tesim: ['Mario Kart'],
-    )
-  }
+  let(:work) do
+    FactoryGirl.create(:generic_work).tap do |w|
+      w.has_model = ['GenericWork']
+      w.human_readable_type = ['Generic Work']
+      w.title = ['Super Mario']
+      w.physical_container = "b2|f3|v4|p5|g234"
+      w.identifier = ['object-2004', 'bib-b123456789', 'object-2004-09.003']
+      w.creator_of_work = ['Chain Chomp']
+      w.contributor = ['Blooper']
+      w.artist = ['Boo']
+      w.author = ['Cheep Cheep']
+      w.addressee = ['Koopa']
+      w.interviewee = ['Birdo']
+      w.interviewer = ['Thwomp']
+      w.manufacturer = ['Piranha Plant']
+      w.photographer = ['Sparky']
+      w.publisher = ['Hammer Bro']
+      w.place_of_interview = ['Underwater']
+      w.place_of_manufacture = ['Cloudland']
+      w.place_of_publication = ['Pyramid']
+      w.place_of_creation = ['Castle']
+      w.resource_type = ['Mushroom']
+      w.genre_string = ['Platformer']
+      w.medium = ['Digital']
+      w.extent = ['Infinity']
+      w.language = ['Mute']
+      w.description = ['Fun']
+      w.subject = ['gold coins']
+      w.division = 'Nintendo'
+      w.series_arrangement = ['Ongoing']
+      w.related_url = ['example.com']
+      w.rights = ['http =//rightsstatements.org/vocab/InC/1.0/']
+      w.rights_holder = 'Luigi'
+      w.credit_line = ['Courtesy of CHF Collections']
+      w.file_creator = 'Miyamoto'
+      w.admin_note = ['Mario Kart']
+      w.date_of_work_attributes = [{start: "1990-02-09"}]
+      w.inscription_attributes = [{location: "side of cartridge", text: "Ravioli"}]
+      w.additional_credit_attributes = [{role: "photographer", name: "Bowser", label: "Photographed by Bowser"}]
+    end
+  end
+  let(:solr_document) { SolrDocument.new(work.to_solr) }
 
   let(:ability) { nil }
   let(:presenter) do
@@ -79,7 +79,6 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Piranha Plant/
       expect(rendered).to match /Sparky/
       expect(rendered).to match /Hammer Bro/
-      expect(rendered).to match /1990-02-09/
       expect(rendered).to match /Underwater/
       expect(rendered).to match /Cloudland/
       expect(rendered).to match /Pyramid/
@@ -90,7 +89,6 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Infinity/
       expect(rendered).to match /Mute/
       expect(rendered).to match /Fun/
-      expect(rendered).to match /\(side of cartridge\) Ravioli/
       expect(rendered).to match /gold coins/
       expect(rendered).to match /Nintendo/
       expect(rendered).to match /Ongoing/
@@ -98,9 +96,11 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /rightsstatements\.org/
       expect(rendered).to match /Luigi/
       expect(rendered).to match /Courtesy of CHF Collections/
-      expect(rendered).to match /Photographed by Bowser/
       expect(rendered).to match /Miyamoto/
       expect(rendered).to match /Mario Kart/
+      expect(rendered).to match /1990-02-09/
+      expect(rendered).to match /\(side of cartridge\) Ravioli/
+      expect(rendered).to match /Photographed by Bowser/
     end
   end
 
