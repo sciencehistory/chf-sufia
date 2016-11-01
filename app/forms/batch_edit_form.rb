@@ -19,7 +19,27 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     #:additional_credit,
     :resource_type,
     :subject, :language,
-    :related_url
+    :related_url,
+    :artist,
+    :author,
+    :addressee,
+    :creator_of_work,
+    :contributor,
+    :interviewee,
+    :interviewer,
+    :manufacturer,
+    :photographer,
+    :publisher,
+    :place_of_interview,
+    :place_of_manufacture,
+    :place_of_publication,
+    :place_of_creation,
+    :genre_string,
+    :medium,
+    :extent,
+    :description,
+    :series_arrangement,
+    :rights
   ]
 
   self.required_fields = []
