@@ -62,10 +62,6 @@ module Chf
         @additional_credit = credit(gf)
       end
 
-      def to_json
-        super
-      end
-
       private
 
         def date_of_work(gf)
