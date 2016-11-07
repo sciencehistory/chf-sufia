@@ -26,9 +26,9 @@ RSpec.describe Credit do
 
   describe 'id' do
     # kind of a sloppy test
-    it 'is a NOID' do
+    it 'is not a NOID' do
       subject.save
-      expect(subject.id.length).to eq 9
+      expect(subject.id.length).to be > 9
     end
   end
 

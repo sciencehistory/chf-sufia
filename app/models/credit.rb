@@ -1,5 +1,4 @@
 class Credit < ActiveFedora::Base
-  include CurationConcerns::Noid
 
   before_save :compose_label
 
