@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # sufia stuff!
 #gem 'sufia', '7.2.0'
-gem 'sufia', git: 'https://github.com/projecthydra/sufia', branch: 'collection-exe'
+gem 'sufia', git: 'https://github.com/projecthydra/sufia', branch: '7.2-migration'
 gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0'
 
