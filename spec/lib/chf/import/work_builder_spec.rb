@@ -7,8 +7,19 @@ describe Chf::Import::WorkBuilder do
     { "id": "th83kz34n",
       "depositor": "aheadley@chemheritage.org",
       "title": [ "cat" ],
-      # code requires this and it will be in all our exports
-      "rights": [],
+      "rights": [
+        'http://rightsstatements.org/vocab/InC/1.0/',
+        'http://rightsstatements.org/vocab/InC­OW­EU/1.0/',
+        'http://rightsstatements.org/vocab/InC­RUU/1.0/',
+        'http://rightsstatements.org/vocab/InC­EDU/1.0/',
+        'http://rightsstatements.org/vocab/InC­NC/1.0/',
+        'http://rightsstatements.org/vocab/OOC­NC/1.0/',
+        'http://rightsstatements.org/vocab/NoC­CR/1.0/',
+        'http://rightsstatements.org/vocab/NoC­OKLR/1.0/',
+        'http://rightsstatements.org/vocab/NoC­US/1.0/',
+        'http://rightsstatements.org/vocab/NKC/1.0/',
+        'http://creativecommons.org/publicdomain/mark/1.0/',
+      ],
       # app really makes it impossible to have a gf with no perms
       "permissions": [],
       "date_of_work": [
@@ -56,7 +67,6 @@ describe Chf::Import::WorkBuilder do
       "extent": [ "Anton Eduard van Arkel"],
       "medium": [ "Svante Arrhenius"],
       "resource_type": [ "Stephen Moulton Babcock"],
-      "rights": [ "Werner Emmanuel Bachmann"],
       "series_arrangement": [ "Adolf von Baeyer"],
       "division": "Octavio Augusto Ceva Antunes",
       "file_creator": "Anthony Joseph Arduengo, III",
@@ -102,7 +112,25 @@ describe Chf::Import::WorkBuilder do
     expect(work.extent).to include "Anton Eduard van Arkel"
     expect(work.medium).to include "Svante Arrhenius"
     expect(work.resource_type).to include "Stephen Moulton Babcock"
-    expect(work.rights).to include "Werner Emmanuel Bachmann"
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/InC/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/InC-OW-EU/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/InC-RUU/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/InC-EDU/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/InC-NC/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/NoC-NC/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/NoC-CR/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/NoC-OKLR/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/NoC-US/1.0/'
+    expect(work.rights).to include 'http://rightsstatements.org/vocab/NKC/1.0/'
+    expect(work.rights).to include 'http://creativecommons.org/publicdomain/mark/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/InC­OW­EU/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/InC­RUU/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/InC­EDU/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/InC­NC/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/OOC­NC/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/NoC­CR/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/NoC­OKLR/1.0/'
+    expect(work.rights).not_to include 'http://rightsstatements.org/vocab/NoC­US/1.0/'
     expect(work.series_arrangement).to include "Adolf von Baeyer"
     expect(work.division).to eq "Octavio Augusto Ceva Antunes"
     expect(work.file_creator).to eq "Anthony Joseph Arduengo, III"

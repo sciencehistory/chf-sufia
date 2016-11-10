@@ -22,6 +22,40 @@ module Chf
         if data[:rights].delete("All rights reserved")
           data[:rights] << "http://www.europeana.eu/portal/rights/rr-r.html"
         end
+        # These URIs may look the same, but we accidentally have non-breaking hyphens in there!
+        # 'In Copyright - EU Orphan Work' => 'http://rightsstatements.org/vocab/InC­OW­EU/1.0/',
+        if data[:rights].delete('http://rightsstatements.org/vocab/InC­OW­EU/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/InC-OW-EU/1.0/'
+        end
+        # 'In Copyright - Educational Use Permitted'
+        if data[:rights].delete('http://rightsstatements.org/vocab/InC­EDU/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/InC-EDU/1.0/'
+        end
+        # 'In Copyright - Non­Commercial Use Permitted'
+        if data[:rights].delete('http://rightsstatements.org/vocab/InC­NC/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/InC-NC/1.0/'
+        end
+        # 'In Copyright - Rights­holder(s) Unlocatable or Unidentifiable'
+        if data[:rights].delete('http://rightsstatements.org/vocab/InC­RUU/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/InC-RUU/1.0/'
+        end
+        # 'No Copyright - Contractual Restrictions'
+        if data[:rights].delete('http://rightsstatements.org/vocab/NoC­CR/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/NoC-CR/1.0/'
+        end
+        # 'Out Of Copyright - Non­Commercial Use Only'
+        if data[:rights].delete('http://rightsstatements.org/vocab/OOC­NC/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/NoC-NC/1.0/'
+        end
+        # 'No Copyright - Other Known Legal Restrictions'
+        if data[:rights].delete('http://rightsstatements.org/vocab/NoC­OKLR/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/NoC-OKLR/1.0/'
+        end
+        # No Copyright - United States
+        if data[:rights].delete('http://rightsstatements.org/vocab/NoC­US/1.0/')
+          data[:rights] << 'http://rightsstatements.org/vocab/NoC-US/1.0/'
+        end
+
         work.apply_depositor_metadata(data.delete(:depositor))
         permission_builder.build(work, data.delete(:permissions))
         date_of_work_builder.build(work, data.delete(:date_of_work))
