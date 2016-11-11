@@ -52,10 +52,12 @@ describe Chf::Import::WorkBuilder do
       "addressee": [ "Emil Abderhalden"],
       "creator_of_work": [ "Frederick Abel"],
       "contributor": [ "Richard Abegg"],
+      "engraver": [ "Stephen Moulton Babcock"],
       "interviewee": [ "Friedrich Accum"],
       "interviewer": [ "Homer Burton Adkins"],
       "manufacturer": [ "Peter Agre"],
       "photographer": [ "Georgius Agricola"],
+      "printer_of_plates": [ "Werner Emmanuel Bachmann"],
       "publisher": [ "Arthur Aikin"],
       "place_of_interview": [ "Adrien Albert"],
       "place_of_manufacture": [ "John Albery"],
@@ -97,10 +99,12 @@ describe Chf::Import::WorkBuilder do
     expect(work.addressee).to include "Emil Abderhalden"
     expect(work.creator_of_work).to include "Frederick Abel"
     expect(work.contributor).to include "Richard Abegg"
+    expect(work.engraver).to include "Stephen Moulton Babcock"
     expect(work.interviewee).to include "Friedrich Accum"
     expect(work.interviewer).to include "Homer Burton Adkins"
     expect(work.manufacturer).to include "Peter Agre"
     expect(work.photographer).to include "Georgius Agricola"
+    expect(work.printer_of_plates).to include "Werner Emmanuel Bachmann"
     expect(work.publisher).to include "Arthur Aikin"
     expect(work.place_of_interview).to include "Adrien Albert"
     expect(work.place_of_manufacture).to include "John Albery"
