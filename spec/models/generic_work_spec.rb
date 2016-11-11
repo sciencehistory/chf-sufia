@@ -17,6 +17,8 @@ RSpec.describe GenericWork do
     rights: 'http://purl.org/dc/elements/1.1/rights',
     subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
+    printer_of_plates: 'http://id.loc.gov/vocabulary/relators/pop',
+    engraver: 'http://id.loc.gov/vocabulary/relators/egr',
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
     admin_note: 'http://chemheritage.org/ns/hasAdminNote',
     division: 'http://chemheritage.org/ns/hasDivision',

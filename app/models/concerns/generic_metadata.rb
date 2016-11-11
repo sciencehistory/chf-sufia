@@ -67,6 +67,9 @@ module GenericMetadata
     property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
       index.as :stored_searchable, :facetable
     end
+    property :engraver, predicate: ::RDF::Vocab::MARCRelators.egr do |index|
+      index.as :stored_searchable, :facetable
+    end
     property :interviewee, predicate: ::RDF::Vocab::MARCRelators.ive do |index|
       index.as :stored_searchable, :facetable
     end
@@ -77,6 +80,9 @@ module GenericMetadata
       index.as :stored_searchable, :facetable
     end
     property :photographer, predicate: ::RDF::Vocab::MARCRelators.pht do |index|
+      index.as :stored_searchable, :facetable
+    end
+    property :printer_of_plates, predicate: ::RDF::Vocab::MARCRelators.pop do |index|
       index.as :stored_searchable, :facetable
     end
     property :publisher, predicate: ::RDF::Vocab::DC11.publisher do |index|

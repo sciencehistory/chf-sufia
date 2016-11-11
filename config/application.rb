@@ -32,10 +32,12 @@ module Chufia
       :addressee,
       :creator_of_work,
       :contributor,
+      :engraver,
       :interviewee,
       :interviewer,
       :manufacturer,
       :photographer,
+      :printer_of_plates,
       :publisher,
     ]
     config.places = [

@@ -50,6 +50,9 @@ class SolrDocument
   def addressee
     self[Solrizer.solr_name('addressee')]
   end
+  def engraver
+    self[Solrizer.solr_name('engraver')]
+  end
   def interviewee
     self[Solrizer.solr_name('interviewee')]
   end
@@ -61,6 +64,9 @@ class SolrDocument
   end
   def photographer
     self[Solrizer.solr_name('photographer')]
+  end
+  def printer_of_plates
+    self[Solrizer.solr_name('printer_of_plates')]
   end
   def place_of_interview
     self[Solrizer.solr_name('place_of_interview')]

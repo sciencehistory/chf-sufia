@@ -14,10 +14,12 @@ describe 'curation_concerns/base/show.html.erb' do
       w.artist = ['Boo']
       w.author = ['Cheep Cheep']
       w.addressee = ['Koopa']
+      w.engraver = ['Thwump']
       w.interviewee = ['Birdo']
       w.interviewer = ['Thwomp']
       w.manufacturer = ['Piranha Plant']
       w.photographer = ['Sparky']
+      w.printer_of_plates = ['Shy Guy']
       w.publisher = ['Hammer Bro']
       w.place_of_interview = ['Underwater']
       w.place_of_manufacture = ['Cloudland']
@@ -101,6 +103,8 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /1990-02-09/
       expect(rendered).to match /\(side of cartridge\) Ravioli/
       expect(rendered).to match /Photographed by Bowser/
+      expect(rendered).to match /Thwump/
+      expect(rendered).to match /Shy Guy/
     end
   end
 
