@@ -14,10 +14,12 @@ Sufia.config do |config|
     addressee:    ::RDF::Vocab::MARCRelators.rcp,
     creator_of_work:      ::RDF::Vocab::DC11.creator,
     contributor:  ::RDF::Vocab::DC11.contributor,
+    engraver:  ::RDF::Vocab::MARCRelators.egr,
     interviewee:  ::RDF::Vocab::MARCRelators.ive,
     interviewer:  ::RDF::Vocab::MARCRelators.ivr,
     manufacturer: ::RDF::Vocab::MARCRelators.mfr,
     photographer: ::RDF::Vocab::MARCRelators.pht,
+    printer_of_plates:  ::RDF::Vocab::MARCRelators.pop,
     publisher:    ::RDF::Vocab::DC11.publisher,
   }
 

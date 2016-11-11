@@ -39,10 +39,12 @@ module Chf
         @author = gf.author
         @addressee = gf.addressee
         @creator_of_work = gf.creator_of_work
+        @engraver = gf.engraver
         @interviewee = gf.interviewee
         @interviewer = gf.interviewer
         @manufacturer = gf.manufacturer
         @photographer = gf.photographer
+        @printer_of_plates = gf.printer_of_plates
         @place_of_interview = gf.place_of_interview
         @place_of_manufacture = gf.place_of_manufacture
         @place_of_publication = gf.place_of_publication
