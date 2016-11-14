@@ -71,6 +71,7 @@ group :development, :test do
   gem 'jettywrapper'
   gem 'pry'
   gem 'pry-rails'
+  gem 'equivalent-xml'
 end
 
 group :test do
