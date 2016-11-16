@@ -4,7 +4,7 @@ require 'equivalent-xml/rspec_matchers'
 
 RSpec.describe ResourceTypeAttributeRenderer do
   let(:field) { :resource_type }
-  let(:renderer) { described_class.new(field, ['http://purl.org/dc/dcmitype/MovingImage']) }
+  let(:renderer) { described_class.new(field, ['Moving Image']) }
 
   describe "#attribute_to_html" do
     subject { Nokogiri::HTML(renderer.render) }
@@ -12,7 +12,7 @@ RSpec.describe ResourceTypeAttributeRenderer do
 
     let(:tr_content) {
       "<tr><th>Resource type</th>\n" \
-       "<td><ul class='tabular'><li class=\"attribute resource_type\"><a href=\"http://purl.org/dc/dcmitype/MovingImage\" target=\"_blank\">Moving Image</a></li></ul></td>\n" \
+       "<td><ul class='tabular'><li class=\"attribute resource_type\">Moving Image</li></ul></td>\n" \
        "</tr>"
     }
     it { expect(renderer).not_to be_microdata(field) }

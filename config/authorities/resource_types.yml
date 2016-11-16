@@ -1,13 +1,19 @@
 terms:
-  - id: http://purl.org/dc/dcmitype/MovingImage
+  - id: Moving Image
     term: Moving Image
-  - id: http://purl.org/dc/dcmitype/StillImage
+    uri: http://purl.org/dc/dcmitype/MovingImage
+  - id: Image
     term: Image
-  - id: http://id.loc.gov/vocabulary/resourceTypes/mix
+    uri: http://purl.org/dc/dcmitype/StillImage
+  - id: Mixed Material
     term: Mixed Material
-  - id: http://purl.org/dc/dcmitype/PhysicalObject
+    uri: http://id.loc.gov/vocabulary/resourceTypes/mix
+  - id: Physical Object
     term: Physical Object
-  - id: http://purl.org/dc/dcmitype/Sound
+    uri: http://purl.org/dc/dcmitype/PhysicalObject
+  - id: Sound
     term: Sound
-  - id: http://purl.org/dc/dcmitype/Text
+    uri: http://purl.org/dc/dcmitype/Sound
+  - id: Text
     term: Text
+    uri: http://purl.org/dc/dcmitype/Text

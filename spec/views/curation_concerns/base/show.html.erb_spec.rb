@@ -25,7 +25,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.place_of_manufacture = ['Cloudland']
       w.place_of_publication = ['Pyramid']
       w.place_of_creation = ['Castle']
-      w.resource_type = ['http://purl.org/dc/dcmitype/MovingImage']
+      w.resource_type = ['Moving Image']
       w.genre_string = ['Platformer']
       w.medium = ['Digital']
       w.extent = ['Infinity']

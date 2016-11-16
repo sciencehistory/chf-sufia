@@ -28,7 +28,8 @@ RSpec.feature "Editing metadata of generic work" do
       #expect(page).not_to have_text('Genre string')
       # resource types
       form_field = find('#generic_work_resource_type')
-      expect(form_field).to have_css "option[value='http://purl.org/dc/dcmitype/StillImage']"
+      #expect(form_field).to have_css "option[value='http://purl.org/dc/dcmitype/StillImage']"
+      expect(form_field).to have_css "option[value='Image']"
       expect(form_field).to have_no_css "option[value='http://schema.org/Article']"
       # creator / contributor fields
       # identifier fills in correctly
