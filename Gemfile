@@ -9,6 +9,9 @@ gem 'rsolr', '~> 1.0'
 # required for sufia 7.2
 gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 
+# Needed to fix reindex_everything
+gem 'active-fedora', github: 'projecthydra/active_fedora', branch: '10.3-stable'
+
 # Preserve order
 gem 'rdf', '~> 1.99'
 
