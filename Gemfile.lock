@@ -1,21 +1,4 @@
 GIT
-  remote: git://github.com/projecthydra/active_fedora.git
-  revision: 3861dee182edc31d66c36b2dbdbcfb8a72e6059c
-  branch: 10.3-stable
-  specs:
-    active-fedora (10.3.0.rc2)
-      active-triples (~> 0.7.1)
-      activemodel (>= 4.2, < 6)
-      activesupport (>= 4.2.4, < 6)
-      deprecation
-      ldp (~> 0.5.0)
-      nom-xml (>= 0.5.1)
-      om (~> 3.1)
-      rdf-rdfxml (~> 1.1)
-      rsolr (~> 1.0, >= 1.0.10)
-      solrizer (~> 3.4)
-
-GIT
   remote: https://github.com/jcoyne/flipflop.git
   revision: 0eecddade9890548c92b1e8aa681512f1db01469
   branch: hydra
@@ -93,6 +76,17 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active-fedora (10.3.0)
+      active-triples (~> 0.7.1)
+      activemodel (>= 4.2, < 6)
+      activesupport (>= 4.2.4, < 6)
+      deprecation
+      ldp (~> 0.5.0)
+      nom-xml (>= 0.5.1)
+      om (~> 3.1)
+      rdf-rdfxml (~> 1.1)
+      rsolr (~> 1.0, >= 1.0.10)
+      solrizer (~> 3.4)
     active-triples (0.7.6)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -819,7 +813,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora!
+  active-fedora (~> 10.3)
   capistrano (= 3.4.0)
   capistrano-bundler (= 1.1.4)
   capistrano-maintenance (~> 1.0)

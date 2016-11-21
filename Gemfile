@@ -10,7 +10,8 @@ gem 'rsolr', '~> 1.0'
 gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 
 # Needed to fix reindex_everything
-gem 'active-fedora', github: 'projecthydra/active_fedora', branch: '10.3-stable'
+# But don't go to 11 without being ready for rdf2
+gem 'active-fedora', '~>10.3'
 
 # Preserve order
 gem 'rdf', '~> 1.99'
