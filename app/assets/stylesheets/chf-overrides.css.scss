@@ -40,3 +40,7 @@
   height: auto;
   overflow: hidden;
 }
+// Fix clickable whitespace on thumbnails
+.representative-media {
+  display: inline !important;
+}
