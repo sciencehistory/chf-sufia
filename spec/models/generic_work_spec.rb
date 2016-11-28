@@ -46,7 +46,7 @@ RSpec.describe GenericWork do
       f.apply_depositor_metadata('dpt')
       f.creator = ['Beckett, Samuel']
       f.extent = ["infinitely long"]
-      f.date_of_work_attributes = [{start: "2003", finish: "2015"}]
+      f.date_of_work_attributes = [{start: "2003", finish: "2015"}, {start:'1200', start_qualifier:'century'}]
       f.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: 'place', text: 'stuff'}]
       f.additional_credit_attributes = [{role: "photographer", name: "Puffins"}, {role: 'photographer', name: 'Squirrels'}]
     end
@@ -93,7 +93,7 @@ RSpec.describe GenericWork do
 
     describe "with nested Dates" do
       it "retrieves a TimeSpan object" do
-        expect(GenericWork.find(gf.id).date_of_work.count).to eq 1
+        expect(GenericWork.find(gf.id).date_of_work.count).to eq 2
         expect(gf.date_of_work.first).to be_kind_of TimeSpan
       end
     end
@@ -116,6 +116,22 @@ RSpec.describe GenericWork do
       it "finds the nested attributes" do
         expect(GenericWork.find(gf.id).additional_credit.count).to eq 2
       end
+    end
+
+    describe '#to_solr' do
+      it 'indexes all additional credits' do
+        expect(gf.to_solr["additional_credit_tesim"]).to include 'Photographed by Puffins'
+        expect(gf.to_solr["additional_credit_tesim"]).to include 'Photographed by Squirrels'
+      end
+      it 'indexes all inscriptions' do
+        expect(gf.to_solr["inscription_tesim"]).to include '(chapter 7) words'
+        expect(gf.to_solr["inscription_tesim"]).to include '(place) stuff'
+      end
+      it 'indexes all dates' do
+        expect(gf.to_solr["date_of_work_display_tesim"]).to include '2003 - 2015'
+        expect(gf.to_solr["date_of_work_display_tesim"]).to include '1200s (century)'
+      end
+
     end
 
   end

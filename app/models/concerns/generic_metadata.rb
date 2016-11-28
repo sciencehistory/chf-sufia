@@ -162,15 +162,9 @@ module GenericMetadata
 
     def to_solr(solr_doc = {})
       super.tap do |doc|
-        additional_credit.each do |credit|
-          doc[ActiveFedora.index_field_mapper.solr_name("additional_credit", type: :string)] = credit.label
-        end
-        inscription.each do |insc|
-          doc[ActiveFedora.index_field_mapper.solr_name("inscription", type: :string)] = "(#{insc['location']}) #{insc['text']}"
-        end
-        date_of_work.each do |dow|
-          doc[ActiveFedora.index_field_mapper.solr_name("date_of_work_display", type: :string)] = dow.display_label
-        end
+        doc[ActiveFedora.index_field_mapper.solr_name("additional_credit", type: :string)] = additional_credit.map { |cred| cred.label }
+        doc[ActiveFedora.index_field_mapper.solr_name("inscription", type: :string)] = inscription.map { |insc| "(#{insc['location']}) #{insc['text']}" }
+        doc[ActiveFedora.index_field_mapper.solr_name("date_of_work_display", type: :string)] = date_of_work.map { |dow| dow.display_label }
         unless physical_container.nil?
           require_dependency Rails.root.join('lib','chf','utils','parse_fields')
           doc[ActiveFedora.index_field_mapper.solr_name("physical_container", type: :string)] = CHF::Utils::ParseFields.display_physical_container(physical_container)
