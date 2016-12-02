@@ -61,7 +61,28 @@ module Chf
         date_of_work_builder.build(work, data.delete(:date_of_work))
         credit_builder.build(work, data.delete(:additional_credit))
         inscription_builder.build(work, data.delete(:inscription))
-        work.update_attributes(data)
+
+        work.id = data.delete(:id)
+
+        # work through all fields, saving the first value from each in one batch
+        # then the second, and so on until we've got them all.
+        single_value_fields = {}
+        until data.count < 1
+          data.keys.each do |field|
+            if data[field].nil? or data[field].empty?
+              data.delete(field)
+            elsif data[field].respond_to?(:to_str)
+              single_value_fields[field] = data.delete(field)
+            else
+              tmp = work.send(field).to_a || []
+              tmp << data[field].shift
+              work.send("#{field.to_s}=", Array(tmp))
+            end
+          end
+          work.save
+        end
+
+        work.update_attributes(single_value_fields)
 
         work
       end
