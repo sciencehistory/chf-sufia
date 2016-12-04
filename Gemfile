@@ -77,6 +77,8 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'equivalent-xml'
+  ## debugging
+  #gem 'httplog'
 end
 
 group :test do
