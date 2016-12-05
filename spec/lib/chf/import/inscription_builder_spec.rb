@@ -6,7 +6,10 @@ describe Chf::Import::InscriptionBuilder do
     [
       { "id": "b5644r666",
         "location": "inside",
-        "text": "awesomeness" }
+        "text": "awesomeness" },
+      { "id": "g445cd210",
+        "location": "Plaque",
+        "text": "WESTON / MODEL No / ADJUST FOR ZERO" }
     ]
   end
   let(:work) { FactoryGirl.create(:generic_work) }
@@ -20,5 +23,8 @@ describe Chf::Import::InscriptionBuilder do
     expect(work.inscription.first.id).not_to eq 'b5644r666'
     expect(work.inscription.first.location).to eq 'inside'
     expect(work.inscription.first.text).to eq 'awesomeness'
+    expect(work.inscription.last.id).not_to eq "g445cd210"
+    expect(work.inscription.last.location).to eq "Plaque"
+    expect(work.inscription.last.text).to eq "WESTON / MODEL No / ADJUST FOR ZERO"
   end
 end
