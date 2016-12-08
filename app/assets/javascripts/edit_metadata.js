@@ -123,8 +123,31 @@ Blacklight.onLoad(function() {
       link_field_pair($select); // link once now to set text box
       $select.change(function() { link_field_pair($select) });
     }
+    if ($(cloneElem).hasClass('nested-field')) {
+      chf_nested_add(e, cloneElem);
+    }
+  }
+
+  // manage nested attribute fields
+  function chf_nested_add(event, cloneElem) {
+    var target = $(event.target);
+  }
+
+
+  function chf_remove(event, removed) {
+    if ($(removed).hasClass('nested-field')) {
+      var removed = $(removed);
+      var id_field = removed.find("input[name$='[id]']")
+      if(id_field.length > 0)
+        var destroy_field = $("<input type='hidden'>")
+        destroy_field.attr("name", id_field.attr("name").replace(/\[id\]/,"[_destroy]"))
+        destroy_field.val(true)
+        destroy_field.insertAfter(id_field)
+        removed.hide()
+        removed.appendTo($(this))
+    }
   }
 
   Sufia.initialize();
-  $('.multi_value.form-group').manage_fields({add: chf_add});
+  $('.multi_value.form-group').manage_fields( { add: chf_add, remove: chf_remove } );
 });

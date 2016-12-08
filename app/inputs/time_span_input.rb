@@ -1,4 +1,4 @@
-class TimeSpanInput < MultiValueInput
+class TimeSpanInput < NestedMultiValueInput
   FORMAT_PLACEHOLDER = 'YYYY-MM-DD'
 
   def input_type

@@ -1,4 +1,4 @@
-class AdditionalCreditInput < MultiValueInput
+class AdditionalCreditInput < NestedMultiValueInput
 
   def input_type
     'multi_value'.freeze

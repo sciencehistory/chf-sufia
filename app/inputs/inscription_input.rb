@@ -1,4 +1,4 @@
-class InscriptionInput < MultiValueInput
+class InscriptionInput < NestedMultiValueInput
 
   def input_type
     'multi_value'.freeze
