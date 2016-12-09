@@ -28,6 +28,19 @@ GIT
       sprockets-es6
 
 GIT
+  remote: git://github.com/projecthydra/hydra-editor.git
+  revision: c1e9d298c823567ea68cd6aa200848e47f1b25f0
+  ref: c1e9d298
+  specs:
+    hydra-editor (3.1.2)
+      active-fedora (>= 9.0.0)
+      almond-rails (~> 0.0.3)
+      cancancan (~> 1.8)
+      rails (>= 4.2.0, < 6)
+      simple_form (~> 3.2)
+      sprockets-es6
+
+GIT
   remote: https://github.com/jcoyne/flipflop.git
   revision: 0eecddade9890548c92b1e8aa681512f1db01469
   branch: hydra
@@ -368,13 +381,6 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
-    hydra-editor (3.1.2)
-      active-fedora (>= 9.0.0)
-      almond-rails (~> 0.0.3)
-      cancancan (~> 1.8)
-      rails (>= 4.2.0, < 6)
-      simple_form (~> 3.2)
-      sprockets-es6
     hydra-file_characterization (0.3.3)
       activesupport (>= 3.0.0)
     hydra-head (10.3.4)
@@ -580,7 +586,7 @@ GEM
       activesupport (= 4.2.7.1)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (11.3.0)
+    rake (12.0.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
@@ -838,6 +844,7 @@ DEPENDENCIES
   flipflop!
   guard-rspec
   highline
+  hydra-editor!
   hydra-role-management
   jasmine (~> 2.3)
   jbuilder (~> 2.0)

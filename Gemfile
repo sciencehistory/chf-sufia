@@ -8,7 +8,10 @@ gem 'rsolr', '~> 1.0'
 
 # required for sufia 7.2
 gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
+# pull in carolyn's charactizejob / derivatives job fix
 gem 'curation_concerns', github: 'projecthydra/curation_concerns', branch: '1-6-stable'
+# pull in fix to "add another" label
+gem 'hydra-editor', github: 'projecthydra/hydra-editor', ref: 'c1e9d298'
 
 # Needed to fix reindex_everything
 # But don't go to 11 without being ready for rdf2
