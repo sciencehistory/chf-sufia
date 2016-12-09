@@ -123,16 +123,48 @@ Blacklight.onLoad(function() {
       link_field_pair($select); // link once now to set text box
       $select.change(function() { link_field_pair($select) });
     }
-    if ($(cloneElem).hasClass('nested-field')) {
-      chf_nested_add(e, cloneElem);
+    if ($par.hasClass('nested-field')) {
+      chf_nested_add($par);
     }
   }
 
   // manage nested attribute fields
-  function chf_nested_add(event, cloneElem) {
-    var target = $(event.target);
+  // $newField is the <li> we're adding. we need to strip data values and increment ids
+  // to increment:
+  //  - label for
+  //  - input name generic_work[inscription_attributes][0][location]
+  //  - input id generic_work_inscription_attributes_0_location
+  //  - textarea name
+  //  - textarea id
+  //  - select name
+  //  - select id
+  function chf_nested_add($newField) {
+    // clear data
+    $newField.find('input').val('');
+    $newField.find('select').val('').change();
+    $newField.find('textarea').val('');
+    //$newField.find('label').attr('for').replace(/\\[(\d+)\\]/, function(match, id, offset, string) {
+    $.each(['input', 'textarea', 'select'], function(i, val) {
+      $newField.find(val).each(function() {
+        incrementID($(this), 'name');
+        incrementID($(this), 'id');
+      });
+    });
+    $newField.find('label').each(function() {
+        incrementID($(this), 'for');
+    });
   }
 
+  function incrementID($elem, attribute) {
+    $elem.attr(attribute, $elem.attr(attribute).replace(/_(\d+)_/, function(match, id, offset, string) {
+      ++id;
+      return "_"+id+"_";
+    }));
+    $elem.attr(attribute, $elem.attr(attribute).replace(/\[(\d+)\]/, function(match, id, offset, string) {
+      ++id;
+      return "["+id+"]";
+    }));
+  }
 
   function chf_remove(event, removed) {
     if ($(removed).hasClass('nested-field')) {

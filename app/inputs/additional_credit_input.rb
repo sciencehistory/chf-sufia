@@ -47,7 +47,7 @@ class AdditionalCreditInput < NestedMultiValueInput
 
       ac = value
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
 
       # --- Role
       field = :role

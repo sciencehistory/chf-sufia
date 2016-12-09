@@ -48,7 +48,7 @@ class InscriptionInput < NestedMultiValueInput
 
       insc = value
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
 
       # --- Location
       field = :location
@@ -64,6 +64,7 @@ class InscriptionInput < NestedMultiValueInput
       out << InputCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name, id: field_id))
       out << "  </div>"
+      out << "</div>" # class=row
 
       # --- Text
       field = :text
@@ -71,7 +72,7 @@ class InscriptionInput < NestedMultiValueInput
       field_name = singular_input_name_for(attribute_name, index, field)
       field_id = id_for(attribute_name, index, field)
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
       out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"

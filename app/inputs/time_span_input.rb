@@ -57,7 +57,7 @@ class TimeSpanInput < NestedMultiValueInput
 
       time_span = value
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
 
       # --- Start
       field = :start
@@ -84,7 +84,7 @@ class TimeSpanInput < NestedMultiValueInput
 
       out << "</div>" # row
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
 
       # --- Finish
       field = :finish
@@ -113,7 +113,7 @@ class TimeSpanInput < NestedMultiValueInput
       field_value = time_span.send(field)
       field_name = singular_input_name_for(attribute_name, index, field)
 
-      out << "<div class='row'>"
+      out << "<div class='row multi_value'>"
       out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
