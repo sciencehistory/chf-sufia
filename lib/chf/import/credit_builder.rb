@@ -24,7 +24,7 @@ module Chf
 
           cred.role = cred_hash[:role]
           cred.name = cred_hash[:name]
-          cred.label = cred_hash[:label]
+          cred.display_label = cred_hash[:label]
           cred
         end
 

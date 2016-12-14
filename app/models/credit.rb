@@ -7,7 +7,7 @@ class Credit < ActiveFedora::Base
 
   property :role, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCreditRole"), multiple: false
   property :name, predicate: ::RDF::Vocab::FOAF.name, multiple: false
-  property :label, predicate: ::RDF::Vocab::SKOS.prefLabel, multiple:false
+  property :display_label, predicate: ::RDF::Vocab::SKOS.prefLabel, multiple:false
 
   def self.role_options
     Rails.configuration.credit_roles
@@ -19,7 +19,7 @@ class Credit < ActiveFedora::Base
 
   private
     def compose_label
-      self.label = "#{self.class.role_options[self.role]} #{self.name}"
+      self.display_label = "#{self.class.role_options[self.role]} #{self.name}"
     end
 
 end

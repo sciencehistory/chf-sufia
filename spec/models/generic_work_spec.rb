@@ -52,27 +52,33 @@ RSpec.describe GenericWork do
     end
   end
 
-  # TODO: associations may have predicates as well.
-  #   how to account for those without keeping a separate list?
-  it 'uses a different predicate for each field' do
-    f = GenericWork.new
-    predicates = f.resource.fields.map do |attr|
-      GenericWork.reflect_on_property(attr).predicate.to_s
+  describe 'Class behaviors' do
+    # TODO: associations may have predicates as well.
+    #   how to account for those without keeping a separate list?
+    it 'uses a different predicate for each field' do
+      f = GenericWork.new
+      predicates = f.resource.fields.map do |attr|
+        GenericWork.reflect_on_property(attr).predicate.to_s
+      end
+      predicates << MyAssociations.values
+      dup = predicates.select{ |element| predicates.count(element) > 1 }
+      expect(dup).to be_empty
     end
-    predicates << MyAssociations.values
-    dup = predicates.select{ |element| predicates.count(element) > 1 }
-    expect(dup).to be_empty
-  end
 
-  it 'uses the right predicate for new and overriden fields' do
-    MyFields.merge(MyAssociations).each do |field_name, uri|
-      predicate =
-        begin
-          GenericWork.reflect_on_property(field_name).predicate.to_s
-        rescue NoMethodError # associations may have predicates as well
-          GenericWork.reflect_on_association(field_name).predicate.to_s
-        end
-      expect(predicate).to eq uri
+    it 'uses the right predicate for new and overriden fields' do
+      MyFields.merge(MyAssociations).each do |field_name, uri|
+        predicate =
+          begin
+            GenericWork.reflect_on_property(field_name).predicate.to_s
+          rescue NoMethodError # associations may have predicates as well
+            GenericWork.reflect_on_association(field_name).predicate.to_s
+          end
+        expect(predicate).to eq uri
+      end
+    end
+
+    it 'uses custom indexer' do
+      expect(GenericWork.indexer).to eq GenericWorkIndexer
     end
   end
 
@@ -116,22 +122,6 @@ RSpec.describe GenericWork do
       it "finds the nested attributes" do
         expect(GenericWork.find(gf.id).additional_credit.count).to eq 2
       end
-    end
-
-    describe '#to_solr' do
-      it 'indexes all additional credits' do
-        expect(gf.to_solr["additional_credit_tesim"]).to include 'Photographed by Puffins'
-        expect(gf.to_solr["additional_credit_tesim"]).to include 'Photographed by Squirrels'
-      end
-      it 'indexes all inscriptions' do
-        expect(gf.to_solr["inscription_tesim"]).to include '(chapter 7) words'
-        expect(gf.to_solr["inscription_tesim"]).to include '(place) stuff'
-      end
-      it 'indexes all dates' do
-        expect(gf.to_solr["date_of_work_display_tesim"]).to include '2003 - 2015'
-        expect(gf.to_solr["date_of_work_display_tesim"]).to include '1200s (century)'
-      end
-
     end
 
   end

@@ -19,7 +19,7 @@ RSpec.describe Credit do
     describe "saving object" do
       it "creates the label" do
         subject.save
-        expect(subject.label).to eq 'Photographed by Leo Leoni'
+        expect(subject.display_label).to eq 'Photographed by Leo Leoni'
       end
     end
   end

@@ -160,18 +160,6 @@ module GenericMetadata
     has_and_belongs_to_many :additional_credit, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasCredit"), class_name: "Credit"
     accepts_nested_attributes_for :additional_credit, reject_if: :all_blank, allow_destroy: true
 
-    def to_solr(solr_doc = {})
-      super.tap do |doc|
-        doc[ActiveFedora.index_field_mapper.solr_name("additional_credit", type: :string)] = additional_credit.map { |cred| cred.label }
-        doc[ActiveFedora.index_field_mapper.solr_name("inscription", type: :string)] = inscription.map { |insc| "(#{insc['location']}) #{insc['text']}" }
-        doc[ActiveFedora.index_field_mapper.solr_name("date_of_work_display", type: :string)] = date_of_work.map { |dow| dow.display_label }
-        unless physical_container.nil?
-          require_dependency Rails.root.join('lib','chf','utils','parse_fields')
-          doc[ActiveFedora.index_field_mapper.solr_name("physical_container", type: :string)] = CHF::Utils::ParseFields.display_physical_container(physical_container)
-        end
-      end
-    end
-
     # chf edit 2016-02-01 ah
     # Override this from sufia-models/app/models/concerns/sufia/generic_file/batches.rb
     # It's meaningless to define related_files in terms of what sufia6 calls 'batches' ('UploadSets' in sufia 7)

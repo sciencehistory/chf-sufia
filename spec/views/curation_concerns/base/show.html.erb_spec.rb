@@ -43,10 +43,13 @@ describe 'curation_concerns/base/show.html.erb' do
       w.date_of_work_attributes = [{start: "1990-02-09"}]
       w.inscription_attributes = [{location: "side of cartridge", text: "Ravioli"},
         {"location": "On lock", "text": "EAGLE LOCK CO / TERRYVILLE, CONN / U.S.A."}]
-      w.additional_credit_attributes = [{role: "photographer", name: "Bowser", label: "Photographed by Bowser"}]
+      w.additional_credit_attributes = [{role: "photographer", name: "Bowser"}]
+      w.save
     end
   end
-  let(:solr_document) { SolrDocument.new(work.to_solr) }
+  let(:solr_document) do
+    SolrDocument.new(work.to_solr)
+  end
 
   let(:ability) { nil }
   let(:presenter) do
@@ -102,8 +105,8 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Miyamoto/
       expect(rendered).to match /Mario Kart/
       expect(rendered).to match /1990-02-09/
-      expect(rendered).to match /\(side of cartridge\) Ravioli/
-      expect(rendered).to match /\(On lock\) EAGLE LOCK CO \/ TERRYVILLE, CONN \/ U.S.A./
+      expect(rendered).to match /\(side of cartridge\) "Ravioli"/
+      expect(rendered).to match /\(On lock\) "EAGLE LOCK CO \/ TERRYVILLE, CONN \/ U.S.A."/
       expect(rendered).to match /Photographed by Bowser/
       expect(rendered).to match /Thwump/
       expect(rendered).to match /Shy Guy/

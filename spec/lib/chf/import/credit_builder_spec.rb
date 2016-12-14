@@ -22,6 +22,6 @@ describe Chf::Import::CreditBuilder do
     expect(work.additional_credit.first.id).not_to eq '8p58pd01g'
     expect(work.additional_credit.first.role).to eq 'photographer'
     expect(work.additional_credit.first.name).to eq 'Will Brown'
-    expect(work.additional_credit.first.label).to eq 'Photographed by Will Brown'
+    expect(work.additional_credit.first.display_label).to eq 'Photographed by Will Brown'
   end
 end
