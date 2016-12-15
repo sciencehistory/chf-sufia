@@ -1,4 +1,5 @@
 <%= presenter.attribute_to_html(:admin_set, render_as: :faceted) %>
+<%= presenter.attribute_to_html(:identifier, render_as: :identifier) %>
 <%= presenter.attribute_to_html(:creator_of_work, label: 'Creators', render_as: :faceted ) %>
 <%= presenter.attribute_to_html(:contributor, label: 'Contributors', render_as: :faceted) %>
 <%= presenter.attribute_to_html(:artist) %>
@@ -35,4 +36,3 @@
 <%= presenter.attribute_to_html(:additional_credit) %>
 <%= presenter.attribute_to_html(:file_creator) %>
 <%= presenter.attribute_to_html(:admin_note) %>
-<%= presenter.attribute_to_html(:identifier, render_as: :identifier) %>
