@@ -16,14 +16,23 @@ RSpec.describe Inscription do
       expect(subject.location).to eq 'page 2'
       expect(subject.text).to eq 'to my best friend'
     end
-  end
 
-  describe 'id' do
     # kind of a sloppy test
-    it 'is not a NOID' do
+    it 'id is not a NOID' do
       subject.save
       expect(subject.id.length).to be > 9
     end
   end
 
-end
+  describe '#compose_label' do
+    before do
+      subject.location = "Bottom center"
+      subject.text = "Sir Humphrey Davy Bart.\r\nPresident of the Royal Society &c. &c. &c."
+    end
+
+    it 'replaces \r\n with space' do
+      expect(subject.send(:compose_label)).to eq "(Bottom center) \"Sir Humphrey Davy Bart. President of the Royal Society &c. &c. &c.\""
+    end
+  end
+
+ end

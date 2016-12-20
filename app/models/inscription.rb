@@ -11,7 +11,7 @@ class Inscription < ActiveFedora::Base
 
   private
     def compose_label
-      self.display_label = "(#{self.location}) \"#{self.text}\""
+      self.display_label = "(#{self.location}) \"#{self.text.gsub(/\r\n/,' ')}\""
     end
 
 end
