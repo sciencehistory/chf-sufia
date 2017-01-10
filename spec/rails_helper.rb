@@ -6,6 +6,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'webmock/rspec'
 require 'capybara/rspec'
+require 'capybara/rails'
 require 'capybara/poltergeist'
 #This is off for now since capybara is 100% problems
 #require 'capybara-screenshot/rspec'
@@ -25,6 +26,7 @@ Capybara.javascript_driver = :poltergeist # This is slower
 #Capybara.default_wait_time = 20
 
 RSpec.configure do |config|
+
   config.include Warden::Test::Helpers, type: :feature
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.after(:each, type: :feature) { Warden.test_reset! }
@@ -33,12 +35,14 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
+  # clean fedora
   config.before :each do |example|
     unless example.metadata[:type] == :view || example.metadata[:no_clean]
       ActiveFedora::Cleaner.clean!
     end
   end
 
+  # clean database
   config.before :each do |example|
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
       DatabaseCleaner.strategy = :truncation
@@ -48,8 +52,30 @@ RSpec.configure do |config|
     end
   end
 
-  config.after(:each) do
+  # clean redis
+  config.before :each do |example|
+    if example.metadata[:type] == :feature
+      begin
+        redis_instance = Sufia::RedisEventStore.instance
+        redis_instance.keys('events:*').each { |key| redis_instance.del key }
+        redis_instance.keys('User:*').each { |key| redis_instance.del key }
+        redis_instance.keys('GenericWork:*').each { |key| redis_instance.del key }
+      rescue => e
+        Logger.new(STDOUT).warn "WARNING -- Redis might be down: #{e}"
+      end
+    end
+  end
+
+  config.after(:each) do |example|
     DatabaseCleaner.clean
+    # reset Capybara for feature tests
+    if example.metadata[:type] == :feature
+      sleep 0.1
+      Capybara.reset_sessions!
+      sleep 0.1
+      page.driver.reset!
+      sleep 0.1
+    end
   end
 
   # The different available types are documented in the features, such as in
