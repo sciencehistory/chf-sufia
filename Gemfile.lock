@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/projecthydra/curation_concerns.git
-  revision: b073550c40a1c1088f85970aa8c0e9538bc2d5ce
+  revision: aafd3b748a954389c221e9d7375a13037a3ba9c0
   branch: 1-6-stable
   specs:
     curation_concerns (1.6.3)
@@ -16,7 +16,7 @@ GIT
       hydra-editor (>= 2, < 4)
       hydra-head (>= 10.0.0, < 11)
       hydra-works (>= 0.14.0)
-      jquery-ui-rails
+      jquery-ui-rails (~> 5.0.5)
       kaminari_route_prefix (~> 0.0.1)
       qa (~> 0.5)
       rails_autolink
@@ -138,7 +138,7 @@ GEM
     active_attr (0.9.0)
       activemodel (>= 3.0.2, < 5.1)
       activesupport (>= 3.0.2, < 5.1)
-    active_fedora-noid (2.0.0)
+    active_fedora-noid (2.0.1)
       active-fedora (>= 9.7, < 12)
       noid (~> 0.9)
       rails (>= 4.2.7.1, < 6)
@@ -198,7 +198,7 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_advanced_search (6.1.0)
+    blacklight_advanced_search (6.2.1)
       blacklight (~> 6.0, >= 6.0.1)
       parslet
     blankslate (3.1.3)
@@ -253,7 +253,7 @@ GEM
       mimemagic (>= 0.3.0)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
-    clipboard-rails (1.5.15)
+    clipboard-rails (1.5.16)
     cliver (0.3.2)
     coderay (1.1.1)
     coffee-rails (4.1.1)
@@ -878,4 +878,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.13.1
+   1.13.7
