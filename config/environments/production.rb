@@ -4,6 +4,10 @@ Sufia.config do |config|
 end
 
 Rails.application.configure do
+  # Temporary
+  # allow non-localhost access to errors
+  BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
+
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_mailer.default_url_options = { :host => 'hydra.chemheritage.org' }
   config.action_mailer.delivery_method = :sendmail

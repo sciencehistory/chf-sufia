@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+gem 'better_errors'
+gem 'binding_of_caller'
+
 # sufia stuff!
 #gem 'sufia', '7.2.0'
 gem 'sufia', git: 'https://github.com/projecthydra/sufia', branch: '7.2-migration'

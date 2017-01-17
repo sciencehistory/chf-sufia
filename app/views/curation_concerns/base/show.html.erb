@@ -13,7 +13,13 @@
   <div class="col-sm-4">
     <%= render "show_actions", presenter: @presenter %>
     Last modified: <%= @presenter.date_modified %>
-    <%= render 'representative_media', presenter: @presenter %>
+    <% begin %>
+      <%= render 'representative_media', presenter: @presenter %>
+    <% rescue SystemStackError %>
+      <% Rails.logger.debug caller %>
+    <% end %>
+
+
     <%= render 'social_media' %>
     <%= render 'citations', presenter: @presenter %>
   </div>
