@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/projecthydra/curation_concerns.git
-  revision: aafd3b748a954389c221e9d7375a13037a3ba9c0
+  revision: 608b02916cd75ec0520ff62863f26fdee4b0388d
   branch: 1-6-stable
   specs:
     curation_concerns (1.6.3)
