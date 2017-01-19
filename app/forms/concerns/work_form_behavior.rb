@@ -46,9 +46,11 @@ module WorkFormBehavior
       [ :id, :_destroy, :role, :name ]
     end
 
+    # this form is also used by the file manager, which doesn't submit any of the usual data.
+    # any processing we do here needs to check the param was submitted.
     def model_attributes(params)
       # model expects this as multi-value
-      params[:rights] = Array(params[:rights])
+      params[:rights] = Array(params[:rights]) if params[:rights].present?
       clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
       # Oops; we're blanking out these values when changing permissions and probably versions, too
       #  -- they don't have these fields in the form at all so they don't get repopulated.

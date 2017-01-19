@@ -40,12 +40,27 @@ shared_examples_for "work_form_behavior" do
     )}
     subject { described_class.model_attributes(params) }
 
-    it 'converts rights to an array' do
-      expect(subject['rights']).to eq ['http://rightsstatements.org/vocab/InC/1.0/']
+    context "when data is passed in specially-handled fields" do
+      it 'converts rights to an array' do
+        expect(subject['rights']).to eq ['http://rightsstatements.org/vocab/InC/1.0/']
+      end
+      it 'encodes identifier and physical container fields' do
+        expect(subject['identifier']).to eq ['object-test']
+        expect(subject['physical_container']).to eq 'bb|ff|vv|pp|gpa'
+      end
     end
-    it 'encodes identifier and physical container fields' do
-      expect(subject['identifier']).to eq ['object-test']
-      expect(subject['physical_container']).to eq 'bb|ff|vv|pp|gpa'
+
+    context "when no data is submitted in specially-handled fields" do
+      let(:params) { ActionController::Parameters.new(
+        "thumbnail_id" => "d217qp48j"
+      )}
+
+      it 'keeps them nil' do
+        expect(subject['rights']).to be_nil
+        expect(subject['identifier']).to be_nil
+        expect(subject['physical_container']).to be_nil
+      end
+
     end
   end
 end
