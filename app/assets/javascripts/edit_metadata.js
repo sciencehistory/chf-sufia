@@ -18,6 +18,23 @@ chf.autocompletes = chf.autocompletes || {
   generic_work_place_of_interview: '/authorities/search/assign_fast/all',
   generic_work_place_of_publication: '/authorities/search/assign_fast/all',
   generic_work_place_of_creation: '/authorities/search/assign_fast/all',
+  batch_edit_item_subject: '/authorities/search/assign_fast/all',
+  batch_edit_item_artist:          '/authorities/search/assign_fast/all',
+  batch_edit_item_author:          '/authorities/search/assign_fast/all',
+  batch_edit_item_creator_of_work: '/authorities/search/assign_fast/all',
+  batch_edit_item_contributor:     '/authorities/search/assign_fast/all',
+  batch_edit_item_engraver:     '/authorities/search/assign_fast/all',
+  batch_edit_item_interviewee:     '/authorities/search/assign_fast/all',
+  batch_edit_item_interviewer:     '/authorities/search/assign_fast/all',
+  batch_edit_item_manufacturer:    '/authorities/search/assign_fast/all',
+  batch_edit_item_photographer:    '/authorities/search/assign_fast/all',
+  batch_edit_item_printer_of_plates:     '/authorities/search/assign_fast/all',
+  batch_edit_item_publisher:       '/authorities/search/assign_fast/all',
+  batch_edit_item_language:       '/authorities/search/local/languages',
+  batch_edit_item_place_of_manufacture: '/authorities/search/assign_fast/all',
+  batch_edit_item_place_of_interview: '/authorities/search/assign_fast/all',
+  batch_edit_item_place_of_publication: '/authorities/search/assign_fast/all',
+  batch_edit_item_place_of_creation: '/authorities/search/assign_fast/all',
 }
 
 
