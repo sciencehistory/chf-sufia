@@ -28,7 +28,9 @@ class BatchCreateJob < ActiveJob::Base
     def create(user, titles, resource_types, uploaded_files, attributes, log)
       uploaded_files.each do |upload_id|
         title = [titles[upload_id]] if titles[upload_id]
-        resource_type = [resource_types[upload_id]] if resource_types[upload_id]
+        # CHF edit to accept arrays of resource_types rather than strings
+        # to be released in sufia 7.3
+        resource_type = Array.wrap(resource_types[upload_id]) if resource_types[upload_id]
         attributes = attributes.merge(uploaded_files: [upload_id],
                                       title: title,
                                       resource_type: resource_type)
