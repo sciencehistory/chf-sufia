@@ -50,6 +50,16 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
 
   self.required_fields = []
 
+  # this form is also used by the file manager, which doesn't submit any of the usual data.
+  # any processing we do here needs to check the param was submitted.
+  def self.model_attributes(params)
+    # model expects this as multi-value
+    params[:rights] = Array(params[:rights]) if params[:rights].present?
+    clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
+    clean_params = encode_external_id(params, clean_params)
+    clean_params
+  end
+
   private
 
     # It's a multi-value field
@@ -69,6 +79,4 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       end
       clean_params
     end
-
-
 end

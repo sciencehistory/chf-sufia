@@ -52,12 +52,31 @@ describe BatchEditsController do
         }
       end
 
-      it "applies the new setting to all works" do
+      it "applies the new visibility to all works" do
         expect(VisibilityCopyJob).to receive(:perform_later).twice
         expect(InheritPermissionsJob).not_to receive(:perform_later)
         put :update, parameters.as_json
         expect(work1.reload.visibility).to eq("authenticated")
         expect(work2.reload.visibility).to eq("authenticated")
+      end
+    end
+
+    context "when changing external identifier" do
+      let(:parameters) do
+        {
+          update_type:        "update",
+          batch_edit_item:    {
+            identifier: ["bib_external_id", "", ""],
+            bib_external_id: ["12345"]
+          },
+          batch_document_ids: [work1.id, work2.id]
+        }
+      end
+
+      it "applies the new identifier to all works" do
+        put :update, parameters.as_json
+        expect(work1.reload.identifier).to eq(["bib-12345"])
+        expect(work2.reload.identifier).to eq(["bib-12345"])
       end
     end
 
