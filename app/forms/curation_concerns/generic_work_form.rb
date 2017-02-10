@@ -9,7 +9,9 @@ module CurationConcerns
     #   TODO: dry this up? was previous in a presenter. do something like
     #   https://github.com/aic-collections/aicdams-lakeshore/blob/cf197cab2b2f65f0841cbc61573ed8ef7c576c48/app/presenters/work_presenter.rb?
     def self.chf_terms
-      [:title, :identifier, :maker,
+      [:title,
+        :additional_title,
+        :identifier, :maker,
         :date_of_work,
         :place,
         :resource_type, :genre_string,

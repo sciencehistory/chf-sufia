@@ -20,6 +20,7 @@ RSpec.describe BatchEditForm do
     subject { form.terms }
     it do
       is_expected.to eq [
+        :additional_title,
         :identifier,
         :admin_note,
         :resource_type,

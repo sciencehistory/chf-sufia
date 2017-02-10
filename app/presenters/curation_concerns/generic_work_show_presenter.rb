@@ -9,6 +9,7 @@ module CurationConcerns
       :extent, :division, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
       :inscription, :date_of_work, :engraver, :printer_of_plates,
+      :additional_title,
       to: :solr_document
   end
 end

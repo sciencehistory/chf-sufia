@@ -110,5 +110,8 @@ class SolrDocument
   def date_of_work
     self[Solrizer.solr_name('date_of_work')]
   end
+  def additional_title
+    self[Solrizer.solr_name('additional_title')]
+  end
 
 end

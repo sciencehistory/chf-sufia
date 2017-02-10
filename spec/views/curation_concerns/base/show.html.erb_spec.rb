@@ -7,6 +7,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.has_model = ['GenericWork']
       w.human_readable_type = ['Generic Work']
       w.title = ['Super Mario']
+      w.additional_title = ['A Super Mario Bros. Adventure']
       w.physical_container = "b2|f3|v4|p5|g234"
       w.identifier = ['object-2004', 'bib-b123456789', 'object-2004-09.003']
       w.creator_of_work = ['Chain Chomp']
@@ -74,6 +75,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Object ID: 2004-09.003/
     end
     it 'displays all fields' do
+      expect(rendered).to match /A Super Mario Bros\. Adventure/
       expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
       expect(rendered).to match /Chain Chomp/
       expect(rendered).to match /Blooper/

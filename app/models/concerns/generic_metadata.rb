@@ -105,6 +105,10 @@ module GenericMetadata
     end
     # end places
 
+    property :additional_title, predicate: ::RDF::Vocab::DC.alternative do |index|
+      index.as :stored_searchable
+    end
+
     property :admin_note, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasAdminNote") do |index|
       index.as :stored_searchable
     end

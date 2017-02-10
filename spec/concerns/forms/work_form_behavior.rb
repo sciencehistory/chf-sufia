@@ -8,6 +8,7 @@ shared_examples_for "work_form_behavior" do
     end
     it "include local fields" do
       expect(form.primary_terms).to include :admin_note
+      expect(form.primary_terms).to include :additional_title
     end
   end
 

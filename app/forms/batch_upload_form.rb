@@ -3,7 +3,8 @@ class BatchUploadForm < Sufia::Forms::BatchUploadForm
 
   # note we remove title and resource_type which would be set on a per-work basis.
   def self.chf_terms
-    [:identifier, :maker,
+    [ :additional_title,
+      :identifier, :maker,
       :date_of_work,
       :place,
       :genre_string,

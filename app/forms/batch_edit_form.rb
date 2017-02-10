@@ -15,6 +15,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     #:physical_container,
     #:rights_holder,
     #:file_creator,
+    :additional_title,
     :identifier,
     :admin_note,
     # Nested attributes don't work

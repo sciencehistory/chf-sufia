@@ -14,7 +14,7 @@ module Features
 
     def batch_edit_fields
       [
-        "identifier", "admin_note", "resource_type", "subject", :language, "related_url",
+        "additional_title", "identifier", "admin_note", "resource_type", "subject", :language, "related_url",
         "artist", "author", "addressee", "creator_of_work", "contributor", "engraver",
         "interviewee", "interviewer", "manufacturer", "photographer", "printer_of_plates",
         "publisher", "genre_string", "medium", "extent", "description",
