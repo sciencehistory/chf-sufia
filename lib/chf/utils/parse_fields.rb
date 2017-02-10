@@ -31,6 +31,8 @@ module CHF
         [components[0], components[1]]
       end
 
+      # turn something like ['object-2008.043.002', 'object-2008.043.003']
+      # into [['object_external_id', '2008.043.002'], ['object_external_id', '2008.043.003']]
       def self.parse_external_ids_for_form(list)
         parse_external_ids(list).map { |pair| ["#{pair[0]}_external_id", pair[1]] }
       end
