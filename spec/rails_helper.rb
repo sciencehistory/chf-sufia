@@ -8,6 +8,7 @@ require 'webmock/rspec'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'capybara/poltergeist'
+require 'equivalent-xml/rspec_matchers'
 #This is off for now since capybara is 100% problems
 #require 'capybara-screenshot/rspec'
 require 'database_cleaner'
