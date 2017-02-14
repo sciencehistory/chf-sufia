@@ -30,4 +30,10 @@ namespace :chf do
       end
     end
   end
+
+  desc 'Migrate titles and merge descriptions'
+  task single_value_migration: :environment do
+    CHF::Metadata::SingleValueMigration.run
+    puts 'migration complete'
+  end
 end
