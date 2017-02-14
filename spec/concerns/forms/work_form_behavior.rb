@@ -12,6 +12,13 @@ shared_examples_for "work_form_behavior" do
     end
   end
 
+  describe ".multiple?" do
+    it "returns false for title, description" do
+      expect(form.class.multiple?(:title)).to be false
+      expect(form.class.multiple?(:description)).to be false
+    end
+  end
+
   describe ".build_permitted_params" do
     it "permits nested field attributes" do
       expect(described_class.build_permitted_params).to include(
@@ -38,12 +45,16 @@ shared_examples_for "work_form_behavior" do
       "identifier"=>["object_external_id"], "object_external_id"=>["test"], 
       "rights"=>"http://rightsstatements.org/vocab/InC/1.0/",
       "box"=>"b", "folder"=>"f", "volume"=>"v", "part"=>"p", "page"=>"pa",
+      "title"=>"A House is a House for Me",
+      "description"=>"A children's book about metaphor",
     )}
     subject { described_class.model_attributes(params) }
 
     context "when data is passed in specially-handled fields" do
-      it 'converts rights to an array' do
+      it 'casts title, description, and rights to array' do
         expect(subject['rights']).to eq ['http://rightsstatements.org/vocab/InC/1.0/']
+        expect(subject['title']).to eq ['A House is a House for Me']
+        expect(subject['description']).to eq ["A children's book about metaphor"]
       end
       it 'encodes identifier and physical container fields' do
         expect(subject['identifier']).to eq ['object-test']
@@ -61,7 +72,13 @@ shared_examples_for "work_form_behavior" do
         expect(subject['identifier']).to be_nil
         expect(subject['physical_container']).to be_nil
       end
+    end
+  end
 
+  describe '.title and .description' do
+    it 'return strings instead of arrays' do
+      expect(form.title.class).to eq String
+      expect(form.description.class).to eq String
     end
   end
 end

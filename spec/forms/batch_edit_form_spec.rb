@@ -45,7 +45,6 @@ RSpec.describe BatchEditForm do
         :genre_string,
         :medium,
         :extent,
-        :description,
         :series_arrangement,
         :rights
       ]
@@ -55,7 +54,6 @@ RSpec.describe BatchEditForm do
   describe "#model" do
     it "combines the models in the batch" do
       expect(form.model.contributor).to match_array ["contributor1", "contributor2"]
-      expect(form.model.description).to match_array ["description1", "description2"]
       expect(form.model.resource_type).to match_array ["bar"]
       expect(form.model.rights).to match_array ["rights1", "rights2"]
       expect(form.model.publisher).to match_array ["Rand McNally"]

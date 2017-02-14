@@ -4,6 +4,16 @@ module WorkFormBehavior
 
   class_methods do
 
+    # show these fields as single-value
+    def multiple?(field)
+      if [:title, :description].include? field.to_sym
+        false
+      else
+        super
+      end
+    end
+
+
     # nested work attributes plus the properties embedded in complex form fields for maker and place
     def build_permitted_params
       super + [
@@ -49,9 +59,11 @@ module WorkFormBehavior
     # this form is also used by the file manager, which doesn't submit any of the usual data.
     # any processing we do here needs to check the param was submitted.
     def model_attributes(params)
-      # model expects this as multi-value
-      params[:rights] = Array(params[:rights]) if params[:rights].present?
       clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
+      # model expects these as multi-value; cast them back
+      clean_params[:rights] = Array(params[:rights]) if params[:rights].present?
+      clean_params[:title] = Array(params[:title]) if params[:title]
+      clean_params[:description] = Array(params[:description]) if params[:description]
       # Oops; we're blanking out these values when changing permissions and probably versions, too
       #  -- they don't have these fields in the form at all so they don't get repopulated.
       clean_params = encode_physical_container(params, clean_params)
@@ -98,9 +110,20 @@ module WorkFormBehavior
       :place_of_creation]
     end
 
+    # supply single-value to the form since it's stored multiple in fedora
+    def title
+      super.first || ""
+    end
+
+    def description
+      super.first || ""
+    end
+
     protected
 
       # Override HydraEditor::Form to treat nested attbriutes accordingly
+      # particularly important for multivalued fields.  You can’t iterate over an empty set, so typically it initializes it to `['']`
+      # single-val fields initialize to ""
       def initialize_field(key)
         if [:inscription, :additional_credit, :date_of_work].include? key
           build_association(key)

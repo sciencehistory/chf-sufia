@@ -44,7 +44,6 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     :genre_string,
     :medium,
     :extent,
-    :description,
     :series_arrangement,
     :rights
   ]
