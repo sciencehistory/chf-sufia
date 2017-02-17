@@ -51,4 +51,17 @@ namespace :deploy do
   end
   before :restart, :resquepoolrestart
 
+  # load the workflow configs
+  desc "Load workflow configurations"
+  task :loadworkflows do
+    on roles(:web) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'curation_concerns:workflow:load'
+        end
+      end
+    end
+  end
+  before :restart, :loadworkflows
+
 end
