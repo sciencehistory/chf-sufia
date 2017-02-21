@@ -10,6 +10,7 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
       w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.title = ['Kettle']
+      w.visibility = 'open'
       w.save!
     end
   # title and description
@@ -17,6 +18,7 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
       w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.title = ['Teapot']
+      w.visibility = 'open'
       w.description = ['handle, spout']
       w.save!
     end
@@ -25,13 +27,15 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
       w.apply_depositor_metadata depositor
       w.division = 'Archives'
       w.description = ['cataloged out of order']
-      w.title = ['bunnies.tif']
+      w.title = ['bunnies']
+      w.visibility = 'authenticated'
       w.save!
     end
   # neither
     GenericWork.new.tap do |w|
       w.apply_depositor_metadata depositor
-      w.title = ['bears.tif']
+      w.title = ['bears']
+      w.visibility = 'authenticated'
       w.division = 'Archives'
       w.save!
     end
@@ -40,6 +44,7 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
       w.apply_depositor_metadata depositor
       w.division = nil
       w.title = ['Toothbrush']
+      w.visibility = 'open'
       w.description = ['handle, bristles']
       w.save!
     end
@@ -48,6 +53,7 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
       w.apply_depositor_metadata depositor
       w.division = 'Othmer Library of Chemical History'
       w.title = ['Book of some kind']
+      w.visibility = 'open'
       w.description = ['useful for historical research']
       w.permissions = [Hydra::AccessControls::Permission.new(type: 'person', name: curator, access: 'edit'),
                        Hydra::AccessControls::Permission.new(type: 'person', name: depositor, access: 'edit')]
@@ -59,8 +65,8 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
     report = CHF::Reports::MetadataCompletionReport.new
     report.run
     report.write
-    expect(report.have_titles[:archives]).to eq 2
-    expect(report.complete[:archives]).to eq 1
+    expect(report.published[:archives]).to eq 2
+    expect(report.full[:archives]).to eq 1
     expect(report.totals[:archives]).to eq 4
     expect(report.totals[:library]).to eq 0
     expect(report.totals[:rare_books]).to eq 1

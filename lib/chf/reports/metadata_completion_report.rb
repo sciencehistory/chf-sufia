@@ -2,7 +2,7 @@ module CHF
   module Reports
     class MetadataCompletionReport
 
-      attr_reader :lookup, :have_titles, :complete, :totals
+      attr_reader :lookup, :published, :full, :totals
 
       def initialize
         @lookup = {
@@ -13,9 +13,9 @@ module CHF
           "Rare Books" => :rare_books,
           "" => :unknown
         }
-        @have_titles = lookup.values.inject({}) { |h, k| h.merge({k => 0}) }
-        @complete = have_titles.deep_dup
-        @totals = have_titles.deep_dup
+        @published = lookup.values.inject({}) { |h, k| h.merge({k => 0}) }
+        @full = published.deep_dup
+        @totals = published.deep_dup
         @rb_curator = 'jvoelkel@chemheritage.org'
       end
 
@@ -36,10 +36,10 @@ module CHF
             division = "Rare Books" if can_edit.include? @rb_curator
           end
           @totals[lookup[division]] = totals[lookup[division]] + 1
-          if has_title(w)
-            @have_titles[lookup[division]] = have_titles[lookup[division]] + 1
+          if is_published(w)
+            @published[lookup[division]] = published[lookup[division]] + 1
             if has_description(w)
-              @complete[lookup[division]] = complete[lookup[division]] + 1
+              @full[lookup[division]] = full[lookup[division]] + 1
             end
           end
         end
@@ -48,11 +48,11 @@ module CHF
       def write
         lookup.each do |k, v|
           k = k.empty? ? "Uncategorized" : k
-          write_line(k, have_titles[v], totals[v], "records have titles")
-          write_line(k, complete[v], totals[v], "records have titles and descriptions")
+          write_line(k, published[v], totals[v], "records are published")
+          write_line(k, full[v], totals[v], "records are published with descriptions")
         end
-        write_line('All divisions', have_titles.values.reduce(0, :+), totals.values.reduce(0, :+), "records have titles")
-        write_line('All divisions', complete.values.reduce(0, :+), totals.values.reduce(0, :+), "records have titles and descriptions")
+        write_line('All divisions', published.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published")
+        write_line('All divisions', full.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published with descriptions")
       end
 
       def write_line(category, numerator, denominator, text)
@@ -65,11 +65,9 @@ module CHF
         return (num.fdiv(denom)  * 100).to_i
       end
 
-      # return true if the title doesn't end in .tif
-      def has_title(w)
-        return false if w.title.empty? or w.title.first.empty?
-        match = w.title.first =~ /\.tif$/
-        return match.nil?
+      # return true if the visibility is open/public
+      def is_published(w)
+        return w.visibility.eql? 'open'
       end
 
       def has_description(w)
