@@ -64,17 +64,34 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
   it 'counts completed objects' do
     report = CHF::Reports::MetadataCompletionReport.new
     report.run
-    report.write
     expect(report.published[:archives]).to eq 2
     expect(report.full[:archives]).to eq 1
     expect(report.totals[:archives]).to eq 4
     expect(report.totals[:library]).to eq 0
     expect(report.totals[:rare_books]).to eq 1
+    expect(report.get_output).to eq expected_output
   end
 
   it 'calculates percentages' do
     report = CHF::Reports::MetadataCompletionReport.new
     expect(report.percent(1, 4)).to eq 25
+  end
+
+  def expected_output()
+    "Archives: 2 / 4 (50%) records are published\n" +
+    "Archives: 1 / 4 (25%) records are published with descriptions\n" +
+    "Center for Oral History: 0 / 0 (100%) records are published\n" +
+    "Center for Oral History: 0 / 0 (100%) records are published with descriptions\n" +
+    "Museum: 0 / 0 (100%) records are published\n" +
+    "Museum: 0 / 0 (100%) records are published with descriptions\n" +
+    "Othmer Library of Chemical History: 0 / 0 (100%) records are published\n" +
+    "Othmer Library of Chemical History: 0 / 0 (100%) records are published with descriptions\n" +
+    "Rare Books: 0 / 1 (0%) records are published\n" +
+    "Rare Books: 0 / 1 (0%) records are published with descriptions\n" +
+    "Uncategorized: 1 / 1 (100%) records are published\n" +
+    "Uncategorized: 1 / 1 (100%) records are published with descriptions\n" +
+    "All divisions: 3 / 6 (50%) records are published\n" +
+    "All divisions: 2 / 6 (33%) records are published with descriptions"
   end
 
 end

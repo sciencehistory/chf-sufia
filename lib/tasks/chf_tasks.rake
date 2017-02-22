@@ -6,7 +6,13 @@ namespace :chf do
   task metadata_report: :environment do
     report = CHF::Reports::MetadataCompletionReport.new
     report.run
-    report.write
+    path = File.path("/var/sufia/reports/metadata/")
+    FileUtils.mkdir_p(path) unless File.exists?(path)
+    fn = "completion-#{Date.today.strftime('%Y-%m-%d')}.txt"
+    File.open(File.join(path, fn), 'w') do |f|
+      f.write(report.get_output)
+      f.write("\n")
+    end
   end
 
   desc 'Re-generate all derivatives'

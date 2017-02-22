@@ -45,18 +45,20 @@ module CHF
         end
       end
 
-      def write
+      def get_output()
+        output = []
         lookup.each do |k, v|
           k = k.empty? ? "Uncategorized" : k
-          write_line(k, published[v], totals[v], "records are published")
-          write_line(k, full[v], totals[v], "records are published with descriptions")
+          output << get_line(k, published[v], totals[v], "records are published")
+          output << get_line(k, full[v], totals[v], "records are published with descriptions")
         end
-        write_line('All divisions', published.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published")
-        write_line('All divisions', full.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published with descriptions")
+        output << get_line('All divisions', published.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published")
+        output << get_line('All divisions', full.values.reduce(0, :+), totals.values.reduce(0, :+), "records are published with descriptions")
+        return output.join("\n")
       end
 
-      def write_line(category, numerator, denominator, text)
-          puts "#{category}: #{numerator} / #{denominator} (#{percent(numerator, denominator)}%) #{text}"
+      def get_line(category, numerator, denominator, text)
+          "#{category}: #{numerator} / #{denominator} (#{percent(numerator, denominator)}%) #{text}"
       end
 
       def percent(num, denom)
