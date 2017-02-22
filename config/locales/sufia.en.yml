@@ -1,4 +1,6 @@
 en:
+  curation_concerns:
+    institution_name:   "CHF"
   sufia:
     product_name:       "CHF Digital Collections (Beta)"
     institution_name:   "CHF"
