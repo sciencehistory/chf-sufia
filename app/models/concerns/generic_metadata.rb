@@ -145,7 +145,7 @@ module GenericMetadata
       index.as :stored_searchable, :facetable
     end
     property :rights, predicate: ::RDF::Vocab::DC11.rights do |index|
-      index.as :stored_searchable
+      index.as :stored_searchable, :facetable
     end
     property :rights_holder, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasRightsHolder"), multiple: false do |index|
       index.as :stored_searchable
