@@ -135,7 +135,7 @@ module GenericMetadata
     end
 
     property :medium, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasMedium") do |index|
-      index.as :stored_searchable
+      index.as :stored_searchable, :facetable
     end
     property :physical_container, predicate: ::RDF::Vocab::Bibframe.materialOrganization, multiple: false do |index|
       index.as :stored_searchable
