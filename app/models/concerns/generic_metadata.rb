@@ -118,7 +118,7 @@ module GenericMetadata
     end
 
     property :division, predicate: ::RDF::URI.new("http://chemheritage.org/ns/hasDivision"), multiple: false do |index|
-      index.as :stored_searchable
+      index.as :stored_searchable, :facetable
     end
 
     property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
