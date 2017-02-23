@@ -36,4 +36,10 @@ namespace :chf do
     CHF::Metadata::SingleValueMigration.run
     puts 'migration complete'
   end
+
+  desc 'Reindex everything'
+  task reindex: :environment do
+    ActiveFedora::Base.reindex_everything
+    puts 'reindex complete'
+  end
 end
