@@ -10,6 +10,9 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
         require_dependency Rails.root.join('lib','chf','utils','parse_fields')
         doc[ActiveFedora.index_field_mapper.solr_name("physical_container", type: :string)] = CHF::Utils::ParseFields.display_physical_container(object.physical_container)
       end
+      makers = %w(artist author addressee creator_of_work contributor engraver interviewee interviewer manufacturer photographer printer_of_plates publisher)
+      maker_facet = makers.map { |field| object.send(field) }.flatten.uniq
+      doc[ActiveFedora.index_field_mapper.solr_name('maker_facet', :facetable)] = maker_facet
     end
   end
 
