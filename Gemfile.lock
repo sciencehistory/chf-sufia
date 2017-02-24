@@ -536,6 +536,7 @@ GEM
       rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (0.9.6)
+    parallel (1.10.0)
     parslet (1.7.1)
       blankslate (>= 2.0, <= 4.0)
     pg (0.18.4)
@@ -851,6 +852,7 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   kaminari_route_prefix
+  parallel
   pg
   phantomjs (~> 2.1.1)
   poltergeist (~> 1.5)

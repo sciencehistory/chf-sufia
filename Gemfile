@@ -27,6 +27,8 @@ gem 'qa', git: 'https://github.com/projecthydra-labs/questioning_authority.git',
 gem 'hydra-role-management'
 gem 'highline'
 gem 'rest-client'
+# to run solr reindex in threads
+gem 'parallel'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.6'
