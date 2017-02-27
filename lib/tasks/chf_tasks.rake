@@ -42,4 +42,17 @@ namespace :chf do
     ActiveFedora::Base.reindex_everything
     puts 'reindex complete'
   end
+
+  desc 'report translated titles'
+  task translated: :environment do
+    reporter = CHF::Metadata::TranslatedTitleUpdate.new
+    reporter.run
+    reporter.matches.each do |id, line|
+      puts "#{id}:"
+      line.each do |key, val|
+        puts "  #{key}: #{val}"
+      end
+    end
+    puts "total: #{reporter.matches.size}"
+  end
 end
