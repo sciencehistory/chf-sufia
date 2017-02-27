@@ -8,7 +8,7 @@ namespace :chf do
     report.run
     path = File.path("/var/sufia/reports/metadata/")
     FileUtils.mkdir_p(path) unless File.exists?(path)
-    fn = "completion-#{Date.today.strftime('%Y-%m-%d')}.txt"
+    fn = "completion-#{Date.today.strftime('%Y-%m-%d-%T')}.txt"
     File.open(File.join(path, fn), 'w') do |f|
       f.write(report.get_output)
       f.write("\n")

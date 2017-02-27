@@ -15,7 +15,10 @@ set :deploytag_utc, false
 # using 'touch tmp/restart.txt to restart passenger
 set :passenger_restart_with_touch, true
 
-# Default branch is :master
+# send some data to whenever
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
+# Prompt which branch to deploy; default to current.
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default value for :pty is false
