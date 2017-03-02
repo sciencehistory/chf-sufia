@@ -34,7 +34,7 @@ RSpec.describe GenericWorkIndexer do
     expect(solr_document["date_of_work_tesim"]).to include '2003 - 2015'
     expect(solr_document["date_of_work_tesim"]).to include '1200s (century)'
   end
-  it 'creates a maker copy field', focus: true do
+  it 'creates a maker copy field' do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).not_to be nil
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'Bruce McMillan'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'publishing house'
