@@ -8,7 +8,7 @@ module CHF
 
         GenericWork.find_each do |w|
           w.related_url.each do |url|
-            data << [w.id.first, w.title.first, url]
+            data << [w.id, w.title.first, url]
           end
         end
 
