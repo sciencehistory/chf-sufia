@@ -55,4 +55,10 @@ namespace :chf do
     end
     puts "total: #{reporter.matches.size}"
   end
+
+  desc 'csv report of related_urls'
+  task :related_url_csv, [:output_path] => :environment do |t, args|
+    output = args[:output_path] || "related_urls.csv"
+    CHF::Metadata::RelatedUrlReport.new.to_csv(output)
+  end
 end
