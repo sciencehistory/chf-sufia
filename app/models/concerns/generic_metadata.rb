@@ -7,12 +7,14 @@ module GenericMetadata
     after_initialize :set_default_metadata
 
     # default properties that we didn't need to delete
+    # Note: title is defined further down the stack but customized to be single-value in our forms
     property :label, predicate: ActiveFedora::RDF::Fcrepo::Model.downloadFilename, multiple: false
     property :relative_path, predicate: ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath'), multiple: false
     property :import_url, predicate: ::RDF::URI.new('http://scholarsphere.psu.edu/ns#importUrl'), multiple: false do |index|
       index.as :symbol
     end
     property :part_of, predicate: ::RDF::Vocab::DC.isPartOf
+    # description is single-value (enforced by form)
     property :description, predicate: ::RDF::Vocab::DC11.description do |index|
       index.type :text
       index.as :stored_searchable
