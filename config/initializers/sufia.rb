@@ -45,7 +45,8 @@ Sufia.config do |config|
   # config.noid_template = ".reeddeeddk"
 
   # Store identifier minter's state in a file for later replayability
-  config.minter_statefile = Rails.env.production? ? '/var/sufia/minter-state' : '/tmp/minter-state'
+  sufia_data_path = Rails.env.production? ? '/var/sufia' : (ENV['SUFIA_DATA_PATH'] || '/tmp')
+  config.minter_statefile = File.join(sufia_data_path, 'minter-state')
 
   # Specify the prefix for Redis keys:
   # config.redis_namespace = "sufia"
@@ -107,7 +108,7 @@ Sufia.config do |config|
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.
   # config.derivatives_path = File.join(Rails.root, 'tmp', 'derivatives')
-  config.derivatives_path = '/var/sufia/derivatives'
+  config.derivatives_path = File.join(sufia_data_path, 'derivatives')
 
   # If browse-everything has been configured, load the configs.  Otherwise, set to nil.
   begin
