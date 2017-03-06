@@ -21,9 +21,6 @@ dev box, without a VM.
 
 * `cp config/secrets.yml.example config/secrets.yml`
 	* you will need to fill out some secret sierra connection config in here
-* `cp config/blacklight.yml.example config/blacklight.yml`
-* `cp config/fedora.yml.example config/fedora.yml`
-* `cp config/solr.yml.example config/solr.yml`
 
 * db setup
 	* `./bin/rake db:create db:schema:load`
