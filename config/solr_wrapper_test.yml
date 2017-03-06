@@ -6,3 +6,4 @@ collection:
     persist: false
     dir: solr/config
     name: hydra-test
+version: 6.3.0
