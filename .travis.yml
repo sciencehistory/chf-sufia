@@ -1,0 +1,9 @@
+language: ruby
+sudo: false
+script: rake dev:spec_with_app_load
+rvm:
+  - 2.3.1
+cache:
+  bundler: true
+  directories:
+    - /tmp/solr_dist
