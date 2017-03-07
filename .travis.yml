@@ -7,6 +7,9 @@ cache:
   bundler: true
   directories:
     - ./tmp/solr_dist
+    # cache phantomjs auto-installed by jasmine and phantomjs gem, speed
+    # things up a bit.
+    - $HOME/.phantomjs
 before_script:
   - jdk_switcher use oraclejdk8
 # We need redis even in test due to sufia/curation_concerns
