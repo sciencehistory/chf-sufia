@@ -9,3 +9,7 @@ cache:
     - ./tmp/solr_dist
 before_script:
   - jdk_switcher use oraclejdk8
+# We need redis even in test due to sufia/curation_concerns
+# use of redlock gem in some internals.
+services:
+  - redis-server
