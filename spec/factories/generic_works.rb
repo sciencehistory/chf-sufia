@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :generic_work, aliases: [:work, :public_work], class: GenericWork do
-    ignore do
+    transient do
       user { FactoryGirl.create(:user) }
     end
 
