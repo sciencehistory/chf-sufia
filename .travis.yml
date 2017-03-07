@@ -6,6 +6,6 @@ rvm:
 cache:
   bundler: true
   directories:
-    - /tmp/solr_dist
+    - ./tmp/solr_dist
 before_script:
   - jdk_switcher use oraclejdk8
