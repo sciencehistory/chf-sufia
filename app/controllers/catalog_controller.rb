@@ -17,6 +17,10 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    # Turning this off to prevent Solr stack overflows
+    # see https://github.com/projectblacklight/blacklight/wiki/Blacklight-Autocomplete
+    config.autocomplete_enabled = false
+
     config.view.gallery.partials = [:index_header, :index]
     config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
