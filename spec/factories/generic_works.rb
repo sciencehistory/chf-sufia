@@ -77,7 +77,10 @@ FactoryGirl.define do
       end
     end
 
-
-
+    # a public work with complete metadata and a real image! Slow.
+    factory :full_public_work do
+      with_complete_metadata
+      real_public_image
+    end
   end
 end

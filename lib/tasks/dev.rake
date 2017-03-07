@@ -47,6 +47,26 @@ namespace :dev do
       end
     end
   end
+
+  desc "create a user with email and password" do
+
+  end
+
+  desc 'create some sample data for dev'
+  task :data, [:email, :password] => :environment do |t, args|
+    user_arg = []
+
+    if args[:email]
+      user = User.find_by_email(args[:email]) || User.create!(email: args[:email], password: args[:password])
+      user_arg << { user: user }
+    end
+
+    5.times do
+      FactoryGirl.create(:full_public_work, *user_arg)
+    end
+    FactoryGirl.create(:private_work, :with_complete_metadata, :real_public_image, *user_arg)
+  end
+
 end
 
 

@@ -44,6 +44,12 @@ dev box, without a VM.
       * `HYDRA_FEDORA_USER_DEVELOPMENT`
       * `HYDRA_FEDORA_PASSWORD_DEVELOPMENT`
 
+* You can createcreate some sample data and a user account to get started quicker:
+  * `./bin/rake dev:data[email@example.com,password]` will create account with that
+     email/password, and create 6 sample works (5 public one private) attached to that account.
+  * `./bin/rake dev:data` will create the same 6 sample works, but each belonging to a different
+    newly created random user.
+
 ### Running tests locally
 
 You also need a hydra and a fedora server running to run tests. You can:
