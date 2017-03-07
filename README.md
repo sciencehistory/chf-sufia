@@ -31,7 +31,7 @@ dev box, without a VM.
    * run `./bin/rake dev:servers` to start fedora and solr (according to config in `./.solr_wrapper`
      and `./.fc_repo_wrapper`), leave that running, and _then_ in a different terminal
      start `rails server` as normal.
-   * start fedora, solr, _and_rails with `./bin/rake hydra:server` (but you may have
+   * start fedora, solr, _and_ rails with `./bin/rake hydra:server` (but you may have
      trouble with byebug/pry when you do it this way)
    * The above methods both use the `solr_wrapper` and `fcrepo_wrapper` gems to
      automatically start (and install if needed) fedora and solr. If you want
