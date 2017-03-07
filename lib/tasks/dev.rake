@@ -4,17 +4,7 @@ require 'solr_wrapper'
 require 'fcrepo_wrapper'
 require 'active_fedora/rake_support'
 
-module DevRakeUtil
-  def load_config(service, environment, defaults)
-    config_file = environment == 'test' ? "config/#{service}_wrapper_test.yml" : ".#{service}_wrapper"
-    return { config: config_file } if File.exist?(config_file)
-    defaults
-  end
-end
-
 namespace :dev do
-  include DevRakeUtil
-
   # Starts Fedora and Solr, per config in `./config/solr_wrapper_test.rb` and
   # and `./config/fcrepo_wrapper_test.rb`. You can still run individual files
   # and line numbers, with:
