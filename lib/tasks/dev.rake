@@ -48,10 +48,6 @@ namespace :dev do
     end
   end
 
-  desc "create a user with email and password" do
-
-  end
-
   desc 'create some sample data for dev'
   task :data, [:email, :password] => :environment do |t, args|
     user_arg = []
