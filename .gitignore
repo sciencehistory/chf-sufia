@@ -22,4 +22,4 @@
 /.byebug_history
 /ansible
 /config/secrets.yml
->>>>>>> parent of 2206d7b... Move solr/fedora config files to examples, .gitignore
+
