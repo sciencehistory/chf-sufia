@@ -76,7 +76,7 @@ group :development, :test do
   gem 'spring-commands-rspec', '~> 1.0.2'
 
   gem 'rspec-rails', '~> 3.1'
-  gem "factory_girl_rails", "~> 4.4.1"
+  gem "factory_girl_rails", "~> 4.4", '>= 4.4.1'
   gem 'jettywrapper'
   gem 'pry'
   gem 'pry-rails'

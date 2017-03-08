@@ -2,6 +2,10 @@
 # version: 6.0.0
 # port: 8983
 instance_dir: tmp/solr-development
+  <% # in subdir of tmp to make it easier to tell travis to cache,
+     # so we're not downloading it over and over. Make sure it exists.
+     FileUtils.mkdir_p("tmp/solr_dist") %>
+download_dir: "tmp/solr_dist"
 collection:
   persist: true
   dir: solr/config/
