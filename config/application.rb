@@ -9,10 +9,17 @@ Bundler.require(*Rails.groups)
 module Chufia
   class Application < Rails::Application
 
+    # On travis, we need to provide some secret key base default value
+    # so the app will load. Does not actually need to be secure for any
+    # reason.
+    if Rails.env.test?
+      secrets.secret_key_base ||= "test_dummy"
+    end
+
     config.autoload_paths << "#{Rails.root}/app/forms/concerns"
     # Load files from lib/
     config.autoload_paths << Rails.root.join('lib')
-    
+
     config.generators do |g|
       g.test_framework :rspec, :spec => true
     end

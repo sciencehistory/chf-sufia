@@ -22,6 +22,4 @@
 /.byebug_history
 /ansible
 /config/secrets.yml
-/config/solr.yml
-/config/fedora.yml
-/config/blacklight.yml
+

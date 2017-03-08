@@ -17,6 +17,10 @@ class CatalogController < ApplicationController
   end
 
   configure_blacklight do |config|
+    # Turning this off to prevent Solr stack overflows
+    # see https://github.com/projectblacklight/blacklight/wiki/Blacklight-Autocomplete
+    config.autocomplete_enabled = false
+
     config.view.gallery.partials = [:index_header, :index]
     config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
@@ -58,7 +62,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name("medium", :facetable), label: "Medium", limit: 5
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Division", limit: 5
-    config.add_facet_field solr_name("rights", :facetable), label: "Rights", limit: 5
+    config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
