@@ -32,7 +32,7 @@ FactoryGirl.define do
       genre_string  ['Manuscripts']
       extent        ["40 pages", "0.75 in. H x 2.5 in. W"]
       series_arrangement ["Series XIV", "Subseries B"]
-      description   ['A very nice thing.\r\n\r\nWe really like it']
+      description   ["A very nice thing.\r\n\r\nWe really like it"]
       related_url   ['http://example.org/TheRelatedURLLink/']
       rights        ['http://creativecommons.org/publicdomain/mark/1.0/']
       physical_container 'v8|p2|g100'
