@@ -4,11 +4,11 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
     super.tap do |doc|
       %w(additional_credit inscription date_of_work).each do |field|
         entries = remove_duplicates(field)
-        doc[ActiveFedora.index_field_mapper.solr_name(field, type: :string)] = entries.map { |entry| entry.display_label }
+        doc[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)] = entries.map { |entry| entry.display_label }
       end
       unless object.physical_container.nil?
         require_dependency Rails.root.join('lib','chf','utils','parse_fields')
-        doc[ActiveFedora.index_field_mapper.solr_name("physical_container", type: :string)] = CHF::Utils::ParseFields.display_physical_container(object.physical_container)
+        doc[ActiveFedora.index_field_mapper.solr_name("physical_container", :stored_searchable)] = CHF::Utils::ParseFields.display_physical_container(object.physical_container)
       end
       makers = %w(artist author addressee creator_of_work contributor engraver interviewee interviewer manufacturer photographer printer_of_plates publisher)
       maker_facet = makers.map { |field| object.send(field) }.flatten.uniq
