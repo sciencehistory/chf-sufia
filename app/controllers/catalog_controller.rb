@@ -97,7 +97,6 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("maker_facet", :facetable), label: "Maker/Creator", limit: 5
-    config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
     config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
     config.add_facet_field solr_name("medium", :facetable), label: "Medium", limit: 5
