@@ -868,6 +868,7 @@ DEPENDENCIES
   rsolr (~> 1.0)
   rspec-activemodel-mocks
   rspec-rails (~> 3.1)
+  ruby-progressbar (~> 1.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   solr_wrapper (>= 0.3)
