@@ -50,60 +50,60 @@ module GenericMetadata
     # sufia 6 used DC.creator and sufia 7 changed this to DC11.creator, which we were already using.
     # Is this still used by sufia internally?
     property :creator, predicate: ::RDF::Vocab::DC.creator do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
 
     # makers
     property :artist, predicate: ::RDF::Vocab::MARCRelators.art do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :author, predicate: ::RDF::Vocab::MARCRelators.aut do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :addressee, predicate: ::RDF::Vocab::MARCRelators.rcp do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :creator_of_work, predicate: ::RDF::Vocab::DC11.creator do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :engraver, predicate: ::RDF::Vocab::MARCRelators.egr do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :interviewee, predicate: ::RDF::Vocab::MARCRelators.ive do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :interviewer, predicate: ::RDF::Vocab::MARCRelators.ivr do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :manufacturer, predicate: ::RDF::Vocab::MARCRelators.mfr do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :photographer, predicate: ::RDF::Vocab::MARCRelators.pht do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :printer_of_plates, predicate: ::RDF::Vocab::MARCRelators.pop do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :publisher, predicate: ::RDF::Vocab::DC11.publisher do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     # end makers
 
     # places
     property :place_of_interview, predicate: ::RDF::Vocab::MARCRelators.evp do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :place_of_manufacture, predicate: ::RDF::Vocab::MARCRelators.mfp do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :place_of_publication, predicate: ::RDF::Vocab::MARCRelators.pup do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     property :place_of_creation, predicate: ::RDF::Vocab::MARCRelators.prp do |index|
-      index.as :stored_searchable, :facetable
+      index.as :stored_searchable
     end
     # end places
 

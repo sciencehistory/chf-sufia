@@ -16,6 +16,46 @@ class CatalogController < ApplicationController
     solr_name('system_modified', :stored_sortable, type: :date)
   end
 
+  def self.chf_search_fields
+    [
+      solr_name("title", :stored_searchable),
+      solr_name("depositor"),
+      solr_name("description", :stored_searchable),
+      solr_name("subject", :stored_searchable),
+      solr_name("language", :stored_searchable),
+      solr_name("identifier", :stored_searchable),
+      solr_name("related_url", :stored_searchable),
+      solr_name("artist", :stored_searchable),
+      solr_name("author", :stored_searchable),
+      solr_name("addressee", :stored_searchable),
+      solr_name("creator_of_work", :stored_searchable),
+      solr_name("contributor", :stored_searchable),
+      solr_name("engraver", :stored_searchable),
+      solr_name("interviewee", :stored_searchable),
+      solr_name("interviewer", :stored_searchable),
+      solr_name("manufacturer", :stored_searchable),
+      solr_name("photographer", :stored_searchable),
+      solr_name("printer_of_plates", :stored_searchable),
+      solr_name("publisher", :stored_searchable),
+      solr_name("place_of_interview", :stored_searchable),
+      solr_name("place_of_manufacture", :stored_searchable),
+      solr_name("place_of_publication", :stored_searchable),
+      solr_name("place_of_creation", :stored_searchable),
+      solr_name("additional_title", :stored_searchable),
+      solr_name("admin_note", :stored_searchable),
+      solr_name("division", :stored_searchable),
+      solr_name("file_creator", :stored_searchable),
+      solr_name("genre_string", :stored_searchable),
+      solr_name("medium", :stored_searchable),
+      solr_name("physical_container", :stored_searchable),
+      solr_name("resource_type", :stored_searchable),
+      solr_name("rights", :stored_searchable),
+      solr_name("series_arrangement", :stored_searchable),
+      solr_name("inscription", :stored_searchable),
+      solr_name("additional_credit", :stored_searchable),
+    ]
+  end
+
   configure_blacklight do |config|
     # Turning this off to prevent Solr stack overflows
     # see https://github.com/projectblacklight/blacklight/wiki/Blacklight-Autocomplete
@@ -96,22 +136,6 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("file_format", :stored_searchable), label: "File Format", link_to_search: solr_name("file_format", :facetable)
     #config.add_index_field solr_name("identifier", :stored_searchable), label: "Identifier", helper_method: :index_field_link, field_name: 'identifier'
 
-    # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
-    config.add_show_field solr_name("title", :stored_searchable), label: "Title"
-    config.add_show_field solr_name("description", :stored_searchable), label: "Description"
-    config.add_show_field solr_name("subject", :stored_searchable), label: "Subject"
-    config.add_show_field solr_name("creator", :stored_searchable), label: "Creator"
-    config.add_show_field solr_name("contributor", :stored_searchable), label: "Contributor"
-    config.add_show_field solr_name("publisher", :stored_searchable), label: "Publisher"
-    config.add_show_field solr_name("language", :stored_searchable), label: "Language"
-    config.add_show_field solr_name("date_uploaded", :stored_searchable), label: "Date Uploaded"
-    config.add_show_field solr_name("date_modified", :stored_searchable), label: "Date Modified"
-    config.add_show_field solr_name("date_created", :stored_searchable), label: "Date Created"
-    config.add_show_field solr_name("rights", :stored_searchable), label: "Rights"
-    config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
-    config.add_show_field solr_name("format", :stored_searchable), label: "File Format"
-    config.add_show_field solr_name("identifier", :stored_searchable), label: "Identifier"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -131,7 +155,7 @@ class CatalogController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
-      all_names = config.show_fields.values.map(&:field).join(" ")
+      all_names = chf_search_fields.join(" ")
       title_name = solr_name("title", :stored_searchable)
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
