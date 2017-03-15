@@ -42,7 +42,7 @@ shared_examples_for "work_form_behavior" do
 
   describe '.model_attributes' do
     let(:params) { ActionController::Parameters.new(
-      "identifier"=>["object_external_id"], "object_external_id"=>["test"], 
+      "identifier"=>["object_external_id"], "object_external_id"=>["test"],
       "rights"=>"http://rightsstatements.org/vocab/InC/1.0/",
       "box"=>"b", "folder"=>"f", "volume"=>"v", "part"=>"p", "page"=>"pa",
       "title"=>"A House is a House for Me",
@@ -71,6 +71,16 @@ shared_examples_for "work_form_behavior" do
         expect(subject['rights']).to be_nil
         expect(subject['identifier']).to be_nil
         expect(subject['physical_container']).to be_nil
+      end
+    end
+
+    context "text entered with leading/trailing spaces" do
+      let(:stripped_title) { "This is my title" }
+      let(:params) { ActionController::Parameters.new(
+        "title" => "   #{stripped_title} "
+      )}
+      it "strips them" do
+        expect(subject[:title]).to eq([stripped_title])
       end
     end
   end
