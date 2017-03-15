@@ -1,6 +1,6 @@
 class ChfIndexPresenter < Blacklight::IndexPresenter
   class_attribute :description_max_chars
-  self.description_max_chars = 10
+  self.description_max_chars = 400
 
   attr_reader :description_field
 
