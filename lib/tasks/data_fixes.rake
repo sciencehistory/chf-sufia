@@ -1,4 +1,5 @@
 require 'chf/data_fixes/work_dates'
+require 'chf/data_fixes/add_catlu_access'
 
 namespace :chf do
   # Most of these are anticipated to be one-time fixes, may get removed
@@ -12,6 +13,26 @@ namespace :chf do
 
       GenericWork.find_each do |w|
         updated = CHF::DataFixes::WorkDates.new(w).change
+
+        if updated
+          w.save
+          works_updated << w.id
+          progress_bar.title = "#{works_updated.count} saved"
+        end
+        progress_bar.increment
+      end
+
+      progress_bar.finish
+      $stderr.puts "Updated #{works_updated.count} works"
+    end
+
+    desc "Add clu@chemheritage.org to all edit_users"
+    task :add_catlu_access => :environment do
+      works_updated = []
+      progress_bar = ProgressBar.create(total: GenericWork.count, format: "|%B| %p%% %e %t")
+
+      GenericWork.find_each do |w|
+        updated = CHF::DataFixes::AddCatluAccess.new(w).change
 
         if updated
           w.save
