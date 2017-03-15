@@ -51,7 +51,7 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
     # both, transferred object
     GenericWork.new.tap do |w|
       w.apply_depositor_metadata depositor
-      w.division = 'Othmer Library of Chemical History'
+      w.division = 'Library'
       w.title = ['Book of some kind']
       w.visibility = 'open'
       w.description = ['useful for historical research']
@@ -84,8 +84,8 @@ RSpec.describe 'CHF::Reports::MetadataCompletionReport' do
     "Center for Oral History: 0 / 0 (100%) records are published with descriptions\n" +
     "Museum: 0 / 0 (100%) records are published\n" +
     "Museum: 0 / 0 (100%) records are published with descriptions\n" +
-    "Othmer Library of Chemical History: 0 / 0 (100%) records are published\n" +
-    "Othmer Library of Chemical History: 0 / 0 (100%) records are published with descriptions\n" +
+    "Library: 0 / 0 (100%) records are published\n" +
+    "Library: 0 / 0 (100%) records are published with descriptions\n" +
     "Rare Books: 0 / 1 (0%) records are published\n" +
     "Rare Books: 0 / 1 (0%) records are published with descriptions\n" +
     "Uncategorized: 1 / 1 (100%) records are published\n" +
