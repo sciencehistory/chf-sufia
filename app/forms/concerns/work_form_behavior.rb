@@ -68,6 +68,16 @@ module WorkFormBehavior
       #  -- they don't have these fields in the form at all so they don't get repopulated.
       clean_params = encode_physical_container(params, clean_params)
       clean_params = encode_external_id(params, clean_params)
+
+      clean_params.keys.each do |key|
+        # strip ALL the things!
+        if clean_params[key].is_a?(Array)
+          clean_params[key].map!(&:strip)
+        elsif clean_params[key].is_a?(String)
+          clean_params[key] = clean_params[key].strip
+        end
+      end
+
       clean_params
     end
   end
