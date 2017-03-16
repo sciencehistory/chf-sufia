@@ -15,7 +15,12 @@ module IndexHelper
     # of a tag, have to fix.
     text = truncate(text, escape: false, length: 400, separator: /\s/)
 
+    # And convert line breaks to paragraphs
+    text = simple_format(text)
+
     # a sufia helper to turn URLs into links.
-    iconify_auto_link(text)
+    text = iconify_auto_link(text)
+
+    text
   end
 end
