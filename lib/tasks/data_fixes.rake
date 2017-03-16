@@ -15,9 +15,11 @@ namespace :chf do
       # what fixes are included may change from time to time,
       # most of these are run-once things.
       CHF::DataFixes::Util.update_works do |w|
-        [ CHF::DataFixes::WorkDates.new(w).change,
+        [
+          CHF::DataFixes::WorkDates.new(w).change,
           CHF::DataFixes::AddCatluAccess.new(w).change,
-          CHF::DataFixes::StripStrings.new(w).change
+          CHF::DataFixes::StripStrings.new(w).change,
+          CHF::DataFixes::LibraryDivisionChange.new(w).change
         ].any?
       end
     end
@@ -43,25 +45,11 @@ namespace :chf do
       end
     end
 
-
     desc "'Othmer...' to 'Library' in division"
     task :library_division => :environment do
-      works_updated = []
-      progress_bar = ProgressBar.create(total: GenericWork.count, format: "|%B| %p%% %e %t")
-
-      GenericWork.find_each do |w|
-        updated = CHF::DataFixes::AddCatluAccess.new(w).change
-
-        if updated
-          w.save
-          works_updated << w.id
-          progress_bar.title = "#{works_updated.count} saved"
-        end
-        progress_bar.increment
+      CHF::DataFixes::Util.update_works do |w|
+        CHF::DataFixes::LibraryDivisionChange.new(w).change
       end
-
-      progress_bar.finish
-      $stderr.puts "Updated #{works_updated.count} works"
     end
   end
 end
