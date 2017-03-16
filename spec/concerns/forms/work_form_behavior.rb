@@ -83,6 +83,17 @@ shared_examples_for "work_form_behavior" do
         expect(subject[:title]).to eq([stripped_title])
       end
     end
+
+    context "html in description field" do
+      let(:original_input) { '<p>Paragraph <b style="somestyle">bold</b> <a href="http://example.com">link</a><script>script</script></p>' }
+      let(:sanitized_input) { 'Paragraph <b>bold</b> <a href="http://example.com">link</a>script' }
+      let(:params) { ActionController::Parameters.new(
+        "description" => [original_input]
+      )}
+      it "strips them" do
+        expect(subject[:description]).to eq([sanitized_input])
+      end
+    end
   end
 
   describe '.title and .description' do
