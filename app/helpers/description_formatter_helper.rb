@@ -1,11 +1,6 @@
-module IndexHelper
-  def format_description_for_index(field)
-    if field.is_a? Hash
-      text = field[:value].join("\n\n")
-    else
-      text = field
-    end
+module DescriptionFormatterHelper
 
+  def format_description(text, truncate: false)
     # sanitize. should have been sanitized on input, but just to
     # be safe.
     text = DescriptionSanitizer.new.sanitize(text).html_safe
@@ -22,5 +17,16 @@ module IndexHelper
     text = iconify_auto_link(text)
 
     text
+  end
+
+
+  def format_description_for_index(field)
+    if field.is_a? Hash
+      text = field[:value].join("\n\n")
+    else
+      text = field
+    end
+
+    format_description(text, truncate: true)
   end
 end
