@@ -39,7 +39,7 @@ FactoryGirl.define do
       additional_title ["Or, There and Back Again q"]
       admin_note    ["This is an admin note"]
       credit_line   ["Courtesy of CHF Collections"]
-      division      "Othmer Library of Chemical History"
+      division      "Library"
       file_creator  "Lu, Cathleen"
 
       identifier   ['object-2008.043.002']

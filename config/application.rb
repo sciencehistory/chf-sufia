@@ -71,7 +71,7 @@ module Chufia
       'Archives',
       'Center for Oral History',
       'Museum',
-      'Othmer Library of Chemical History',
+      'Library',
     ]
 
     config.file_creators = [

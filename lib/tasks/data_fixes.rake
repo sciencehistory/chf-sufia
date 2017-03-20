@@ -15,9 +15,11 @@ namespace :chf do
       # what fixes are included may change from time to time,
       # most of these are run-once things.
       CHF::DataFixes::Util.update_works do |w|
-        [ CHF::DataFixes::WorkDates.new(w).change,
+        [
+          CHF::DataFixes::WorkDates.new(w).change,
           CHF::DataFixes::AddCatluAccess.new(w).change,
-          CHF::DataFixes::StripStrings.new(w).change
+          CHF::DataFixes::StripStrings.new(w).change,
+          CHF::DataFixes::LibraryDivisionChange.new(w).change
         ].any?
       end
     end
@@ -40,6 +42,13 @@ namespace :chf do
     task :strip_spaces => :environment do
       CHF::DataFixes::Util.update_works do |w|
         CHF::DataFixes::StripStrings.new(w).change
+      end
+    end
+
+    desc "'Othmer...' to 'Library' in division"
+    task :library_division => :environment do
+      CHF::DataFixes::Util.update_works do |w|
+        CHF::DataFixes::LibraryDivisionChange.new(w).change
       end
     end
   end
