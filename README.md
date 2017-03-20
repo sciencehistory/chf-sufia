@@ -71,6 +71,14 @@ bundle exec cap [target machine] deploy
 
 See more at: https://chemheritage.atlassian.net/wiki/spaces/HDCSD/pages/5668869/Deployment+Capistrano
 
+### Maintenance mode
+
+Maintenance mode makes the entire app unavailable.
+
+    bundle exec cap staging maintenance:enable REASON="a test of maintenance mode" UNTIL="12pm Eastern Time"
+
+    bundle exec cap staging maintenance:disable
+
 ## Run Tests
 bundle exec rspec
 
