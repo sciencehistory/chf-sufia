@@ -130,7 +130,7 @@ module Chufia
       'Press releases',
       'Prints',
       'Rare books',
-      'Records (Documents)',
+      'Documents',
       'Sample books',
       'Scientific apparatus and instruments',
       'Slides',
