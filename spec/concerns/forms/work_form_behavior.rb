@@ -94,6 +94,18 @@ shared_examples_for "work_form_behavior" do
         expect(subject[:description]).to eq([sanitized_input])
       end
     end
+
+    context "bad html in description field" do
+      let(:original_input) { "Text <b>bold</b>\n<p>\nmore text\n<p>\nmore text" }
+      let(:sanitized_input) { "Text <b>bold</b>\n\nmore text\n\nmore text" }
+      let(:params) { ActionController::Parameters.new(
+        "description" => [original_input]
+      )}
+      it "strips them" do
+        expect(subject[:description]).to eq([sanitized_input])
+      end
+    end
+
   end
 
   describe '.title and .description' do
