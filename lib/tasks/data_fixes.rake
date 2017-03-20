@@ -20,7 +20,8 @@ namespace :chf do
           CHF::DataFixes::WorkDates.new(w).change,
           CHF::DataFixes::AddCatluAccess.new(w).change,
           CHF::DataFixes::StripStrings.new(w).change,
-          CHF::DataFixes::LibraryDivisionChange.new(w).change
+          CHF::DataFixes::LibraryDivisionChange.new(w).change,
+          CHF::DataFixes::GenreDocument.new(w).change
         ].any?
       end
     end
