@@ -1,4 +1,4 @@
-<%= f.input :maker, as: :multi_value_select_text,
+<%= f.input :maker, as: :multi_value_select_text, label: "Creator",
   include_blank: true, options: Rails.configuration.makers,
   value_method: :to_s, label_method: lambda { |l| l.to_s.humanize }
 %>
