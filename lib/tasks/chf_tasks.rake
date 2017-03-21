@@ -56,6 +56,22 @@ namespace :chf do
     puts "total: #{reporter.matches.size}"
   end
 
+  desc 'Reindex all GenericWorks'
+  task reindex_works: :environment do
+    # Like :reindex, but only GenericWorks, makes it faster,
+    # and allows us to add a progress bar easily.
+
+    progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%t: |%B| %p%% %e")
+
+    GenericWork.find_each do |work|
+      Rails.logger.debug "Re-index everything ... #{work.id}"
+      work.update_index
+      progress_bar.increment
+    end
+
+    $stderr.puts 'reindex_works complete'
+  end
+
   desc 'csv report of related_urls'
   task :related_url_csv, [:output_path] => :environment do |t, args|
     output = args[:output_path] || "related_urls.csv"
