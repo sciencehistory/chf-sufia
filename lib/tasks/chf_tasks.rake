@@ -59,14 +59,27 @@ namespace :chf do
   desc 'Reindex all GenericWorks'
   task reindex_works: :environment do
     # Like :reindex, but only GenericWorks, makes it faster,
+    # plus let's us use other solr techniques to make it faster,
     # and allows us to add a progress bar easily.
 
+    add_batch_size = ENV['ADD_BATCH_SIZE'] || 50
+
     progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%t: |%B| %p%% %e")
+    solr_service_conn = ActiveFedora::SolrService.instance.conn
+    batch = []
 
     GenericWork.find_each do |work|
-      Rails.logger.debug "Re-index everything ... #{work.id}"
-      work.update_index
+      batch << work.to_solr
+
+      if batch.count % add_batch_size == 0
+        solr_service_conn.add(batch, commit: true)
+        batch.clear
+      end
       progress_bar.increment
+    end
+    if batch.present?
+      solr_service_conn.add(batch, commit: true)
+      batch.clear
     end
 
     $stderr.puts 'reindex_works complete'
