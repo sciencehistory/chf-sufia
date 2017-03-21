@@ -72,15 +72,17 @@ namespace :chf do
       batch << work.to_solr
 
       if batch.count % add_batch_size == 0
-        solr_service_conn.add(batch, commit: true)
+        solr_service_conn.add(batch, softCommit: true, commit: false)
         batch.clear
       end
       progress_bar.increment
     end
     if batch.present?
-      solr_service_conn.add(batch, commit: true)
+      solr_service_conn.add(batch, softCommit: true, commit: false)
       batch.clear
     end
+    $stderr.puts "Issuing a solr commit..."
+    solr_service_conn.commit
 
     $stderr.puts 'reindex_works complete'
   end
