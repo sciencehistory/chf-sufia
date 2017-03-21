@@ -866,7 +866,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   qa!
-  rails (~> 4.2.6)
+  rails (~> 4.2.7.1)
   rdf (~> 1.99)
   resque-pool
   rest-client
