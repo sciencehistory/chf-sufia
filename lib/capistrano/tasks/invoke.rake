@@ -47,8 +47,8 @@ namespace :invoke do
             end
           end
         end
-      rescue StandardError => e
-        SSHKit.config.output.fatal("Caught exception: #{e}")
+      rescue StandardError, Exception => e
+        SSHKit.config.output.fatal("Caught exception: #{e.class} #{e.inspect}")
       ensure
         SSHKit.config.output.info("Turning off maintenance mode")
         invoke("maintenance:disable")
