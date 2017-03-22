@@ -13,6 +13,33 @@ namespace :chf do
       raise "Error!"
     end
 
+    desc "Execute a rake task wrapped in maintenance enable/disable"
+    task :rake_with_maintenance do
+      if ENV['TASK']
+        SSHKit.config.output.info("Turning on maintenance mode")
+        invoke("maintenance:enable")
+
+        tasks = ENV['TASK'].split(',')
+
+        on roles(:app) do
+          within current_path do
+            with rails_env: fetch(:rails_env) do
+              tasks.each do |task|
+                execute :rake, task, interaction_handler: StreamOutputInteractionHandler.new(:stderr)
+                SSHKit.config.output.info("finished rake #{task}")
+              end
+            end
+          end
+        end
+
+        SSHKit.config.output.info("Turning off maintenance mode")
+        invoke("maintenance:disable")
+      else
+        puts "\n\nFailed! You need to specify the 'TASK' parameter!",
+             "Usage: cap <stage> invoke:rake TASK=your:task"
+      end
+    end
+
 
     desc "Bulk fix a variety of things"
     task :bulk_fix => :environment do
