@@ -17,3 +17,7 @@
 // Probably added by sufia 7 install generator, originally in a separate
 // file for no good reason. https://github.com/chemheritage/chf-sufia/commit/e7320cb3
 @import 'batch_edit/batch_edit';
+
+// Import our local scss. May need to change this to individual imports
+// when/if order starts mattering, but for now this works.
+@import "local/**/*";
