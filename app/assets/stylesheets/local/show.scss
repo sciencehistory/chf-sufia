@@ -1,1 +1,9 @@
+// There seems to be no existing css class allowing us to scope
+// this stuff just to generic work 'show' page. If there was, I'd use it.
+// Perhaps it should be added later.
 
+.additional-titles {
+  h2 {
+    @extend h4;
+  }
+}
