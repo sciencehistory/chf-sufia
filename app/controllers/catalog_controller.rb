@@ -2,7 +2,6 @@ class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include Sufia::Catalog
-  include BlacklightAdvancedSearch::Controller
   include BlacklightRangeLimit::ControllerOverride
 
   # These before_filters apply the hydra access controls
@@ -69,12 +68,6 @@ class CatalogController < ApplicationController
 
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
-    # default advanced config values
-    config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
-    # config.advanced_search[:qt] ||= 'advanced'
-    config.advanced_search[:url_key] ||= 'advanced'
-    config.advanced_search[:query_parser] ||= 'dismax'
-    config.advanced_search[:form_solr_parameters] ||= {}
 
     config.search_builder_class = Sufia::SearchBuilder
 
@@ -153,7 +146,7 @@ class CatalogController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
-    config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
+    config.add_search_field('all_fields', label: 'All Fields') do |field|
       all_names = chf_search_fields.join(" ")
       title_name = solr_name("title", :stored_searchable)
       field.solr_parameters = {
