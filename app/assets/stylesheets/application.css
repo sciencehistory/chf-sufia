@@ -13,7 +13,6 @@
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  *= require_self
  *= require sufia
- *= require batch_edit.scss
  *= require openseadragon.scss
  *
  *= require chf-overrides

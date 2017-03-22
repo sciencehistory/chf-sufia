@@ -13,3 +13,7 @@
 @import "blacklight_gallery/slideshow";
 @import "blacklight_gallery/osd_viewer";
 @import 'sufia/sufia';
+
+// Probably added by sufia 7 install generator, originally in a separate
+// file for no good reason. https://github.com/chemheritage/chf-sufia/commit/e7320cb3
+@import 'batch_edit/batch_edit';
