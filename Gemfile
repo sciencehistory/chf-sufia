@@ -1,33 +1,21 @@
 source 'https://rubygems.org'
 
 # sufia stuff!
-#gem 'sufia', '7.2.0'
-gem 'sufia', git: 'https://github.com/projecthydra/sufia', branch: '7.2-migration'
-gem 'kaminari_route_prefix'
-gem 'rsolr', '~> 1.0'
+gem 'sufia', '7.3.0'
 gem 'blacklight_range_limit', ">= 6.1.2"
 
-# required for sufia 7.2
-gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
-# pull in carolyn's charactizejob / derivatives job fix
-gem 'curation_concerns', github: 'projecthydra/curation_concerns', branch: '1-6-stable'
 # pull in fix to "add another" label
+# Once we have a release including this commit, we can stop using this github sha:
+# https://github.com/projecthydra/hydra-editor/pull/126
 gem 'hydra-editor', github: 'projecthydra/hydra-editor', ref: 'c1e9d298'
+
+# 1.3 broke OpacRecordService; lock for now
+gem 'oauth2', '1.2.0'
 
 # used in some rake tasks, some of which we may want ot run on production.
 gem 'ruby-progressbar', '~> 1.0'
 
 gem 'html_aware_truncation', '~> 1.0'
-
-# Needed to fix reindex_everything
-# But don't go to 11 without being ready for rdf2
-gem 'active-fedora', '~>10.3'
-
-# Preserve order
-gem 'rdf', '~> 1.99'
-
-# Lock this to fix FAST until post-10.2 release is cut
-gem 'qa', git: 'https://github.com/projecthydra-labs/questioning_authority.git', ref: 'baf581f17bdd8470176514c8f48467d5932833e0'
 
 # extras
 gem 'hydra-role-management'

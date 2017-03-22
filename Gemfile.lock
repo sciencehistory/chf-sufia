@@ -1,33 +1,4 @@
 GIT
-  remote: git://github.com/projecthydra/curation_concerns.git
-  revision: 608b02916cd75ec0520ff62863f26fdee4b0388d
-  branch: 1-6-stable
-  specs:
-    curation_concerns (1.6.3)
-      active-fedora (>= 10.3.0.rc1)
-      active_attr
-      active_fedora-noid (~> 2.0.0.beta1)
-      awesome_nested_set (~> 3.0)
-      blacklight (~> 6.3)
-      blacklight_advanced_search (~> 6.0)
-      breadcrumbs_on_rails (>= 3.0.1, < 4)
-      browse-everything (~> 0.10)
-      clipboard-rails (~> 1.5)
-      hydra-editor (>= 2, < 4)
-      hydra-head (>= 10.0.0, < 11)
-      hydra-works (>= 0.14.0)
-      jquery-ui-rails (~> 5.0.5)
-      kaminari_route_prefix (~> 0.0.1)
-      qa (~> 0.5)
-      rails_autolink
-      rdf (>= 1.99)
-      rdf-vocab (>= 0.8)
-      redlock (~> 0.1.2)
-      simple_form (~> 3.1)
-      solrizer (~> 3.4)
-      sprockets-es6
-
-GIT
   remote: git://github.com/projecthydra/hydra-editor.git
   revision: c1e9d298c823567ea68cd6aa200848e47f1b25f0
   ref: c1e9d298
@@ -39,62 +10,6 @@ GIT
       rails (>= 4.2.0, < 6)
       simple_form (~> 3.2)
       sprockets-es6
-
-GIT
-  remote: https://github.com/jcoyne/flipflop.git
-  revision: 0eecddade9890548c92b1e8aa681512f1db01469
-  branch: hydra
-  specs:
-    flipflop (2.2.1)
-      activesupport (>= 4.0)
-
-GIT
-  remote: https://github.com/projecthydra-labs/questioning_authority.git
-  revision: baf581f17bdd8470176514c8f48467d5932833e0
-  ref: baf581f17bdd8470176514c8f48467d5932833e0
-  specs:
-    qa (0.10.2)
-      activerecord-import
-      deprecation
-      faraday
-      nokogiri (~> 1.6.0)
-      rails (>= 4.2.0, < 6.0)
-
-GIT
-  remote: https://github.com/projecthydra/sufia
-  revision: 73eaac881de55c4bdd744bcd93d6abd146cc2bae
-  branch: 7.2-migration
-  specs:
-    sufia (7.2.0)
-      almond-rails (~> 0.0.1)
-      blacklight (~> 6.6)
-      blacklight-gallery (~> 0.1)
-      browse-everything (>= 0.10.3)
-      carrierwave (~> 0.9)
-      curation_concerns (~> 1.6, >= 1.6.1)
-      daemons (~> 1.1)
-      flipflop (~> 2.2)
-      flot-rails (~> 0.0.6)
-      font-awesome-rails (~> 4.2)
-      hydra-batch-edit (~> 2.0)
-      hydra-head (>= 10.1)
-      jquery-datatables-rails (~> 3.4.0)
-      jquery-ui-rails (~> 5.0)
-      json-schema
-      legato (~> 0.3)
-      mailboxer (~> 0.12)
-      nest (~> 2.0)
-      oauth
-      oauth2 (~> 1.2)
-      posix-spawn
-      qa (~> 0.8)
-      rdf-rdfxml
-      redis-namespace (~> 1.5.2)
-      select2-rails (~> 3.5.9)
-      signet
-      tinymce-rails (~> 4.1)
-      tinymce-rails-imageupload (~> 4.0.16.beta)
-      yaml_db (~> 0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -135,7 +50,7 @@ GEM
       deprecation (~> 1.0)
       linkeddata (~> 1.1)
       rdf (~> 1.1)
-    active_attr (0.9.0)
+    active_attr (0.10.0)
       activemodel (>= 3.0.2, < 5.1)
       activesupport (>= 3.0.2, < 5.1)
     active_fedora-noid (2.0.2)
@@ -152,7 +67,7 @@ GEM
       activemodel (= 4.2.7.1)
       activesupport (= 4.2.7.1)
       arel (~> 6.0)
-    activerecord-import (0.16.2)
+    activerecord-import (0.17.2)
       activerecord (>= 3.2)
     activesupport (4.2.7.1)
       i18n (~> 0.7)
@@ -165,14 +80,18 @@ GEM
     almond-rails (0.0.3)
       rails (>= 4.2, < 6)
     arel (6.0.3)
-    autoparse (0.3.3)
-      addressable (>= 2.3.1)
-      extlib (>= 0.9.15)
-      multi_json (>= 1.0.0)
     autoprefixer-rails (6.5.3)
       execjs
     awesome_nested_set (3.1.1)
       activerecord (>= 4.0.0, < 5.1)
+    aws-sdk (2.8.8)
+      aws-sdk-resources (= 2.8.8)
+    aws-sdk-core (2.8.8)
+      aws-sigv4 (~> 1.0)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.8.8)
+      aws-sdk-core (= 2.8.8)
+    aws-sigv4 (1.0.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -193,34 +112,33 @@ GEM
       blacklight (~> 6.0)
       cancancan (~> 1.8)
       deprecation (~> 1.0)
-    blacklight-gallery (0.6.1)
+    blacklight-gallery (0.8.0)
       blacklight (~> 6.3)
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_advanced_search (6.2.1)
-      blacklight (~> 6.0, >= 6.0.1)
-      parslet
     blacklight_range_limit (6.1.2)
       blacklight (~> 6.0)
       jquery-rails
       rails (>= 3.0)
-    blankslate (3.1.3)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     bootstrap_form (2.3.0)
     breadcrumbs_on_rails (3.0.1)
-    browse-everything (0.10.5)
+    browse-everything (0.12.0)
+      addressable (~> 2.5)
+      aws-sdk
       bootstrap-sass
       dropbox-sdk (>= 1.6.2)
       font-awesome-rails
-      google-api-client (~> 0.8.6)
+      google-api-client (~> 0.9)
       google_drive
       httparty
       rails (>= 3.1)
       ruby-box
       sass-rails
+      signet
       skydrive
     builder (3.2.3)
     byebug (9.0.5)
@@ -258,7 +176,7 @@ GEM
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
-    clipboard-rails (1.5.16)
+    clipboard-rails (1.6.1)
     cliver (0.3.2)
     coderay (1.1.1)
     coffee-rails (4.1.1)
@@ -271,8 +189,38 @@ GEM
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
+    curation_concerns (1.7.6)
+      active-fedora (>= 10.3.0.rc1)
+      active_attr
+      active_fedora-noid (~> 2.0.0.beta5)
+      awesome_nested_set (~> 3.0)
+      blacklight (~> 6.3)
+      breadcrumbs_on_rails (>= 3.0.1, < 4)
+      browse-everything (~> 0.10, >= 0.10.5)
+      clipboard-rails (~> 1.5)
+      dry-equalizer (~> 0.2)
+      dry-struct (~> 0.1)
+      dry-validation (~> 0.9)
+      flot-rails (~> 0.0.7)
+      highcharts-rails
+      hydra-editor (>= 2, < 4)
+      hydra-head (>= 10.3.0, < 11)
+      hydra-works (>= 0.14.0)
+      jquery-ui-rails (~> 5.0.5)
+      kaminari_route_prefix (~> 0.0.1)
+      power_converter (~> 0.1, >= 0.1.2)
+      qa (~> 0.5)
+      rails_autolink
+      rdf (>= 1.99)
+      rdf-vocab (>= 0.8)
+      redlock (~> 0.1.2)
+      simple_form (~> 3.1)
+      solrizer (~> 3.4)
+      sprockets-es6
     daemons (1.2.4)
     database_cleaner (1.5.3)
+    declarative (0.0.9)
+    declarative-option (0.1.0)
     deprecation (1.0.0)
       activesupport
     devise (4.2.0)
@@ -288,6 +236,38 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     dropbox-sdk (1.6.5)
       json
+    dry-configurable (0.6.2)
+      concurrent-ruby (~> 1.0)
+    dry-container (0.6.0)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+    dry-core (0.2.4)
+      concurrent-ruby (~> 1.0)
+    dry-equalizer (0.2.0)
+    dry-logic (0.4.1)
+      dry-container (~> 0.2, >= 0.2.6)
+      dry-core (~> 0.2)
+      dry-equalizer (~> 0.2)
+    dry-struct (0.2.1)
+      dry-configurable (~> 0.1)
+      dry-equalizer (~> 0.2)
+      dry-types (~> 0.9, >= 0.9.0)
+      ice_nine (~> 0.11)
+    dry-types (0.9.4)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1)
+      dry-container (~> 0.3)
+      dry-core (~> 0.2, >= 0.2.1)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.4, >= 0.4.0)
+      inflecto (~> 0.0.0, >= 0.0.2)
+    dry-validation (0.10.5)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 0.1, >= 0.1.3)
+      dry-core (~> 0.2, >= 0.2.1)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.4, >= 0.4.0)
+      dry-types (~> 0.9, >= 0.9.0)
     ebnf (1.0.0)
       rdf (~> 1.1)
       sxp (~> 0.1, >= 0.1.3)
@@ -295,7 +275,6 @@ GEM
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
     execjs (2.7.0)
-    extlib (0.9.16)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.8.0)
@@ -306,29 +285,28 @@ GEM
     fcrepo_wrapper (0.5.2)
       ruby-progressbar
     ffi (1.9.10)
+    flipflop (2.3.0)
+      activesupport (>= 4.0)
     flot-rails (0.0.7)
       jquery-rails
-    font-awesome-rails (4.7.0.0)
+    font-awesome-rails (4.7.0.1)
       railties (>= 3.2, < 5.1)
     formatador (0.2.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    google-api-client (0.8.7)
-      activesupport (>= 3.2, < 5.0)
+    google-api-client (0.10.1)
       addressable (~> 2.3)
-      autoparse (~> 0.3)
-      extlib (~> 0.9)
-      faraday (~> 0.9)
-      googleauth (~> 0.3)
-      launchy (~> 2.4)
-      multi_json (~> 1.10)
-      retriable (~> 1.4)
-      signet (~> 0.6)
-    google_drive (1.0.6)
-      google-api-client (>= 0.7.0, < 0.9)
-      nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
-      oauth (>= 0.3.6)
-      oauth2 (>= 0.5.0)
+      googleauth (~> 0.5)
+      httpclient (~> 2.7)
+      hurley (~> 0.1)
+      memoist (~> 0.11)
+      mime-types (>= 1.6)
+      representable (~> 3.0)
+      retriable (>= 2.0, < 4.0)
+    google_drive (2.1.2)
+      google-api-client (>= 0.9.0, < 1.0.0)
+      googleauth (>= 0.5.0, < 1.0.0)
+      nokogiri (>= 1.5.3, < 2.0.0)
     googleauth (0.5.1)
       faraday (~> 0.9)
       jwt (~> 1.4)
@@ -354,6 +332,8 @@ GEM
     haml (4.0.7)
       tilt
     hashdiff (0.3.0)
+    highcharts-rails (5.0.7)
+      railties (>= 3.1)
     highline (1.7.8)
     hiredis (0.6.1)
     html_aware_truncation (1.0.0)
@@ -368,7 +348,9 @@ GEM
     http_logger (0.5.1)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
-    hydra-access-controls (10.3.4)
+    httpclient (2.8.3)
+    hurley (0.2)
+    hydra-access-controls (10.4.0)
       active-fedora (>= 10.0.0, < 12)
       activesupport (>= 4, < 6)
       blacklight (>= 5.16)
@@ -379,8 +361,8 @@ GEM
       blacklight
       curation_concerns (>= 0.12.0.pre2)
       rails
-    hydra-core (10.3.4)
-      hydra-access-controls (= 10.3.4)
+    hydra-core (10.4.0)
+      hydra-access-controls (= 10.4.0)
       railties (>= 4.0.0, < 6)
     hydra-derivatives (3.2.1)
       active-fedora (>= 9.0, < 12)
@@ -390,9 +372,9 @@ GEM
       mini_magick (>= 3.2, < 5)
     hydra-file_characterization (0.3.3)
       activesupport (>= 3.0.0)
-    hydra-head (10.3.4)
-      hydra-access-controls (= 10.3.4)
-      hydra-core (= 10.3.4)
+    hydra-head (10.4.0)
+      hydra-access-controls (= 10.4.0)
+      hydra-core (= 10.4.0)
       rails (>= 3.2.6)
     hydra-pcdm (0.9.0)
       active-fedora (>= 10, < 12)
@@ -401,12 +383,14 @@ GEM
       blacklight
       bootstrap_form
       cancancan
-    hydra-works (0.15.0)
+    hydra-works (0.16.0)
       hydra-derivatives (~> 3.0)
       hydra-file_characterization (~> 0.3, >= 0.3.3)
       hydra-pcdm (>= 0.9)
       om (~> 3.1)
     i18n (0.8.1)
+    ice_nine (0.11.2)
+    inflecto (0.0.2)
     jasmine (2.4.0)
       jasmine-core (~> 2.4)
       phantomjs
@@ -422,6 +406,7 @@ GEM
       i18n
       logger
       rubyzip
+    jmespath (1.3.1)
     jquery-datatables-rails (3.4.0)
       actionpack (>= 3.1)
       jquery-rails
@@ -437,14 +422,14 @@ GEM
     json-ld (1.99.2)
       multi_json (~> 1.11)
       rdf (~> 1.99)
-    json-schema (2.7.0)
+    json-schema (2.8.0)
       addressable (>= 2.4)
     jwt (1.5.6)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    kaminari_route_prefix (0.0.1)
-      kaminari (>= 0.16, < 2)
+    kaminari_route_prefix (0.0.2)
+      kaminari (~> 0.16)
     launchy (2.4.3)
       addressable (~> 2.3)
     ldp (0.5.0)
@@ -485,7 +470,7 @@ GEM
       ruby_dep (~> 1.2)
     little-plugger (1.1.4)
     logger (1.2.8)
-    logging (2.1.0)
+    logging (2.2.0)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     loofah (2.0.3)
@@ -502,12 +487,12 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mimemagic (0.3.2)
-    mini_magick (4.6.0)
+    mini_magick (4.6.1)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     mono_logger (1.1.0)
     multi_json (1.12.1)
-    multi_xml (0.5.5)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     nenv (0.3.0)
     nest (2.1.0)
@@ -539,19 +524,18 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    openseadragon (0.3.1)
+    openseadragon (0.3.2)
       rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (0.9.6)
-    parslet (1.7.1)
-      blankslate (>= 2.0, <= 4.0)
     pg (0.18.4)
     phantomjs (2.1.1.0)
     poltergeist (1.10.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
-    posix-spawn (0.3.12)
+    posix-spawn (0.3.13)
+    power_converter (0.1.2)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -562,6 +546,12 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     public_suffix (2.0.5)
+    qa (0.11.1)
+      activerecord-import
+      deprecation
+      faraday
+      nokogiri (~> 1.6)
+      rails (>= 4.2.0, < 6.0)
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
@@ -658,6 +648,10 @@ GEM
     redlock (0.1.8)
       redis (~> 3, >= 3.0.0)
     ref (2.0.0)
+    representable (3.0.3)
+      declarative (< 0.1.0)
+      declarative-option (< 0.2.0)
+      uber (< 0.2.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     resque (1.26.0)
@@ -673,7 +667,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (1.4.1)
+    retriable (3.0.1)
     rsolr (1.1.2)
       builder (>= 2.1.2)
     rspec (3.5.0)
@@ -783,6 +777,37 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stomp (1.4.3)
+    sufia (7.3.0)
+      almond-rails (~> 0.0.1)
+      blacklight (~> 6.6, < 6.8.0)
+      blacklight-gallery (~> 0.7)
+      browse-everything (>= 0.10.3)
+      carrierwave (~> 0.9)
+      curation_concerns (~> 1.7.6)
+      daemons (~> 1.1)
+      flipflop (~> 2.3)
+      flot-rails (~> 0.0.6)
+      font-awesome-rails (~> 4.2)
+      hydra-batch-edit (~> 2.0)
+      hydra-head (>= 10.4.0)
+      hydra-works (~> 0.16)
+      jquery-datatables-rails (~> 3.4.0)
+      jquery-ui-rails (~> 5.0)
+      json-schema
+      legato (~> 0.3)
+      mailboxer (~> 0.12)
+      nest (~> 2.0)
+      oauth
+      oauth2 (~> 1.2)
+      posix-spawn
+      qa (~> 0.8)
+      rdf-rdfxml
+      redis-namespace (~> 1.5.2)
+      select2-rails (~> 3.5.9)
+      signet
+      tinymce-rails (~> 4.1)
+      tinymce-rails-imageupload (~> 4.0.16.beta)
+      yaml_db (~> 0.2)
     sxp (0.1.5)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
@@ -791,7 +816,7 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.5)
     tins (1.6.0)
-    tinymce-rails (4.5.0)
+    tinymce-rails (4.5.5)
       railties (>= 3.1.1)
     tinymce-rails-imageupload (4.0.17.beta)
       railties (>= 3.2, < 6)
@@ -802,6 +827,7 @@ GEM
       railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uber (0.1.0)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
@@ -831,7 +857,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (~> 10.3)
   blacklight_range_limit (>= 6.1.2)
   capistrano (= 3.4.0)
   capistrano-bundler (= 1.1.4)
@@ -841,14 +866,12 @@ DEPENDENCIES
   capybara (~> 2.4)
   capybara-screenshot
   coffee-rails (~> 4.1.0)
-  curation_concerns!
   database_cleaner (~> 1.3)
   devise
   devise-guests (~> 0.3)
   equivalent-xml
   factory_girl_rails (~> 4.4, >= 4.4.1)
   fcrepo_wrapper
-  flipflop!
   guard-rspec
   highline
   html_aware_truncation (~> 1.0)
@@ -858,19 +881,16 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jettywrapper
   jquery-rails
-  kaminari_route_prefix
+  oauth2 (= 1.2.0)
   pg
   phantomjs (~> 2.1.1)
   poltergeist (~> 1.5)
   pry
   pry-byebug
   pry-rails
-  qa!
   rails (~> 4.2.7.1)
-  rdf (~> 1.99)
   resque-pool
   rest-client
-  rsolr (~> 1.0)
   rspec-activemodel-mocks
   rspec-rails (~> 3.1)
   ruby-progressbar (~> 1.0)
@@ -880,7 +900,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec (~> 1.0.2)
   sqlite3
-  sufia!
+  sufia (= 7.3.0)
   therubyracer
   uglifier (>= 1.3.0)
   webmock
