@@ -59,7 +59,7 @@ group :production do
   gem 'therubyracer', platforms: :ruby
 end
 
-group :development do
+group :development, :production do
   gem 'capistrano', '3.4.0'
   gem 'capistrano-bundler', '1.1.4'
   gem 'capistrano-passenger', '0.1.0'
