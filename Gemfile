@@ -65,7 +65,6 @@ group :development, :production do
   gem 'capistrano-passenger', '0.1.0'
   gem 'capistrano-rails', '1.1.3'
   gem 'capistrano-maintenance', '~> 1.0', require: false
-  gem 'capistrano-rake', require: false
 end
 
 group :development, :test do
