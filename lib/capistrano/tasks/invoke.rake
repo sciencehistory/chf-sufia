@@ -5,7 +5,7 @@ namespace :invoke do
       on roles(:app) do
         within current_path do
           with rails_env: fetch(:rails_env) do
-            execute "bundle exec rake #{ENV['TASK']}"
+            execute :rake, ENV['TASK'], interaction_handler: SSHKit::MappingInteractionHandler.new({}, :info)
           end
         end
       end
