@@ -2,6 +2,7 @@ require 'chf/data_fixes/util'
 require 'chf/data_fixes/work_dates'
 require 'chf/data_fixes/add_catlu_access'
 require 'chf/data_fixes/strip_strings'
+require 'chf/data_fixes/genre_document'
 
 namespace :chf do
   # Most of these are anticipated to be one-time fixes, may get removed
@@ -19,7 +20,8 @@ namespace :chf do
           CHF::DataFixes::WorkDates.new(w).change,
           CHF::DataFixes::AddCatluAccess.new(w).change,
           CHF::DataFixes::StripStrings.new(w).change,
-          CHF::DataFixes::LibraryDivisionChange.new(w).change
+          CHF::DataFixes::LibraryDivisionChange.new(w).change,
+          CHF::DataFixes::GenreDocument.new(w).change
         ].any?
       end
     end
@@ -51,5 +53,13 @@ namespace :chf do
         CHF::DataFixes::LibraryDivisionChange.new(w).change
       end
     end
+
+    desc "Genre 'Records (Documents)' to 'Documents'"
+    task :genre_document => :environment do
+      CHF::DataFixes::Util.update_works do |w|
+        CHF::DataFixes::GenreDocument.new(w).change
+      end
+    end
+
   end
 end
