@@ -5,7 +5,7 @@ namespace :invoke do
       on roles(:app) do
         within current_path do
           with rails_env: fetch(:rails_env) do
-            rake ENV['TASK']
+            execute "bundle exec rake #{ENV['TASK']}"
           end
         end
       end
