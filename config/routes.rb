@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
-  mount CurationConcerns::Engine, at: '/'
   resources :welcome, only: 'index'
   root 'sufia/homepage#index'
   curation_concerns_collections
@@ -50,7 +49,7 @@ Rails.application.routes.draw do
 
 
   Hydra::BatchEdit.add_routes(self)
-  # This must be the very last route in the file because it has a catch-all route for 404 errors.
-  # This behavior seems to show up only in production mode.
+  # Sufia should be mounted before curation concerns to give priority to its routes
   mount Sufia::Engine => '/'
+  mount CurationConcerns::Engine, at: '/'
 end
