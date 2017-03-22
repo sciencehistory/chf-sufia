@@ -8,6 +8,11 @@ namespace :chf do
   # from rake later?
   namespace :data_fix do
 
+    desc "test"
+    task :test => :environment do
+      raise "Error!"
+    end
+
 
     desc "Bulk fix a variety of things"
     task :bulk_fix => :environment do
