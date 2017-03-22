@@ -28,27 +28,31 @@ namespace :invoke do
   desc "Execute a rake task wrapped in maintenance enable/disable"
   task :rake_with_maintenance do
     if ENV['TASK']
-      SSHKit.config.output.info("Turning on maintenance mode")
-      invoke("maintenance:enable")
+      begin
+        SSHKit.config.output.info("Turning on maintenance mode")
+        invoke("maintenance:enable")
 
-      tasks = ENV['TASK'].split(',')
+        tasks = ENV['TASK'].split(',')
 
-      on roles(:app) do
-        within current_path do
-          with rails_env: fetch(:rails_env) do
-            tasks.each do |task|
-              # warning, may be executing this on multiple servers if we have
-              # multiple 'app' servers later, which would be bad.
-              # Will have to deal with that then, not sure best way.
-              execute :rake, task, interaction_handler: StreamOutputInteractionHandler.new(:stderr)
-              SSHKit.config.output.info("finished rake #{task}")
+        on roles(:app) do
+          within current_path do
+            with rails_env: fetch(:rails_env) do
+              tasks.each do |task|
+                # warning, may be executing this on multiple servers if we have
+                # multiple 'app' servers later, which would be bad.
+                # Will have to deal with that then, not sure best way.
+                execute :rake, task, interaction_handler: StreamOutputInteractionHandler.new(:stderr)
+                SSHKit.config.output.info("finished rake #{task}")
+              end
             end
           end
         end
+      rescue StandardError => e
+        SSHKit.config.output.fatal("Caught exception: #{e}")
+      ensure
+        SSHKit.config.output.info("Turning off maintenance mode")
+        invoke("maintenance:disable")
       end
-
-      SSHKit.config.output.info("Turning off maintenance mode")
-      invoke("maintenance:disable")
     else
       error "\n\nFailed! You need to specify the 'TASK' parameter!",
            "Usage: cap <stage> invoke:rake TASK=your:task"
