@@ -58,7 +58,7 @@ RSpec.describe GenericWork do
     #   how to account for those without keeping a separate list?
     it 'uses a different predicate for each field' do
       f = GenericWork.new
-      predicates = f.resource.fields.map do |attr|
+      predicates = f.resource.send(:fields).map do |attr|
         GenericWork.reflect_on_property(attr).predicate.to_s
       end
       predicates << MyAssociations.values
@@ -66,14 +66,16 @@ RSpec.describe GenericWork do
       expect(dup).to be_empty
     end
 
-    it 'uses the right predicate for new and overriden fields' do
-      MyFields.merge(MyAssociations).each do |field_name, uri|
-        predicate =
-          begin
-            GenericWork.reflect_on_property(field_name).predicate.to_s
-          rescue NoMethodError # associations may have predicates as well
-            GenericWork.reflect_on_association(field_name).predicate.to_s
-          end
+    it 'uses the right predicate for new and overriden properties' do
+      MyFields.each do |field_name, uri|
+        predicate = GenericWork.reflect_on_property(field_name).predicate.to_s
+        expect(predicate).to eq uri
+      end
+    end
+
+    it 'uses the right predicate for new and overriden associations' do
+      MyAssociations.each do |field_name, uri|
+        predicate = GenericWork.reflect_on_association(field_name).predicate.to_s
         expect(predicate).to eq uri
       end
     end

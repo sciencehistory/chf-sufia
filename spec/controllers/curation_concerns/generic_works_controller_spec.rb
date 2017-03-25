@@ -86,10 +86,11 @@ describe CurationConcerns::GenericWorksController do
               pub_dates = work.date_of_work
 
               expect(work.date_of_work.count).to eq(2)
-              expect(pub_dates[0].start).to eq("2014")
-              expect(pub_dates[1].start).to eq("1999")
               expect(pub_dates[0]).to be_persisted
               expect(pub_dates[1]).to be_persisted
+              starts = pub_dates.map { |obj| obj.start }
+              expect(starts).to include("2014")
+              expect(starts).to include("1999")
             end
 
           end
@@ -168,13 +169,12 @@ describe CurationConcerns::GenericWorksController do
 
             work.reload
             expect(work.date_of_work.count).to eq(2)
-            pub_date = work.date_of_work.first
 
-            expect(pub_date.id).to eq(time_span.id)
+            pub_date = work.date_of_work.select{|entry| entry.id.eql? time_span.id }.first
             expect(pub_date.start).to eq("1337")
             expect(pub_date.start_qualifier).to eq("circa")
 
-            pub_date = work.date_of_work.second
+            pub_date = work.date_of_work.select{|entry| !entry.id.eql? time_span.id }.first
             expect(pub_date.start).to eq("5678")
             expect(pub_date.start_qualifier).to eq("")
           end
@@ -222,10 +222,11 @@ describe CurationConcerns::GenericWorksController do
             insc = work.inscription
 
             expect(work.inscription.count).to eq(2)
-            expect(insc[0].location).to eq("mars")
-            expect(insc[1].location).to eq("pluto")
+            locations = insc.map { |obj| obj.location }
             expect(insc[0]).to be_persisted
             expect(insc[1]).to be_persisted
+            expect(locations).to include("mars")
+            expect(locations).to include("pluto")
           end
         end
 
@@ -305,13 +306,12 @@ describe CurationConcerns::GenericWorksController do
 
           work.reload
           expect(work.inscription.count).to eq(2)
-          insc = work.inscription.first
 
-          expect(insc.id).to eq(inscrip.id)
+          insc = work.inscription.select{|entry| entry.id.eql? inscrip.id }.first
           expect(insc.location).to eq("earth")
           expect(insc.text).to eq("blue planet")
 
-          insc = work.inscription.second
+          insc = work.inscription.select{|entry| !entry.id.eql? inscrip.id }.first
           expect(insc.location).to eq("jupiter")
           expect(insc.text).to eq("")
         end
@@ -358,10 +358,11 @@ describe CurationConcerns::GenericWorksController do
             ac = work.additional_credit
 
             expect(work.additional_credit.count).to eq(2)
-            expect(ac[0].name).to eq("bears")
-            expect(ac[1].name).to eq("goldilocks")
             expect(ac[0]).to be_persisted
             expect(ac[1]).to be_persisted
+            names = ac.map { |obj| obj.name }
+            expect(names).to include("bears")
+            expect(names).to include("goldilocks")
           end
         end
 
@@ -441,13 +442,12 @@ describe CurationConcerns::GenericWorksController do
 
           work.reload
           expect(work.additional_credit.count).to eq(2)
-          ac = work.additional_credit.first
 
-          expect(ac.id).to eq(additional_c.id)
+          ac = work.additional_credit.select{|entry| entry.id.eql? additional_c.id }.first
           expect(ac.role).to eq("photographer")
           expect(ac.name).to eq("3 bears")
 
-          ac = work.additional_credit.second
+          ac = work.additional_credit.select{|entry| !entry.id.eql? additional_c.id }.first
           expect(ac.role).to eq("photographer")
           expect(ac.name).to eq("goldilocks")
         end
