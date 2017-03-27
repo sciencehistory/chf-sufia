@@ -74,6 +74,22 @@ namespace :chf do
     puts "total: #{reporter.matches.size}"
   end
 
+  desc 'Reindex Collections'
+  task reindex_collections: :environment do
+    # reindex only Collections
+    # not a frequent task but useful in upgrade to sufia 7.3
+    # There aren't enough of them to really need batches, etc.
+
+    progress_bar = ProgressBar.create(:total => Collection.count, format: "%t: |%B| %p%% %e")
+
+    Collection.find_each do |coll|
+      coll.update_index
+      progress_bar.increment
+    end
+
+    $stderr.puts 'reindex_collections complete'
+  end
+
   desc 'Reindex all GenericWorks'
   task reindex_works: :environment do
     # Like :reindex, but only GenericWorks, makes it faster,
