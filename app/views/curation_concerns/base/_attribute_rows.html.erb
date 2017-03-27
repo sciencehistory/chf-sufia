@@ -14,10 +14,10 @@
 <%= presenter.attribute_to_html(:publisher) %>
 <%= presenter.attribute_to_html(:date_of_work) %>
 <%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
+<%= presenter.attribute_to_html(:place_of_creation) %>
 <%= presenter.attribute_to_html(:place_of_interview) %>
 <%= presenter.attribute_to_html(:place_of_manufacture) %>
 <%= presenter.attribute_to_html(:place_of_publication) %>
-<%= presenter.attribute_to_html(:place_of_creation) %>
 <%= presenter.attribute_to_html(:resource_type, render_as: :faceted ) %>
 <%= presenter.attribute_to_html(:genre_string) %>
 <%= presenter.attribute_to_html(:medium) %>
