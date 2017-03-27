@@ -101,7 +101,8 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
     config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
-    config.add_facet_field solr_name("medium", :facetable), label: "Medium", limit: 5
+    # only show medium facet if we have a current_user -- show takes a controller method symbol
+    config.add_facet_field solr_name("medium", :facetable), label: "Medium", limit: 5, show: :current_user
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Division", limit: 5
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
