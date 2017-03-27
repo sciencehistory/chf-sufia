@@ -95,7 +95,7 @@ class CatalogController < ApplicationController
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
-    config.add_facet_field solr_name("maker_facet", :facetable), label: "Maker/Creator", limit: 5
+    config.add_facet_field solr_name("maker_facet", :facetable), label: "Creator", limit: 5
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
     config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
@@ -112,8 +112,9 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
+    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'name', if: :present?
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
-    config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
+    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date'
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("artist", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("author", :facetable)
     config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'addressee', link_to_search: solr_name("addressee", :facetable)
@@ -126,15 +127,8 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'photographer', link_to_search: solr_name("photographer", :facetable)
     config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer_of_plates", itemprop: 'printer_of_plates', link_to_search: solr_name("printer_of_plates", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("publisher", :facetable)
-    config.add_index_field solr_name("depositor"), label: "Owner", helper_method: :link_to_profile
-    config.add_index_field solr_name("language", :stored_searchable), label: "Language", itemprop: 'inLanguage', link_to_search: solr_name("language", :facetable)
-    #config.add_index_field solr_name("date_uploaded", :stored_sortable, type: :date), label: "Date Uploaded", itemprop: 'datePublished'
-    #config.add_index_field solr_name("date_modified", :stored_sortable, type: :date), label: "Date Modified", itemprop: 'dateModified'
-    #config.add_index_field solr_name("date_created", :stored_searchable), label: "Date Created", itemprop: 'dateCreated'
-    config.add_index_field solr_name("rights", :stored_searchable), label: "Rights", helper_method: :rights_statement_links
-    config.add_index_field solr_name("resource_type", :stored_searchable), label: "Resource Type", link_to_search: solr_name("resource_type", :facetable)
-    config.add_index_field solr_name("file_format", :stored_searchable), label: "File Format", link_to_search: solr_name("file_format", :facetable)
-    #config.add_index_field solr_name("identifier", :stored_searchable), label: "Identifier", helper_method: :index_field_link, field_name: 'identifier'
+    config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
+    config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable)
 
 
     # "fielded" search configuration. Used by pulldown among other places.

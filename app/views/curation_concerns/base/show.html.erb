@@ -3,6 +3,13 @@
   <div class="col-xs-12">
     <header>
       <%= render 'work_title', presenter: @presenter %>
+      <% if @presenter.additional_title.present? %>
+        <ul class="additional-titles list-unstyled">
+          <% @presenter.additional_title.each do |title| %>
+            <li><h2><%= title %></h2></li>
+          <% end %>
+        </ul>
+      <% end %>
     </header>
   </div>
   <div class="col-sm-8">

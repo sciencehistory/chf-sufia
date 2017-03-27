@@ -71,7 +71,7 @@ module Chufia
       'Archives',
       'Center for Oral History',
       'Museum',
-      'Othmer Library of Chemical History',
+      'Library',
     ]
 
     config.file_creators = [
@@ -130,7 +130,7 @@ module Chufia
       'Press releases',
       'Prints',
       'Rare books',
-      'Records (Documents)',
+      'Documents',
       'Sample books',
       'Scientific apparatus and instruments',
       'Slides',
