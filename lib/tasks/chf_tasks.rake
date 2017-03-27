@@ -39,8 +39,7 @@ namespace :chf do
 
   desc 'Reindex everything'
   task reindex: :environment do
-    ActiveFedora::Base.reindex_everything
-    puts 'reindex complete'
+    CHF::Indexer.new.reindex_everything(progress_bar: true, final_commit: true)
   end
 
   desc 'report translated titles'
