@@ -1,13 +1,13 @@
 terms:
-  - id: Moving Image
-    term: Moving Image
-    uri: http://purl.org/dc/dcmitype/MovingImage
   - id: Image
     term: Image
     uri: http://purl.org/dc/dcmitype/StillImage
   - id: Mixed Material
     term: Mixed Material
     uri: http://id.loc.gov/vocabulary/resourceTypes/mix
+  - id: Moving Image
+    term: Moving Image
+    uri: http://purl.org/dc/dcmitype/MovingImage
   - id: Physical Object
     term: Physical Object
     uri: http://purl.org/dc/dcmitype/PhysicalObject
