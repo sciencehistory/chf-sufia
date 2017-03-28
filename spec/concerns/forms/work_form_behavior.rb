@@ -96,7 +96,7 @@ shared_examples_for "work_form_behavior" do
     end
 
     context "bad html in description field" do
-      let(:original_input) { "Text <b>bold</b>\n<p>\nmore text\n<p>\nmore text" }
+      let(:original_input) { "<p>Text <b>bold</b>\n<p>\nmore text\n<p>\nmore text" }
       let(:sanitized_input) { "Text <b>bold</b>\n\nmore text\n\nmore text" }
       let(:params) { ActionController::Parameters.new(
         "description" => [original_input]
