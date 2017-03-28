@@ -5,10 +5,8 @@ module DescriptionFormatterHelper
     # be safe.
     text = DescriptionSanitizer.new.sanitize(text).html_safe
 
-    # truncate, make sure to tell it not to escape again, we already have.
-    # TODO: This is not a good solution for HTML text, may truncate in the middle
-    # of a tag, have to fix.
-    text = truncate(text, escape: false, length: 400, separator: /\s/)
+    # truncate, may contain HTML
+    text = HtmlAwareTruncation.truncate_html(text, length: 400, separator: /\s/)
 
     # And convert line breaks to paragraphs
     text = simple_format(text)
