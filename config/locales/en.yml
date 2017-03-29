@@ -28,6 +28,8 @@ en:
         date_of_work: "Date"
         description: "Description"
     hints:
+      defaults:
+        files: '' # no file hint for now
       generic_work:
         title: "Use a given title if available; otherwise, construct a brief descriptive title that uniquely identifies the work. Use title case (ex: \"The Quick Brown Fox Jumps Over the Lazy Dog\") for formal and published titles and sentence case (ex: \"The quick brown fox jumps over the lazy dog\") for constructed and supplied titles. Required to save."
         additional_title: "Use for additional or varying form of title if it contributes to further identification of the work. Subtitles or translated titles can be recorded here (without brackets)."
