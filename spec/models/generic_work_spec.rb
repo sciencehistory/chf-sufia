@@ -125,5 +125,24 @@ RSpec.describe GenericWork do
       end
     end
 
+    describe "illegal representative_id" do
+      before do
+        gf.representative = FactoryGirl.create(:file_set)
+      end
+      it "is not valid" do
+        expect(gf.save).to be(false)
+        expect(gf.errors.messages.keys).to include(:representative_id)
+      end
+    end
+
+    describe "illegal thumbnail_id" do
+      before do
+        gf.thumbnail = FactoryGirl.create(:file_set)
+      end
+      it "is not valid" do
+        expect(gf.save).to be(false)
+        expect(gf.errors.messages.keys).to include(:thumbnail_id)
+      end
+    end
   end
 end
