@@ -80,7 +80,7 @@
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="title[{%=file.id%}]" id="title_{%=file.id%}" value="{%=file.name%}">
                 </div>
-                <label for="resource_type_{%=file.id%}" class="col-sm-5 control-label">Resource Type</label>
+                <label for="resource_type_{%=file.id%}" class="col-sm-5 control-label">Format</label>
                 <div class="col-sm-7">
                   <!-- CHF edit to make this multiple, increase size -->
                   <select class="form-control resource_type_dropdown" multiple="multiple" size="6" name="resource_type[{%=file.id%}][]" id="resource_type_{%=file.id%}" value="{%=file.name%}">
@@ -90,7 +90,7 @@
                   </select>
                   <!-- TODO: Why is the button drawn for all files? -->
                   {% if (i == 0) { %}
-                    <button class="btn pull-right resource_type_button" onClick="setAllResourceTypes(); return false;">Set all to this Resource Type</button>
+                    <button class="btn pull-right resource_type_button" onClick="setAllResourceTypes(); return false;">Set all to this Format</button>
                   {% } %}
                 </div>
               </div>
