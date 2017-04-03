@@ -1,0 +1,8 @@
+<% provide :page_title, curation_concern_page_title(curation_concern) %>
+<% provide :page_header do %>
+  <h1><%= t("controllers.#{controller_name}.#{action_name}.header",
+             scope: "sufia.works",
+             default: :"#{action_name}.header") %></h1>
+<% end %>
+
+<%= render 'form' %>
