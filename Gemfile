@@ -16,6 +16,8 @@ gem 'hydra-editor', github: 'projecthydra/hydra-editor', ref: 'c1e9d298'
 # used in some rake tasks, some of which we may want ot run on production.
 gem 'ruby-progressbar', '~> 1.0'
 
+gem 'html_aware_truncation', '~> 1.0'
+
 # Needed to fix reindex_everything
 # But don't go to 11 without being ready for rdf2
 gem 'active-fedora', '~>10.3'

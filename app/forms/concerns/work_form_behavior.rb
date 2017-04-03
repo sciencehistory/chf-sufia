@@ -63,7 +63,13 @@ module WorkFormBehavior
       # model expects these as multi-value; cast them back
       clean_params[:rights] = Array(params[:rights]) if params[:rights].present?
       clean_params[:title] = Array(params[:title]) if params[:title]
-      clean_params[:description] = Array(params[:description]) if params[:description]
+      if params[:description]
+        clean_params[:description] = Array(params[:description])
+        clean_params[:description].map! do |description|
+          ::DescriptionSanitizer.new.sanitize(description)
+        end
+      end
+
       # Oops; we're blanking out these values when changing permissions and probably versions, too
       #  -- they don't have these fields in the form at all so they don't get repopulated.
       clean_params = encode_physical_container(params, clean_params)
@@ -85,6 +91,9 @@ module WorkFormBehavior
   included do
 
     require_dependency Rails.root.join('lib','chf','utils','parse_fields')
+    # This should not be needed, Rails should be auto-loading from app,
+    # not really sure why it is, at least in specs.
+    require_dependency Rails.root.join('app','sanitizers','description_sanitizer')
 
     attr_accessor :maker, :box, :folder, :volume, :part, :place
     CHF::Utils::ParseFields.external_ids_hash.keys.each do |k|

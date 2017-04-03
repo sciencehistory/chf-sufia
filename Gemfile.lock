@@ -352,6 +352,8 @@ GEM
     hashdiff (0.3.0)
     highline (1.7.8)
     hiredis (0.6.1)
+    html_aware_truncation (1.0.0)
+      nokogiri (~> 1.0)
     htmlentities (4.3.4)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)
@@ -844,6 +846,7 @@ DEPENDENCIES
   flipflop!
   guard-rspec
   highline
+  html_aware_truncation (~> 1.0)
   hydra-editor!
   hydra-role-management
   jasmine (~> 2.3)

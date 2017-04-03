@@ -61,5 +61,26 @@ namespace :chf do
       end
     end
 
+    desc "Replace non-allowed html tags in description"
+    task :description_html => :environment do
+      CHF::DataFixes::Util.update_works do |w|
+        if w.description.any? { |d| d =~ %r{<p>|</p>|<em>|</em>|<strong>|</strong>} }
+          w.description = w.description.collect do |d|
+            d.gsub("<p>", "\r\n\r\n").
+              gsub("</p>", "").
+              gsub("<em>", "<i>").
+              gsub("</em>", "</i>").
+              gsub("<strong>", "<b>").
+              gsub("</strong>", "</b>").
+              gsub(/\A\s+/, '') # leading newlines result in empty p
+          end
+          true
+        else
+          false
+        end
+      end
+    end
+
+
   end
 end

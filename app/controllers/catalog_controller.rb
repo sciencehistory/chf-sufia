@@ -65,8 +65,6 @@ class CatalogController < ApplicationController
     config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
 
-    config.index.document_presenter_class = ChfIndexPresenter
-
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
     # default advanced config values
@@ -116,7 +114,7 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
     config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'name', if: :present?
-    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :iconify_auto_link
+    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
     config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date'
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("artist", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("author", :facetable)
