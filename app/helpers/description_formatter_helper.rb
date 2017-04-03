@@ -6,7 +6,9 @@ module DescriptionFormatterHelper
     text = DescriptionSanitizer.new.sanitize(text).html_safe
 
     # truncate, may contain HTML
-    text = HtmlAwareTruncation.truncate_html(text, length: 400, separator: /\s/)
+    if truncate
+      text = HtmlAwareTruncation.truncate_html(text, length: 400, separator: /\s/)
+    end
 
     # And convert line breaks to paragraphs
     text = simple_format(text)
