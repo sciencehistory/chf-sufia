@@ -17,17 +17,15 @@ namespace :chf do
 
   desc 'Re-generate all derivatives'
   task create_derivatives: :environment do
-    total = Sufia.primary_work_type.count
-    i = 0
+    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
-      i += 1
-      puts "Generating derivatives for #{work.id}, work #{i} of #{total}: #{work.title.first}"
       work.file_sets.each do |fs|
         fs.files.each do |file|
           filename = CurationConcerns::WorkingDirectory.find_or_retrieve(file.id, fs.id)
           fs.create_derivatives(filename)
         end
       end
+      progress_bar.increment
     end
   end
 
