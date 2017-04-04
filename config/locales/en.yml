@@ -27,6 +27,8 @@ en:
         identifier: "External ID"
         date_of_work: "Date"
         description: "Description"
+        resource_type: "Format"
+        division: "Department"
     hints:
       defaults:
         files: '' # no file hint for now

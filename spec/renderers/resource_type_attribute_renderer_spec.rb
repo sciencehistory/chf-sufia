@@ -11,7 +11,7 @@ RSpec.describe ResourceTypeAttributeRenderer do
     let(:expected) { Nokogiri::HTML(tr_content) }
 
     let(:tr_content) {
-      "<tr><th>Resource type</th>\n" \
+      "<tr><th>Format</th>\n" \
        "<td><ul class='tabular'><li class=\"attribute resource_type\">Moving Image</li></ul></td>\n" \
        "</tr>"
     }
