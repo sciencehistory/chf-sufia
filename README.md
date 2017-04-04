@@ -79,6 +79,18 @@ Maintenance mode makes the entire app unavailable.
 
     bundle exec cap staging maintenance:disable
 
+### Remote rake tasks
+
+Run a rake task with downtime:
+
+    TASK=chf:data_fix:library_division REASON="testing things" UNTIL="12pm Eastern Time" bundle exec cap staging invoke:rake:with_maintenance
+
+Will turn maint mode on for you, run task, turn it back off -- even if task fails. If you want to leave it on if task fails, SAFE_MAINT=false.
+
+Or to just run a rake task on a remote server without maint mode:
+
+    cap staging invoke:rake TASK=chf:data_fix:whatever
+
 ## Run Tests
 bundle exec rspec
 

@@ -78,8 +78,8 @@ module CHF
   module CapistranoHelp
     class StreamOutputInteractionHandler
 
-      # set log level to :stderr, and it will be written directly to stderr console
-      # instead of capistrano logging, which works to get byte-by-byte output
+      # set log level to :stderr and it will be written directly to stderr console
+      # instead of capistrano logging. This allows byte-by-byte output
       # before newlines, like progress bars.
       def initialize(log_level=:info)
         @log_level = log_level
