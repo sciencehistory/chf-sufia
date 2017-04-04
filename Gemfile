@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'sufia', git: 'https://github.com/projecthydra/sufia', branch: '7.2-migration'
 gem 'kaminari_route_prefix'
 gem 'rsolr', '~> 1.0'
+gem 'blacklight_range_limit'
 
 # required for sufia 7.2
 gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
