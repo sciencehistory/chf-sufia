@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GenericWorkIndexer do
   let (:work) do
-    FactoryGirl.create(:generic_work).tap do |w|
+    FactoryGirl.create(:generic_work, dates_of_work: []).tap do |w|
       w.physical_container = "b2|f3|v4|p5|g234"
       w.date_of_work_attributes = [{start: "2003", finish: "2015"}, {start:'1200', start_qualifier:'century'}]
       w.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: "place", text: "stuff"}]
