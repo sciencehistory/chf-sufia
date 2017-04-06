@@ -49,9 +49,6 @@ class MultiValueSelectTextInput < MultiValueInput #(defined in hydra-editor)
           end
         end
         col << ['','']
-        # Sub in the below when I re-arrange the add / remove buttons
-        # and get rid of the always-present empty field
-        #if col.empty? then col << ['', ''] end
       end
       @collection
     end
