@@ -12,7 +12,7 @@ class FileSet < ActiveFedora::Base
                                                     outputs: [{ label: :preview, format: 'jpg', size: '1000x750>', url: derivative_url('jpeg'), layer: 0 }])
         Hydra::Derivatives::ImageDerivatives.create(filename,
                                                     outputs: [{ label: :thumbnail, format: 'jpg', size: '200x150>', url: derivative_url('thumbnail'), layer: 0 }])
-      rescue e
+      rescue => e
         Rails.logger.error "Derivatives creation failed for #{id}: #{e}"
       end
     else
