@@ -65,15 +65,7 @@ Blacklight.onLoad(function() {
   }
 
   function set_autocomplete($elem, authority) {
-    $elem
-        // don't navigate away from the field on tab when selecting an item
-        .bind( "keydown", function( event ) {
-            if ( event.keyCode === $.ui.keyCode.TAB &&
-                    $( this ).data( "autocomplete" ).menu.active ) {
-                event.preventDefault();
-            }
-        })
-        .autocomplete( autocomplete_opts( authority ));
+    $elem.autocomplete( autocomplete_opts( authority ));
   }
 
   // loop over the autocomplete fields and attach the
