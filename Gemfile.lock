@@ -825,6 +825,7 @@ DEPENDENCIES
   rails (~> 4.2.7.1)
   resque-pool
   rest-client
+  rsolr (~> 1.0)
   rspec-activemodel-mocks
   rspec-rails (~> 3.1)
   ruby-progressbar (~> 1.0)
