@@ -192,5 +192,8 @@ Blacklight.onLoad(function() {
   }
 
   Sufia.initialize();
+  var ac = require('sufia/autocomplete');
+  var autocomplete = new ac.Autocomplete()
   $('.multi_value.form-group').manage_fields( { add: chf_add, remove: chf_remove } );
+  autocomplete.setup();
 });
