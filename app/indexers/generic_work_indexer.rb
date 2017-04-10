@@ -18,6 +18,8 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
       places = %W{place_of_interview place_of_manufacture place_of_publication place_of_creation}
       place_facet = places.map { |field| object.send(field) }.flatten.uniq
       doc[ActiveFedora.index_field_mapper.solr_name('place_facet', :facetable)] = place_facet
+
+      doc[ActiveFedora.index_field_mapper.solr_name('year_facet', type: :integer)] = DateValues.new(object).expanded_years
     end
   end
 

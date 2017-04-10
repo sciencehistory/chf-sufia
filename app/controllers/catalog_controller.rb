@@ -3,6 +3,7 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
   include Sufia::Catalog
   include BlacklightAdvancedSearch::Controller
+  include BlacklightRangeLimit::ControllerOverride
 
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
@@ -103,7 +104,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     # only show medium facet if we have a current_user -- show takes a controller method symbol
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
-    # date slider goes here
+    config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
     # collection facet goes here

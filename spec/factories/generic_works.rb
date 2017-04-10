@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :generic_work, aliases: [:work, :public_work], class: GenericWork do
     transient do
       user { FactoryGirl.create(:user) }
+      dates_of_work { [DateOfWork.new(start: (1900 + rand(100)).to_s)] }
     end
 
     title ['Test title']
@@ -9,6 +10,10 @@ FactoryGirl.define do
 
     after(:build) do |work, evaluator|
       work.apply_depositor_metadata(evaluator.user.user_key)
+
+      # unfortunately this does force saving the dates_of_work
+      # to fedora, which is slowish.
+      work.date_of_work.concat evaluator.dates_of_work
     end
 
     factory :private_work, aliases: [:public_file] do
@@ -43,7 +48,7 @@ FactoryGirl.define do
       file_creator  "Lu, Cathleen"
 
       identifier   ['object-2008.043.002']
-      # still does not include date_of_works, inscriptions, or additional_credits,
+      # still does not include inscriptions, or additional_credits,
       # haven't figured those out yet.
     end
 
