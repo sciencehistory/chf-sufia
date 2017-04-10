@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe GenericWorkIndexer::DateValues do
-  # Tried using 'build' instead of 'create', sadly didn't work, dates
-  # get thrown out. This does slow it down a lot cause Fedora. :(
   let(:work) { FactoryGirl.build(:work, dates_of_work: dates_of_work ) }
   let(:generator) { GenericWorkIndexer::DateValues.new(work) }
   # individual cases have to define `date_values` with `let`
