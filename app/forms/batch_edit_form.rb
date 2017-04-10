@@ -57,6 +57,9 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     params[:rights] = Array(params[:rights]) if params[:rights].present?
     clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
     clean_params = encode_external_id(params, clean_params)
+    # These are removed due to a bug released in sufia 7.3:
+    # https://github.com/projecthydra-labs/hyrax/issues/652
+    clean_params['permissions_attributes'] = params['permissions_attributes'] if params['permissions_attributes']
     clean_params
   end
 

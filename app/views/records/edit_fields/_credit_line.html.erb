@@ -1,1 +1,3 @@
-<%= f.input :credit_line, as: :string, disabled: true %>
+<%# this is a single-value field in practice, but in rdf as multi-valued %>
+<%# field is auto-generated data for everything in the collection %>
+<%= f.input :credit_line, as: :string, disabled: true, input_html: {value: f.object.credit_line.first} %>

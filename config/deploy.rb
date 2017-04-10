@@ -51,4 +51,31 @@ namespace :deploy do
   end
   before :restart, :resquepoolrestart
 
+  # load the workflow configs
+  desc "Load workflow configurations"
+  task :loadworkflows do
+    on roles(:web) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'curation_concerns:workflow:load'
+        end
+      end
+    end
+  end
+  before :restart, :loadworkflows
+
+  # create default admin set (note this only needs to run
+  # once on any given install, but is idempotent)
+  desc "create default admin set"
+  task :create_default_admin_set do
+    on roles(:web) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'sufia:default_admin_set:create'
+        end
+      end
+    end
+  end
+  after :loadworkflows, :create_default_admin_set
+
 end

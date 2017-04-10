@@ -104,6 +104,7 @@ Sufia.config do |config|
   # This must be a lambda that returns a Pathname
   #  config.upload_path = ->() { Rails.root + 'tmp' + 'uploads' }
   config.upload_path = ->() { Pathname.new('/tmp') }
+  config.cache_path = ->() { Pathname.new('/tmp/uploads/cache') }
 
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.

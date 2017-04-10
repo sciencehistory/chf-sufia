@@ -41,7 +41,8 @@ class MultiValueSelectTextInput < MultiValueInput #(defined in hydra-editor)
       @collection ||= begin
         col = []
         options[:options].each do |attr|
-          attr_array = Array.wrap(object[attr]).reject do |value|
+          # use #to_a instead of Array.wrap because it will be an active triples relation, not an array.
+          attr_array = object[attr].to_a.reject do |value|
             value.to_s.strip.blank?
           end
           attr_array.each do |entry|
@@ -49,9 +50,6 @@ class MultiValueSelectTextInput < MultiValueInput #(defined in hydra-editor)
           end
         end
         col << ['','']
-        # Sub in the below when I re-arrange the add / remove buttons
-        # and get rid of the always-present empty field
-        #if col.empty? then col << ['', ''] end
       end
       @collection
     end

@@ -9,6 +9,11 @@ Bundler.require(*Rails.groups)
 module Chufia
   class Application < Rails::Application
 
+    # The compile method (default in tinymce-rails 4.5.2) doesn't work when also
+    # using tinymce-rails-imageupload, so revert to the :copy method
+    # https://github.com/spohlenz/tinymce-rails/issues/183
+    config.tinymce.install = :copy
+
     # On travis, we need to provide some secret key base default value
     # so the app will load. Does not actually need to be secure for any
     # reason.
