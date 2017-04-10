@@ -2,6 +2,13 @@ require 'rails_helper'
 
 # This has really become an integration test now
 describe 'curation_concerns/base/show.html.erb' do
+  let(:mock_staff_user_implementation) do
+    Module.new do
+      def staff_user?
+        false
+      end
+    end
+  end
   let(:work) do
     FactoryGirl.create(:generic_work).tap do |w|
       w.has_model = ['GenericWork']
@@ -64,17 +71,17 @@ describe 'curation_concerns/base/show.html.erb' do
     stub_template 'curation_concerns/base/_social_media.html.erb' => ''
     stub_template 'curation_concerns/base/_citations.html.erb' => ''
     stub_template 'curation_concerns/base/_items.html.erb' => ''
+
+    #allow(view).to receive(:staff_user?).and_return(false)
+    # Don't know why above doesn't work, this is a crazy hack.
+    view.extend(mock_staff_user_implementation)
+
     assign(:presenter, presenter)
     render
   end
 
   describe 'local fields display' do
-    it 'parses external ID' do
-      expect(rendered).to match /Object ID: 2004/
-      expect(rendered).to match /Sierra Bib. No.: b123456789/
-      expect(rendered).to match /Object ID: 2004-09.003/
-    end
-    it 'displays all fields' do
+    it 'displays all public fields' do
       expect(rendered).to match /A Super Mario Bros\. Adventure/
       expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
       expect(rendered).to match /Chain Chomp/
@@ -104,14 +111,37 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /rightsstatements\.org/
       expect(rendered).to match /Luigi/
       expect(rendered).to match /Courtesy of CHF Collections/
-      expect(rendered).to match /Miyamoto/
-      expect(rendered).to match /Mario Kart/
       expect(rendered).to match /1990-02-09/
       expect(rendered).to match /\(side of cartridge\) "Ravioli"/
       expect(rendered).to match /\(On lock\) "EAGLE LOCK CO \/ TERRYVILLE, CONN \/ U.S.A."/
       expect(rendered).to match /Photographed by Bowser/
       expect(rendered).to match /Thwump/
       expect(rendered).to match /Shy Guy/
+    end
+    it "does not display staff fields" do
+      expect(rendered).not_to match /Mario Kart/
+      expect(rendered).not_to match /Miyamoto/
+      expect(rendered).not_to match /Object ID: 2004/
+      expect(rendered).not_to match /Sierra Bib. No.: b123456789/
+      expect(rendered).not_to match /Object ID: 2004-09.003/
+    end
+  end
+
+  describe "with staff user" do
+    let(:mock_staff_user_implementation) do
+      Module.new do
+        def staff_user?
+          true
+        end
+      end
+    end
+
+    it "displays staff-only fields" do
+      expect(rendered).to match /Object ID: 2004/
+      expect(rendered).to match /Sierra Bib. No.: b123456789/
+      expect(rendered).to match /Object ID: 2004-09.003/
+      expect(rendered).to match /Miyamoto/
+      expect(rendered).to match /Mario Kart/
     end
   end
 
