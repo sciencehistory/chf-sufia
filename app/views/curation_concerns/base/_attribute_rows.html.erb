@@ -1,4 +1,3 @@
-<%= presenter.attribute_to_html(:identifier, render_as: :identifier) %>
 <%= presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
@@ -34,5 +33,11 @@
 <%= presenter.attribute_to_html(:rights_holder) %>
 <%= presenter.attribute_to_html(:credit_line) %>
 <%= presenter.attribute_to_html(:additional_credit) %>
-<%= presenter.attribute_to_html(:file_creator) %>
-<%= presenter.attribute_to_html(:admin_note) %>
+
+<% if staff_user? %>
+  <tr><th colspan=2><h2>Staff-only Viewable Descriptions</h2></th></tr>
+  <%= presenter.attribute_to_html(:identifier, render_as: :identifier) %>
+  <%= presenter.attribute_to_html(:file_creator) %>
+  <%= presenter.attribute_to_html(:admin_note) %>
+<% end %>
+
