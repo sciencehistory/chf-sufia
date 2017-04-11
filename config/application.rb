@@ -142,7 +142,8 @@ module Chufia
       'Scientific apparatus and instruments',
       'Slides',
       'Stereographs',
-      'Textiles'
+      'Textiles',
+      'Vessels (Containers)'
     ]
 
     config.physical_container_fields = {
