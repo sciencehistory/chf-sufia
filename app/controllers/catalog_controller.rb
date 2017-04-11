@@ -152,10 +152,9 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields') do |field|
       all_names = chf_search_fields.join(" ")
-      title_name = solr_name("title", :stored_searchable)
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
-        pf: title_name.to_s
+        pf: "#{all_names}"
       }
     end
 
