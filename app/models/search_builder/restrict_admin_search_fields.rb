@@ -4,7 +4,9 @@ class SearchBuilder
 
     mattr_accessor :admin_only_search_fields
     self.admin_only_search_fields = [
-      ActiveFedora.index_field_mapper.solr_name("admin_note", :stored_searchable)
+      ActiveFedora.index_field_mapper.solr_name("admin_note", :stored_searchable),
+      ActiveFedora.index_field_mapper.solr_name("file_creator", :stored_searchable),
+      ActiveFedora.index_field_mapper.solr_name("identifier", :stored_searchable)
     ]
 
     included do
