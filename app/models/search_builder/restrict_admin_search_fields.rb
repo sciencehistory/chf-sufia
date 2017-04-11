@@ -13,13 +13,19 @@ class SearchBuilder
 
     def exclude_admin_only_search_fields(solr_params)
       unless scope.respond_to?(:staff_user?) && scope.staff_user?
-        # delete all protected search fields
-        regexp_or = Regexp.union(admin_only_search_fields)
-        solr_params[:qf] = solr_params[:qf].
-                            split(/\s+/).
-                            delete_if { |f| f=~ /\A#{ regexp_or }(\^[\d\.]+)?\Z/ }.
-                            join(" ")
+        solr_params["qf"] = _remove_admin_only_fields_from_solr_value(solr_params["qf"], admin_only_search_fields)
+        solr_params["pf"] = _remove_admin_only_fields_from_solr_value(solr_params["pf"], admin_only_search_fields)
       end
+    end
+
+    protected
+
+    def _remove_admin_only_fields_from_solr_value(array, fields)
+      regexp_or = Regexp.union(admin_only_search_fields)
+      array.
+        split(/\s+/).
+        delete_if { |f| f=~ /\A#{ regexp_or }(\^[\d\.]+)?\Z/ }.
+        join(" ")
     end
   end
 end
