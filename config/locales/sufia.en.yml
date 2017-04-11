@@ -18,3 +18,8 @@ en:
         generic_works:
           new:
             header: Add New Work
+    search:
+      form:
+        option:
+          all:
+            label_long: All

@@ -3,12 +3,13 @@
 <%= presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:creator_of_work, render_as: :faceted, search_field: 'maker_facet' ) %>
-<%= presenter.attribute_to_html(:contributor, render_as: :faceted, search_field: 'maker_facet') %>
+<%= presenter.attribute_to_html(:creator_of_work, label: 'Creators', render_as: :faceted, search_field: 'maker_facet' ) %>
 <%= presenter.attribute_to_html(:engraver, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:interviewee, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:interviewer, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:manufacturer, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:photographer, render_as: :faceted, search_field: 'maker_facet') %>
+<%= presenter.attribute_to_html(:contributor, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:printer_of_plates, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:publisher, render_as: :faceted, search_field: 'maker_facet') %>
 <%= presenter.attribute_to_html(:date_of_work) %>
