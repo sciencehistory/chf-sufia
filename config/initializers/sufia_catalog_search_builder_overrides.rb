@@ -13,4 +13,9 @@ Rails.application.config.to_prepare do
   unless klass.ancestors.include? BlacklightRangeLimit::RangeLimitBuilder
     klass.send(:include, BlacklightRangeLimit::RangeLimitBuilder)
   end
+
+  unless klass.ancestors.include? SearchBuilder::RestrictAdminSearchFields
+    klass.send(:include, SearchBuilder::RestrictAdminSearchFields)
+  end
+
 end
