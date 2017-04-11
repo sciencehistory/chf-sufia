@@ -6,3 +6,5 @@ en:
         show:
           resource_type: Format
           division: Department
+          creator_of_work: Creator
+          contributor: Contributor
