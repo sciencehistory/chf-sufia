@@ -18,34 +18,38 @@ class CatalogController < ApplicationController
 
   def self.chf_search_fields
     [
-      solr_name("title", :stored_searchable),
+      "#{solr_name("title", :stored_searchable)}^1000",
+      "#{solr_name("additional_title", :stored_searchable)}^1000",
+
+      "#{solr_name("artist", :stored_searchable)}^500",
+      "#{solr_name("author", :stored_searchable)}^500",
+      "#{solr_name("addressee", :stored_searchable)}^500",
+      "#{solr_name("creator_of_work", :stored_searchable)}^500",
+      "#{solr_name("contributor", :stored_searchable)}^500",
+      "#{solr_name("engraver", :stored_searchable)}^500",
+      "#{solr_name("interviewee", :stored_searchable)}^500",
+      "#{solr_name("interviewer", :stored_searchable)}^500",
+      "#{solr_name("manufacturer", :stored_searchable)}^500",
+      "#{solr_name("photographer", :stored_searchable)}^500",
+      "#{solr_name("printer_of_plates", :stored_searchable)}^500",
+      "#{solr_name("publisher", :stored_searchable)}^500",
+      "#{solr_name("genre_string", :stored_searchable)}^500",
+
+      "#{solr_name("subject", :stored_searchable)}^100",
+
+      "#{solr_name("description", :stored_searchable)}^50",
+
       solr_name("depositor"),
-      solr_name("description", :stored_searchable),
-      solr_name("subject", :stored_searchable),
       solr_name("language", :stored_searchable),
       solr_name("identifier", :stored_searchable),
       solr_name("related_url", :stored_searchable),
-      solr_name("artist", :stored_searchable),
-      solr_name("author", :stored_searchable),
-      solr_name("addressee", :stored_searchable),
-      solr_name("creator_of_work", :stored_searchable),
-      solr_name("contributor", :stored_searchable),
-      solr_name("engraver", :stored_searchable),
-      solr_name("interviewee", :stored_searchable),
-      solr_name("interviewer", :stored_searchable),
-      solr_name("manufacturer", :stored_searchable),
-      solr_name("photographer", :stored_searchable),
-      solr_name("printer_of_plates", :stored_searchable),
-      solr_name("publisher", :stored_searchable),
       solr_name("place_of_interview", :stored_searchable),
       solr_name("place_of_manufacture", :stored_searchable),
       solr_name("place_of_publication", :stored_searchable),
       solr_name("place_of_creation", :stored_searchable),
-      solr_name("additional_title", :stored_searchable),
       solr_name("admin_note", :stored_searchable),
       solr_name("division", :stored_searchable),
       solr_name("file_creator", :stored_searchable),
-      solr_name("genre_string", :stored_searchable),
       solr_name("medium", :stored_searchable),
       solr_name("physical_container", :stored_searchable),
       solr_name("resource_type", :stored_searchable),
@@ -148,10 +152,9 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields') do |field|
       all_names = chf_search_fields.join(" ")
-      title_name = solr_name("title", :stored_searchable)
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
-        pf: title_name.to_s
+        pf: "#{all_names}"
       }
     end
 
