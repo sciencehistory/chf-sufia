@@ -23,3 +23,5 @@
 /ansible
 /config/secrets.yml
 
+# MacOS housekeeping file
+.DS_Store
