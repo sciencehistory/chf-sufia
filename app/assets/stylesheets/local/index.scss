@@ -1,0 +1,5 @@
+.range_limit {
+  input[type=submit] {
+    @extend .btn-primary;
+  }
+}
