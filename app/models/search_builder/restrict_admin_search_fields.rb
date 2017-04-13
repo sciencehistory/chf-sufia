@@ -18,7 +18,7 @@ class SearchBuilder
         if solr_params["qf"].present?
           solr_params["qf"] = _remove_admin_only_fields_from_solr_value(solr_params["qf"], admin_only_search_fields)
         end
-        if solr_params["qf"].present?
+        if solr_params["pf"].present?
           solr_params["pf"] = _remove_admin_only_fields_from_solr_value(solr_params["pf"], admin_only_search_fields)
         end
       end
