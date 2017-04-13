@@ -20,6 +20,13 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
       doc[ActiveFedora.index_field_mapper.solr_name('place_facet', :facetable)] = place_facet
 
       doc[ActiveFedora.index_field_mapper.solr_name('year_facet', type: :integer)] = DateValues.new(object).expanded_years
+
+      # rights as label, not just URI identifier
+      license_service = CurationConcerns::LicenseService.new
+      doc[ActiveFedora.index_field_mapper.solr_name('rights_label', :searchable)] = object.rights.collect do |id|
+        # If the thing isn't found in the license service, just ignore it.
+        license_service.authority.find(id).fetch('term', nil)
+      end.compact
     end
   end
 
