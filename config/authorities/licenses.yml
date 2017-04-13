@@ -2,33 +2,65 @@ terms:
   - id: http://rightsstatements.org/vocab/InC/1.0/
     term: In Copyright
     active: true
+    category: in_copyright
+    short_label_html: In<br>Copyright
+
   - id: http://rightsstatements.org/vocab/InC-OW-EU/1.0/
     term: In Copyright - EU Orphan Work
     active: true
+    category: in_copyright
+    short_label_html: EU Orphan<br>Work
+
   - id: http://rightsstatements.org/vocab/InC-EDU/1.0/
     term: In Copyright - Educational Use Permitted
     active: true
+    category: in_copyright
+    short_label_html: Educational<br>Use Permitted
+
   - id: http://rightsstatements.org/vocab/InC-NC/1.0/
     term: In Copyright - Non-Commercial Use Permitted
     active: true
+    category: in_copyright
+    short_label_html: Non-Commercial<br>Use Permitted
+
   - id: http://rightsstatements.org/vocab/InC-RUU/1.0/
     term: In Copyright - Rights-holder(s) Unlocatable or Unidentifiable
     active: true
+    category: in_copyright
+    short_label_html: Unknown<br>Rightsholder
+
   - id: http://rightsstatements.org/vocab/NoC-CR/1.0/
     term: No Copyright - Contractual Restrictions
     active: true
+    category: no_copyright
+    short_label_html: Contractual<br>Restrictions
+
   - id: http://rightsstatements.org/vocab/NoC-NC/1.0/
     term: No Copyright - Non-Commercial Use Only
     active: true
+    category: no_copyright
+    short_label_html: Non-Commercial<br>Use Only
+
   - id: http://rightsstatements.org/vocab/NoC-OKLR/1.0/
     term: No Copyright - Other Known Legal Restrictions
     active: true
+    category: no_copyright
+    short_label_html: Other Legal<br>Restrictions
+
   - id: http://rightsstatements.org/vocab/NoC-US/1.0/
     term: No Copyright - United States
     active: true
+    category: no_copyright
+    short_label_html: In the<br>United States
+
   - id: http://rightsstatements.org/vocab/NKC/1.0/
     term: No Known Copyright
     active: true
+    category: other
+    short_label_html: No Known<br>Copyright
+
   - id: http://creativecommons.org/publicdomain/mark/1.0/
     term: Public Domain Mark 1.0
     active: true
+    category: no_copyright
+    short_label_html: Public<br>Domain

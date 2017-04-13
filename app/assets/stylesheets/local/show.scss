@@ -7,3 +7,23 @@
     @extend h4;
   }
 }
+
+.large-rights-statement {
+  margin-top: 15px;
+
+  @include clearfix;
+
+  .rights-statement-logo {
+    width: 40px;
+    float: left;
+    margin-right: 0.5em;
+  }
+  .rights-statement-label {
+    font-size: 18px;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1
+  }
+
+}
