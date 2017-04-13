@@ -5,10 +5,6 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     attr_accessor "#{k}_external_id".to_s
   end
 
-  def self.build_permitted_params
-    super + [:visibility]
-  end
-
   self.terms = [
     # Single-value fields don't work
     #:division,

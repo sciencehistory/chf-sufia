@@ -9,13 +9,6 @@ RSpec.describe BatchEditForm do
   let(:ability) { Ability.new(user) }
   let(:user) { FactoryGirl.build(:user, display_name: 'Jill Z. User') }
 
-  describe "::build_permitted_params" do
-    subject { described_class }
-    it 'includes visibility' do
-      expect(subject.build_permitted_params).to include(:visibility)
-    end
-  end
-
   describe "#terms" do
     subject { form.terms }
     it do
