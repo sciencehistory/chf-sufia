@@ -47,11 +47,20 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
   self.required_fields = []
 
   def self.model_attributes(params)
+    clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
     # model expects this as multi-value
     params[:rights] = Array(params[:rights]) if params[:rights].present?
-    clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
     clean_params = encode_external_id(params, clean_params)
-    # These are removed due to a bug released in sufia 7.3:
+    clean_params.keys.each do |key|
+      # strip ALL the things!
+      if clean_params[key].is_a?(Array)
+        clean_params[key].map!(&:strip)
+      elsif clean_params[key].is_a?(String)
+        clean_params[key] = clean_params[key].strip
+      end
+    end
+    # Permission attributes are getting stripped indiscriminately
+    # due to a bug released in sufia 7.3:
     # https://github.com/projecthydra-labs/hyrax/issues/652
     clean_params['permissions_attributes'] = params['permissions_attributes'] if params['permissions_attributes']
     clean_params
