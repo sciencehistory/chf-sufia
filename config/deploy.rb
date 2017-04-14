@@ -12,8 +12,8 @@ set :keep_releases, 5
 # label deploys with server local time instead of utm
 set :deploytag_utc, false
 
-# using 'touch tmp/restart.txt to restart passenger
-set :passenger_restart_with_touch, true
+# use 'passenger-config restart-app' to restart passenger
+set :passenger_restart_with_touch, false
 
 # send some data to whenever
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
