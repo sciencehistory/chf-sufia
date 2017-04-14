@@ -9,8 +9,8 @@ describe BatchEditsController do
   end
 
   describe "#edit" do
-    let(:one) { FactoryGirl.create(:work, creator: ["Fred"], title: ["abc"], language: ['en']) }
-    let(:two) { FactoryGirl.create(:work, creator: ["Wilma"], title: ["abc2"], publisher: ['Rand McNally'], language: ['en'], resource_type: ['bar']) }
+    let(:one) { FactoryGirl.create(:work, :fake_public_image, creator: ["Fred"], title: ["abc"], language: ['en']) }
+    let(:two) { FactoryGirl.create(:work, :fake_public_image, creator: ["Wilma"], title: ["abc2"], publisher: ['Rand McNally'], language: ['en'], resource_type: ['bar']) }
     before do
       controller.batch = [one.id, two.id]
       expect(controller).to receive(:can?).with(:edit, one.id).and_return(true)
@@ -25,6 +25,15 @@ describe BatchEditsController do
       expect(response).to be_successful
       expect(assigns[:form].terms).not_to include :keyword
       expect(assigns[:form].class).to eq BatchEditForm
+    end
+
+    describe "when updating visibility" do
+      it "updates contained file visibility, also" do
+        put :update, update_type: "update", visibility: "authenticated"
+        expect(response).to be_redirect
+        expect(one.reload.members.first.visibility).to eq "authenticated"
+        expect(two.reload.members.first.visibility).to eq "authenticated"
+      end
     end
   end
 end
