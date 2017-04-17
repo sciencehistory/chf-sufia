@@ -12,6 +12,10 @@ module CurationConcerns
       :additional_title,
       to: :solr_document
 
+    def has_rights_statement?
+      rights.present?
+    end
+
     def rights_icon(identifier = rights.first)
       # schema allows multiple rights, we only use one.
       # we have added our own metadata to the liceneses.yml that the CC

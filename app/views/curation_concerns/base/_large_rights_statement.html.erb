@@ -1,6 +1,8 @@
-<div class="large-rights-statement">
-  <%= link_to presenter.rights_url, class: "rights-statement-link" do %>
-    <%= image_tag(presenter.rights_icon, class: "rights-statement-logo")  %>
-    <span class="rights-statement-label"><%= presenter.rights_icon_label %></span>
-  <% end %>
-</div>
+<% if presenter.has_rights_statement? %>
+  <div class="large-rights-statement">
+    <%= link_to presenter.rights_url, class: "rights-statement-link" do %>
+      <%= image_tag(presenter.rights_icon, class: "rights-statement-logo")  %>
+      <span class="rights-statement-label"><%= presenter.rights_icon_label %></span>
+    <% end %>
+  </div>
+<% end %>
