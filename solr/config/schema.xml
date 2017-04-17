@@ -137,10 +137,10 @@
         <filter class="solr.ICUFoldingFilterFactory"/>  <!-- NFKC, case folding, diacritics removed -->
         <filter class="solr.EnglishPossessiveFilterFactory"/>
         <!-- EnglishMinimalStemFilterFactory is less aggressive than PorterStemFilterFactory: -->
-        <filter class="solr.EnglishMinimalStemFilterFactory"/>
         <!--
-        <filter class="solr.PorterStemFilterFactory"/>
+        <filter class="solr.EnglishMinimalStemFilterFactory"/>
         -->
+        <filter class="solr.PorterStemFilterFactory"/>
         <filter class="solr.TrimFilterFactory"/>
       </analyzer>
     </fieldType>
