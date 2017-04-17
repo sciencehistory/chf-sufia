@@ -85,4 +85,17 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       end
       clean_params
     end
+
+    # override sufia form's visibility default if we can find a better option
+    def initialize_combined_fields
+      super
+      model.visibility = set_batch_visibility
+    end
+
+    # Return a value for visibility only if all the items in the batch have the same value.
+    def set_batch_visibility
+      range = batch_document_ids.map{ |doc_id| model_class.find(doc_id).visibility }.uniq
+      return nil if range.count > 1
+      range.first
+    end
 end
