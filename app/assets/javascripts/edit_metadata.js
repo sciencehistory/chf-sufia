@@ -2,6 +2,7 @@
 var chf = chf || {}
 chf.autocompletes = chf.autocompletes || {
   generic_work_subject: '/authorities/search/assign_fast/all',
+  generic_work_after:          '/authorities/search/assign_fast/all',
   generic_work_artist:          '/authorities/search/assign_fast/all',
   generic_work_author:          '/authorities/search/assign_fast/all',
   generic_work_addressee:          '/authorities/search/assign_fast/all',
@@ -20,6 +21,7 @@ chf.autocompletes = chf.autocompletes || {
   generic_work_place_of_publication: '/authorities/search/assign_fast/all',
   generic_work_place_of_creation: '/authorities/search/assign_fast/all',
   batch_edit_item_subject: '/authorities/search/assign_fast/all',
+  batch_edit_item_after:          '/authorities/search/assign_fast/all',
   batch_edit_item_artist:          '/authorities/search/assign_fast/all',
   batch_edit_item_author:          '/authorities/search/assign_fast/all',
   generic_work_addressee:          '/authorities/search/assign_fast/all',

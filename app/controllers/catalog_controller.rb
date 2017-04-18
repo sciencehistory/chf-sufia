@@ -21,6 +21,7 @@ class CatalogController < ApplicationController
       "#{solr_name("title", :stored_searchable)}^1000",
       "#{solr_name("additional_title", :stored_searchable)}^1000",
 
+      "#{solr_name("after", :stored_searchable)}^500",
       "#{solr_name("artist", :stored_searchable)}^500",
       "#{solr_name("author", :stored_searchable)}^500",
       "#{solr_name("addressee", :stored_searchable)}^500",
@@ -118,6 +119,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'name', if: :present?
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
     config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date'
+    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'after', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'addressee', link_to_search: solr_name("maker_facet", :facetable)

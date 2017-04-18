@@ -20,6 +20,7 @@ module WorkFormBehavior
         { date_of_work_attributes: permitted_time_span_params },
         { inscription_attributes: permitted_inscription_params },
         { additional_credit_attributes: permitted_additional_credit_params },
+        after: [],
         artist: [],
         author: [],
         addressee: [],
@@ -111,7 +112,8 @@ module WorkFormBehavior
 
     # We need these as hidden fields or else data deletion doesn't work.
     def hidden_field_terms
-      [:artist,
+      [:after,
+      :artist,
       :author,
       :addressee,
       :creator_of_work,
