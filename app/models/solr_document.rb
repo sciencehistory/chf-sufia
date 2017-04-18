@@ -41,6 +41,9 @@ class SolrDocument
   def creator_of_work
     self[Solrizer.solr_name('creator_of_work')]
   end
+  def after
+    self[Solrizer.solr_name('after')]
+  end
   def artist
     self[Solrizer.solr_name('artist')]
   end

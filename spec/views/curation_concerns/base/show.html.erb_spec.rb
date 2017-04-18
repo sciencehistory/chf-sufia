@@ -19,6 +19,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.identifier = ['object-2004', 'bib-b123456789', 'object-2004-09.003']
       w.creator_of_work = ['Chain Chomp']
       w.contributor = ['Blooper']
+      w.after = ['Lakitu']
       w.artist = ['Boo']
       w.author = ['Cheep Cheep']
       w.addressee = ['Koopa']
@@ -86,6 +87,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Box 2, Folder 3, Volume 4, Part 5, Page 234/
       expect(rendered).to match /Chain Chomp/
       expect(rendered).to match /Blooper/
+      expect(rendered).to match /Lakitu/
       expect(rendered).to match /Boo/
       expect(rendered).to match /Cheep Cheep/
       expect(rendered).to match /Koopa/

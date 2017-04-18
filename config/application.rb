@@ -39,6 +39,7 @@ module Chufia
     #### WARNING: changes may necessitate data migration!!
     # model configuration
     config.makers = [
+      :after,
       :artist,
       :author,
       :addressee,

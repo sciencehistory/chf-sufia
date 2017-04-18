@@ -21,6 +21,7 @@ RSpec.describe BatchEditForm do
         :resource_type,
         :subject, :language,
         :related_url,
+        :after,
         :artist,
         :author,
         :addressee,

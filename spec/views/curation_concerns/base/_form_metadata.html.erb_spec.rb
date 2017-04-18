@@ -28,6 +28,7 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       expect(page).to have_selector "input#generic_work_artist[type='hidden']", visible: false
       inputs_hidden = page.all("input[type='hidden']", visible: false)
       names = inputs_hidden.map { |ih|  ih['name'] }
+      expect(names).to include "generic_work[after][]"
       expect(names).to include "generic_work[artist][]"
       expect(names).to include "generic_work[author][]"
       expect(names).to include "generic_work[addressee][]"

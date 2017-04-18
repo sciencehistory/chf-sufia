@@ -21,6 +21,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     :resource_type,
     :subject, :language,
     :related_url,
+    :after,
     :artist,
     :author,
     :addressee,

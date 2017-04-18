@@ -54,6 +54,9 @@ module GenericMetadata
     end
 
     # makers
+    property :after, predicate: ::RDF::URI.new("http://chemheritage.org/ns/after") do |index|
+      index.as :stored_searchable
+    end
     property :artist, predicate: ::RDF::Vocab::MARCRelators.art do |index|
       index.as :stored_searchable
     end
