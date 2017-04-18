@@ -12,5 +12,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   include Hydra::AccessControlsEnforcement
   include CurationConcerns::SearchFilters
+
   include SearchBuilder::RestrictAdminSearchFields
+  include SearchBuilder::SyntheticCategoryLimit
 end
