@@ -1,0 +1,9 @@
+<%# this is a very temporary placeholder %>
+<h2>Some selected areas of interest...</h2>
+<ul>
+<% CHF::SyntheticCategory.keys.each do |key| %>
+  <li>
+    <%= link_to key.to_s.humanize.titlecase, search_catalog_path(temp_synthetic_collection: key) %>
+  </li>
+<% end %>
+</ul>
