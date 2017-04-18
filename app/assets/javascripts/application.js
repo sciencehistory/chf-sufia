@@ -17,7 +17,15 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 
-//= require_tree .
+// We do NOT want to require_tree here, because we do NOT want to require
+// the 'sufia' subdir -- we want to let sufia itself use those files
+// as overrides when needed. So we require_directory to get the .js
+// files in the top-level, then require_tree individual directories
+// (not including ./sufia)
+//
+//= require_directory .
+//= require_tree ./hydra-editor
+
 //= require sufia
 
 
