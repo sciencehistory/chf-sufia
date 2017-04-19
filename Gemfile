@@ -6,6 +6,7 @@ gem 'blacklight_range_limit', ">= 6.1.2"
 # It may seem like this is a dependency upstream, but we need it here.
 # https://project-hydra.slackarchive.io/dev/page-100/ts-1491587437169731
 gem 'rsolr', '~> 1.0'
+gem 'active-fedora', '~>11.1.6'
 
 # pull in fix to "add another" label
 # Once we have a release including this commit, we can stop using this github sha:
