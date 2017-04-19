@@ -22,26 +22,33 @@ module CHF
     self.definitions = {
       portraits_and_people: {
         genre: ["Portraits"],
-        subject: ["Portraits, Group", "Women in science", "Employees"]
+        subject: ["Portraits, Group", "Women in science", "Employees"],
+        title: "Portraits & People",
+        description: "A selection of our digitized material on interesting people in the history of science, CHF has some great ones."
       },
       science_on_stamps: {
-        subject: ["Science on postage stamps"]
+        subject: ["Science on postage stamps"],
+        description: "CHF has some great postage stamps from around the world on science topics. Here are some we've digitized."
       },
       instruments_and_innovation: {
         genre: ["Scientific apparatus and instrument"],
         subject: ["Artillery", "Machinery", "Chemical apparatus",
                   "Laboratories--Equipment and supplies",
                   "Chemical laboratories--Equipment and supplies",
-                  "Glassware"]
+                  "Glassware"],
+        description: "CHF's collections include a focus on instruments and innovation in scientific tools, here are some interesting materials we've digitized."
       },
       alchemy: {
-        subject: ["Alchemy", "Alchemists"]
+        subject: ["Alchemy", "Alchemists"],
+        description: "Alchemy is an interesting part of the history of chemistry."
       },
       scientific_education: {
         genre: ["Chemistry sets", "Molecular models"],
-        subject: ["Science--study and teaching"]
+        subject: ["Science--study and teaching"],
+        description: "Alchemy is an interesting part of the history of chemistry. Here are some digitized items from our extensive collections."
       },
       health_and_medicine: {
+        description: "Selected digitized items from the CHF collections on topics of health and medicine.",
         subject: [
           "Toxicology",
           "Gases, Asphyxiating and poisonous--Toxicology",
@@ -82,6 +89,10 @@ module CHF
       definitions.keys
     end
 
+    def self.all
+      keys.collect { |key| self.new(key) }
+    end
+
     attr_accessor :category_key
 
     def initialize(category_key)
@@ -89,6 +100,28 @@ module CHF
         raise ArgumentError, "No such category key: #{category_key}"
       end
       @category_key = category_key.to_sym
+    end
+
+    def title
+      # This could use i18n, but this simpler seems good enough for now,
+      # We don't even use locales anyway.
+      if definition.has_key?(:title)
+        definition[:title]
+      else
+        category_key
+      end
+    end
+
+    def description
+      # This could use i18n, but this simpler seems good enough for now,
+      # We don't even use locales anyway.
+      if definition.has_key?(:description_html)
+        definition[:description_html].html_safe
+      elsif definition.has_key?(:description)
+        definition[:description]
+      else
+        nil
+      end
     end
 
     def solr_fq
