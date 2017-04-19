@@ -46,7 +46,7 @@ module CHF
       scientific_education: {
         genre: ["Chemistry sets", "Molecular models"],
         subject: ["Science--study and teaching"],
-        description: "Alchemy is an interesting part of the history of chemistry. Here are some digitized items from our extensive collections."
+        description: "Chemistry sets and more."
       },
       health_and_medicine: {
         title: "Health & Medicine",
