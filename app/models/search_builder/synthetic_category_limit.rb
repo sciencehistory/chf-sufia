@@ -29,6 +29,11 @@ class SearchBuilder
       if synthetic_category
         solr_params[:fq] ||= []
         solr_params[:fq] << synthetic_category.solr_fq
+      elsif synthetic_category_param.present?
+        # trying to use param mapping for a category that doesn't exist, let's give you zero
+        # results!
+        solr_params[:fq] ||= []
+        solr_params[:fq] << "-*:*"
       end
 
     end
