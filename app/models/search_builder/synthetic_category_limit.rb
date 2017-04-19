@@ -35,8 +35,8 @@ class SearchBuilder
     def synthetic_collection_limit(solr_params)
       synthetic_category = if synthetic_category_force.present?
         CHF::SyntheticCategory.new(synthetic_category_force)
-      elsif synthetic_category_param.present? && CHF::SyntheticCategory.has_key?(blacklight_params[synthetic_category_param])
-        CHF::SyntheticCategory.new(blacklight_params[synthetic_category_param])
+      elsif synthetic_category_param.present?
+        CHF::SyntheticCategory.from_slug(blacklight_params[synthetic_category_param])
       end
 
       if synthetic_category

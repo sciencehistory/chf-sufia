@@ -95,7 +95,22 @@ module CHF
       keys.collect { |key| self.new(key) }
     end
 
+    def self.from_slug(slug)
+      if has_key?(slug)
+        self.new(slug)
+      elsif has_key?(slug.underscore)
+        self.new(slug.underscore)
+      else
+        nil
+      end
+    end
+
+
     attr_accessor :category_key
+
+    def slug
+      category_key.to_s.dasherize
+    end
 
     def initialize(category_key)
       unless self.class.has_key?(category_key)

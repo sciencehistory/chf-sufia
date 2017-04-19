@@ -26,16 +26,12 @@ class SyntheticCategoryController < ApplicationController
     end
 
     def synthetic_category
-      @synthetic_cateogry = if CHF::SyntheticCategory.has_key?(params[:id])
-        CHF::SyntheticCategory.new(params[:id])
-      else
-        nil
-      end
+      CHF::SyntheticCategory.from_slug(params[:id])
     end
     helper_method :synthetic_category
 
     def search_builder
-      @search_builder ||= SearchBuilder.new(self).tap { |sb| sb.synthetic_category_force = params[:id] }
+      @search_builder ||= SearchBuilder.new(self).tap { |sb| sb.synthetic_category_force = synthetic_category.category_key }
     end
 
     def set_response

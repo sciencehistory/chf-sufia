@@ -3,7 +3,7 @@
 <ul>
 <% CHF::SyntheticCategory.all.each do |category| %>
   <li>
-    <%= link_to category.title, synthetic_category_path(category) %>
+    <%= link_to category.title, synthetic_category_path(category.slug) %>
   </li>
 <% end %>
 </ul>
