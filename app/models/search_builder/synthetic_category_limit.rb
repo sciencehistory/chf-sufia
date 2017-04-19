@@ -1,14 +1,27 @@
 class SearchBuilder
   # A search builder module to restrict to a certain SyntheticCollection.
-  # Won't do _anything_ just by being in the chain -- sets class_attributes
-  # on the SearchBuilder that can be used to turn it 'on', either on the class
-  # or even on an instance.
   #
-  #.    synthetic_category_param : set to a string, and this will be taken
-  #.      from app params to identify a collection to limit to.  If unknown,
-  #.      will do nothing. (Should limit to 0 rows instead?)
-  #.    synthetic_category_force: symbol of synthetic collection key,
-  #.      will just force limiting to there.
+  # This module doesn't do anything just by being included, it needs one
+  # of synthetic_category_param or synthetic_category_force to be set -- on
+  # either the class or the instance.
+  #
+  # synthetic_category_param sets a key to take from the app query params
+  # to map to a collection. You might set it on a class, with:
+  #
+  #      SearchBuilder.synthetic_category_param = :category
+  #
+  # synthetic_category_force forces to a specific category, you might
+  # set it on a particular search_builder instance:
+  #
+  #      some_search_builder.tap { |sb| sb.synthetic_category_force = :portraits_and_people }.search(...)
+  #
+  # Now when you do things with that search builder, it's locked to :portraits_and_people
+  #
+  #     synthetic_category_param : set to a string, and this will be taken
+  #       from app params to identify a collection to limit to.  If unknown,
+  #       will do nothing. (Should limit to 0 rows instead?)
+  #     synthetic_category_force: symbol of synthetic collection key,
+  #       will just force limiting to there.
   module SyntheticCategoryLimit
     extend ActiveSupport::Concern
 
