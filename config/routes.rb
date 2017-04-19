@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   get '/opac_data/:rec_num', to: 'opac_data#load_bib'
   mount Hydra::RoleManagement::Engine => '/'
 
-  get '/focus/:id', to: 'synthetic_category#show'
+  get '/focus/:id', to: 'synthetic_category#show', as: :synthetic_category
 
 
   Hydra::BatchEdit.add_routes(self)

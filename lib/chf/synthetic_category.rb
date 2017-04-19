@@ -31,6 +31,7 @@ module CHF
         description: "CHF has some great postage stamps from around the world on science topics. Here are some we've digitized."
       },
       instruments_and_innovation: {
+        title: "Instruments & Innovation",
         genre: ["Scientific apparatus and instrument"],
         subject: ["Artillery", "Machinery", "Chemical apparatus",
                   "Laboratories--Equipment and supplies",
@@ -48,6 +49,7 @@ module CHF
         description: "Alchemy is an interesting part of the history of chemistry. Here are some digitized items from our extensive collections."
       },
       health_and_medicine: {
+        title: "Health & Medicine",
         description: "Selected digitized items from the CHF collections on topics of health and medicine.",
         subject: [
           "Toxicology",
@@ -108,7 +110,7 @@ module CHF
       if definition.has_key?(:title)
         definition[:title]
       else
-        category_key
+        category_key.to_s.humanize.titlecase
       end
     end
 
