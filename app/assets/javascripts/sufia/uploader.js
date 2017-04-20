@@ -34,7 +34,7 @@
         // limitMultiFileUploadSize: 500000000, // bytes
         limitConcurrentUploads: 6,
         maxNumberOfFiles: 100,
-        maxFileSize: 1000000000, // bytes, i.e. 1000 MB
+        maxFileSize: 5368709120, // bytes, i.e. 5G calculating the weird way.
         autoUpload: true,
         url: '/uploads/',
         type: 'POST',
