@@ -17,9 +17,9 @@ class SearchBuilder
   #
   # Now when you do things with that search builder, it's locked to :portraits_and_people
   #
-  #     synthetic_category_param : set to a string, and this will be taken
-  #       from app params to identify a collection to limit to.  If unknown,
-  #       will do nothing. (Should limit to 0 rows instead?)
+  #     synthetic_category_param : set to a symbol, and this will be taken
+  #       from app params to identify a collection to limit to.  If a string
+  #        not matching a category is provided, will limit to 0 results, beware!
   #     synthetic_category_force: symbol of synthetic collection key,
   #       will just force limiting to there.
   module SyntheticCategoryLimit
