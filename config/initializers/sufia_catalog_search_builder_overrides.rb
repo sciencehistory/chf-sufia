@@ -18,4 +18,9 @@ Rails.application.config.to_prepare do
     klass.send(:include, SearchBuilder::RestrictAdminSearchFields)
   end
 
+  unless klass.ancestors.include? SearchBuilder::SyntheticCategoryLimit
+    klass.send(:include, SearchBuilder::SyntheticCategoryLimit)
+    klass.synthetic_category_param = :temp_synthetic_collection
+  end
+
 end
