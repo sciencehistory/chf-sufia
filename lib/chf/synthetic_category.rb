@@ -95,6 +95,9 @@ module CHF
       keys.collect { |key| self.new(key) }
     end
 
+    # Our symbol keys use underscores eg `:portraits_and_people`, but it's nicer
+    # to have hyphens in the URL eg `/portraits-and-people`. Look up a SyntheticCategory
+    # object from slug in URL.
     def self.from_slug(slug)
       if slug.blank?
         nil
@@ -110,6 +113,9 @@ module CHF
 
     attr_accessor :category_key
 
+    # Our symbol keys use underscores eg `:portraits_and_people`, but it's nicer
+    # to have hyphens in the URL eg `/portraits-and-people`. Translate to a slug
+    # suitable for use in a URL, see also .from_slug.
     def slug
       category_key.to_s.dasherize
     end
