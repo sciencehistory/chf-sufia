@@ -1,0 +1,10 @@
+<%# copied from https://github.com/projecthydra/sufia/blob/8bb451451a492e443687f8c5aff4882cac56a131/app/views/curation_concerns/base/_relationships_parent_row_empty.html.erb
+  # and modified to suppress empty rows for certain 'types', mainly the parent work thing %>
+<% unless ['generic_work'].include? type %>
+  <tr>
+    <th><%= t(".label", type: type.humanize) %></th>
+    <td>
+      <p><%= t(".empty", type: type.humanize) %></p>
+    </td>
+  </tr>
+<% end %>
