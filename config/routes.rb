@@ -12,9 +12,9 @@ Rails.application.routes.draw do
       mount Resque::Server, at: 'queues'
     end
   end
-  
+
   mount Blacklight::Engine => '/'
-  
+
     concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   # local routes
   get '/opac_data/:rec_num', to: 'opac_data#load_bib'
   mount Hydra::RoleManagement::Engine => '/'
+
+  get '/focus/:id', to: 'synthetic_category#show', as: :synthetic_category
 
 
   Hydra::BatchEdit.add_routes(self)
