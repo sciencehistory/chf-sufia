@@ -145,5 +145,11 @@ namespace :chf do
       puts "User: #{u.email} is no longer an admin."
     end
 
+    desc 'List all admin users'
+    task list: :environment do
+      puts "Admin users:"
+      Role.find_by(name: 'admin').users.each { |u| puts "  #{u.email}" }
+    end
+
   end
 end
