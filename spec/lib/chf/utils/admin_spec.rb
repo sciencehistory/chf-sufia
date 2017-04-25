@@ -12,7 +12,7 @@ RSpec.describe CHF::Utils::Admin do
 
   describe '.grant' do
     it 'makes the user an admin' do
-      expect(user1.roles).to include admin_role
+      expect(user1.reload.roles).to include admin_role
     end
 
     it "raises exception if the user doesn't exist" do

@@ -10,7 +10,6 @@ module CHF
         end
         r = Role.find_or_create_by!(name: 'admin')
         u.roles.push(r) unless u.roles.include?(r)
-        r.reload
       end
       
       def self.revoke(email)
