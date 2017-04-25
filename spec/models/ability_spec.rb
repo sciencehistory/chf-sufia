@@ -20,6 +20,11 @@ RSpec.describe Ability do
       expect(staff).not_to be_able_to(:create, Role)
       expect(staff).not_to be_able_to(:edit, Role)
     end
+
+    it "cannot delete any work" do
+      expect(staff).not_to be_able_to(:destroy, admin_work)
+      expect(staff).not_to be_able_to(:destroy, staff_work)
+    end
   end
 
   describe "an admin user" do
@@ -39,6 +44,7 @@ RSpec.describe Ability do
 
     it "can modify another user's work" do
       expect(admin).to be_able_to(:update, staff_work)
+      expect(admin).to be_able_to(:destroy, staff_work)
     end
   end
 end
