@@ -9,6 +9,8 @@ RSpec.describe Ability do
     admin_role.users << admin
     admin_role.save
   end
+  let(:staff_work) { FactoryGirl.create(:work, user: staff) }
+  let(:admin_work) { FactoryGirl.create(:work, user: admin) }
 
   describe "an unprivileged user" do
     it "is not an admin" do
@@ -23,7 +25,6 @@ RSpec.describe Ability do
       expect(staff).not_to be_able_to(:create, Role)
       expect(staff).not_to be_able_to(:edit, Role)
     end
-
   end
 
   describe "an admin user" do
@@ -41,5 +42,8 @@ RSpec.describe Ability do
       expect(admin).not_to be_able_to(:edit, Role)
     end
 
+    it "can modify another user's work" do
+      expect(admin).to be_able_to(:update, staff_work)
+    end
   end
 end
