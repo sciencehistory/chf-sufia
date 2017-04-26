@@ -17,17 +17,13 @@ class Ability
       #  - implications of edit are unclear for associated actions
       #  - create is meaningless without associating actions which happens in code.
       can [:read, :add_user, :remove_user], Role
-    end
-
-    # Limit deleting objects to admin users
-    unless current_user.admin?
+      can [:manage], SolrDocument
+    else
+      # prohibit object destruction
       cannot [:destroy], ActiveFedora::Base
+      # used by views where solr_document stands in for AF object
+      cannot [:destroy], SolrDocument
     end
-
-    # Limits creating new objects to a specific group
-    #
-    # if user_groups.include? 'special_group'
-    #   can [:create], ActiveFedora::Base
-    # end
   end
+
 end
