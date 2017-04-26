@@ -1,0 +1,7 @@
+<h1>Unauthorized</h1>
+<% if respond_to?(:curation_concern) && curation_concern %>
+  <p>You are not authorized to perform the '<%= action_name %>' operation on this <%= curation_concern.human_readable_type.downcase %>.<p>
+  <p>ID: <%= curation_concern.id %>
+<% else %>
+  <p>The page you have tried to access is private<p>
+<% end %>
