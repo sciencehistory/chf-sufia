@@ -17,6 +17,11 @@ FactoryGirl.define do
 
     factory :admin do
       email 'admin@example.com'
+      after(:create) do |u|
+        admin_role = Role.find_or_create_by(name: "admin")
+        admin_role.users << u
+        admin_role.save
+      end
     end
 
   end

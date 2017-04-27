@@ -4,11 +4,6 @@ require 'cancan/matchers'
 RSpec.describe Ability do
   let(:staff) { FactoryGirl.create(:user) }
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:admin_role) { Role.create name: "admin" }
-  before do
-    admin_role.users << admin
-    admin_role.save
-  end
   let(:staff_work) { FactoryGirl.create(:work, user: staff) }
   let(:admin_work) { FactoryGirl.create(:work, user: admin) }
 
