@@ -46,8 +46,12 @@ RSpec.describe Ability do
 
     it "can modify another user's work" do
       expect(admin).to be_able_to(:update, staff_work)
+    end
+
+    it "can delete anything" do
       expect(admin).to be_able_to(:destroy, staff_work)
       expect(admin).to be_able_to(:destroy, solr_document)
+      expect(admin).to be_able_to(:destroy, 'id1235')
     end
   end
 end
