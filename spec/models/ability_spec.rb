@@ -3,7 +3,7 @@ require 'cancan/matchers'
 
 RSpec.describe Ability do
   let(:staff) { FactoryGirl.create(:user) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { FactoryGirl.create(:user, :admin) }
   let(:staff_work) { FactoryGirl.create(:work, user: staff) }
   let(:admin_work) { FactoryGirl.create(:work, user: admin) }
 
