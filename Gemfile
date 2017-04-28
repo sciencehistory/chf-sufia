@@ -29,10 +29,11 @@ gem 'highline'
 gem 'rest-client'
 gem 'whenever'
 
-gem 'rails', '~> 4.2.8'
+gem 'rails', '~> 5.0.0'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'resque-pool'
+gem 'sinatra', '2.0.0.rc2'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
