@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
   def to_s
     email
   end
+
+  def password_required?
+    false
+  end
 end
