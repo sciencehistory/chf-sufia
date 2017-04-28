@@ -20,17 +20,19 @@ class Ability
       # used by views where solr_document stands in for AF object, to avoid
       #   retrieving from Fedora.
       can [:manage], SolrDocument
-      # Hydra code passes an object id sometimes to bypass object retrieval in views.
-      #   upstream code gets a permissions document from solr to check that the user
-      #   can, e.g. edit / read the object in question. We don't need that step
-      #   for admins.
+      # Hydra code passes an object id sometimes (as a string) to bypass object
+      #   retrieval in views. Since admins can do anything, we just allow it.
       can [:manage], String
     end
   end
 
-  # override this method from hydra-access-controls/lib/hydra/ability.rb
+  # overridden from
+  # https://github.com/projecthydra/hydra-head/blob/v10.4.0/hydra-access-controls/lib/hydra/ability.rb#L40
   # to remove `destroy` as an edit permission
   def edit_permissions
+    # Hydra code passes an object id sometimes (as a string) to bypass object
+    #   retrieval in views. Upstream code (test_edit) uses a permissions
+    #   document from solr to check that the user can edit the object in question.
     can [:edit, :update], String do |id|
       test_edit(id)
     end
