@@ -1,6 +1,5 @@
 class Ability
   include Hydra::Ability
-
   include CurationConcerns::Ability
   include Sufia::Ability
 
@@ -8,12 +7,6 @@ class Ability
 
   # Define any customized permissions here.
   def custom_permissions
-    # Limits deleting objects to a the admin user
-    #
-    # if current_user.admin?
-    #   can [:destroy], ActiveFedora::Base
-    # end
-
     if current_user.admin?
       # Role management
       # don't allow :destroy, :edit, :create
@@ -23,12 +16,32 @@ class Ability
       #  - implications of edit are unclear for associated actions
       #  - create is meaningless without associating actions which happens in code.
       can [:read, :add_user, :remove_user], Role
+      can [:manage], ActiveFedora::Base
+      # used by views where solr_document stands in for AF object, to avoid
+      #   retrieving from Fedora.
+      can [:manage], SolrDocument
+      # Hydra code passes an object id sometimes (as a string) to bypass object
+      #   retrieval in views. Since admins can do anything, we just allow it.
+      can [:manage], String
     end
+  end
 
-    # Limits creating new objects to a specific group
-    #
-    # if user_groups.include? 'special_group'
-    #   can [:create], ActiveFedora::Base
-    # end
+  # overridden from
+  # https://github.com/projecthydra/hydra-head/blob/v10.4.0/hydra-access-controls/lib/hydra/ability.rb#L40
+  # to remove `destroy` as an edit permission
+  def edit_permissions
+    # Hydra code passes an object id sometimes (as a string) to bypass object
+    #   retrieval in views. Upstream code (test_edit) uses a permissions
+    #   document from solr to check that the user can edit the object in question.
+    can [:edit, :update], String do |id|
+      test_edit(id)
+    end
+    can [:edit, :update], ActiveFedora::Base do |obj|
+      test_edit(obj.id)
+    end
+    can [:edit, :update], SolrDocument do |obj|
+      cache.put(obj.id, obj)
+      test_edit(obj.id)
+    end
   end
 end
