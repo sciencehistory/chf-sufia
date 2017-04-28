@@ -94,6 +94,7 @@ group :test do
   gem 'webmock'
   gem 'phantomjs', '~> 2.1.1'
   gem 'capybara-screenshot'
+  gem 'rails-controller-testing'
 end
 
 group :development, :test do
