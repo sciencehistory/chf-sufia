@@ -2,7 +2,6 @@ require 'resque/server'
 
 Rails.application.routes.draw do
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
-  Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
 
   # Administrative URLs
@@ -49,9 +48,5 @@ Rails.application.routes.draw do
 
   get '/focus/:id', to: 'synthetic_category#show', as: :synthetic_category
 
-
-  Hydra::BatchEdit.add_routes(self)
-  # Sufia should be mounted before curation concerns to give priority to its routes
-  mount Sufia::Engine => '/'
-  mount CurationConcerns::Engine, at: '/'
+  mount Hyrax::Engine => '/'
 end
