@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 # sufia stuff!
 gem 'sufia', '7.3.0'
+#gem 'hyrax', '1.0.0.rc1'
 gem 'blacklight_range_limit', ">= 6.1.2"
 # It may seem like this is a dependency upstream, but we need it here.
 # https://project-hydra.slackarchive.io/dev/page-100/ts-1491587437169731
@@ -28,7 +29,7 @@ gem 'highline'
 gem 'rest-client'
 gem 'whenever'
 
-gem 'rails', '~> 4.2.7.1'
+gem 'rails', '~> 4.2.8'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'resque-pool'
