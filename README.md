@@ -44,6 +44,16 @@ dev box, without a VM.
       * `HYDRA_FEDORA_USER_DEVELOPMENT`
       * `HYDRA_FEDORA_PASSWORD_DEVELOPMENT`
 
+## Load default Workflow and add default Admin Set
+
+After Fedora and Solr are running, load the default workflow and create the default administrative set. Both of these need to be run any time the app is deployed to a new environment:
+```
+rake curation_concerns:workflow:load
+rake sufia:default_admin_set:create
+```
+
+### Create sample data
+
 * You can createcreate some sample data and a user account to get started quicker:
   * `./bin/rake dev:data[email@example.com,password]` will create account with that
      email/password, and create 6 sample works (5 public one private) attached to that account.
