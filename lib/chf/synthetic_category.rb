@@ -32,7 +32,7 @@ module CHF
       },
       instruments_and_innovation: {
         title: "Instruments & Innovation",
-        genre: ["Scientific apparatus and instrument"],
+        genre: ["Scientific apparatus and instruments"],
         subject: ["Artillery", "Machinery", "Chemical apparatus",
                   "Laboratories--Equipment and supplies",
                   "Chemical laboratories--Equipment and supplies",
