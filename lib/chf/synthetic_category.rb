@@ -45,7 +45,7 @@ module CHF
       },
       scientific_education: {
         genre: ["Chemistry sets", "Molecular models"],
-        subject: ["Science--study and teaching"],
+        subject: ["Science--Study and teaching"],
         description: "Chemistry sets and more."
       },
       health_and_medicine: {
