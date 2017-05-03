@@ -136,7 +136,7 @@ namespace :chf do
       rescue ActiveRecord::RecordNotFound
         abort("User #{args[:email]} does not exist. Only an existing user can be promoted to admin")
       end
-      puts "User: #{u.email} is an admin."
+      puts "User: #{args[:email]} is an admin."
     end
 
     desc 'Revoke admin role from user.'
