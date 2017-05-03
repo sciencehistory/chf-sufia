@@ -3,7 +3,8 @@ class Ability
   include CurationConcerns::Ability
   include Sufia::Ability
 
-  self.ability_logic += [:everyone_can_create_curation_concerns]
+  self.ability_logic += [:everyone_can_create_curation_concerns,
+    :user_show_permissions]
 
   # Define any customized permissions here.
   def custom_permissions
@@ -42,6 +43,12 @@ class Ability
     can [:edit, :update], SolrDocument do |obj|
       cache.put(obj.id, obj)
       test_edit(obj.id)
+    end
+  end
+
+  def user_show_permissions
+    if current_user.staff?
+      can [:read], User
     end
   end
 end

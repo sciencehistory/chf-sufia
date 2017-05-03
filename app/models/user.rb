@@ -30,4 +30,8 @@ class User < ActiveRecord::Base
   def password_required?
     false
   end
+
+  def staff?
+    groups.include? 'registered'
+  end
 end
