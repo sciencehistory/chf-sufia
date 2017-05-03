@@ -23,12 +23,4 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-
-  # While this just checks for current_user.present? now, this method
-  # expresses intent better, and is more amenable to future changes where
-  # we might have logged in users who aren't staff.
-  def staff_user?
-    current_user.present?
-  end
-  helper_method :staff_user?
 end
