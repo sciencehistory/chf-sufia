@@ -65,6 +65,43 @@ unless ENV['RAILS_ENV'] == "production"
       end
       FactoryGirl.create(:private_work, :with_complete_metadata, :real_public_image, *user_arg)
     end
+
+    require 'active_fedora/cleaner'
+    # for hyrax see also https://github.com/RepoCamp/ahc/blob/master/tasks/dev.rake
+    namespace :clear do
+      desc "clear all data out of solr"
+      task :solr => :environment do
+        raise "For safety can't do this on production" if Rails.env.production?
+        ActiveFedora::SolrService.instance.conn.delete_by_query("*:*")
+        ActiveFedora::SolrService.instance.conn.commit
+      end
+
+      desc "clear all data out of fedora"
+      task :fedora => :environment do
+        raise "For safety can't do this on production" if Rails.env.production?
+        ActiveFedora::Cleaner.clean!
+      end
+
+      desc "clear temporary and derivative files"
+      task :derivatives => :environment do
+        raise "For safety can't do this on production" if Rails.env.production?
+        FileUtils.rm_rf(Sufia.config.derivatives_path)
+        FileUtils.mkdir_p(Sufia.config.derivatives_path)
+      end
+
+      desc "clear redis" do
+        raise "For safety can't do this on production" if Rails.env.production?
+        Redis.current.keys.map { |key| Redis.current.del(key) }
+      end
+
+      # You may want to follow up with:
+      # rake chf:user:test:create[somebody@chemheritage.org,password] chf:admin:grant[somebody@chemheritage.org]
+      desc "Reset db, solr, and fedora, and proper setup for blank slate"
+      task :all => [:solr, :fedora, :derivatives, :redis, "db:reset"]  do
+        Rake::Task['curation_concerns:workflow:load'].invoke
+        Rake::Task['sufia:default_admin_set:create'].invoke
+      end
+    end
   end
 end
 
