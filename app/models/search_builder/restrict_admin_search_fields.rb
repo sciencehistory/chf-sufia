@@ -14,7 +14,7 @@ class SearchBuilder
     end
 
     def exclude_admin_only_search_fields(solr_params)
-      unless scope.respond_to?(:staff_user?) && scope.staff_user?
+      unless current_ability.current_user.staff?
         if solr_params["qf"].present?
           solr_params["qf"] = _remove_admin_only_fields_from_solr_value(solr_params["qf"], admin_only_search_fields)
         end

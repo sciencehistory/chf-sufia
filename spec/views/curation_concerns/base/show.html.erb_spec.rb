@@ -2,13 +2,6 @@ require 'rails_helper'
 
 # This has really become an integration test now
 describe 'curation_concerns/base/show.html.erb' do
-  let(:mock_staff_user_implementation) do
-    Module.new do
-      def staff_user?
-        false
-      end
-    end
-  end
   let(:work) do
     FactoryGirl.create(:generic_work).tap do |w|
       w.has_model = ['GenericWork']
@@ -60,22 +53,22 @@ describe 'curation_concerns/base/show.html.erb' do
     SolrDocument.new(work.to_solr)
   end
 
-  let(:ability) { nil }
+  # ability uses a non-persisted user as a null object, e.g. guest user
+  let(:user) { FactoryGirl.build(:user) }
+  let(:ability) { double }
   let(:presenter) do
     CurationConcerns::GenericWorkShowPresenter.new(solr_document, ability)
   end
 
   before do
+    allow(view).to receive(:current_ability).and_return(ability)
+    allow(ability).to receive(:current_user).and_return(user)
     stub_template 'curation_concerns/base/_relationships.html.erb' => ''
     stub_template 'curation_concerns/base/_show_actions.html.erb' => ''
     stub_template 'curation_concerns/base/_representative_media.html.erb' => ''
     stub_template 'curation_concerns/base/_social_media.html.erb' => ''
     stub_template 'curation_concerns/base/_citations.html.erb' => ''
     stub_template 'curation_concerns/base/_items.html.erb' => ''
-
-    #allow(view).to receive(:staff_user?).and_return(false)
-    # Don't know why above doesn't work, this is a crazy hack.
-    view.extend(mock_staff_user_implementation)
 
     assign(:presenter, presenter)
     render
@@ -130,13 +123,7 @@ describe 'curation_concerns/base/show.html.erb' do
   end
 
   describe "with staff user" do
-    let(:mock_staff_user_implementation) do
-      Module.new do
-        def staff_user?
-          true
-        end
-      end
-    end
+    let(:user) { FactoryGirl.create(:user) }
 
     it "displays staff-only fields" do
       expect(rendered).to match /Object ID: 2004/

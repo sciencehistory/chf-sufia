@@ -4,13 +4,20 @@ require 'cancan/matchers'
 RSpec.describe Ability do
   let(:staff) { FactoryGirl.create(:user) }
   let(:admin) { FactoryGirl.create(:user, :admin) }
+  let(:guest) { FactoryGirl.build(:user) }
   let(:staff_work) { FactoryGirl.create(:work, user: staff) }
   let(:admin_work) { FactoryGirl.create(:work, user: admin) }
   let(:solr_document) { SolrDocument.new(staff_work.to_solr) }
 
+  describe "a guest user" do
+    it "cannot view user list or profiles" do
+      expect(guest).not_to be_able_to(:read, User)
+    end
+  end
+
   describe "an unprivileged user" do
     it "is not an admin" do
-      expect(staff.admin?).not_to eq true
+      expect(staff.admin?).to eq false
     end
 
     it "cannot manage Roles" do
@@ -26,6 +33,10 @@ RSpec.describe Ability do
       expect(staff).not_to be_able_to(:destroy, admin_work)
       expect(staff).not_to be_able_to(:destroy, staff_work)
       expect(staff).not_to be_able_to(:destroy, solr_document)
+    end
+
+    it "cant view user list or profiles" do
+      expect(staff).to be_able_to(:read, User)
     end
   end
 

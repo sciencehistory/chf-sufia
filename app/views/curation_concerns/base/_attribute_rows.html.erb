@@ -34,7 +34,7 @@
 <%= presenter.attribute_to_html(:credit_line) %>
 <%= presenter.attribute_to_html(:additional_credit) %>
 
-<% if staff_user? %>
+<% if current_ability.current_user.staff? %>
   <tr><th colspan=2><h2>Staff-only Viewable Descriptions</h2></th></tr>
   <%= presenter.attribute_to_html(:identifier, render_as: :identifier) %>
   <%= presenter.attribute_to_html(:file_creator) %>
