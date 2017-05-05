@@ -1,7 +1,15 @@
 class UsersController < ApplicationController
   include Sufia::UsersControllerBehavior
 
-  load_and_authorize_resource class: User
+  def index
+    raise CanCan::AccessDenied unless can?(:read, User)
+    super
+  end
+
+  def show
+    raise CanCan::AccessDenied unless can?(:read, User)
+    super
+  end
 
   # The Sufia::UsersControllerBehavior method was anemic. Copied from
   # https://github.com/projecthydra/curation_concerns/blob/v1.7.7/app/controllers/concerns/curation_concerns/application_controller_behavior.rb#L23
