@@ -37,5 +37,5 @@
   </div>
 </div>
 <% @presenter.member_presenters.each do |mp| %>
-  <%= render 'lightbox_preview', presenter: @presenter, preview_id: mp.id %>
+  <%= render 'lightbox_preview', presenter: mp %>
 <% end %>
