@@ -9,6 +9,6 @@ module ApplicationHelper
 
   # A work uses its thumbnail for preview; file just uses itself.
   def preview_id(presenter)
-    presenter.respond_to?(:thumbnail_id) ? presenter.thumbnail_id : presenter.id
+    (presenter.respond_to?(:thumbnail_id) && presenter.thumbnail_id) ? presenter.thumbnail_id : presenter.id
   end
 end
