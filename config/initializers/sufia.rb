@@ -19,9 +19,12 @@ Sufia.config do |config|
   # config.analytics = false
 
   # Specify a Google Analytics tracking ID to gather usage statistics
-  # config.google_analytics_id = 'UA-99999999-1'
+  # this will be nil if not set; that's fine, it's what the configuration object does.
+  config.google_analytics_id = ENV['GOOGLE_ANALYTICS_ID']
 
   # Specify a date you wish to start collecting Google Analytic statistics for.
+  # Leaving it blank will set the start date to when ever the file was uploaded by
+  # NOTE: if you have always sent analytics to GA for downloads and page views leave this commented out
   # config.analytic_start_date = DateTime.new(2014,9,10)
 
   # Enables a link to the citations page for a generic_file.
@@ -71,11 +74,6 @@ Sufia.config do |config|
   # Sufia can integrate with Zotero's Arkivo service for automatic deposit
   # of Zotero-managed research items.
   # config.arkivo_api = false
-
-  # Specify a date you wish to start collecting Google Analytic statistics for.
-  # Leaving it blank will set the start date to when ever the file was uploaded by
-  # NOTE: if you have always sent analytics to GA for downloads and page views leave this commented out
-  # config.analytic_start_date = DateTime.new(2014,9,10)
 
   # Location autocomplete uses geonames to search for named regions.
   # Specify the user for connecting to geonames:
