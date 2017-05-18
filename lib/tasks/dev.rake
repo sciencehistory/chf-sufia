@@ -89,7 +89,8 @@ unless ENV['RAILS_ENV'] == "production"
         FileUtils.mkdir_p(Sufia.config.derivatives_path)
       end
 
-      desc "clear redis" do
+      desc "clear redis"
+      task :redis do
         raise "For safety can't do this on production" if Rails.env.production?
         Redis.current.keys.map { |key| Redis.current.del(key) }
       end
