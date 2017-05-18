@@ -62,7 +62,7 @@ module WorkFormBehavior
     def model_attributes(params)
       clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
       # model expects these as multi-value; cast them back
-      clean_params[:rights] = Array(params[:rights]) if params[:rights].present?
+      clean_params[:rights] = Array(params[:rights]) if params[:rights]
       clean_params[:title] = Array(params[:title]) if params[:title]
       if params[:description]
         clean_params[:description] = Array(params[:description])
