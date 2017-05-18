@@ -87,6 +87,11 @@ module GenericMetadata
     property :photographer, predicate: ::RDF::Vocab::MARCRelators.pht do |index|
       index.as :stored_searchable
     end
+
+    property :printer, predicate: ::RDF::Vocab::MARCRelators.prt do |index|
+      index.as :stored_searchable
+    end
+
     property :printer_of_plates, predicate: ::RDF::Vocab::MARCRelators.pop do |index|
       index.as :stored_searchable
     end

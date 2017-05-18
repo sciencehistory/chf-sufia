@@ -25,7 +25,7 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
 
-  # Do content negotiation for AF models. 
+  # Do content negotiation for AF models.
 
   use_extension( Hydra::ContentNegotiation )
 
@@ -67,6 +67,9 @@ class SolrDocument
   end
   def photographer
     self[Solrizer.solr_name('photographer')]
+  end
+  def printer
+    self[Solrizer.solr_name('printer')]
   end
   def printer_of_plates
     self[Solrizer.solr_name('printer_of_plates')]

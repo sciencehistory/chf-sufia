@@ -50,6 +50,7 @@ module Chufia
       :interviewer,
       :manufacturer,
       :photographer,
+      :printer,
       :printer_of_plates,
       :publisher,
     ]

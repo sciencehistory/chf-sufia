@@ -8,7 +8,7 @@ module CurationConcerns
       :place_of_manufacture, :place_of_creation, :place_of_publication,
       :extent, :division, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
-      :inscription, :date_of_work, :engraver, :printer_of_plates,
+      :inscription, :date_of_work, :engraver, :printer, :printer_of_plates,
       :additional_title, :after,
       to: :solr_document
 

@@ -18,6 +18,7 @@ RSpec.describe GenericWork do
     subject: 'http://purl.org/dc/elements/1.1/subject',
     # new fields
     additional_title: 'http://purl.org/dc/terms/alternative',
+    printer: 'http://id.loc.gov/vocabulary/relators/prt',
     printer_of_plates: 'http://id.loc.gov/vocabulary/relators/pop',
     engraver: 'http://id.loc.gov/vocabulary/relators/egr',
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
