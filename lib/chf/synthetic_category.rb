@@ -24,11 +24,11 @@ module CHF
         genre: ["Portraits"],
         subject: ["Portraits, Group", "Women in science", "Employees"],
         title: "Portraits & People",
-        description: "A selection of our digitized material on interesting people in the history of science, CHF has some great ones."
+        description: "This digital collection features selected prints and photographs of people dating from the 18th to 20th century. Materials in this collection include individual and company portraits of scientists, group shots of conference attendees, as well as laboratory employees, factory workers, and plant technicians from various research and manufacturing industries."
       },
       science_on_stamps: {
         subject: ["Science on postage stamps"],
-        description: "CHF has some great postage stamps from around the world on science topics. Here are some we've digitized."
+        description: "This digital collection features selected postage stamps and other philatelic materials depicting various aspects of science, from molecules and chemical reactions to portraits of Nobel Prize laureates. Materials in this collection, dating from 1887-2000, include stamps, first day covers, as well as commemorative and postmarked envelopes and postcards. Most of the items were selected from the Witco Stamp Collection in CHF’s Archives."
       },
       instruments_and_innovation: {
         title: "Instruments & Innovation",
@@ -37,20 +37,20 @@ module CHF
                   "Laboratories--Equipment and supplies",
                   "Chemical laboratories--Equipment and supplies",
                   "Glassware"],
-        description: "CHF's collections include a focus on instruments and innovation in scientific tools, here are some interesting materials we've digitized."
+        description: "This digital collection features selected scientific instruments, apparatus, and analytical tools from the CHF Museum as well as photographs, rare book engravings, and illustrations depicting various equipment and machinery found in laboratories, manufacturing plants, or mechanical treatises. Inventions from book wheels to fireballs are depicted here alongside more nuclear innovations such as Gammacells and Geiger counters."
       },
       alchemy: {
         subject: ["Alchemy", "Alchemists"],
-        description: "Alchemy is an interesting part of the history of chemistry."
+        description: "This digital collection features selected manuscripts, rare books, paintings, and ephemera relating to alchemical topics and experimentation. Materials in this collection include depictions of alchemists’ workshops and pursuits on philosophy, magic, medicine, spiritual wisdom, and the transformation of matter."
       },
       scientific_education: {
         genre: ["Chemistry sets", "Molecular models"],
         subject: ["Science--Study and teaching"],
-        description: "Chemistry sets and more."
+        description: "This digital collection features selected chemistry sets, molecular models, and science kits used for both instruction and play, primarily from the mid-20th century. Some of these objects were previously on display in CHF’s Museum as part of the Science at Play exhibition. Materials in this collection also include lecture notes, such as Louis Pasteur’s own on stereochemistry, as well as letters between scientists concerning the state of scientific education."
       },
       health_and_medicine: {
         title: "Health & Medicine",
-        description: "Selected digitized items from the CHF collections on topics of health and medicine.",
+        description: "This digital collection features selected medications as well as documents, manuals, and photographs relating to biochemical research and technology, with a focus on 20th century instrumentation in medical laboratories. Various models of glucose, enzyme, and amino acid analyzers are a few of the instruments documented and marketed in these materials.",
         subject: [
           "Toxicology",
           "Gases, Asphyxiating and poisonous--Toxicology",
