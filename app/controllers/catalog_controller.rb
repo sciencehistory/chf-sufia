@@ -33,6 +33,7 @@ class CatalogController < ApplicationController
       "#{solr_name("manufacturer", :stored_searchable)}^500",
       "#{solr_name("photographer", :stored_searchable)}^500",
       "#{solr_name("printer_of_plates", :stored_searchable)}^500",
+      "#{solr_name("printer", :stored_searchable)}^500",
       "#{solr_name("publisher", :stored_searchable)}^500",
       "#{solr_name("genre_string", :stored_searchable)}^500",
 
@@ -131,6 +132,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'photographer', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'printer_of_plates', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'printer', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
     config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable)

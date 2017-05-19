@@ -22,6 +22,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.manufacturer = ['Piranha Plant']
       w.photographer = ['Sparky']
       w.printer_of_plates = ['Shy Guy']
+      w.printer = ['Joe Printer']
       w.publisher = ['Hammer Bro']
       w.place_of_interview = ['Underwater']
       w.place_of_manufacture = ['Cloudland']
@@ -111,6 +112,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /\(On lock\) "EAGLE LOCK CO \/ TERRYVILLE, CONN \/ U.S.A."/
       expect(rendered).to match /Photographed by Bowser/
       expect(rendered).to match /Thwump/
+      expect(rendered).to match /Joe Printer/
       expect(rendered).to match /Shy Guy/
     end
     it "does not display staff fields" do

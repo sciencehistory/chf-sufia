@@ -39,6 +39,7 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       expect(names).to include "generic_work[interviewer][]"
       expect(names).to include "generic_work[manufacturer][]"
       expect(names).to include "generic_work[photographer][]"
+      expect(names).to include "generic_work[printer][]"
       expect(names).to include "generic_work[printer_of_plates][]"
       expect(names).to include "generic_work[publisher][]"
       expect(names).to include "generic_work[place_of_interview][]"
