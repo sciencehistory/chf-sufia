@@ -1,0 +1,26 @@
+<% provide :page_title, application_name %>
+
+<% if @presenter.display_share_button? %>
+  <div class="home_share_work row">
+    <div class="col-sm-12 text-center">
+      <% if signed_in? %>
+        <%= link_to '#',
+          class: "btn btn-primary btn-lg",
+          data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
+          <i class="glyphicon glyphicon-upload"></i> <%= t('sufia.share_button') %>
+        <% end %>
+      <% else %>
+        <%= link_to sufia.dashboard_index_path,
+          class: "btn btn-primary btn-lg" do %>
+          <i class="glyphicon glyphicon-upload"></i> <%= t('sufia.share_button') %>
+        <% end %>
+      <% end %>
+      <p><a href="/terms/">Terms of Use</a></p>
+    </div>
+  </div>
+<% end %>
+
+<div class="row home-content">
+  <%= render 'home_content' %>
+</div>
+<%= tiny_mce_stuff if can? :update, ContentBlock%>
