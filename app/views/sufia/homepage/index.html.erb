@@ -1,0 +1,33 @@
+<% provide :page_title, application_name %>
+
+<div class="homepage-wrapper">
+
+  <div class="row hero-search-container">
+    <div class="hero-image">
+      <%# TODO: image credit inset bottom left %>
+    </div>
+    <div class="search-container">
+      <div class="digital-description">
+      </div>
+      <div class="search-callouts">
+        <%= render 'catalog/search_form' %>
+        <%# TODO: add 'public domain only' toggle %>
+        <%# TODO: browse_all button %>
+      </div>
+    </div>
+  </div>
+
+  <%# TODO: recent additions will go here %>
+
+  <div class="row digital-collections">
+    <%= render 'home_content' %>
+  </div>
+
+  <div class="row featured-collection-container">
+    <div class="featured-collection-image">
+    </div>
+    <div class="featured-collection-callouts">
+    </div>
+  </div>
+
+</div>
