@@ -1,0 +1,32 @@
+.collections-index {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin: -17px; /* negate flex-item margins on outer border */
+
+  .collection {
+    position: relative;
+    width: 266px;
+    height: 266px;
+    margin: 17px;
+
+    .collection-title-wrapper {
+      /* overlay on image */
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 75px;
+      background-color: $brand-inverse;
+      padding: 10px;
+
+      .collection-title {
+        color: white;
+        opacity: 1;
+        text-align: center;
+      }
+    }
+  }
+}
