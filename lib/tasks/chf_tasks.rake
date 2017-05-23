@@ -2,6 +2,14 @@ require_dependency Rails.root.join('lib','chf','reports','metadata_completion_re
 
 namespace :chf do
 
+  desc "run fixity checks with logs and notification on failure"
+  task :fixity_checks => :environment do
+    ::FileSet.find_each do |gf|
+      Hyrax::FileSetFixityCheckService.new(gf, async_jobs: false, latest_version_only: true).fixity_check
+    end
+  end
+
+
   desc 'Rough count metadata completion'
   task metadata_report: :environment do
     report = CHF::Reports::MetadataCompletionReport.new
