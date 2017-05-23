@@ -2,7 +2,7 @@ module ActiveFedora
   # Backported from ActiveFedora, expected in AF 11.3
   # https://github.com/projecthydra/active_fedora/pull/1239
   # Adds support for returning expected_message_digest
-  if Gem.loaded_specs["active-fedora"] >= Gem::Version.new('11.3')
+  if Gem.loaded_specs["active-fedora"].version >= Gem::Version.new('11.3')
     msg = "\n\nPlease check and make sure this ActiveFedora patch is still needed at #{__FILE__}:#{__LINE__}\n\n"
     $stderr.puts msg
     Rails.logger.warn msg
