@@ -45,7 +45,7 @@ module CHF
 <p>file: #{file_id}
   <a href="#{file_fedora_metadata_uri}">#{file_fedora_metadata_uri}</a></p>
 
-<p>Logged in ChecksumAuditLog: #{checksum_audit_log.inspect}</p>
+<p>Logged in ChecksumAuditLog: #{ERB::Util.html_escape checksum_audit_log.inspect}</p>
   EOF
     end
 

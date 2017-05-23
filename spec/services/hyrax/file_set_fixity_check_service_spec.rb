@@ -45,7 +45,7 @@ describe Hyrax::FileSetFixityCheckService do
       expect(last_email.body.to_s).to include(checked_uri)
       expect(last_email.body.to_s).to include(expected_message_digest)
       expect(last_email.body.to_s).to include(log.created_at.in_time_zone.to_s)
-      expect(last_email.body.to_s).to include("<ChecksumAuditLog id: #{log.id}")
+      expect(last_email.body.to_s).to include("ChecksumAuditLog id: #{log.id}")
     end
   end
 end
