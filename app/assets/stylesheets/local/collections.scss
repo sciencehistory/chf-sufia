@@ -12,6 +12,16 @@
     height: 266px;
     margin: 17px;
 
+    a,
+    a:link,
+    a:active,
+    a:visited,
+    a:hover {
+      color: white;
+      text-decoration: none;
+      opacity: 1;
+    }
+
     .collection-title-wrapper {
       /* overlay on image */
       position: absolute;
@@ -23,10 +33,9 @@
       padding: 10px;
 
       .collection-title {
-        color: white;
-        opacity: 1;
         text-align: center;
       }
+
     }
   }
 }
