@@ -35,11 +35,11 @@ class FixityCheckJob < ActiveJob::Base
     uri = uri.to_s # sometimes we get an RDF::URI gah
     log = run_check(file_set_id, file_id, uri)
 
-    if log.failed? && Sufia.config.callback.set?(:after_fixity_check_failure)
+    if log.failed? && CurationConcerns.config.callback.set?(:after_fixity_check_failure)
       file_set = ::FileSet.find(file_set_id)
-      Sufia.config.callback.run(:after_fixity_check_failure,
-                                file_set,
-                                checksum_audit_log: log)
+      CurationConcerns.config.callback.run(:after_fixity_check_failure,
+                                           file_set,
+                                           checksum_audit_log: log)
     end
 
     log
