@@ -7,7 +7,6 @@ $collection-index-box-margin: 17px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
   margin: -1 * $collection-index-box-margin; /* negate flex-item margins on outer border */
 
   .collection {
