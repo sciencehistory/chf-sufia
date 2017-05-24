@@ -1,16 +1,20 @@
+$collection-index-box-width: 266px;
+$collection-index-box-height: 266px;
+$collection-index-box-margin: 17px;
+
 .collections-index {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  margin: -17px; /* negate flex-item margins on outer border */
+  margin: -1 * $collection-index-box-margin; /* negate flex-item margins on outer border */
 
   .collection {
     position: relative;
-    width: 266px;
-    height: 266px;
-    margin: 17px;
+    width: $collection-index-box-width;
+    height: $collection-index-box-height;
+    margin: $collection-index-box-margin;
 
     a,
     a:link,
@@ -35,7 +39,15 @@
       .collection-title {
         text-align: center;
       }
-
     }
+  }
+
+  /* A 0-height box that spaces out columns to left-align items in
+     last column */
+  .collection-spacer {
+    visibility: hidden;
+    width: $collection-index-box-width;
+    height: 0;
+    margin: 0 $collection-index-box-margin;
   }
 }
