@@ -1,9 +1,13 @@
 <div class="collections-index">
-  <%= render partial: "collection_teaser", collection: @presenters, as: :presenter %>
+  <h1 class="collections-index-title">All Collections</h1>
 
-  <%# hack to keep our last line of collection teasers left-aligned, assuming
-      max four-columns %>
-  <div class="collection-spacer"></div>
-  <div class="collection-spacer"></div>
-  <div class="collection-spacer"></div>
+  <div class="collections-index-list">
+    <%= render partial: "collection_teaser", collection: @presenters, as: :presenter %>
+
+    <%# hack to keep our last line of collection teasers left-aligned, assuming
+        max four-columns %>
+    <div class="collection-spacer"></div>
+    <div class="collection-spacer"></div>
+    <div class="collection-spacer"></div>
+  </div>
 </div>
