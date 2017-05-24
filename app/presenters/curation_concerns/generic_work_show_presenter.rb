@@ -13,7 +13,7 @@ module CurationConcerns
       to: :solr_document
 
     def additional_title
-      @additional_title ||= solr_document.additional_title.sort
+      @additional_title ||= solr_document.additional_title.try(:sort)
     end
 
     def has_rights_statement?
