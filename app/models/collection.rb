@@ -3,4 +3,9 @@ class Collection < ActiveFedora::Base
   include ::CurationConcerns::CollectionBehavior
   # You can replace these metadata if they're not suitable
   include CurationConcerns::BasicMetadata
+
+  # Set to a relative path _within_ our app/assets/images/collections
+  property :representative_image_path, multiple: false, predicate: ::RDF::URI.new("http://chemheritage.org/ns/collection-thumb") do |index|
+    index.as :displayable
+  end
 end
