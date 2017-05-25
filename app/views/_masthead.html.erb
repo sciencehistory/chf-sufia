@@ -1,3 +1,4 @@
+<%# overrides https://github.com/projecthydra/sufia/blob/v7.3.0/app/views/_masthead.html.erb %>
 <% if current_ability.current_user.staff? %>
   <%= render '/shared/select_work_type_modal' if create_work_presenter.many? %>
   <nav id="staff-navbar" class="navbar navbar-inverse navbar-static-top staff-navbar" role="navigation">
