@@ -2,6 +2,8 @@ class CollectionsController < ApplicationController
   include CurationConcerns::CollectionsControllerBehavior
   include Sufia::CollectionsControllerBehavior
 
+  self.presenter_class = CHF::CollectionShowPresenter
+
   def form_class
     CollectionEditForm
   end
