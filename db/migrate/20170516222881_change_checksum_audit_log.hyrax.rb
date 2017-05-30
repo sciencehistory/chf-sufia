@@ -13,7 +13,7 @@ class ChangeChecksumAuditLog < ActiveRecord::Migration
       end
     end
 
-    remove_column :checksum_audit_log, :pass
+    remove_column :checksum_audit_logs, :pass
     add_index     :checksum_audit_logs, :checked_uri
   end
 end
