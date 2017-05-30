@@ -2,7 +2,7 @@
 class ChangeChecksumAuditLog < ActiveRecord::Migration
   def change
     rename_column :checksum_audit_logs, :version, :checked_uri
-    add_column    :checksum_audit_logs, :pass, :passed
+    add_column    :checksum_audit_logs, :pass, :boolean
 
     reversible do |dir|
       dir.up do
