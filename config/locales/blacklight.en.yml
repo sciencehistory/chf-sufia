@@ -1,6 +1,6 @@
 en:
   blacklight:
-    application_name: 'CHF Hydra'
+    application_name: 'Digital Collections'
     search:
       fields:
         show:
