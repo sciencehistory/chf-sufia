@@ -44,4 +44,12 @@ class SyntheticCategoryController < ApplicationController
     end
     helper_method :results
 
+
+    # Override helper method to insist on :list type, that's all we
+    # do here and all we have partials for.
+    def document_index_view_type *args
+      :list
+    end
+    helper_method :document_index_view_type
+
 end
