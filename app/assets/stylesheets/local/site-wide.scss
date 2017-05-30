@@ -2,3 +2,14 @@
 .navbar-inverse {
   background-color: $brand-inverse;
 }
+
+.staff-navbar {
+  /* ensure dropdowns show above other navbars */
+  /* (masthead coded upstream at 1001) */
+  z-index: 1002;
+  /* make this navbar a bit thinner than the masthead */
+  min-height:30px;
+  li > a {
+    padding: 5px 15px 5px 0px;
+  }
+}
