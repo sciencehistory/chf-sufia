@@ -26,6 +26,12 @@ module Chufia
     config.autoload_paths << Rails.root.join('lib')
     # Load all subdirs of './patches'
     config.autoload_paths.concat Dir.glob(Rails.root.join("patches/*"))
+    # load overrides
+    config.to_prepare do
+      Dir.glob(Rails.root.join("app/**/*_override*.rb")) do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+    end
 
     config.generators do |g|
       g.test_framework :rspec, :spec => true
