@@ -10,3 +10,7 @@ end
 every 1.day, :at => '2:30 am' do
   rake "chf:fixity_checks"
 end
+
+every 1.day, :at => '2:00 am' do
+  rake "blacklight:delete_old_searches[7]"
+end
