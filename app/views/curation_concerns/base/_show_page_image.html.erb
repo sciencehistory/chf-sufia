@@ -2,11 +2,21 @@
     with overlayed controls and info %>
 <%= content_tag("div", class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do %>
   <a href="javascript: alert('this would open a viewer but not implemented yet');" class="show-page-image-viewer-link"></a>
-    <%= image_tag(main_app.download_path(member.representative_id, file: "jpeg"),
-                          class: "show-page-image-image",
-                          alt: "",
-                          role: "presentation") %>
 
+    <% if local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] %>
+      <%= image_tag nil,
+                    class: "lazyload show-page-image-image",
+                    alt: "",
+                    data: {
+                      src: main_app.download_path(member.representative_id, file: "jpeg")
+                    }
+      %>
+    <% else %>
+      <%= image_tag main_app.download_path(member.representative_id, file: "jpeg"),
+                    class: "lazyload show-page-image-image",
+                    alt: ""
+      %>
+    <% end %>
 
     <div class="show-page-image-permission">
       <% if member.needs_permission_badge? %>
