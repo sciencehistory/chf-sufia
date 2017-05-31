@@ -56,6 +56,16 @@ module CurationConcerns
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
-
+    # Member presenters, but if our representative image is the FIRST image,
+    # don't bother repeating it below.
+    def show_thumb_member_presenters
+      @show_thumb_member_presenters ||= begin
+        if member_presenters.first.id == representative_id
+          member_presenters.dup.tap { |a| a.delete_at(0) }
+        else
+          member_presenters
+        end
+      end
+    end
   end
 end
