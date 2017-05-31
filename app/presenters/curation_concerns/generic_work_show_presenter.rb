@@ -45,6 +45,12 @@ module CurationConcerns
       CurationConcerns::LicenseService.new.authority.find(identifier).fetch("short_label_html", "").html_safe
     end
 
-
+    # Override to only display if NOT open access. We assume open access, but
+    # want a warning to logged-in staff if viewing something not public.
+    def permission_badge
+      unless (solr_document.visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)
+        super
+      end
+    end
   end
 end

@@ -12,7 +12,9 @@
 
   <div class="work-show-title">
     <header>
-      <%= render 'work_title', presenter: @presenter %>
+      <%= @presenter.permission_badge %>
+      <h1><%= @presenter.title.first %></h1>
+
       <% if @presenter.additional_title.present? %>
         <ul class="additional-titles list-unstyled">
           <% @presenter.additional_title.each do |title| %>
@@ -36,6 +38,9 @@
     <%= render 'work_description', presenter: @presenter %>
     <%= render 'relationships', presenter: @presenter %>
     <%= render 'metadata', presenter: @presenter %>
+    <% if current_ability.current_user.staff? %>
+      <%= t('.last_modified', value: @presenter.date_modified) %>
+    <% end %>
     <%= render 'citations', presenter: @presenter %>
   </div>
 
