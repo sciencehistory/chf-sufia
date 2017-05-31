@@ -11,7 +11,11 @@
       <% if can?(:read, file_set.id) %>
         <div class="btn-group dropup">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Download
+            <% if local_assigns[:actions_as_icon] %>
+              <i class='fa fa-download'></i>
+            <% else %>
+              Download
+            <% end %>
           </button>
           <ul class="dropdown-menu">
             <li>
@@ -28,7 +32,7 @@
         </div>
       <% end %>
 
-      <%= link_to "Info", contextual_path(file_set, @presenter), class: "btn btn-primary show-page-image-info" %>
+      <%= link_to (local_assigns[:actions_as_icon] ? "<i class='fa fa-info'></i>".html_safe : "Info"), contextual_path(file_set, @presenter), class: "btn btn-primary show-page-image-info" %>
 
     </div>
 <% end %>

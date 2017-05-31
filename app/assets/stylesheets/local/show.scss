@@ -2,12 +2,12 @@
 
 .show-page-image {
   position: relative;
-  // keep crazy long aspect ratio images from being
-  // so long, although there will be some distortion.
-  max-height: 80vw;
+
   .show-page-image-image {
     width: 100%;
-    max-height: 100%;
+    // keep crazy long aspect ratio images from being
+    // so long, although there will be some distortion.
+    max-height: 80vw;
   }
 }
 
@@ -57,6 +57,9 @@
     img {
       width: 100%;
       vertical-align: top;
+      // keep crazy long aspect ratio images from being
+      // so long, although there will be some distortion.
+      max-height: 30vw;
     }
   }
 

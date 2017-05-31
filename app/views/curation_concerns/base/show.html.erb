@@ -51,7 +51,14 @@
   <div style="clear: left"></div>
 
   <%# render partial: 'chf_show_page', collection: @presenter.member_presenters, as: :member %>
-  <%= render partial: 'show_page_image', collection: @presenter.member_presenters, as: :file_set, locals: { extra_classes: 'thumb' } %>
+  <%= render partial: 'show_page_image',
+             collection: @presenter.member_presenters,
+             as: :file_set,
+             locals: {
+               extra_classes: 'thumb',
+               actions_as_icon: true,
+             }
+  %>
 
 
   <hr>
