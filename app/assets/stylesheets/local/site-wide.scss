@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:extrabold,bold,semibold,regular,light,');
+
 /* Overrides a bootstrap style */
 .navbar-inverse {
   background-color: $brand-inverse;
@@ -7,9 +9,35 @@
   /* ensure dropdowns show above other navbars */
   /* (masthead coded upstream at 1001) */
   z-index: 1002;
-  /* make this navbar a bit thinner than the masthead */
-  min-height:30px;
-  li > a {
-    padding: 5px 15px 5px 0px;
+  /* line up with the logo */
+  margin-left: -15px;
+}
+
+.masthead {
+  min-height: 90px;
+  padding: 15px 15px;
+  .navbar-nav > li > a,
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus,
+  .navbar-header > a,
+  .navbar-header > a:hover,
+  .navbar-header > a:focus {
+    color: $brand-secondary;
+    text-decoration: none;
+    font-family: "Open Sans";
+    font-style: light;
+    font-stretch: expanded;
+  }
+
+  .navbar-brand {
+    padding: 0;
+  }
+
+  #masthead-logo-image {
+    height: 40px;
+    margin: 0;
+  }
+  #masthead-application-name {
+    margin-left: 130px;
   }
 }
