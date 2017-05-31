@@ -2,7 +2,7 @@
     with overlayed controls and info %>
 <%= content_tag("div", class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do %>
   <a href="javascript: alert('pretend its a viewer');" class="show-page-image-viewer-link"></a>
-    <%= image_tag(main_app.download_path(file_set, file: "jpeg"),
+    <%= image_tag(main_app.download_path(file_set.representative_id, file: "jpeg"),
                           class: "show-page-image-image",
                           alt: "",
                           role: "presentation") %>
@@ -26,7 +26,7 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <%= link_to main_app.download_path(file_set),
+              <%= link_to main_app.download_path(file_set.representative_id),
                           target: "_new",
                           id: "file_download",
                           data: { label: file_set.id } do %>
