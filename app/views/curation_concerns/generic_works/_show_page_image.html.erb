@@ -7,6 +7,13 @@
                           alt: "",
                           role: "presentation") %>
 
+
+    <div class="show-page-image-permission">
+      <% if file_set.needs_permission_badge? %>
+        <%= file_set.permission_badge %>
+      <% end %>
+    </div>
+
     <div class="show-page-image-bar">
       <% if can?(:read, file_set.id) %>
         <div class="btn-group dropup">
