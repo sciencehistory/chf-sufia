@@ -46,7 +46,9 @@
 
 
   <%# these are not in a div so they can wrap around the bottom of the metadata
-      div to take up all space. Experiment? %>
+      div to take up all space. Experiment? Hack to make sure they start after
+      big representative image %>
+  <div style="clear: left"></div>
   <%= render partial: 'chf_show_page', collection: @presenter.member_presenters, as: :member %>
 
 
