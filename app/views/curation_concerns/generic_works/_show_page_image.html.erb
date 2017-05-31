@@ -1,16 +1,14 @@
-<%# we're overriding this for show page, although it might end up used elsewhere,
-    it somehow ends up being called when we do `render 'representative_media'`
-    on show page. Might be a better more surgical way to intervene here, it
-    gets a little bit weird the way we're doing it. %>
+<%# CHF custom, alternative to `representative_media` for show page, image
+    with overlayed controls and info %>
 
-<div class="representative-image">
-  <a href="javascript: alert('pretend its a viewer');" class="representative-image-viewer-link"></a>
+<div class="show-page-image">
+  <a href="javascript: alert('pretend its a viewer');" class="show-page-image-viewer-link"></a>
     <%= image_tag(main_app.download_path(file_set, file: "jpeg"),
-                          class: "representative-image-image",
+                          class: "show-page-image-image",
                           alt: "",
                           role: "presentation") %>
 
-    <div class="representative-image-bar">
+    <div class="show-page-image-bar">
       <% if can?(:read, file_set.id) %>
         <div class="btn-group dropup">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,7 +29,7 @@
         </div>
       <% end %>
       <% if respond_to?(:contextual_path) %>
-        <%= link_to "Info", contextual_path(file_set, @presenter), class: "btn btn-primary representative-image-info" %>
+        <%= link_to "Info", contextual_path(file_set, @presenter), class: "btn btn-primary show-page-image-info" %>
       <% end %>
     </div>
 </div>
