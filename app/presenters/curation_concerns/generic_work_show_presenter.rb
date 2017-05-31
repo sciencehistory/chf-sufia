@@ -60,7 +60,7 @@ module CurationConcerns
     # don't bother repeating it below.
     def show_thumb_member_presenters
       @show_thumb_member_presenters ||= begin
-        if member_presenters.first.id == representative_id
+        if member_presenters.present? && member_presenters.first.id == representative_id
           member_presenters.dup.tap { |a| a.delete_at(0) }
         else
           member_presenters
