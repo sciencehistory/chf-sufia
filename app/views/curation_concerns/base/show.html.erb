@@ -49,7 +49,9 @@
       div to take up all space. Experiment? Hack to make sure they start after
       big representative image %>
   <div style="clear: left"></div>
-  <%= render partial: 'chf_show_page', collection: @presenter.member_presenters, as: :member %>
+
+  <%# render partial: 'chf_show_page', collection: @presenter.member_presenters, as: :member %>
+  <%= render partial: 'show_page_image', collection: @presenter.member_presenters, as: :file_set, locals: { extra_classes: 'thumb' } %>
 
 
   <hr>

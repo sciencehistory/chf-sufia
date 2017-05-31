@@ -1,16 +1,13 @@
 
-// move this to somewhere else, it's not work-show-specific for better
-// or worse at the moment.
 
-// wrapper to keep image from being too high, clipping rather than
-// distorting.
 .show-page-image {
   position: relative;
-  width: 100%;
+  // keep crazy long aspect ratio images from being
+  // so long, although there will be some distortion.
   max-height: 80vw;
-  overflow: hidden;
   .show-page-image-image {
     width: 100%;
+    max-height: 100%;
   }
 }
 
@@ -45,6 +42,7 @@
 
 
 
+
 .work-show {
   padding: 0 15px;
 
@@ -52,10 +50,10 @@
     text-align: right;
   }
 
-  .work-show-page-thumb {
+  .show-page-image.thumb {
     display: inline-block;
     width: 165px;
-    padding: 4px;
+    margin: 4px;
     img {
       width: 100%;
       vertical-align: top;
