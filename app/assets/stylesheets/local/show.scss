@@ -1,29 +1,117 @@
-// There seems to be no existing css class allowing us to scope
-// this stuff just to generic work 'show' page. If there was, I'd use it.
-// Perhaps it should be added later.
 
-.additional-titles {
-  h2 {
-    @extend h4;
+// move this to somewhere else, it's not work-show-specific for better
+// or worse at the moment.
+
+// wrapper to keep image from being too high, clipping rather than
+// distorting.
+.representative-image {
+  position: relative;
+  width: 100%;
+  max-height: 80vw;
+  overflow: hidden;
+  .representative-image-image {
+    width: 100%;
   }
 }
 
-.large-rights-statement {
-  margin-top: 15px;
-
-  @include clearfix;
-
-  .rights-statement-logo {
-    width: 40px;
-    float: left;
-    margin-right: 0.5em;
+.representative-image-bar {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparentize($brand-primary, .3);
+  a, button {
+    flex: 1;
+    border-radius: 0;
+    background: transparent;
   }
-  .rights-statement-label {
-    font-size: 18px;
-    line-height: 1;
-    text-transform: uppercase;
-    font-weight: bold;
-    line-height: 1
+}
+
+
+
+.work-show {
+  padding: 0 15px;
+
+  .work-show-admin {
+    text-align: right;
   }
 
+  .work-show-page-thumb {
+    display: inline-block;
+    width: 165px;
+    padding: 4px;
+    img {
+      width: 100%;
+      vertical-align: top;
+    }
+  }
+
+  @media (min-width: $grid-float-breakpoint) {
+    .work-show-representative, .work-show-metadata, .work-show-title {
+      width: 50%;
+      padding: 0 15px;
+      display: inline-block;
+    }
+    .work-show-representative {
+      float: left;
+      padding-left: 0;
+    }
+
+    .work-show-metadata, .work-show-title {
+      float: right;
+      padding-right: 0;
+    }
+  }
+
+  header h1 {
+    margin-top: 0;
+  }
+
+  .additional-titles {
+    h2 {
+      @extend h4;
+    }
+  }
+
+  .rights-and-social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+
+    .large-rights-statement, .social-media {
+      flex: 1;
+      flex-basis: 220px;
+      padding: 0;
+      margin: 0;
+    }
+    .social-media {
+      @media (min-width: $container-md) {
+        text-align: right;
+       }
+    }
+  }
+
+  .large-rights-statement {
+    margin-top: 15px;
+
+    @include clearfix;
+
+    .rights-statement-logo {
+      width: 40px;
+      float: left;
+      margin-right: 0.5em;
+    }
+    .rights-statement-label {
+      font-size: 18px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: bold;
+      line-height: 1
+    }
+
+  }
 }
