@@ -124,7 +124,7 @@
       margin: 0;
     }
     .social-media {
-      @media (min-width: $container-md) {
+      @media (min-width: $screen-md-min) {
         text-align: right;
        }
     }
