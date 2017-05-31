@@ -1,29 +1,38 @@
+<%# we're overriding this for show page, although it might end up used elsewhere,
+    it somehow ends up being called when we do `render 'representative_media'`
+    on show page. Might be a better more surgical way to intervene here, it
+    gets a little bit weird the way we're doing it. %>
+
 <div class="representative-image">
+  <a href="javascript: alert('pretend its a viewer');" class="representative-image-viewer-link"></a>
     <%= image_tag(main_app.download_path(file_set, file: "jpeg"),
                           class: "representative-image-image",
                           alt: "",
                           role: "presentation") %>
 
     <div class="representative-image-bar">
-      <div class="btn-group dropup">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Download
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <%= link_to main_app.download_path(file_set),
-                        target: "_new",
-                        id: "file_download",
-                        data: { label: file_set.id } do %>
-                Original Image
-            <% end %>
-          </li>
-          <li class="divider"></li>
-          <li><a>More download options coming</a></li>
-        </ul>
-      </div>
-
-      <%= link_to "Info", "#", class: "btn btn-primary representative-image-info" %>
+      <% if can?(:read, file_set.id) %>
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Download
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to main_app.download_path(file_set),
+                          target: "_new",
+                          id: "file_download",
+                          data: { label: file_set.id } do %>
+                  Original Image
+              <% end %>
+            </li>
+            <li class="divider"></li>
+            <li><a>More download options coming</a></li>
+          </ul>
+        </div>
+      <% end %>
+      <% if respond_to?(:contextual_path) %>
+        <%= link_to "Info", contextual_path(file_set, @presenter), class: "btn btn-primary representative-image-info" %>
+      <% end %>
     </div>
 </div>
 

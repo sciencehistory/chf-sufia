@@ -48,9 +48,14 @@ module CurationConcerns
     # Override to only display if NOT open access. We assume open access, but
     # want a warning to logged-in staff if viewing something not public.
     def permission_badge
-      unless (solr_document.visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)
+      if needs_permission_badge?
         super
       end
     end
+    def needs_permission_badge?
+      solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    end
+
+
   end
 end
