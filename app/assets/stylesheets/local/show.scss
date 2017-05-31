@@ -63,8 +63,16 @@
 
   .show-page-image.thumb {
     display: inline-block;
-    width: 165px;
-    margin: 4px;
+    width: 160px;
+    @media (min-width: $screen-md-min) {
+      //width: 140px;
+      width: 215px;
+    }
+    @media (min-width: $screen-lg-min) {
+      //width: 140px;
+      width: 175px;
+    }
+    margin: 4px 4px 0 0;
     img {
       width: 100%;
       vertical-align: top;
