@@ -135,6 +135,14 @@ namespace :chf do
     CHF::Metadata::RelatedUrlReport.new.to_csv(output)
   end
 
+  desc "set collection thumbnails"
+  task :collection_images, [:arg_str] => :environment do |t, args|
+    args[:arg_str].split(',').each do |pair|
+      id, path = pair.split("=")
+      Collection.find(id).update!(representative_image_path: path)
+    end
+  end
+
   namespace :admin do
 
     desc 'Grant admin role to existing user.'

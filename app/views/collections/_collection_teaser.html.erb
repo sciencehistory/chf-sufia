@@ -1,0 +1,9 @@
+<%# Note this file could not be called simply _collection because that is used for search results %>
+<div class="collection">
+  <%= link_to collection_path(presenter.id) do %>
+    <%= image_tag presenter.thumbnail_src, size: "266" %>
+    <div class="collection-title-wrapper">
+      <p class="collection-title"><%= presenter.title.first %></p>
+    </div>
+  <% end %>
+</div>
