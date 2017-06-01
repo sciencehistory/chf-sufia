@@ -64,32 +64,35 @@
   .show-page-image.thumb {
     display: inline-block;
     width: 160px;
-    @media (min-width: $screen-sm-min) {
-      // 2 wide
-      width: calc(50% / 2 - 12px);
-      // before lazy loaded complete, call it a square
-      &.lazyloading {
-        height: calc(50% / 2 - 12px);
-      }
-    }
-    @media (min-width: $screen-lg-min) {
-      // 3 wide
-      width: calc(50% / 3 - 10px);
-      &.lazyloading {
-        height: calc(50% / 2 - 12px);
-      }
-    }
     margin: 4px 4px 0 0;
+
     img {
       width: 100%;
-      &.lazyloading {
-        height: calc(100vw - 30px);
+      &.lazyload, &.lazyloading {
+        background: #AAA asset-url('spinner.svg') no-repeat center;
+        height: calc(1.33 * 160px);
       }
       vertical-align: bottom;
       // keep crazy long aspect ratio images from being
       // so long, although there will be some distortion.
       max-height: 30vw;
       min-height: 60px; // just so it's something!
+    }
+
+    @media (min-width: $screen-sm-min) {
+      // 2 wide
+      width: calc(50% / 2 - 12px);
+      // before lazy loaded complete, VERY roughy estimate 4/3 aspect ratio ish
+      img.lazyload, img.lazyloading {
+        height: 25vw;
+      }
+    }
+    @media (min-width: $screen-lg-min) {
+      // 3 wide
+      width: calc(50% / 3 - 10px);
+      img.lazyload, img.lazyloading {
+        height: 15vw;
+      }
     }
   }
 
