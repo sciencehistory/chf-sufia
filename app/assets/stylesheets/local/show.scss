@@ -67,14 +67,24 @@
     @media (min-width: $screen-sm-min) {
       // 2 wide
       width: calc(50% / 2 - 12px);
+      // before lazy loaded complete, call it a square
+      &.lazyloading {
+        height: calc(50% / 2 - 12px);
+      }
     }
     @media (min-width: $screen-lg-min) {
       // 3 wide
       width: calc(50% / 3 - 10px);
+      &.lazyloading {
+        height: calc(50% / 2 - 12px);
+      }
     }
     margin: 4px 4px 0 0;
     img {
       width: 100%;
+      &.lazyloading {
+        height: calc(100vw - 30px);
+      }
       vertical-align: bottom;
       // keep crazy long aspect ratio images from being
       // so long, although there will be some distortion.
