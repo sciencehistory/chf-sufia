@@ -64,13 +64,13 @@
   .show-page-image.thumb {
     display: inline-block;
     width: 160px;
-    @media (min-width: $screen-md-min) {
-      //width: 140px;
-      width: 215px;
+    @media (min-width: $screen-sm-min) {
+      // 2 wide
+      width: calc(50% / 2 - 12px);
     }
     @media (min-width: $screen-lg-min) {
-      //width: 140px;
-      width: 175px;
+      // 3 wide
+      width: calc(50% / 3 - 10px);
     }
     margin: 4px 4px 0 0;
     img {
