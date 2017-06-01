@@ -1,18 +1,27 @@
 <% provide :page_title, application_name %>
+<% provide :container_class, "container-fluid homepage-content-wrapper" %>
 
 <div class="homepage-wrapper">
 
-  <div class="row hero-search-container">
-    <div class="hero-image">
+  <div class="row hero-search-container no-gutters">
+    <figure class="hero-image col-xs-12 col-md-7">
+      <%= image_tag "molecules_that_matter.jpg", alt: "molecules that matter" %>
       <%# TODO: image credit inset bottom left %>
-    </div>
-    <div class="search-container">
-      <div class="digital-description">
-      </div>
-      <div class="search-callouts">
-        <%= render 'catalog/search_form' %>
-        <%# TODO: add 'public domain only' toggle %>
-        <%# TODO: browse_all button %>
+    </figure>
+    <div class="col-xs-12 col-md-5">
+      <div class="row search-container">
+        <div class="digital-description col-xs-12 col-sm-6 col-md-12">
+          <h2>Digital Collections</h2>
+          <p>Search a growing selection of our digitized materials in the history of science: artifacts, photographs, advertisements, manuscripts, letters, books, and more</p>
+        </div>
+        <div class="search-callouts col-xs-12 col-sm-6 col-md-12">
+          <%= render 'catalog/search_form' %>
+          <%# TODO: add 'public domain only' toggle %>
+          <%# TODO: browse_all button %>
+          <%= link_to "BROWSE ALL",
+            main_app.search_catalog_path,
+            class: "btn btn-primary btn-lg chf-callout-button" %>
+        </div>
       </div>
     </div>
   </div>
