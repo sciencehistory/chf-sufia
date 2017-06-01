@@ -25,13 +25,13 @@
     </div>
 
     <div class="show-page-image-bar">
-      <% if can?(:read, member.id) %>
+      <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
         <div class="btn-group dropup">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <% if local_assigns[:actions_as_icon] %>
               <i class='fa fa-download'></i>
             <% else %>
-              Download
+              <i class='fa fa-download'></i> Download
             <% end %>
           </button>
           <ul class="dropdown-menu">
@@ -49,7 +49,11 @@
         </div>
       <% end %>
 
-      <%= link_to (local_assigns[:actions_as_icon] ? "<i class='fa fa-info'></i>".html_safe : "Info"), contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
+      <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
+        <%= render "show_page_image_file_set_actions", file_set: member, presenter: @presenter %>
+      <% else %>
+        <%= link_to (local_assigns[:actions_as_icon] ? "<i class='fa fa-info'></i>".html_safe : "Info"), contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
+      <% end %>
 
     </div>
 <% end %>
