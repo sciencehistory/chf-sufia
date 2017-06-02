@@ -27,8 +27,8 @@
 
   <%# TODO: recent additions will go here %>
 
-  <div class="row digital-collections">
-    <%= render 'home_content' %>
+  <div class="row categories-list">
+    <%= render partial: "category_teaser", collection: CHF::SyntheticCategory.all, as: :category %>
   </div>
 
   <div class="row featured-collection-container">
