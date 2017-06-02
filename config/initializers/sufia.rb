@@ -48,7 +48,7 @@ Sufia.config do |config|
   # config.noid_template = ".reeddeeddk"
 
   # Store identifier minter's state in a file for later replayability
-  sufia_data_path = Rails.env.production? ? '/var/sufia' : (ENV['SUFIA_DATA_PATH'] || '/tmp')
+  sufia_data_path = Rails.env.production? ? '/var/sufia' : (ENV['SUFIA_DATA_PATH'] || Rails.root.join("tmp/sufia_data"))
   config.minter_statefile = File.join(sufia_data_path, 'minter-state')
 
   # Specify the prefix for Redis keys:
