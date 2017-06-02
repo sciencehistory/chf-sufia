@@ -22,15 +22,7 @@ $collection-index-box-margin: 17px;
       height: $collection-index-box-height;
       margin: $collection-index-box-margin;
 
-      a,
-      a:link,
-      a:active,
-      a:visited,
-      a:hover {
-        color: white;
-        text-decoration: none;
-        opacity: 1;
-      }
+      @include all-white-links;
 
       .collection-title-wrapper {
         /* overlay on image */

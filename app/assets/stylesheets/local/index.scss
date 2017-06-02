@@ -3,11 +3,23 @@
   padding-left: 0;
   padding-right: 0;
 
-  .hero-image {
+  figure.hero-image {
+    position: relative; /* allow absolute positioning of caption */
     padding-left: 0; /* overcome the padding on grid columns */
     padding-right: 0; /* overcome the padding on grid columns */
     img {
       width: 100%;
+    }
+    figcaption {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: $transparent-background;
+      padding: 5px 10px;
+      @include all-white-links;
+      font-family: "Open Sans";
+      font-weight: 300;
+      font-style: italic;
     }
   }
 
