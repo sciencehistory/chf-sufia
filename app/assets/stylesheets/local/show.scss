@@ -27,7 +27,7 @@
   right: 0;
   background: transparentize($brand-primary, .3);
   .btn-group {
-    width: 50%;
+    width: 100%;
     .btn { width: 100%; }
     .dropdown-menu {
       left: 5px;
@@ -66,7 +66,7 @@
     width: 160px;
     margin: 4px 4px 0 0;
 
-    img {
+    img.show-page-image-image {
       width: 100%;
       &.lazyload, &.lazyloading {
         background: #AAA asset-url('spinner.svg') no-repeat center;
@@ -152,8 +152,8 @@
       }
     }
     .rights-statement-logo {
-      height: 1em;
-      vertical-align: center;
+      width: 1em;
+      vertical-align: middle;
     }
   }
 
