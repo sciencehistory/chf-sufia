@@ -130,7 +130,7 @@
     justify-content: space-between;
     padding: 15px 0;
 
-    .large-rights-statement, .social-media {
+    .rights-statement.large, .social-media {
       flex: 1;
       flex-basis: 170px;
       padding: 0;
@@ -143,7 +143,21 @@
     }
   }
 
-  .large-rights-statement {
+  .rights-statement.inline {
+    // turn br into space
+    .rights-statement-label br {
+      content: " ";
+      &:after {
+        content:" ";
+      }
+    }
+    .rights-statement-logo {
+      height: 1em;
+      vertical-align: center;
+    }
+  }
+
+  .rights-statement.large {
     margin-top: 15px;
 
     @include clearfix;
