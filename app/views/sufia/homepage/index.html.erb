@@ -31,10 +31,20 @@
     <%= render partial: "category_teaser", collection: CHF::SyntheticCategory.all, as: :category %>
   </div>
 
-  <div class="row featured-collection-container">
-    <div class="featured-collection-image">
+  <div class="row featured-collection-container no-gutters">
+    <div class="col-xs-12 col-sm-6">
+      <div class="row featured-collection-callouts">
+        <div class="col-xs-12">
+          <h2>Featured Collection</h2>
+          <p>The <%= link_to "Beckman Historical Collection", collection_path('wh246s128') %> is an archival collection of materials related to American scientist and industrialist Arnold O. Beckman (1900-2004) and the scientific and medical instrumentation companies he founded and influenced.</p>
+          <%= link_to "BROWSE COLLECTIONS",
+            collections_path,
+            class: "btn btn-primary btn-lg chf-callout-button" %>
+        </div>
+      </div>
     </div>
-    <div class="featured-collection-callouts">
+    <div class="featured-collection-image hidden-xs col-sm-6">
+      <%= image_tag "featured_collection_144.jpg", alt: "" %>
     </div>
   </div>
 

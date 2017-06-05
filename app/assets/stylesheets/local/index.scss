@@ -2,6 +2,12 @@
   margin-top: -20px; /* overcome the bottom margin on navbar */
   padding-left: 0;
   padding-right: 0;
+  padding-bottom: 0 !important; /* overcome id-based css */
+
+  .search-container,
+  .featured-collection-callouts {
+    padding-bottom: 30px;
+  }
 
   figure.hero-image {
     position: relative; /* allow absolute positioning of caption */
@@ -107,4 +113,20 @@
       }
     }
   }
+
+  .featured-collection-callouts {
+    padding-left: 5px;
+    padding-right: 5px;
+    @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max) {
+      margin-top: 30px;
+    }
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+      margin: 100px 20px 0;
+    }
+    @media (min-width: $screen-md-min) {
+      margin: 15% 15% 0 8%;
+    }
+  }
+
+
 }
