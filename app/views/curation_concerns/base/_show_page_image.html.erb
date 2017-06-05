@@ -18,6 +18,12 @@
       %>
     <% end %>
 
+    <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
+      <div class="show-page-member-title">
+        <%= member.title.first %>
+      </div>
+    <% end %>
+
     <div class="show-page-image-permission">
       <% if member.needs_permission_badge? %>
         <%= member.permission_badge %>
@@ -28,11 +34,8 @@
       <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
         <div class="btn-group dropup">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <% if local_assigns[:actions_as_icon] %>
-              <i class='fa fa-download'></i>
-            <% else %>
-              <i class='fa fa-download'></i> Download
-            <% end %>
+            <%# less space for admin, just use icon %>
+            <i class='fa fa-download'></i> <% if ! current_ability.current_user.staff? %> Download <% end %>
           </button>
           <ul class="dropdown-menu">
             <li><%= render 'rights_statement', presenter: @presenter, theme: 'inline' %></li>
@@ -53,8 +56,8 @@
 
       <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
         <%= render "show_page_image_file_set_actions", file_set: member, presenter: @presenter %>
-      <% else %>
-        <%= link_to (local_assigns[:actions_as_icon] ? "<i class='fa fa-info'></i>".html_safe : "Info"), contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
+      <% elsif member.model_name.singular.to_sym != :file_set %>
+        <%= link_to "Info", contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
       <% end %>
 
     </div>

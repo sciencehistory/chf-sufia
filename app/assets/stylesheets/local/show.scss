@@ -25,7 +25,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: transparentize($brand-primary, .3);
+  background: transparentize($brand-inverse, .3);
+  .btn-primary {
+    border-color: darken($brand-inverse, 5%);
+  }
   .btn-group {
     width: 100%;
     .btn { width: 100%; }
@@ -38,6 +41,19 @@
     border-radius: 0;
     background: transparent;
   }
+}
+
+.show-page-member-title {
+  position: absolute;
+  padding: 7px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparentize($brand-inverse, .3);
+  color: transparentize($btn-primary-color, .3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .show-page-image-permission {
