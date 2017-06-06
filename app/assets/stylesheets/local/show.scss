@@ -9,63 +9,73 @@
     // so long, although there will be some distortion.
     max-height: 80vw;
   }
-}
 
-.show-page-image-viewer-link {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.show-page-image-bar {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: transparentize($brand-inverse, .3);
-  .btn-primary {
-    border-color: darken($brand-inverse, 5%);
-  }
-  .btn-group {
+  .show-page-image-viewer-link {
+    display: block;
+    position: absolute;
     width: 100%;
-    .btn { width: 100%; }
-    .dropdown-menu {
-      left: 5px;
+    height: 100%;
+  }
+
+  .show-page-image-bar {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: transparentize($brand-inverse, .3);
+    .btn-primary {
+      border-color: darken($brand-inverse, 5%);
+    }
+    .btn-group {
+      width: 100%;
+      .btn { width: 100%; }
+      .dropdown-menu {
+        left: 5px;
+      }
+    }
+    a, button {
+      flex: 1;
+      border-radius: 0;
+      background: transparent;
     }
   }
-  a, button {
-    flex: 1;
-    border-radius: 0;
-    background: transparent;
+
+  &:hover .show-page-image-bar {
+    background: transparentize($btn-primary-bg, .3);
+    .btn-primary {
+      border-color: darken($btn-primary-border, .3);
+    }
   }
-}
 
-.show-page-member-title {
-  position: absolute;
-  padding: 7px;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: transparentize($brand-inverse, .3);
-  color: transparentize($btn-primary-color, .3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.show-page-image-permission {
-  .label {
+  .show-page-member-title {
     position: absolute;
-    right: 0;
+    padding: 7px;
     top: 0;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    border-bottom-right-radius: 0;
+    left: 0;
+    right: 0;
+    background: transparentize($brand-inverse, .3);
+    color: transparentize($btn-primary-color, .3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .show-page-image-permission {
+    .label {
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 }
+
+
+
 
 
 
