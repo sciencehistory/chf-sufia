@@ -92,7 +92,7 @@
       // keep crazy long aspect ratio images from being
       // so long, although there will be some distortion.
       max-height: 30vw;
-      min-height: 60px; // just so it's something!
+      min-height: 100px; // just so it's something!
     }
 
     @media (min-width: $screen-sm-min) {
