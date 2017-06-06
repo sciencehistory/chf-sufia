@@ -1,5 +1,5 @@
 <% if presenter.has_rights_statement? %>
-    <%= link_to presenter.rights_url, class: ['rights-statement'] + Array(local_assigns[:theme]) do %>
+    <%= link_to presenter.rights_url, target: "_blank", class: ['rights-statement'] + Array(local_assigns[:theme]) do %>
       <%= image_tag(presenter.rights_icon, class: "rights-statement-logo")  %>
       <span class="rights-statement-label"><%= presenter.rights_icon_label %></span>
     <% end %>
