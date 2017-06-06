@@ -61,18 +61,6 @@
     }
   }
 
-  /* change date facet submit button styling */
-  .range_limit {
-    input[type=submit] {
-      @extend .btn-primary;
-    }
-  }
-
-  /* Remove brokenly styled numbers on search results */
-  ol.catalog {
-    list-style: none;
-  }
-
   $categories-box-width: 350px;
   $categories-box-height: 350px;
   $categories-box-margin: 59px;
