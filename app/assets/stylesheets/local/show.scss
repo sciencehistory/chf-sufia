@@ -1,85 +1,3 @@
-
-
-.show-page-image {
-  position: relative;
-
-  .show-page-image-image {
-    width: 100%;
-    // keep crazy long aspect ratio images from being
-    // so long, although there will be some distortion.
-    max-height: 80vw;
-  }
-
-  .show-page-image-viewer-link {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  .show-page-image-bar {
-    position: absolute;
-    display: flex;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: transparentize($brand-inverse, .3);
-    .btn-primary {
-      border-color: darken($brand-inverse, 5%);
-    }
-    .btn-group {
-      width: 100%;
-      .btn { width: 100%; }
-      .dropdown-menu {
-        left: 5px;
-      }
-    }
-    a, button {
-      flex: 1;
-      border-radius: 0;
-      background: transparent;
-    }
-  }
-
-  &:hover .show-page-image-bar {
-    background: transparentize($btn-primary-bg, .3);
-    .btn-primary {
-      border-color: darken($btn-primary-border, .3);
-    }
-  }
-
-  .show-page-member-title {
-    position: absolute;
-    padding: 7px;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: transparentize($brand-inverse, .3);
-    color: transparentize($btn-primary-color, .3);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .show-page-image-permission {
-    .label {
-      position: absolute;
-      right: 0;
-      top: 0;
-      border-top-right-radius: 0;
-      border-top-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-}
-
-
-
-
-
-
-
 .work-show {
   padding: 0 15px;
 
@@ -87,40 +5,6 @@
     text-align: right;
   }
 
-  .show-page-image.thumb {
-    display: inline-block;
-    width: 160px;
-    margin: 4px 4px 0 0;
-
-    img.show-page-image-image {
-      width: 100%;
-      &.lazyload, &.lazyloading {
-        background: #AAA asset-url('spinner.svg') no-repeat center;
-        height: calc(1.33 * 160px);
-      }
-      vertical-align: bottom;
-      // keep crazy long aspect ratio images from being
-      // so long, although there will be some distortion.
-      max-height: 30vw;
-      min-height: 100px; // just so it's something!
-    }
-
-    @media (min-width: $screen-sm-min) {
-      // 2 wide
-      width: calc(50% / 2 - 12px);
-      // before lazy loaded complete, VERY roughy estimate 4/3 aspect ratio ish
-      img.lazyload, img.lazyloading {
-        height: 25vw;
-      }
-    }
-    @media (min-width: $screen-lg-min) {
-      // 3 wide
-      width: calc(50% / 3 - 10px);
-      img.lazyload, img.lazyloading {
-        height: 15vw;
-      }
-    }
-  }
 
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
@@ -208,6 +92,118 @@
       font-weight: bold;
       line-height: 1
     }
+  }
 
+  // An image with overlaid action buttons and metadata, used for
+  // representative image and thumbs on show page. Internal overlay
+  // elements are absolutely positioned within it.
+  .show-page-image {
+    position: relative;
+
+    .show-page-image-image {
+      width: 100%;
+      // keep crazy long aspect ratio images from being
+      // so long, although there will be some distortion.
+      max-height: 80vw;
+    }
+
+    // An <a> that's over the whole image to make sure it's clickable
+    .show-page-image-viewer-link {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .show-page-member-title {
+      position: absolute;
+      padding: 7px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: transparentize($brand-inverse, .3);
+      color: transparentize($btn-primary-color, .3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .show-page-image-permission {
+      .label {
+        position: absolute;
+        right: 0;
+        top: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .show-page-image-bar {
+      position: absolute;
+      display: flex;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: transparentize($brand-inverse, .3);
+      .btn-primary {
+        border-color: darken($brand-inverse, 5%);
+      }
+      .btn-group {
+        width: 100%;
+        .btn { width: 100%; }
+        .dropdown-menu {
+          left: 5px;
+        }
+      }
+      a, button {
+        flex: 1;
+        border-radius: 0;
+        background: transparent;
+      }
+    }
+
+    &:hover .show-page-image-bar {
+      background: transparentize($btn-primary-bg, .3);
+      .btn-primary {
+        border-color: darken($btn-primary-border, .3);
+      }
+    }
+
+    &.thumb {
+      display: inline-block;
+      width: 160px;
+      margin: 4px 4px 0 0;
+
+      img.show-page-image-image {
+        width: 100%;
+        &.lazyload, &.lazyloading {
+          background: #AAA asset-url('spinner.svg') no-repeat center;
+          height: calc(1.33 * 160px);
+        }
+        vertical-align: bottom;
+        // keep crazy long aspect ratio images from being
+        // so long, although there will be some distortion.
+        max-height: 30vw;
+        min-height: 100px; // just so it's something!
+      }
+
+      @media (min-width: $screen-sm-min) {
+        // 2 wide
+        width: calc(50% / 2 - 12px);
+        // before lazy loaded complete, VERY roughy estimate 4/3 aspect ratio ish
+        img.lazyload, img.lazyloading {
+          height: 25vw;
+        }
+      }
+      @media (min-width: $screen-lg-min) {
+        // 3 wide
+        width: calc(50% / 3 - 10px);
+        img.lazyload, img.lazyloading {
+          height: 15vw;
+        }
+      }
+    }
   }
 }
