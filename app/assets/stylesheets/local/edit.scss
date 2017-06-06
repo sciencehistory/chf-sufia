@@ -1,9 +1,6 @@
+/* change date facet submit button styling */
 .range_limit {
   input[type=submit] {
     @extend .btn-primary;
   }
-}
-
-ol.catalog {
-  list-style: none;
 }

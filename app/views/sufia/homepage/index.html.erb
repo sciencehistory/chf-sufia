@@ -1,32 +1,50 @@
 <% provide :page_title, application_name %>
+<% provide :container_class, "container-fluid homepage-content-wrapper" %>
 
 <div class="homepage-wrapper">
 
-  <div class="row hero-search-container">
-    <div class="hero-image">
-      <%# TODO: image credit inset bottom left %>
-    </div>
-    <div class="search-container">
-      <div class="digital-description">
-      </div>
-      <div class="search-callouts">
-        <%= render 'catalog/search_form' %>
-        <%# TODO: add 'public domain only' toggle %>
-        <%# TODO: browse_all button %>
+  <div class="row hero-search-container no-gutters">
+    <figure class="hero-image col-xs-12 col-md-7">
+      <%= image_tag "hero_image_2x.jpg", alt: "" %>
+      <figcaption><%= hero_link('w6634363x') %></figcaptionw>
+    </figure>
+    <div class="col-xs-12 col-md-5">
+      <div class="row search-container">
+        <div class="digital-description col-xs-12 col-sm-6 col-md-12">
+          <h2>Digital Collections</h2>
+          <p>Search a growing selection of our digitized materials in the history of science: artifacts, photographs, advertisements, manuscripts, letters, books, and more</p>
+        </div>
+        <div class="search-callouts col-xs-12 col-sm-6 col-md-12">
+          <%= render 'catalog/search_form' %>
+          <%# TODO: add 'public domain only' toggle %>
+          <%= link_to "BROWSE ALL",
+            main_app.search_catalog_path,
+            class: "btn btn-primary btn-lg chf-callout-button" %>
+        </div>
       </div>
     </div>
   </div>
 
   <%# TODO: recent additions will go here %>
 
-  <div class="row digital-collections">
-    <%= render 'home_content' %>
+  <div class="row categories-list">
+    <%= render partial: "category_teaser", collection: CHF::SyntheticCategory.all, as: :category %>
   </div>
 
-  <div class="row featured-collection-container">
-    <div class="featured-collection-image">
+  <div class="row featured-collection-container no-gutters">
+    <div class="col-xs-12 col-sm-6">
+      <div class="row featured-collection-callouts no-gutters">
+        <div class="col-xs-12">
+          <h2>Featured Collection</h2>
+          <p>The <%= link_to "Beckman Historical Collection", collection_path('wh246s128') %> is an archival collection of materials related to American scientist and industrialist Arnold O. Beckman (1900-2004) and the scientific and medical instrumentation companies he founded and influenced.</p>
+          <%= link_to "BROWSE COLLECTIONS",
+            collections_path,
+            class: "btn btn-primary btn-lg chf-callout-button" %>
+        </div>
+      </div>
     </div>
-    <div class="featured-collection-callouts">
+    <div class="featured-collection-image hidden-xs col-sm-6">
+      <%= image_tag "featured_collection_2x.jpg", alt: "" %>
     </div>
   </div>
 
