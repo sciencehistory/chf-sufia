@@ -87,4 +87,17 @@ namespace :chf do
     end
   end
   after "deploy:started", "chf:empty_bundle_install"
+
+  desc "add solr_restart=true to your cap invocation (e.g. on first solr deploy), otherwise it will reload config files"
+  task :restart_or_reload_solr do
+    on roles(:solr) do
+      if ENV['solr_restart'].eql? "true"
+        execute :sudo, "/usr/sbin/service solr restart"
+      else
+        # the querystring doesn't come through without the quotes
+        execute :curl, '"localhost:8983/solr/admin/cores?action=reload&core=collection1"'
+      end
+    end
+  end
+  after "deploy:log_revision", "chf:restart_or_reload_solr"
 end

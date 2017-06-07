@@ -1,7 +1,7 @@
 # using an ssh-config entry to set the user, key, and address of the machine
 set :stage, :production
 set :rails_env, 'production'
-server 'production', roles: [:web, :app, :db, :jobs]
+server 'production', roles: [:web, :app, :db, :jobs, :solr]
 
 # server-based syntax
 # ======================

@@ -1,7 +1,7 @@
 # using an ssh-config entry to set the user, key, and address of the machine
 set :stage, :solr
 set :rails_env, 'production'
-server 'solr', roles: [:no_bundler]
+server 'solr', roles: [:solr, :no_bundler]
 
 # server-based syntax
 # ======================
