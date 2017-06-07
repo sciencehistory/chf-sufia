@@ -78,4 +78,13 @@ namespace :chf do
     end
   end
   after "chf:loadworkflows", "chf:create_default_admin_set"
+
+  # some boxes won't have ruby
+  desc "don't bundle install"
+  task :empty_bundle_install do
+    on roles(:no_bundler) do
+      Rake::Task["bundler:install"].clear_actions
+    end
+  end
+  after "deploy:started", "chf:empty_bundle_install"
 end
