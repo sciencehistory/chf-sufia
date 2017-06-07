@@ -796,11 +796,11 @@ PLATFORMS
 DEPENDENCIES
   active-fedora (~> 11.1.6)
   blacklight_range_limit (>= 6.1.2)
-  capistrano (= 3.8.1)
-  capistrano-bundler (= 1.2.0)
+  capistrano (~> 3.8)
+  capistrano-bundler (~> 1.2)
   capistrano-maintenance (~> 1.0)
-  capistrano-passenger (= 0.2.0)
-  capistrano-rails (= 1.2.3)
+  capistrano-passenger (~> 0.2)
+  capistrano-rails (~> 1.2)
   capybara (~> 2.4)
   capybara-screenshot
   coffee-rails (~> 4.1.0)

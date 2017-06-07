@@ -55,10 +55,10 @@ group :production do
 end
 
 group :development do
-  gem 'capistrano', '3.8.1'
-  gem 'capistrano-bundler', '1.2.0'
-  gem 'capistrano-passenger', '0.2.0'
-  gem 'capistrano-rails', '1.2.3'
+  gem 'capistrano', '~> 3.8'
+  gem 'capistrano-bundler', '~> 1.2'
+  gem 'capistrano-passenger', '~> 0.2'
+  gem 'capistrano-rails', '~> 1.2'
   gem 'capistrano-maintenance', '~> 1.0', require: false
 end
 
