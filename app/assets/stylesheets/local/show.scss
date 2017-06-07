@@ -24,7 +24,7 @@
   }
 
   // main one should have btn-primary colors.
-  .work-show-representative .show-page-image-bar {
+  .work-show-representative .show-page-image .show-page-image-bar {
     background: transparentize($btn-primary-bg, .3);
     .btn-primary {
       border-color: darken($btn-primary-border, .3);
