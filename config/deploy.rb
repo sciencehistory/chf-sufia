@@ -44,7 +44,7 @@ namespace :deploy do
   # Restart resque-pool.
   desc "Restart resque-pool"
   task :resquepoolrestart do
-    on roles(:web) do
+    on roles(:app) do
       execute :sudo, "/usr/sbin/service resque-pool restart"
     end
   end
@@ -53,7 +53,7 @@ namespace :deploy do
   # load the workflow configs
   desc "Load workflow configurations"
   task :loadworkflows do
-    on roles(:web) do
+    on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'curation_concerns:workflow:load'
@@ -67,7 +67,7 @@ namespace :deploy do
   # once on any given install, but is idempotent)
   desc "create default admin set"
   task :create_default_admin_set do
-    on roles(:web) do
+    on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'sufia:default_admin_set:create'
