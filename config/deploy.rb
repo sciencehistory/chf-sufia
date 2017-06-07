@@ -15,6 +15,7 @@ set :passenger_restart_with_touch, false
 
 # send some data to whenever
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_roles, [:app, :jobs]
 
 # Prompt which branch to deploy; default to current.
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
