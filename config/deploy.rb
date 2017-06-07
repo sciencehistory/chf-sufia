@@ -1,12 +1,10 @@
 # config valid only for current version of Capistrano
-lock '3.4.0'
+lock '3.8.1'
 
 set :application, 'chf-sufia'
-set :scm, :git
 set :repo_url, 'https://github.com/chemheritage/chf-sufia.git'
 #set :branch, 'master'
 set :deploy_to, '/opt/sufia-project'
-set :format, :pretty
 set :log_level, :info
 set :keep_releases, 5
 # label deploys with server local time instead of utm
