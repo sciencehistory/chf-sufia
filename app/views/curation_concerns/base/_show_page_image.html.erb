@@ -1,8 +1,13 @@
 <%# CHF custom, an image with overlaid controls and info. Used as an alternative to
     `representative_media` for show page, as well as for page thumbs on show page %>
-<%= content_tag("div", class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do %>
-  <a href="javascript: alert('this would open a viewer but not implemented yet');" class="show-page-image-viewer-link"></a>
-
+<%= content_tag("div",
+      tabindex: "0",
+      data: {
+        trigger: "chf_image_viewer",
+        member_id: member.representative_id
+      },
+      class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do
+%>
     <% if local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1 %>
       <%= image_tag nil,
                     class: "lazyload show-page-image-image",
@@ -14,7 +19,11 @@
     <% else %>
       <%= image_tag main_app.download_path(member.representative_id, file: "jpeg"),
                     class: "show-page-image-image",
-                    alt: ""
+                    alt: "",
+                    data: {
+                      trigger: "chf_image_viewer",
+                      member_id: member.id
+                    }
       %>
     <% end %>
 
@@ -46,7 +55,14 @@
               <%= link_to main_app.download_path(member.representative_id),
                           target: "_new",
                           id: "file_download",
-                          data: { label: member.id } do %>
+                          data: {
+                            label: member.id,
+                            # These action/labels are what sufia/hyrax uses, although
+                            # a bit weird. https://github.com/samvera/hyrax/blob/1e504c200fd9c39120f514ac33cd42cd843de9fa/app/assets/javascripts/hyrax/ga_events.js
+                            analytics_event: "Files",
+                            analytics_label: "Downloaded",
+                            analytics_value: member.representative_id
+                          } do %>
                   Original Image
               <% end %>
             </li>

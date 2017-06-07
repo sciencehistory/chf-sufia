@@ -56,6 +56,17 @@ module CurationConcerns
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    # override to cache, cause it's expensive and we need it twice to display
+    # our viewer with thumbs, at present.
+    # See https://github.com/samvera-labs/hyrax/pull/1160
+    def member_presenters(*args)
+      # cache based on args, gah. We really don't understand what's going on,
+      # but we need to do something with this super-expensive call to make it less so,
+      # to support our custom show/viewer.
+      @_member_presenters ||= {}
+      @_member_presenters[args] ||= super
+    end
+
     # Member presenters, but if our representative image is the FIRST image,
     # don't bother repeating it below.
     def show_thumb_member_presenters

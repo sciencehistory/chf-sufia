@@ -24,11 +24,13 @@
   }
 
   // main one should have btn-primary colors.
-  .work-show-representative .show-page-image .show-page-image-bar {
+  .work-show-representative .show-page-image .show-page-image-bar .btn-primary:not(:hover):not(:active):not(:focus) {
     background: transparentize($btn-primary-bg, .3);
-    .btn-primary {
-      border-color: darken($btn-primary-border, .3);
-    }
+    border-color: darken($btn-primary-border, .3);
+  }
+  // and be big big
+  .work-show-representative .show-page-image .show-page-image-bar .btn {
+    font-size: 125%;
   }
 
   header h1 {
@@ -99,20 +101,13 @@
   // elements are absolutely positioned within it.
   .show-page-image {
     position: relative;
+    cursor: pointer;
 
     .show-page-image-image {
       width: 100%;
       // keep crazy long aspect ratio images from being
       // so long, although there will be some distortion.
       max-height: 80vw;
-    }
-
-    // An <a> that's over the whole image to make sure it's clickable
-    .show-page-image-viewer-link {
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100%;
     }
 
     .show-page-member-title {
@@ -146,10 +141,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: transparentize($brand-inverse, .3);
-      .btn-primary {
-        border-color: darken($brand-inverse, 5%);
-      }
+
       .btn-group {
         width: 100%;
         .btn { width: 100%; }
@@ -157,17 +149,13 @@
           left: 5px;
         }
       }
-      a, button {
+      & > button, & > .btn, & > .btn-group > button {
         flex: 1;
         border-radius: 0;
-        background: transparent;
       }
-    }
-
-    &:hover .show-page-image-bar {
-      background: transparentize($btn-primary-bg, .3);
-      .btn-primary {
-        border-color: darken($btn-primary-border, .3);
+      .btn-primary:not(:hover):not(:active):not(:focus) {
+        background: transparentize($brand-inverse, .3);
+        border-color: darken($brand-inverse, 5%);
       }
     }
 
