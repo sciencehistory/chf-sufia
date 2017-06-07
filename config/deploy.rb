@@ -40,7 +40,9 @@ namespace :deploy do
       # end
     end
   end
+end
 
+namespace :chf do
   # Restart resque-pool.
   desc "Restart resque-pool"
   task :resquepoolrestart do
@@ -48,7 +50,7 @@ namespace :deploy do
       execute :sudo, "/usr/sbin/service resque-pool restart"
     end
   end
-  before :restart, :resquepoolrestart
+  after "deploy:symlink:release", "chf:resquepoolrestart"
 
   # load the workflow configs
   desc "Load workflow configurations"
@@ -61,7 +63,7 @@ namespace :deploy do
       end
     end
   end
-  before :restart, :loadworkflows
+  after "deploy:symlink:release", "chf:loadworkflows"
 
   # create default admin set (note this only needs to run
   # once on any given install, but is idempotent)
@@ -75,6 +77,5 @@ namespace :deploy do
       end
     end
   end
-  after :loadworkflows, :create_default_admin_set
-
+  after "chf:loadworkflows", "chf:create_default_admin_set"
 end
