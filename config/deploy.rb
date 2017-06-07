@@ -2,7 +2,6 @@
 lock '3.8.1'
 
 set :application, 'chf-sufia'
-set :scm, :git
 set :repo_url, 'https://github.com/chemheritage/chf-sufia.git'
 #set :branch, 'master'
 set :deploy_to, '/opt/sufia-project'
