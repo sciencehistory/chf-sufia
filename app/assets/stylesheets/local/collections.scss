@@ -14,12 +14,6 @@ $collection-index-box-margin: 17px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-
-    display: -webkit-flex;
-    -webkit-flex-direction: row;
-    -webkit-flex-wrap: wrap;
-    -webkit-justify-content: center;
-
     margin: -1 * $collection-index-box-margin; /* negate flex-item margins on outer border */
 
     .collection {

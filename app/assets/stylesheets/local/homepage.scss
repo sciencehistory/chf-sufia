@@ -72,11 +72,6 @@
     flex-wrap: wrap;
     justify-content: center;
 
-    display: -webkit-flex;
-    -webkit-flex-direction: row;
-    -webkit-flex-wrap: wrap;
-    -webkit-justify-content: center;
-
     .collection {
       position: relative;
       width: $categories-box-width;
@@ -120,10 +115,6 @@
     .featured-collection-container {
       display: flex;
       align-items: center;
-
-      display: -webkit-flex;
-      -webkit-align-items: center;
-
       .featured-collection-callouts {
         margin-left: 10%;
         margin-right: 2%;
