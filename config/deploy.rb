@@ -15,6 +15,7 @@ set :passenger_restart_with_touch, false
 
 # send some data to whenever
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_roles, [:app, :jobs]
 
 # Prompt which branch to deploy; default to current.
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -39,20 +40,22 @@ namespace :deploy do
       # end
     end
   end
+end
 
+namespace :chf do
   # Restart resque-pool.
   desc "Restart resque-pool"
   task :resquepoolrestart do
-    on roles(:web) do
+    on roles(:app) do
       execute :sudo, "/usr/sbin/service resque-pool restart"
     end
   end
-  before :restart, :resquepoolrestart
+  after "deploy:symlink:release", "chf:resquepoolrestart"
 
   # load the workflow configs
   desc "Load workflow configurations"
   task :loadworkflows do
-    on roles(:web) do
+    on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'curation_concerns:workflow:load'
@@ -60,13 +63,13 @@ namespace :deploy do
       end
     end
   end
-  before :restart, :loadworkflows
+  after "deploy:symlink:release", "chf:loadworkflows"
 
   # create default admin set (note this only needs to run
   # once on any given install, but is idempotent)
   desc "create default admin set"
   task :create_default_admin_set do
-    on roles(:web) do
+    on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'sufia:default_admin_set:create'
@@ -74,6 +77,27 @@ namespace :deploy do
       end
     end
   end
-  after :loadworkflows, :create_default_admin_set
+  after "chf:loadworkflows", "chf:create_default_admin_set"
 
+  # some boxes won't have ruby
+  desc "don't bundle install"
+  task :empty_bundle_install do
+    on roles(:no_bundler) do
+      Rake::Task["bundler:install"].clear_actions
+    end
+  end
+  after "deploy:started", "chf:empty_bundle_install"
+
+  desc "add solr_restart=true to your cap invocation (e.g. on first solr deploy), otherwise it will reload config files"
+  task :restart_or_reload_solr do
+    on roles(:solr) do
+      if ENV['solr_restart'].eql? "true"
+        execute :sudo, "/usr/sbin/service solr restart"
+      else
+        # the querystring doesn't come through without the quotes
+        execute :curl, '"localhost:8983/solr/admin/cores?action=reload&core=collection1"'
+      end
+    end
+  end
+  after "deploy:log_revision", "chf:restart_or_reload_solr"
 end
