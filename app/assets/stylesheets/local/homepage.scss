@@ -23,7 +23,6 @@
       background: $transparent-background;
       padding: 5px 10px;
       @include all-white-links;
-      font-family: "Open Sans";
       font-weight: 300;
       font-style: italic;
     }
@@ -92,7 +91,6 @@
 
         .collection-title {
           text-align: center;
-          font-family: "Open Sans";
           font-weight: 700;
           font-size: 18px;
           padding-top: 5px;

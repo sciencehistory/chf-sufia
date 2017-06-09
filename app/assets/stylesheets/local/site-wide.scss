@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:extrabold,bold,semibold,regular,light,');
 
+/* font defaults */
+html {
+  /* to override it has to be in body */
+  body {
+    font-family: "Open Sans";
+    font-size: 16px;
+  }
+}
+
 /* Overrides a bootstrap style */
 .navbar-inverse {
   background-color: $brand-inverse;
@@ -27,7 +36,6 @@
   .navbar-header > a:focus {
     color: $brand-secondary;
     text-decoration: none;
-    font-family: "Open Sans";
     font-style: light;
     font-stretch: expanded;
   }
