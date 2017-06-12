@@ -52,6 +52,10 @@
       input.q, button {
         min-height: 46px;
       }
+      button#search-submit-header {
+        border-bottom-right-radius: $border-radius-base;
+        border-top-right-radius: $border-radius-base;
+      }
     }
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
       /* vertically line up with header when side-by-side */
