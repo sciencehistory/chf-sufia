@@ -48,9 +48,9 @@
 
   .search-callouts {
     .input-group {
-      height: 46px;
+      min-height: 46px;
       input.q, button {
-        height: 46px;
+        min-height: 46px;
       }
     }
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
