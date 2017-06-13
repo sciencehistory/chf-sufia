@@ -24,6 +24,11 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
+  # https://github.com/plataformatec/devise/wiki/how-to:-change-the-default-sign_in-and-sign_out-routes
+  devise_scope :user do
+    get 'login', to: 'devise/sessions#new'
+  end
+
   resources :welcome, only: 'index'
   root 'sufia/homepage#index'
   curation_concerns_collections
