@@ -1,8 +1,17 @@
 <%# overrideen from sufia to use our custom collection thumbnail instead
     of a font icon.
     https://github.com/projecthydra/sufia/blob/30fb2ad6f5402dbc541eb84c969ad4fa6dea1f3b/app/views/collections/_media_display.html.erb
+
+    For now, we only do it if the presenter _has_ a thumbnail_src, don't totally
+    understand why sometimes in admin screens it does not, different presenter
+    I guess. Sufia!
 %>
 
-<div class="collection-show-media">
-  <%= image_tag presenter.thumbnail_src %>
-</div>
+<% if presenter.respond_to?(:thumbnail_src) %>
+  <div class="collection-show-media">
+    <%= image_tag presenter.thumbnail_src %>
+  </div>
+<% else %>
+  <%# original one from sufia %>
+  <span class="<%= Sufia::ModelIcon.css_class_for(Collection) %> collection-icon-search"></span>
+<% end %>
