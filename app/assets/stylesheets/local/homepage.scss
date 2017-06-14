@@ -65,6 +65,7 @@
   $categories-box-margin: 59px;
 
   .categories-list {
+    background-color: $brand-inverse;
     padding-top: 34px;
     display: flex;
     flex-direction: row;
@@ -86,7 +87,7 @@
         left: 0;
         width: 100%;
         height: 56px;
-        background-color: $brand-inverse;
+        background-color: $brand-primary;
         padding: 10px;
 
         .collection-title {
@@ -111,6 +112,7 @@
   }
   @media (min-width: $screen-sm-min) {
     .featured-collection-container {
+      background-color: $bg-grey;
       display: flex;
       align-items: center;
       .featured-collection-callouts {
