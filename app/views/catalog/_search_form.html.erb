@@ -14,11 +14,6 @@
         <span data-search-element="label"><%= t("sufia.search.form.option.all.label_long") %></span>
         <span class="caret"></span>
       </button>
-      <%# CHF edit: swapped dropdown and submit button to make rounded corners simpler %>
-      <button type="submit" class="btn btn-primary" id="search-submit-header">
-        <%= t('sufia.search.button.html') %>
-      </button>
-
       <ul class="dropdown-menu pull-right">
         <li>
           <%= link_to t("sufia.search.form.option.all.label_long"), "#",
@@ -39,8 +34,13 @@
                 data: { "search-option" => sufia.dashboard_shares_path, "search-label" => t("sufia.search.form.option.my_shares.label_short") } %>
           </li>
         <% end %>
-
       </ul>
+
+      <%# CHF edit: swapped dropdown and submit button to get rounded corners %>
+      <button type="submit" class="btn btn-primary" id="search-submit-header">
+        <%= t('sufia.search.button.html') %>
+      </button>
+
     </div><!-- /.input-group-btn -->
 
   </div><!-- /.input-group -->
