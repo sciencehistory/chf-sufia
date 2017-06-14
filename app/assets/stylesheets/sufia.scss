@@ -5,6 +5,7 @@
 */
 
 @import "bootstrap-sprockets";
+@import "local/_variables.scss"; /* must set vars before bootstrap */
 @import 'bootstrap';
 @import 'blacklight/blacklight';
 @import "font-awesome";
