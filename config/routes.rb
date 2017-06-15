@@ -1,6 +1,9 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  # override sufia's about routing to use a static page instead of a content block
+  get 'about', controller: 'static', action: 'about', as: 'about'
+
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
