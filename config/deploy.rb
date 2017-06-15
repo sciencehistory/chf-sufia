@@ -17,6 +17,9 @@ set :passenger_restart_with_touch, false
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 set :whenever_roles, [:app, :jobs]
 
+# not all machines should run bundler; some won't have ruby
+set :bundle_roles, [:app, :jobs]
+
 # Prompt which branch to deploy; default to current.
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
@@ -78,15 +81,6 @@ namespace :chf do
     end
   end
   after "chf:loadworkflows", "chf:create_default_admin_set"
-
-  # some boxes won't have ruby
-  desc "don't bundle install"
-  task :empty_bundle_install do
-    on roles(:no_bundler) do
-      Rake::Task["bundler:install"].clear_actions
-    end
-  end
-  after "deploy:started", "chf:empty_bundle_install"
 
   desc "add solr_restart=true to your cap invocation (e.g. on first solr deploy), otherwise it will reload config files"
   task :restart_or_reload_solr do
