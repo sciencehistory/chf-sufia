@@ -29,7 +29,7 @@
       <div class="nav navbar-nav navbar-right">
         <li><%= link_to t(:'sufia.controls.about').upcase, sufia.about_path, :'data-no-turbolink'=>"true" %></li>
         <li><%= link_to t(:'sufia.controls.help').upcase, sufia.help_path %></li>
-        <li><%= link_to t(:'sufia.controls.contact').upcase, sufia.contact_path %></li>
+        <li><%= mail_to Sufia.config.contact_email, t(:'sufia.controls.contact').upcase %></li>
       </ul><!-- /.nav -->
     </div>
   </div>

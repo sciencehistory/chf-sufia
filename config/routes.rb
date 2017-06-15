@@ -29,6 +29,9 @@ Rails.application.routes.draw do
     get 'login', to: 'devise/sessions#new'
   end
 
+  # make the contact form inaccessible since we're using mailto
+  get 'contact', to: redirect('/404')
+
   resources :welcome, only: 'index'
   root 'sufia/homepage#index'
   curation_concerns_collections
