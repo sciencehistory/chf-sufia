@@ -9,15 +9,11 @@
     <%= text_field_tag :q, current_search_parameters , class: "q form-control", id: "search-field-header", placeholder: t("sufia.search.form.q.placeholder") %>
 
     <div class="input-group-btn">
-      <button type="submit" class="btn btn-primary" id="search-submit-header">
-        <%= t('sufia.search.button.html') %>
-      </button>
       <%# CHF edit to hide search dropdown for non-staff users %>
       <button class="btn btn-default dropdown-toggle <%= 'hidden' unless current_ability.current_user.staff? %>" type="button" data-toggle="dropdown">
         <span data-search-element="label"><%= t("sufia.search.form.option.all.label_long") %></span>
         <span class="caret"></span>
       </button>
-
       <ul class="dropdown-menu pull-right">
         <li>
           <%= link_to t("sufia.search.form.option.all.label_long"), "#",
@@ -38,8 +34,13 @@
                 data: { "search-option" => sufia.dashboard_shares_path, "search-label" => t("sufia.search.form.option.my_shares.label_short") } %>
           </li>
         <% end %>
-
       </ul>
+
+      <%# CHF edit: swapped dropdown and submit button to get rounded corners %>
+      <button type="submit" class="btn btn-primary" id="search-submit-header">
+        <%= t('sufia.search.button.html') %>
+      </button>
+
     </div><!-- /.input-group-btn -->
 
   </div><!-- /.input-group -->

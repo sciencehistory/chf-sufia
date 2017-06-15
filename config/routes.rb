@@ -1,6 +1,9 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  # override sufia's about routing to use a static page instead of a content block
+  get 'about', controller: 'static', action: 'about', as: 'about'
+
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   Hydra::BatchEdit.add_routes(self)
   mount Qa::Engine => '/authorities'
@@ -24,6 +27,14 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
+  # https://github.com/plataformatec/devise/wiki/how-to:-change-the-default-sign_in-and-sign_out-routes
+  devise_scope :user do
+    get 'login', to: 'devise/sessions#new'
+  end
+
+  # make the contact form inaccessible since we're using mailto
+  get 'contact', to: redirect('/404')
+
   resources :welcome, only: 'index'
   root 'sufia/homepage#index'
   curation_concerns_collections

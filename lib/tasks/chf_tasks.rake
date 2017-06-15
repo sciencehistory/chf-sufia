@@ -143,6 +143,15 @@ namespace :chf do
     end
   end
 
+  desc "set all collection thumbnails assuming they are named collections/[id_2x.jpg]"
+  task collection_images_by_id: :environment do
+    base_path = Rails.root.join('app/assets/images/collections')
+    Collection.find_each do |coll|
+      rel_path = "#{coll.id}_2x.jpg"
+      coll.update!(representative_image_path: rel_path) if base_path.join(rel_path).exist?
+    end
+  end
+
   namespace :admin do
 
     desc 'Grant admin role to existing user.'
