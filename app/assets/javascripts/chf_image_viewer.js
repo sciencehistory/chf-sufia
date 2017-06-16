@@ -105,13 +105,6 @@ ChfImageViewer.prototype.removeLoading =  function(viewer) {
   $('.viewer-image').removeClass('viewer-image-loading');
 };
 
-ChfImageViewer.prototype.id2TileSource = function(id) {
-  return {
-    type: 'image',
-    url: '/downloads/' + id + "?file=jpeg"
-  };
-}
-
 ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   this.selectedThumb = thumbElement;
 
@@ -124,10 +117,11 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   var shouldShowInfo = thumbElement.getAttribute('data-member-should-show-info') == "true";
   var title = thumbElement.getAttribute('data-title');
   var linkUrl   = thumbElement.getAttribute('data-member-show-url');
+  var tileSource = thumbElement.getAttribute('data-tile-source');
 
   $('.viewer-image').addClass('viewer-image-loading');
 
-  this.viewer.open(this.id2TileSource(id));
+  this.viewer.open(tileSource);
 
   document.querySelector('*[data-hook="viewer-navbar-title-label"]').textContent = title;
   document.querySelector('*[data-hook="viewer-navbar-info-link"]').href = linkUrl;

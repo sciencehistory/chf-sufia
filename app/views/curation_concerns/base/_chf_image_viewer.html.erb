@@ -50,6 +50,9 @@
                       member_should_show_info: member_presenter.model_name.to_s != "FileSet",
                       member_id: member_presenter.representative_id,
                       member_show_url: contextual_path(member_presenter, work),
+                      # TODO: index this so we don't have to hit fedora for the original file id
+                      # TODO: add configuration to be read here to enable us to use the url of another box
+                      tile_source: riiif.info_path(FileSet.find(member_presenter.representative_id).original_file.id, locale: nil),
                       src: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field)
                     }
                 -%>
