@@ -50,7 +50,7 @@ module CHF
     end
 
     def subject
-      "FIXITY CHECK FAILURE: #{file_set_title}"
+      "FIXITY CHECK FAILURE: #{Socket.gethostname}: #{file_set_title}"
     end
 
     protected
