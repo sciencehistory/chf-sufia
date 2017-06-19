@@ -39,10 +39,11 @@ describe Hyrax::FileSetFixityCheckService do
 
       expect(last_email.to).to eq(["digital-tech@chemheritage.org"])
       expect(last_email.from).to eq(["digital-tech@chemheritage.org"])
-      expect(last_email.subject).to eq("FIXITY CHECK FAILURE: sample.jpg")
+      expect(last_email.subject).to match(/\AFIXITY CHECK FAILURE: #{Regexp.escape(Socket.gethostname)}: sample\.jpg\Z/)
+
       expect(last_email.body.to_s).to include(file_set.id)
       expect(last_email.body.to_s).to include(file_id)
-      expect(last_email.body.to_s).to include(checked_uri)
+      expect(last_email.body.to_s).to include(URI.parse(checked_uri).path.sub("fcr:versions", "fcr%3aversions"))
       expect(last_email.body.to_s).to include(expected_message_digest)
       expect(last_email.body.to_s).to include(log.created_at.in_time_zone.to_s)
       expect(last_email.body.to_s).to include("ChecksumAuditLog id: #{log.id}")
