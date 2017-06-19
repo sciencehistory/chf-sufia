@@ -9,6 +9,29 @@ namespace :chf do
     end
   end
 
+  desc "re-run just failed fixity checks"
+  task :rerun_failed_fixity_checks => :environment do
+    rel = ChecksumAuditLog.latest_checks.where(passed: false)
+
+    total_failed = rel.count
+
+    $stderr.puts "Total failed latest checks: #{total_failed}"
+
+    progress_bar = ProgressBar.create(total: total_failed)
+
+    # Force max_days_between_fixity_checks -1, do it now no matter what!
+    rel.find_each do |checksum_audit_log|
+      begin
+        progress_bar.increment
+        Hyrax::FileSetFixityCheckService.new(checksum_audit_log.file_set_id, max_days_between_fixity_checks: -1, async_jobs: false, latest_version_only: true).fixity_check
+      rescue Ldp::Gone => e
+        progress_bar.log "ChecksumAuditLog=#{checksum_audit_log.id}: #{e.inspect}: FileSet apparently no longer present: #{checksum_audit_log.file_set_id}"
+      end
+    end
+
+    $stderr.puts "Re-ran checks, after re-run total failed latest checks: #{rel.count}"
+  end
+
 
   desc 'Rough count metadata completion'
   task metadata_report: :environment do
