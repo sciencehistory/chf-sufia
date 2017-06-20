@@ -27,30 +27,36 @@ module CHF
 
     def message
       <<-EOF
-<p>hostname: #{`hostname`.chomp}</p>
+<p>hostname: #{`hostname`.chomp}
+</p>
 
 <p>Fixity check failure at #{log_created_at}<br>
-  for: <a href="#{checked_uri}/fcr:metadata">#{checked_uri}/fcr:metadata</a></p>
+  for: #{checked_uri_fedora_metadata_uri}
+</p>
 
-<p>Expected fixity result: #{expected_result}</p>
+<p>Expected fixity result: #{expected_result}
+</p>
 
 <p>work:
-  #{works_message}</p>
+  #{works_message}
+</p>
 
 
-<p>file_set: #{file_set_id} #{file_set_title}
-  <a href="#{file_set_app_path}">#{file_set_app_path}</a>
-  <a href="#{file_set.try(:uri)}/fcr:metadata">#{file_set.try(:uri)}/fcr:metadata</a></p>
+<p>file_set: #{file_set_id} #{file_set_title}<br>
+  <a href="#{file_set_app_path}">#{file_set_app_path}</a><br>
+  #{file_set_fedora_metadata_uri}
+</p>
 
-<p>file: #{file_id}
-  <a href="#{file_fedora_metadata_uri}">#{file_fedora_metadata_uri}</a></p>
+<p>file: #{file_id}<br>
+  #{file_fedora_metadata_uri}
+</p>
 
 <p>Logged in ChecksumAuditLog: #{ERB::Util.html_escape checksum_audit_log.inspect}</p>
   EOF
     end
 
     def subject
-      "FIXITY CHECK FAILURE: #{file_set_title}"
+      "FIXITY CHECK FAILURE: #{Socket.gethostname}: #{file_set_title}"
     end
 
     protected
@@ -69,9 +75,21 @@ module CHF
       end.join("\n")
     end
 
+    # with actual hostname (prob internal IP) replaced with `FEDORA`
     def file_fedora_metadata_uri
       file_uri = Hydra::PCDM::File.translate_id_to_uri.call(file_id)
-      file_uri && "#{file_uri}/fcr:metadata"
+      file_uri && prepare_display_uri("#{file_uri}/fcr:metadata")
+    end
+
+    # with actual hostname (prob internal IP) replaced with `FEDORA`
+    def file_set_fedora_metadata_uri
+      if file_set
+        prepare_display_uri("#{file_set.uri}/fcr:metadata")
+      end
+    end
+
+    def checked_uri_fedora_metadata_uri
+      prepare_display_uri("#{checked_uri}/fcr:metadata")
     end
 
     def log_created_at
@@ -96,6 +114,14 @@ module CHF
 
     def expected_result
       checksum_audit_log.try(:expected_result)
+    end
+
+    # replace real hostname with 'FEDORA', cause real hostname is probably
+    # an AWS internal-only IP address, and we don't have access to the actual
+    # external hostname/IP at present.  Replace fcr:verisons with escaped
+    # version because of bug in fedora. https://jira.duraspace.org/browse/FCREPO-1247
+    def prepare_display_uri(uri)
+      uri.to_s.sub(%r{//[^/]+(:\d{1,4})/}, '//FEDORA\1/').sub(/fcr:versions/, "fcr%3aversions")
     end
   end
 end
