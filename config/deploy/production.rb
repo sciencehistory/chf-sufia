@@ -1,7 +1,8 @@
 # using an ssh-config entry to set the user, key, and address of the machine
 set :stage, :production
 set :rails_env, 'production'
-server 'digital.chemheritage.org', user: 'hydep', roles: [:web, :app, :db, :jobs, :solr]
+server 'digital.chemheritage.org', user: 'hydep', roles: [:web, :app, :db, :jobs]
+server '52.90.51.141', user: 'hydep', roles: [:solr]
 
 # server-based syntax
 # ======================
