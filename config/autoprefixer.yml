@@ -1,0 +1,23 @@
+# Autoprefixer_rails was already a dependency of bootstrap-sass (bootstrap 3),
+# and it hooks into sprockets to automatically add vendor-specific CSS prefixes.
+#
+# But without explicit configuration, it uses it's default configuration,
+# which is somewhat less than we want to support.
+#
+# What we configure here is still less than the full gamut that Bootstrap 3
+# itself can support.
+# https://github.com/twbs/bootstrap-sass#sass-autoprefixer
+#
+# What we've configured here is not neccesarily a promise to support
+# all browsers here, just doesn't hurt. As of June 2017, we are
+# trying to support IE11, maybe IE10 if possible, latest Chrome
+# and Firefox, other browsers unspecified. (TBD link to basecamp
+# or wiki etc with support requirements)
+flexbox: no-2009
+browsers:
+  - "> 1%"
+  - "last 2 versions"
+  - "Android >= 4"
+  - "Explorer >= 10"
+  - "iOS >= 6"
+  - "Safari >= 8"
