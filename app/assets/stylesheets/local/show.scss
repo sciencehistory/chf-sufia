@@ -1,29 +1,197 @@
-// There seems to be no existing css class allowing us to scope
-// this stuff just to generic work 'show' page. If there was, I'd use it.
-// Perhaps it should be added later.
+.work-show {
+  padding: 0 15px;
 
-.additional-titles {
-  h2 {
-    @extend h4;
-  }
-}
-
-.large-rights-statement {
-  margin-top: 15px;
-
-  @include clearfix;
-
-  .rights-statement-logo {
-    width: 40px;
-    float: left;
-    margin-right: 0.5em;
-  }
-  .rights-statement-label {
-    font-size: 18px;
-    line-height: 1;
-    text-transform: uppercase;
-    font-weight: bold;
-    line-height: 1
+  .work-show-admin {
+    text-align: right;
   }
 
+
+  @media (min-width: $screen-sm-min) {
+    .work-show-representative, .work-show-metadata, .work-show-title {
+      width: 50%;
+      padding: 0 15px;
+      display: inline-block;
+    }
+    .work-show-representative {
+      float: left;
+      padding-left: 0;
+    }
+
+    .work-show-metadata, .work-show-title {
+      float: right;
+      padding-right: 0;
+    }
+  }
+
+  // main one should have btn-primary colors.
+  .work-show-representative .show-page-image .show-page-image-bar .btn-primary:not(:hover):not(:active):not(:focus) {
+    background: transparentize($btn-primary-bg, .3);
+    border-color: darken($btn-primary-border, .3);
+  }
+  // and be big big
+  .work-show-representative .show-page-image .show-page-image-bar .btn {
+    font-size: 125%;
+  }
+
+  header h1 {
+    margin-top: 0;
+  }
+
+  .additional-titles {
+    h2 {
+      @extend h4;
+    }
+  }
+
+  .rights-and-social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+
+    .rights-statement.large, .social-media {
+      flex: 1;
+      flex-basis: 170px;
+      padding: 0;
+      margin: 0;
+    }
+    .social-media {
+      @media (min-width: $screen-lg-min) {
+        text-align: right;
+       }
+    }
+  }
+
+  .rights-statement.inline {
+    // turn br into space
+    .rights-statement-label br {
+      content: " ";
+      &:after {
+        content:" ";
+      }
+    }
+    .rights-statement-logo {
+      width: 1em;
+      vertical-align: middle;
+    }
+  }
+
+  .rights-statement.large {
+    margin-top: 15px;
+
+    @include clearfix;
+
+    .rights-statement-logo {
+      width: 40px;
+      float: left;
+      margin-right: 0.5em;
+    }
+    .rights-statement-label {
+      font-size: 18px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: bold;
+      line-height: 1
+    }
+  }
+
+  // An image with overlaid action buttons and metadata, used for
+  // representative image and thumbs on show page. Internal overlay
+  // elements are absolutely positioned within it.
+  .show-page-image {
+    position: relative;
+    cursor: pointer;
+
+    .show-page-image-image {
+      width: 100%;
+      // keep crazy long aspect ratio images from being
+      // so long, although there will be some distortion.
+      max-height: 80vw;
+    }
+
+    .show-page-member-title {
+      position: absolute;
+      padding: 7px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: transparentize($brand-inverse, .3);
+      color: transparentize($btn-primary-color, .3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .show-page-image-permission {
+      .label {
+        position: absolute;
+        right: 0;
+        top: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .show-page-image-bar {
+      position: absolute;
+      display: flex;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      .btn-group {
+        width: 100%;
+        .btn { width: 100%; }
+        .dropdown-menu {
+          left: 5px;
+        }
+      }
+      & > button, & > .btn, & > .btn-group > button {
+        flex: 1;
+        border-radius: 0;
+      }
+      .btn-primary:not(:hover):not(:active):not(:focus) {
+        background: transparentize($brand-inverse, .3);
+        border-color: darken($brand-inverse, 5%);
+      }
+    }
+
+    &.thumb {
+      display: inline-block;
+      width: 160px;
+      margin: 4px 4px 0 0;
+
+      img.show-page-image-image {
+        width: 100%;
+        &.lazyload, &.lazyloading {
+          background: #AAA asset-url('spinner.svg') no-repeat center;
+          height: calc(1.33 * 160px);
+        }
+        vertical-align: bottom;
+        // keep crazy long aspect ratio images from being
+        // so long, although there will be some distortion.
+        max-height: 30vw;
+        min-height: 100px; // just so it's something!
+      }
+
+      @media (min-width: $screen-sm-min) {
+        // 2 wide
+        width: calc(50% / 2 - 12px);
+        // before lazy loaded complete, VERY roughy estimate 4/3 aspect ratio ish
+        img.lazyload, img.lazyloading {
+          height: 25vw;
+        }
+      }
+      @media (min-width: $screen-lg-min) {
+        // 3 wide
+        width: calc(50% / 3 - 10px);
+        img.lazyload, img.lazyloading {
+          height: 15vw;
+        }
+      }
+    }
+  }
 }

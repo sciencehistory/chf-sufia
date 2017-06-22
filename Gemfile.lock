@@ -13,6 +13,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.7.1)
       actionpack (= 4.2.7.1)
@@ -544,6 +545,7 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.7.1)
       sprockets-rails
+    rails-assets-lazysizes (3.0.0)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.8)
@@ -821,6 +823,7 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   oauth2 (= 1.2.0)
+  openseadragon
   pg
   phantomjs (~> 2.1.1)
   poltergeist (~> 1.5)
@@ -828,6 +831,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   rails (~> 4.2.7.1)
+  rails-assets-lazysizes!
   resque-pool
   rest-client
   rsolr (~> 1.0)
@@ -847,4 +851,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.14.6
+   1.15.0

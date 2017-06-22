@@ -45,6 +45,38 @@ module CurationConcerns
       CurationConcerns::LicenseService.new.authority.find(identifier).fetch("short_label_html", "").html_safe
     end
 
+    # Override to only display if NOT open access. We assume open access, but
+    # want a warning to logged-in staff if viewing something not public.
+    def permission_badge
+      if needs_permission_badge?
+        super
+      end
+    end
+    def needs_permission_badge?
+      solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    end
 
+    # override to cache, cause it's expensive and we need it twice to display
+    # our viewer with thumbs, at present.
+    # See https://github.com/samvera-labs/hyrax/pull/1160
+    def member_presenters(*args)
+      # cache based on args, gah. We really don't understand what's going on,
+      # but we need to do something with this super-expensive call to make it less so,
+      # to support our custom show/viewer.
+      @_member_presenters ||= {}
+      @_member_presenters[args] ||= super
+    end
+
+    # Member presenters, but if our representative image is the FIRST image,
+    # don't bother repeating it below.
+    def show_thumb_member_presenters
+      @show_thumb_member_presenters ||= begin
+        if member_presenters.present? && member_presenters.first.id == representative_id
+          member_presenters.dup.tap { |a| a.delete_at(0) }
+        else
+          member_presenters
+        end
+      end
+    end
   end
 end

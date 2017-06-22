@@ -1,8 +1,19 @@
 <% provide :page_title, @presenter.page_title %>
-<div itemscope itemtype="http://schema.org/CreativeWork" class="row">
-  <div class="col-xs-12">
+
+<div class="work-show" itemscope itemtype="http://schema.org/CreativeWork" class="row">
+
+  <% if current_ability.current_user.staff? %>
+    <div class="work-show-admin">
+      <%= render "show_actions", presenter: @presenter %>
+      <%= render 'workflow_actions_widget', presenter: @presenter %>
+    </div>
+  <% end %>
+
+  <div class="work-show-title">
     <header>
-      <%= render 'work_title', presenter: @presenter %>
+      <%= @presenter.permission_badge %>
+      <h1><%= @presenter.title.first %></h1>
+
       <% if @presenter.additional_title.present? %>
         <ul class="additional-titles list-unstyled">
           <% @presenter.additional_title.each do |title| %>
@@ -11,31 +22,43 @@
         </ul>
       <% end %>
     </header>
-
   </div>
-  <div class="col-sm-8">
+
+  <div class="work-show-representative">
+      <%= show_page_representative_media(@presenter) %>
+      <div class="rights-and-social">
+        <%= render 'rights_statement', presenter: @presenter, theme: 'large' %>
+        <%= render 'social_media' %>
+      </div>
+  </div>
+
+
+  <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
     <%= render 'relationships', presenter: @presenter %>
     <%= render 'metadata', presenter: @presenter %>
-  </div>
-  <div class="col-sm-4">
-    <%= render "show_actions", presenter: @presenter %>
-    <%= t('.last_modified', value: @presenter.date_modified) %>
-    <%= render 'representative_media', presenter: @presenter %>
-    <%= render 'large_rights_statement', presenter: @presenter %>
-    <%= render 'social_media' %>
+    <% if current_ability.current_user.staff? %>
+      <%= t('.last_modified', value: @presenter.date_modified) %>
+    <% end %>
     <%= render 'citations', presenter: @presenter %>
   </div>
+
+
+  <%# these are not in a div so they can wrap around the bottom of the metadata
+      div to take up all space. Experiment? Hack to make sure they start after
+      big representative image %>
+  <div style="clear: left"></div>
+
+  <%= render partial: 'show_page_image',
+             collection: @presenter.show_thumb_member_presenters,
+             as: :member,
+             locals: {
+               extra_classes: 'thumb',
+               actions_as_icon: true,
+               lazy_after: 6
+             }
+  %>
 </div>
 
-<div class="row">
-  <div class="col-sm-12">
-    <%= render 'items', presenter: @presenter %>
-    <%= render 'workflow_actions_widget', presenter: @presenter %>
-    <%#= render 'sharing_with', presenter: @presenter %>
-    <%#= render 'user_activity', presenter: @presenter %>
-  </div>
-</div>
-<% @presenter.member_presenters.each do |mp| %>
-  <%= render 'lightbox_preview', presenter: mp %>
-<% end %>
+<%= render 'chf_image_viewer', work: @presenter  %>
+

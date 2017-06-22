@@ -1,0 +1,45 @@
+<%# used on our _show_page_image box with embedded controls, for filesets and logged
+    in staff %>
+
+<div class="btn-group dropup">
+
+  <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_<%= file_set.id %>" aria-haspopup="true">
+    Admin
+  </button>
+
+  <ul role="menu" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu_<%= file_set.id %>">
+
+    <li role="menuitem" tabindex="-1">
+      <%= link_to 'File Detail', contextual_path(file_set, presenter),
+        title: file_set.to_s.inspect, target: "_blank" %>
+    </li>
+
+    <li class="divider"></li>
+
+  <% if can?(:edit, file_set.id) %>
+    <li role="menuitem" tabindex="-1">
+      <%= link_to 'Edit', edit_polymorphic_path([main_app, file_set]),
+        { title: "Edit #{file_set}" } %>
+    </li>
+
+    <li role="menuitem" tabindex="-1">
+      <%= link_to 'Versions',  edit_polymorphic_path([main_app, file_set], anchor: 'versioning_display'),
+        { title: "Display previous versions" } %>
+    </li>
+  <% end %>
+
+  <% if can?(:destroy, file_set.id) %>
+    <li role="menuitem" tabindex="-1">
+      <%= link_to 'Delete', polymorphic_path([main_app, file_set]),
+        method: :delete, title: "Delete #{file_set}",
+        data: {confirm: "Deleting #{file_set} from #{application_name} is permanent. Click OK to delete this from #{application_name}, or Cancel to cancel this operation"} %>
+    </li>
+  <% end %>
+
+
+
+
+  </ul>
+</div>
+
+
