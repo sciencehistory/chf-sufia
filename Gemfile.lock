@@ -823,6 +823,7 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   oauth2 (= 1.2.0)
+  openseadragon
   pg
   phantomjs (~> 2.1.1)
   poltergeist (~> 1.5)

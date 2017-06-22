@@ -42,6 +42,13 @@ Rails.application.routes.draw do
   curation_concerns_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
 
+  # there might be a way to get curation_concerns routes to this for us,
+  # but don't know it, and this is easy enough and works. Make the viewer
+  # URL lead to ordinary show page, so JS can pick it up and launch viewer.
+  get '/concern/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
+  get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
+
+
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
     concerns :exportable
   end
