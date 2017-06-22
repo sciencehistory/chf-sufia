@@ -46,27 +46,26 @@ namespace :chf do
     end
   end
 
+  desc 'Re-characterize all files'
+  task characterize: :environment do
+    require Rails.root.join('lib','minimagick_patch')
+    MiniMagick::Tool.quiet_arg = true
+    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
+    Sufia.primary_work_type.all.find_each do |work|
+      work.file_sets.each do |fs|
+        fs.files.each do |file|
+          CharacterizeJob.perform_now(fs, file.id)
+        end
+      end
+      progress_bar.increment
+    end
+    MiniMagick::Tool.quiet_arg = false
+  end
+
   desc 'Re-generate all derivatives'
   task create_derivatives: :environment do
-
-    # Hack to monkey-patch MiniMagick to always add the 'quiet'
-    # option to every imagemagick command line.
-    class MiniMagick::Tool
-      class_attribute :quiet_arg
-      self.quiet_arg = false
-
-      prepend(Module.new do
-        def command
-          if quiet_arg
-            [*executable, *(['-quiet'] + args)]
-          else
-            super
-          end
-        end
-      end)
-    end
+    require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
-
 
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
