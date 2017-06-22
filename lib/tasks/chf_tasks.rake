@@ -48,7 +48,7 @@ namespace :chf do
 
   desc 'Re-characterize all files'
   task characterize: :environment do
-    require Rails.root.join('lib','minimagick','tool')
+    require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
@@ -64,7 +64,7 @@ namespace :chf do
 
   desc 'Re-generate all derivatives'
   task create_derivatives: :environment do
-    require Rails.root.join('lib','minimagick','tool')
+    require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
 
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
