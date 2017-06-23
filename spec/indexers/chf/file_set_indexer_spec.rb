@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FileSetIndexer do
+RSpec.describe CHF::FileSetIndexer do
   let(:mock_file) {
       mock_model('MockFile',
                  id: 'totally_a_file_id',
