@@ -41,46 +41,7 @@
 
     <div class="show-page-image-bar">
       <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
-        <div class="btn-group dropup">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%# less space for admin, just use icon %>
-            <i class='fa fa-download'></i> <% if ! current_ability.current_user.staff? %> Download <% end %>
-          </button>
-          <ul class="dropdown-menu">
-            <% if @presenter.has_rights_statement? %>
-              <li><%= render 'rights_statement', presenter: @presenter, theme: 'inline' %></li>
-              <li class="divider"></li>
-            <% end %>
-            <li class="dropdown-header">Download this image</li>
-            <li>
-              <%= link_to main_app.download_path(member.representative_id),
-                          target: "_new",
-                          id: "file_download",
-                          data: {
-                            label: member.id,
-                            # These action/labels are what sufia/hyrax uses, although
-                            # a bit weird. https://github.com/samvera/hyrax/blob/1e504c200fd9c39120f514ac33cd42cd843de9fa/app/assets/javascripts/hyrax/ga_events.js
-                            analytics_event: "Files",
-                            analytics_label: "Downloaded",
-                            analytics_value: member.representative_id
-                          } do %>
-                  Original Image
-              <% end %>
-            </li>
-            <li>
-              <%= link_to "Full-size JPEG",
-                          riiif_image_url(member.original_file_id, format: "jpg", size: "full"),
-                          target: "_blank",
-                          data: {
-                            # These action/labels are based on what sufia/hyrax uses, although
-                            # a bit weird.
-                            analytics_event: "Files",
-                            analytics_label: "Downloaded-jpg",
-                            analytics_value: member.representative_id
-                          } %>
-            </li>
-          </ul>
-        </div>
+        <%= render "show_page_image_download_menu", member: member, parent: @presenter %>
       <% end %>
 
       <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
