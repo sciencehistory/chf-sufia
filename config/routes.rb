@@ -3,6 +3,8 @@ require 'resque/server'
 Rails.application.routes.draw do
   # override sufia's about routing to use a static page instead of a content block
   get 'about', controller: 'static', action: 'about', as: 'about'
+  # add a policy page
+  get 'policy', controller: 'static', action: 'policy', as: 'policy'
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   Hydra::BatchEdit.add_routes(self)
