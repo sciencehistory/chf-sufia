@@ -80,8 +80,7 @@ module CurationConcerns
     end
 
     def riiif_file_id
-      return unless member_presenters.present?
-      representative_presenter = member_presenters.select{ |pres| pres.id == representative_id }.pop
+      return if representative_presenter.nil?
       representative_presenter.riiif_file_id
     end
   end
