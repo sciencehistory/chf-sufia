@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   get 'about', controller: 'static', action: 'about', as: 'about'
   # add a policy page
   get 'policy', controller: 'static', action: 'policy', as: 'policy'
+  # add a faq page
+  get 'faq', controller: 'static', action: 'faq', as: 'faq'
+  # remove help page, replaced with 'faq'
+  get 'help', to: redirect('/404')
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   Hydra::BatchEdit.add_routes(self)
