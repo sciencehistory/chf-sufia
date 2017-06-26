@@ -68,7 +68,16 @@
               <% end %>
             </li>
             <li>
-              <%= link_to "Full-size JPEG", riiif_image_url(member.original_file_id, format: "jpg", size: "full"), target: "_blank" %>
+              <%= link_to "Full-size JPEG",
+                          riiif_image_url(member.original_file_id, format: "jpg", size: "full"),
+                          target: "_blank",
+                          data: {
+                            # These action/labels are based on what sufia/hyrax uses, although
+                            # a bit weird.
+                            analytics_event: "Files",
+                            analytics_label: "Downloaded-jpg",
+                            analytics_value: member.representative_id
+                          } %>
             </li>
           </ul>
         </div>
