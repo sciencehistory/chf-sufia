@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'about', controller: 'static', action: 'about', as: 'about'
   # add a policy page
   get 'policy', controller: 'static', action: 'policy', as: 'policy'
+  # override sufia's contact routing to use a static page instead of a form
+  get 'contact', controller: 'static', action: 'contact', as: 'contact'
   # add a faq page
   get 'faq', controller: 'static', action: 'faq', as: 'faq'
   # remove help page, replaced with 'faq'
