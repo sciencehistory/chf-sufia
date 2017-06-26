@@ -52,7 +52,7 @@
                       member_show_url: contextual_path(member_presenter, work),
                       # TODO: index this so we don't have to hit fedora for the original file id
                       # TODO: add configuration to be read here to enable us to use the url of another box
-                      tile_source: riiif_image_url(member_presenter.riiif_file_id),
+                      tile_source: riiif_info_url(member_presenter.riiif_file_id),
                       src: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field)
                     }
                 -%>
