@@ -51,6 +51,7 @@
               <li><%= render 'rights_statement', presenter: @presenter, theme: 'inline' %></li>
               <li class="divider"></li>
             <% end %>
+            <li class="dropdown-header">Download this image</li>
             <li>
               <%= link_to main_app.download_path(member.representative_id),
                           target: "_new",
@@ -66,8 +67,9 @@
                   Original Image
               <% end %>
             </li>
-            <li class="divider"></li>
-            <li><a>More download options coming</a></li>
+            <li>
+              <%= link_to "Full-size JPEG", riiif_image_url(member.original_file_id, format: "jpg", size: "full"), target: "_blank" %>
+            </li>
           </ul>
         </div>
       <% end %>
