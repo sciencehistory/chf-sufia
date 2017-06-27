@@ -1,4 +1,9 @@
-.policy-page dl dt {
-  font-weight: normal;
-  font-style: italic;
+.policy-page {
+  h2 {
+    @extend h3;
+  }
+  dl dt {
+    font-weight: normal;
+    font-style: italic;
+  }
 }
