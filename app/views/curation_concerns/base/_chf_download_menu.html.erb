@@ -19,7 +19,7 @@ locals:
     <% end %>
     <li class="dropdown-header">Download this image</li>
     <li>
-      <%= link_to(( member ? main_app.download_path(member.representative_id) : "#" ),
+      <%= link_to("Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
                   target: "_new",
                   id: "file_download",
                   data: {
@@ -30,9 +30,7 @@ locals:
                     analytics_event: "Files",
                     analytics_label: "Downloaded",
                     analytics_value: (member.representative_id if member)
-                  }) do %>
-          Original Image
-      <% end %>
+                  }) %>
     </li>
     <li>
       <%= link_to("Full-size JPEG",

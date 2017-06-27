@@ -112,14 +112,14 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   $('.viewer-thumbs .viewer-thumb-selected').removeClass('viewer-thumb-selected')
   thumbElement.classList.add('viewer-thumb-selected');
 
-  var id                    = thumbElement.getAttribute('data-member-id');
-  var index                 = thumbElement.getAttribute('data-index');
-  var shouldShowInfo        = thumbElement.getAttribute('data-member-should-show-info') == "true";
-  var title                 = thumbElement.getAttribute('data-title');
-  var linkUrl               = thumbElement.getAttribute('data-member-show-url');
-  var downloadOriginalUrl   = thumbElement.getAttribute('data-member-dl-original-url');
-  var downloadJpegUrl       = thumbElement.getAttribute('data-member-dl-jpeg-url');
-  var tileSource            = thumbElement.getAttribute('data-tile-source');
+  var id = thumbElement.getAttribute('data-member-id');
+  var index = thumbElement.getAttribute('data-index');
+  var shouldShowInfo = thumbElement.getAttribute('data-member-should-show-info') == "true";
+  var title = thumbElement.getAttribute('data-title');
+  var linkUrl = thumbElement.getAttribute('data-member-show-url');
+  var downloadOriginalUrl = thumbElement.getAttribute('data-member-dl-original-url');
+  var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
+  var tileSource = thumbElement.getAttribute('data-tile-source');
 
   $('.viewer-image').addClass('viewer-image-loading');
 
