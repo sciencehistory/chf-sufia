@@ -1,5 +1,20 @@
 <%# CHF custom, an image with overlaid controls and info. Used as an alternative to
-    `representative_media` for show page, as well as for page thumbs on show page %>
+    `representative_media` for show page, as well as for page thumbs on show page
+
+    Locals:
+      * size: :large (used for big hero image) or :medium used for subsequent
+        page images. Default :medium
+      * lazy_after: optional. used when this is used as a collection partial, make images
+          lazy loading after the first N images, where N is the lazy_after value.
+      * extra_classes: optional. extra CSS calsses added to the wrapper <div> tag.
+
+%>
+<%
+   # this was just derived from just looking in the browser at our present
+   # CSS, what's the widest the 'large' and 'medium' images can be at
+   # any responsive CSS?
+   base_width = local_assigns[:size] == :large ? 525 : 208
+%>
 <%= content_tag("div",
       tabindex: "0",
       data: {
@@ -13,12 +28,14 @@
                     class: "lazyload show-page-image-image",
                     alt: "",
                     data: {
-                      src: main_app.download_path(member.representative_id, file: "jpeg")
+                      src: riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
+                      srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
                     }
       %>
     <% else %>
-      <%= image_tag main_app.download_path(member.representative_id, file: "jpeg"),
+      <%= image_tag riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
                     class: "show-page-image-image",
+                    srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width),
                     alt: "",
                     data: {
                       trigger: "chf_image_viewer",

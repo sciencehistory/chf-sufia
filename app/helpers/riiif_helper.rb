@@ -30,4 +30,14 @@ module RiiifHelper
     end
   end
 
+  # On show page, we just use pixel density source set, passing in the LARGEST width needed for
+  # any responsiveness page layout. Sends somewhat more bytes when needed at some responsive
+  # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
+  # prob good enough.
+  def riiif_image_srcset_pixel_density(riiif_file_id, base_width, format: 'jpg', quality: 'default')
+    [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
+      riiif_image_url(riiif_file_id, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
+    end.join(", ")
+  end
+
 end
