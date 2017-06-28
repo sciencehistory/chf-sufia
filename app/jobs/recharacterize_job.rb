@@ -1,7 +1,7 @@
 # Copy of https://github.com/samvera/curation_concerns/blob/v1.7.7/app/jobs/characterize_job.rb
 #   with call to CreateDerivativesJob removed
 #   and file cleanup added
-class JustCharacterizeJob < ActiveJob::Base
+class RecharacterizeJob < ActiveJob::Base
   include CurationConcerns::Lockable
 
   queue_as CurationConcerns.config.ingest_queue_name
@@ -9,8 +9,8 @@ class JustCharacterizeJob < ActiveJob::Base
   # @param [FileSet] file_set
   # @param [String] file_id identifier for a Hydra::PCDM::File
   # @param [String, NilClass] filepath the cached file within the CurationConcerns.config.working_path
-  def perform(file_set, file_id, filepath = nil)
-    filename = CurationConcerns::WorkingDirectory.find_or_retrieve(file_id, file_set.id, filepath)
+  def perform(file_set, file_id)
+    filename = CurationConcerns::WorkingDirectory.find_or_retrieve(file_id, file_set.id)
     raise LoadError, "#{file_set.class.characterization_proxy} was not found" unless file_set.characterization_proxy?
 
     # Prevent other jobs from trying to modify the FileSet at the same time
@@ -22,11 +22,16 @@ class JustCharacterizeJob < ActiveJob::Base
       file_set.parent.in_collections.each(&:update_index) if file_set.parent
     end
 
+    # WorkingDirectory always finds or retrieves files from '/tmp'
+    #   delete once we're done to keep the drive from exploding
     File.delete(filename)
+
     dir = File.split(filename).first
     cleanup_directory(dir)
   end
 
+  # recursively delete parent directories if they are empty, but never delete '/tmp' itself
+  # (These files are stored in 4-deep pairtrees)
   def cleanup_directory(dir)
     return if dir == "tmp"
     parent = File.split(dir).first

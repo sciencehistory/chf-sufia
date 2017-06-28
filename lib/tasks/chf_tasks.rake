@@ -47,14 +47,14 @@ namespace :chf do
   end
 
   desc 'Re-characterize all files'
-  task characterize: :environment do
+  task recharacterize: :environment do
     require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
       work.file_sets.each do |fs|
         fs.files.each do |file|
-          JustCharacterizeJob.perform_now(fs, file.id)
+          RecharacterizeJob.perform_now(fs, file.id)
         end
       end
       progress_bar.increment
