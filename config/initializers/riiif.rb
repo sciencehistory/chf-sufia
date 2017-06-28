@@ -1,6 +1,9 @@
 # Get files via HTTP (they're in fedora)
 Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
 
+Riiif::Image.file_resolver.cache_path = CHF::Env.lookup(:riiif_originals_cache)
+Riiif::Image.cache = ActiveSupport::Cache::FileStore.new(CHF::Env.lookup(:riiif_derivatives_cache))
+
 # Tell RIIIF how to resolve the identifier to a URI in Fedora
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   ActiveFedora::Base.id_to_uri(CGI.unescape(id)).tap do |url|

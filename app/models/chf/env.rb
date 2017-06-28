@@ -108,6 +108,12 @@ module CHF
     define_key :app_role
     define_key :service_level
 
+    define_key :riiif_originals_cache, default: -> {
+      Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
+    }
+    define_key :riiif_derivatives_cache, default: -> {
+      Rails.env.production? ? "/var/sufia/riiif-derivatives" : Rails.root.join("tmp", "riiif-derivatives").to_s
+    }
 
 
     # Ideally these would be in local_env.yml independently,
