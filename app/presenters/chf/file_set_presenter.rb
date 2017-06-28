@@ -11,7 +11,13 @@ module CHF
     end
 
     def riiif_file_id
-      original_file_id
+      # if it's not in solr, get it from fedora
+      if original_file_id
+        return original_file_id
+      else
+        Rails.logger.error "ERROR: Could not find FileSet #{id} original_file_id in Solr. You may need to reindex."
+        return FileSet.find(id).original_file.id
+      end
     end
   end
 end
