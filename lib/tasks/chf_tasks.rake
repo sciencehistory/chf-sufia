@@ -48,8 +48,6 @@ namespace :chf do
 
   desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives.'
   task recharacterize: :environment do
-    require Rails.root.join('lib','minimagick_patch')
-    MiniMagick::Tool.quiet_arg = true
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
       work.file_sets.each do |fs|
@@ -59,7 +57,6 @@ namespace :chf do
       end
       progress_bar.increment
     end
-    MiniMagick::Tool.quiet_arg = false
   end
 
   desc 'Re-generate all derivatives'
