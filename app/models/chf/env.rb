@@ -104,18 +104,20 @@ module CHF
     #
     ######
 
-    self.define_key :public_riiif_url
-    self.define_key :app_role
-    self.define_key :service_level
+    define_key :public_riiif_url
+    define_key :app_role
+    define_key :service_level
+
+
 
     # Ideally these would be in local_env.yml independently,
     # but for now we calculate based on app_role value, but do it here
     # so we have one place to change.
     # Can still override with ENV or local_env.yml locally, nice!
-    self.define_key :serve_riiif_paths, default: -> {
+    define_key :serve_riiif_paths, default: -> {
       lookup(:app_role).blank? || lookup(:app_role) == "riiif"
     }
-    self.define_key :serve_app_paths, default: -> {
+    define_key :serve_app_paths, default: -> {
       lookup(:app_role).blank? || lookup(:app_role) == "app"
     }
 
