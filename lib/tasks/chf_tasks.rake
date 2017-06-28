@@ -54,7 +54,7 @@ namespace :chf do
     Sufia.primary_work_type.all.find_each do |work|
       work.file_sets.each do |fs|
         fs.files.each do |file|
-          CharacterizeJob.perform_now(fs, file.id)
+          JustCharacterizeJob.perform_now(fs, file.id)
         end
       end
       progress_bar.increment
