@@ -46,7 +46,7 @@ namespace :chf do
     end
   end
 
-  desc 'Re-characterize all files'
+  desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives.'
   task recharacterize: :environment do
     require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true

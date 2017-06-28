@@ -1,6 +1,10 @@
 # Copy of https://github.com/samvera/curation_concerns/blob/v1.7.7/app/jobs/characterize_job.rb
 #   with call to CreateDerivativesJob removed
 #   and file cleanup added
+#   Parameters to allow use of a local file have been removed so that we don't accidentally clean
+#     up a file that wasn't intended to be a temp file.
+#   It would be possible to clean up a temp file out from under another job, if another job happened to
+#     be running on the same object at the same moment.
 class RecharacterizeJob < ActiveJob::Base
   include CurationConcerns::Lockable
 
