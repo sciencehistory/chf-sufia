@@ -5,8 +5,8 @@ module RiiifHelper
   # Returns relative url unless we've defind a riiif server in config/environments/*.rb
   def riiif_info_url (riiif_file_id)
     path = riiif.info_path(riiif_file_id, locale: nil)
-    if Rails.configuration.respond_to? :riiif_server
-      return URI.join(Rails.configuration.riiif_server, path).to_s
+    if CHF::Env.lookup(:public_riiif_url)
+      return URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
     else
       return path
     end
@@ -23,8 +23,8 @@ module RiiifHelper
   def riiif_image_url(riiif_file_id, format: 'jpg', size: "full", quality: 'default')
     path = riiif.image_path(riiif_file_id, locale: nil, size: size, format: format, quality: quality)
 
-    if Rails.configuration.respond_to? :riiif_server
-      return URI.join(Rails.configuration.riiif_server, path).to_s
+    if CHF::Env.lookup(:public_riiif_url)
+      return URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
     else
       return path
     end
