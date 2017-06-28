@@ -30,10 +30,10 @@ class RecharacterizeJob < ActiveJob::Base
     cleanup_directory(dir)
   end
 
-  # recursively delete parent directories if they are empty, but never delete '/tmp' itself
+  # recursively delete parent directories if they are empty, but never delete root working directory
   # (These files are stored in 4-deep pairtrees)
   def cleanup_directory(dir)
-    return if dir == "tmp"
+    return if dir == CurationConcerns.config.working_path
     parent = File.split(dir).first
     if Dir["#{dir}/*"].empty?
       Dir.delete dir
