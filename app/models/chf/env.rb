@@ -29,7 +29,8 @@ module CHF
   # This implementation is a bit hacky, but I think the public API is hopefully
   # good and stable.
   class Env
-
+    NoValueProvided = Object.new
+    private_constant :NoValueProvided
 
     def initialize
       @key_definitions = {}
@@ -56,20 +57,34 @@ module CHF
       defn = @key_definitions[name.to_sym]
       raise ArgumentError.new("No env key defined for: #{name}") unless defn
 
-      system_env_lookup(defn) || local_env_file_lookup(defn) || default_lookup(defn)
+      result = system_env_lookup(defn)
+      result = local_env_file_lookup(defn) if result == NoValueProvided
+      result = default_lookup(defn) if result == NoValueProvided
+      result = nil if result == NoValueProvided
+      result
     end
 
     protected
 
     def system_env_lookup(defn)
-      return nil if defn[:env_key] == false
+      return NoValueProvided if defn[:env_key] == false
 
-      ENV[defn[:env_key] || defn[:name].upcase]
+      if defn[:env_key] && ENV.has_key?(defn[:env_key].to_s)
+        ENV[defn[:env_key].to_s]
+      elsif ENV.has_key?(defn[:name].upcase)
+        ENV[defn[:name].upcase]
+      else
+        NoValueProvided
+      end
     end
 
     def local_env_file_lookup(defn)
       @local_env_loaded ||= load_yaml_file
-      @local_env_loaded[defn[:name]]
+      if @local_env_loaded.has_key?(defn[:name])
+        @local_env_loaded[defn[:name]]
+      else
+        NoValueProvided
+      end
     end
 
     def load_yaml_file
@@ -82,7 +97,9 @@ module CHF
       if defn.has_key?(:cached_default)
         defn[:cached_default]
       else
-        defn[:cached_default] = if defn[:default].respond_to?(:call)
+        defn[:cached_default] = if !defn.has_key?(:default)
+                                  NoValueProvided
+                                elsif defn[:default].respond_to?(:call)
                                   # allow a proc that gets executed on demand
                                   defn[:default].call
                                 else
