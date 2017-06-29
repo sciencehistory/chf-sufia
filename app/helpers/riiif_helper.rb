@@ -36,7 +36,7 @@ module RiiifHelper
   def create_riiif_url(path)
     if CHF::Env.lookup(:public_riiif_url)
       url = Addressable::URI.parse(CHF::Env.lookup(:public_riiif_url))
-      raise "public_riiif_url requires a host with scheme" if url.host.nil?
+      raise "public_riiif_url requires a valid URL with host, eg `http://host` or `//host`" if url.host.nil?
       return Addressable::URI.join(url, path).to_s
     else
       return path
