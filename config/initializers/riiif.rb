@@ -4,7 +4,7 @@ Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
 # Tell RIIIF how to resolve the identifier to a URI in Fedora
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   ActiveFedora::Base.id_to_uri(CGI.unescape(id)).tap do |url|
-    logger.info "Riiif resolved #{id} to #{url}"
+    Rails.logger.info "Riiif resolved #{id} to #{url}"
   end
 end
 
@@ -19,10 +19,6 @@ Riiif::Image.info_service = lambda do |id, _file|
   doc = resp['response']['docs'].first
   raise "Unable to find solr document with id:#{fs_id}" unless doc
   { height: doc['height_is'], width: doc['width_is'] }
-end
-
-def logger
-  Rails.logger
 end
 
 # Note that this is translated to an `expires` argument to the
