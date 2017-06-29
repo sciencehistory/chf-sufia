@@ -28,6 +28,7 @@ gem 'hydra-role-management'
 gem 'highline'
 gem 'rest-client'
 gem 'whenever'
+gem 'addressable', '~> 2.5'
 
 gem 'rails', '~> 4.2.7.1'
 gem 'devise'

@@ -799,6 +799,7 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora (~> 11.1.6)
+  addressable (~> 2.5)
   blacklight_range_limit (>= 6.1.2)
   capistrano (~> 3.8)
   capistrano-bundler (~> 1.2)

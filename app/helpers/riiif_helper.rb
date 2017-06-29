@@ -6,7 +6,7 @@ module RiiifHelper
   def riiif_info_url (riiif_file_id)
     path = riiif.info_path(riiif_file_id, locale: nil)
     if CHF::Env.lookup(:public_riiif_url)
-      return URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
+      return Addressable::URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
     else
       return path
     end
@@ -24,7 +24,7 @@ module RiiifHelper
     path = riiif.image_path(riiif_file_id, locale: nil, size: size, format: format, quality: quality)
 
     if CHF::Env.lookup(:public_riiif_url)
-      return URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
+      return Addressable::URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
     else
       return path
     end
