@@ -201,7 +201,6 @@ namespace :chf do
   end
 
   namespace :user do
-
     desc 'Create a user without a password; they can request one from the UI'
     task :create, [:email] => :environment do |t, args|
       u = User.create!(email: args[:email])
@@ -215,7 +214,19 @@ namespace :chf do
         u = User.create!(email: args[:email], password: args[:pass])
         puts "Test user created"
       end
-
     end
   end
+
+  namespace :riiif do
+    desc "Delete all files in both riiif caches"
+    task :clear_caches do
+      # We're not doing an :environment rake dep for speed so need to load
+      # our CHF::Env.
+      require Rails.root.join("app", "models", "chf", "env").to_s
+      Pathname.new(CHF::Env.lookup(:riiif_originals_cache)).children.each { |p| p.rmtree }
+      Pathname.new(CHF::Env.lookup(:riiif_derivatives_cache)).children.each { |p| p.rmtree }
+    end
+  end
+
+
 end
