@@ -45,4 +45,22 @@ describe CHF::Env do
     end
   end
 
+  describe "with boolean values in config file" do
+    before do
+      instance.define_key "boolean_value", default: true
+    end
+    it "falls through to default true" do
+      expect(instance.lookup("boolean_value")).to eq true
+    end
+
+    describe "false in config file" do
+      before do
+        allow(instance).to receive(:load_yaml_file).and_return("boolean_value" => false)
+      end
+
+      it "retrieves false value from conf" do
+        expect(instance.lookup("boolean_value")).to eq false
+      end
+    end
+  end
 end

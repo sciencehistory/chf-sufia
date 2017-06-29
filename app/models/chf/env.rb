@@ -22,6 +22,10 @@ module CHF
   #     define_key(:some_key, default: "foo")
   #     define_key(:some_key, default: -> { proc_that_provides_value} ) # will only be called once and cached
   #
+  #
+  # All values are cached after first lookup for performance and stabilty -- this
+  # kind of environmental configuration should not change for life of process.
+  #
   # Keys are defined at the bottom of this file, to make sure all methods are
   # defined first! (Extract to another file? Want to make sure they get defined
   # right away so can be used at any point in boot process)
@@ -29,7 +33,8 @@ module CHF
   # This implementation is a bit hacky, but I think the public API is hopefully
   # good and stable.
   class Env
-
+    NoValueProvided = Object.new
+    private_constant :NoValueProvided
 
     def initialize
       @key_definitions = {}
@@ -56,20 +61,36 @@ module CHF
       defn = @key_definitions[name.to_sym]
       raise ArgumentError.new("No env key defined for: #{name}") unless defn
 
-      system_env_lookup(defn) || local_env_file_lookup(defn) || default_lookup(defn)
+      defn[:cached_result] ||= begin
+        result = system_env_lookup(defn)
+        result = local_env_file_lookup(defn) if result == NoValueProvided
+        result = default_lookup(defn) if result == NoValueProvided
+        result = nil if result == NoValueProvided
+        result
+      end
     end
 
     protected
 
     def system_env_lookup(defn)
-      return nil if defn[:env_key] == false
+      return NoValueProvided if defn[:env_key] == false
 
-      ENV[defn[:env_key] || defn[:name].upcase]
+      if defn[:env_key] && ENV.has_key?(defn[:env_key].to_s)
+        ENV[defn[:env_key].to_s]
+      elsif ENV.has_key?(defn[:name].upcase)
+        ENV[defn[:name].upcase]
+      else
+        NoValueProvided
+      end
     end
 
     def local_env_file_lookup(defn)
       @local_env_loaded ||= load_yaml_file
-      @local_env_loaded[defn[:name]]
+      if @local_env_loaded.has_key?(defn[:name])
+        @local_env_loaded[defn[:name]]
+      else
+        NoValueProvided
+      end
     end
 
     def load_yaml_file
@@ -77,17 +98,14 @@ module CHF
       YAML.load(File.open(@local_env_path))
     end
 
-    # default lookup is cached, this kind of env config should be immutable
     def default_lookup(defn)
-      if defn.has_key?(:cached_default)
-        defn[:cached_default]
+      if !defn.has_key?(:default)
+        NoValueProvided
+      elsif defn[:default].respond_to?(:call)
+        # allow a proc that gets executed on demand
+        defn[:default].call
       else
-        defn[:cached_default] = if defn[:default].respond_to?(:call)
-                                  # allow a proc that gets executed on demand
-                                  defn[:default].call
-                                else
-                                  defn[:default]
-                                end
+        defn[:default]
       end
     end
 
