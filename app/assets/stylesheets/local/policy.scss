@@ -1,0 +1,9 @@
+.policy-page {
+  h2 {
+    @extend h3;
+  }
+  dl dt {
+    font-weight: normal;
+    font-style: italic;
+  }
+}

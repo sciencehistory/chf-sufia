@@ -36,8 +36,8 @@
               <%= render "chf_image_viewer_navbar", work: work %>
             </div>
 
-            <%= content_tag "div", id:"viewer-thumbs", class: "viewer-thumbs", data: { total_count: work.member_presenters.count } do %>
-              <% work.member_presenters.each_with_index do |member_presenter, i| -%>
+            <%= content_tag "div", id:"viewer-thumbs", class: "viewer-thumbs", data: { total_count: work.viewable_member_presenters.count } do %>
+              <% work.viewable_member_presenters.each_with_index do |member_presenter, i| -%>
                 <%= tag "img",
                     class: "lazyload viewer-thumb-img",
                     alt: "",

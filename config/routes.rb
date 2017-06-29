@@ -8,10 +8,17 @@ Rails.application.routes.draw do
     mount Riiif::Engine => '/image-service', as: 'riiif'
   end
 
-
   constraints ->(request) { CHF::Env.lookup(:serve_app_paths) } do
     # override sufia's about routing to use a static page instead of a content block
     get 'about', controller: 'static', action: 'about', as: 'about'
+    # add a policy page
+    get 'policy', controller: 'static', action: 'policy', as: 'policy'
+    # override sufia's contact routing to use a static page instead of a form
+    get 'contact', controller: 'static', action: 'contact', as: 'contact'
+    # add a faq page
+    get 'faq', controller: 'static', action: 'faq', as: 'faq'
+    # remove help page, replaced with 'faq'
+    get 'help', to: redirect('/404')
 
     concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
     Hydra::BatchEdit.add_routes(self)
@@ -40,9 +47,6 @@ Rails.application.routes.draw do
     devise_scope :user do
       get 'login', to: 'devise/sessions#new'
     end
-
-    # make the contact form inaccessible since we're using mailto
-    get 'contact', to: redirect('/404')
 
     resources :welcome, only: 'index'
     root 'sufia/homepage#index'

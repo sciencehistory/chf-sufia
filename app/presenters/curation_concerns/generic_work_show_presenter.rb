@@ -56,25 +56,25 @@ module CurationConcerns
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
-    # override to cache, cause it's expensive and we need it twice to display
-    # our viewer with thumbs, at present.
-    # See https://github.com/samvera-labs/hyrax/pull/1160
-    def member_presenters(*args)
-      # cache based on args, gah. We really don't understand what's going on,
-      # but we need to do something with this super-expensive call to make it less so,
-      # to support our custom show/viewer.
-      @_member_presenters ||= {}
-      @_member_presenters[args] ||= super
+    # Like member_presenters without args, but filters to only those current
+    # user has permissions to see. Used on our show page and viewer.
+    #
+    # Memoized -- building member_presenters can be expensive and we
+    # call multiple times in our views, important to cache.
+    def viewable_member_presenters
+      @viewable_member_presenters ||= member_presenters.find_all do |presenter|
+        current_ability.can?(:read, presenter.id)
+      end
     end
 
-    # Member presenters, but if our representative image is the FIRST image,
-    # don't bother repeating it below.
+    # viewable_member_presenters, but if our representative image is the FIRST image,
+    # don't repeat it below.
     def show_thumb_member_presenters
       @show_thumb_member_presenters ||= begin
-        if member_presenters.present? && member_presenters.first.id == representative_id
-          member_presenters.dup.tap { |a| a.delete_at(0) }
+        if viewable_member_presenters.present? && viewable_member_presenters.first.id == representative_id
+          viewable_member_presenters.dup.tap { |a| a.delete_at(0) }
         else
-          member_presenters
+          viewable_member_presenters
         end
       end
     end

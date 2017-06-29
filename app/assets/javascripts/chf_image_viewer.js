@@ -19,18 +19,18 @@ ChfImageViewer.prototype.show = function(id) {
   this.totalCount = parseInt(document.querySelector(".viewer-thumbs[data-total-count]").getAttribute("data-total-count"));
   if (this.totalCount == 1) {
     // hide multi-item-relevant controls
-    document.querySelector("#viewer-pagination").style.display = "none";
-    document.querySelector("#viewer-right").style.display = "none";
-    document.querySelector("#viewer-left").style.display = "none";
-    document.querySelector("#viewer-thumbs").style.display = "none";
+    this.hideUiElement(document.querySelector("#viewer-pagination"));
+    this.hideUiElement(document.querySelector("#viewer-right"));
+    this.hideUiElement(document.querySelector("#viewer-left"));
+    this.hideUiElement(document.querySelector("#viewer-thumbs"));
   }
 
   if (! OpenSeadragon.supportsFullScreen) {
-    document.querySelector("#viewer-fullscreen").style.display = "none";
+    this.hideUiElement(document.querySelector("#viewer-fullscreen"));
   }
   if (! this.viewer.drawer.canRotate()) {
     //OSD says no rotate
-    document.querySelector("#viewer-rotate-right").style.display = "none";
+    this.hideUiElement(document.querySelector("#viewer-rotate-right"));
   }
 
   var selectedThumb;
@@ -136,24 +136,24 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
 
   if (shouldShowInfo) {
     // spacer shows up when info doesn't.
-    document.querySelector('#viewer-member-info').style.display = "";
-    document.querySelector('#viewer-spacer').style.display = "none";
+    this.showUiElement(document.querySelector('#viewer-member-info'));
+    this.hideUiElement(document.querySelector('#viewer-spacer'));
   } else {
-    document.querySelector('#viewer-member-info').style.display = "none";
-    document.querySelector('#viewer-spacer').style.display = "";
+    this.hideUiElement(document.querySelector('#viewer-member-info'));
+    this.showUiElement(document.querySelector('#viewer-spacer'));
   }
 
   // show/hide next/prev as appropriate
   if (index <= 1) {
-    document.querySelector("#viewer-left").style.display = "none";
+    this.hideUiElement(document.querySelector("#viewer-left"));
   } else if ( this.totalCount != 1 ) {
-    document.querySelector("#viewer-left").style.display = "";
+    this.showUiElement(document.querySelector("#viewer-left"));
   }
 
   if (index >= this.totalCount) {
-    document.querySelector("#viewer-right").style.display = "none";
+    this.hideUiElement(document.querySelector("#viewer-right"));
   } else if ( this.totalCount != 1 ) {
-    document.querySelector("#viewer-right").style.display = "";
+    this.showUiElement(document.querySelector("#viewer-right"));
   }
 
   this.setLocationUrl();
@@ -385,7 +385,18 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
   this.viewer.addHandler("open", this.removeLoading);
 };
 
+ChfImageViewer.prototype.hideUiElement = function(element) {
+  if (document.activeElement == element) {
+    // If it was focused and we're hiding it, make sure to switch focus
+    // to modal, so keyboard shortcuts and tab still works right.
+    this.modal.focus();
+  }
+  element.style.display = "none";
+};
 
+ChfImageViewer.prototype.showUiElement = function(element) {
+  element.style.display = "";
+};
 
 jQuery(document).ready(function($) {
   var viewerElement = document.getElementById('chf-image-viewer');
