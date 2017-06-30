@@ -28,14 +28,14 @@
                     class: "lazyload show-page-image-image",
                     alt: "",
                     data: {
-                      src: riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
-                      srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+                      src: riiif_image_url(member, format: "jpg", size: "#{base_width},"),
+                      srcset: riiif_image_srcset_pixel_density(member, base_width)
                     }
       %>
     <% else %>
-      <%= image_tag riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
+      <%= image_tag riiif_image_url(member, format: "jpg", size: "#{base_width},"),
                     class: "show-page-image-image",
-                    srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width),
+                    srcset: riiif_image_srcset_pixel_density(member, base_width),
                     alt: "",
                     data: {
                       trigger: "chf_image_viewer",

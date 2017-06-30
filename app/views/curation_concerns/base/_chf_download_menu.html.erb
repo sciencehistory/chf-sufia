@@ -34,7 +34,7 @@ locals:
     </li>
     <li>
       <%= link_to("Full-size JPEG",
-                  (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
+                  (member ? riiif_image_url(member, format: "jpg", size: "full") : "#"),
                   target: "_new",
                   data: {
                     content_hook: "dl-jpeg-link",

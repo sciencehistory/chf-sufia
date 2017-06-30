@@ -3,8 +3,9 @@ module RiiifHelper
   # Returns the IIIF info.json document, suitable as an OpenSeadragon tile source/
   #
   # Returns relative url unless we've defind a riiif server in config/environments/*.rb
-  def riiif_info_url (riiif_file_id)
-    path = riiif.info_path(riiif_file_id, locale: nil)
+  def riiif_info_url (presenter)
+    return presenter.thumbnail_path if presenter.riiif_file_id.nil?
+    path = riiif.info_path(presenter.riiif_file_id, locale: nil)
     create_riiif_url(path)
   end
 
@@ -16,8 +17,9 @@ module RiiifHelper
   # Defaults copied from riiif defaults. https://github.com/curationexperts/riiif/blob/67ff0c49af198ba6afcf66d3db9d3d36a8694023/lib/riiif/routes.rb#L21
   #
   # Returns relative url unless we've defind a riiif server in config/environments/*.rb
-  def riiif_image_url(riiif_file_id, format: 'jpg', size: "full", quality: 'default')
-    path = riiif.image_path(riiif_file_id, locale: nil, size: size, format: format, quality: quality)
+  def riiif_image_url(presenter, format: 'jpg', size: "full", quality: 'default')
+    return presenter.thumbnail_path if presenter.riiif_file_id.nil?
+    path = riiif.image_path(presenter.riiif_file_id, locale: nil, size: size, format: format, quality: quality)
     create_riiif_url(path)
   end
 
@@ -25,9 +27,9 @@ module RiiifHelper
   # any responsiveness page layout. Sends somewhat more bytes when needed at some responsive
   # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
   # prob good enough.
-  def riiif_image_srcset_pixel_density(riiif_file_id, base_width, format: 'jpg', quality: 'default')
+  def riiif_image_srcset_pixel_density(presenter, base_width, format: 'jpg', quality: 'default')
     [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
-      riiif_image_url(riiif_file_id, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
+      riiif_image_url(presenter, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
     end.join(", ")
   end
 
