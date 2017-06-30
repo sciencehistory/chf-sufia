@@ -9,7 +9,7 @@ Hydra::Works::CharacterizationService.class_eval do
       value = object.send(property) + [value] unless property == :mime_type
       # We don't want multiple heights / widths, pick the max as the true
       # width/height.
-      value = [object.send(property).to_a.concat(value).max] if property == :height or property == :width
-      object.send("#{property}=", value)
+      value = value.map(&:to_i).max if property == :height || property == :width
+      object.send("#{property}=", value.to_s)
     end
 end
