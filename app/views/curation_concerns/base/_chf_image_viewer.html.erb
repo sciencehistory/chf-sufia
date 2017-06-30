@@ -54,7 +54,7 @@
                       member_dl_jpeg_url: riiif_image_url(member_presenter.riiif_file_id, format: "jpg", size: "full"),
                       tile_source: riiif_info_url(member_presenter.riiif_file_id),
                       src: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field)
-                    }
+                    } if member_presenter.riiif_file_id # don't show it in the viewer if there's no image
                 -%>
               <%- end -%>
             <% end %>

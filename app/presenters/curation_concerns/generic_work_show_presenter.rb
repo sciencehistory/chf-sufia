@@ -9,7 +9,7 @@ module CurationConcerns
       :extent, :division, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
       :inscription, :date_of_work, :engraver, :printer,
-      :printer_of_plates, :after,
+      :printer_of_plates, :after, :thumbnail_path,
       to: :solr_document
 
     def additional_title
