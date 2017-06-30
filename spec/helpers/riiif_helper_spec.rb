@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 describe RiiifHelper do
-  def riiif_info_url (riiif_file_id)
-    path = riiif.info_path(riiif_file_id, locale: nil)
-    if CHF::Env.lookup(:public_riiif_url)
-      return Addressable::URI.join(CHF::Env.lookup(:public_riiif_url), path).to_s
-    else
-      return path
-    end
-  end
   describe "#riiif_info_url" do
     context "riiif uses localhost" do
       it "provides relative path" do
