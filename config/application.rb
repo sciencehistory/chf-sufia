@@ -153,7 +153,8 @@ module Chufia
       'Slides',
       'Stereographs',
       'Textiles',
-      'Vessels (Containers)'
+      'Vessels (Containers)',
+      'Woodcuts'
     ]
 
     config.physical_container_fields = {
