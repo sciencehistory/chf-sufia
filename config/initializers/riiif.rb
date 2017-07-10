@@ -30,3 +30,6 @@ end
 # such as the default FileStore.
 # http://guides.rubyonrails.org/caching_with_rails.html#cache-stores
 Riiif::Engine.config.cache_duration_in_days = 30
+
+# Authorize for image access to keep non-public images inaccessible
+Riiif::Image.authorization_service = IIIFAuthorizationService
