@@ -224,6 +224,7 @@ namespace :chf do
       Pathname.new(CHF::Env.lookup(:riiif_derivatives_cache)).children.each { |p| p.rmtree }
     end
 
+    # eg INTERNAL_RIIIF_URL=http://localhost:3000 rake chf:riiif:preload_originals
     desc "ping riiif server to fetch all originals from fedora"
     task :preload_originals => :environment do
       total = FileSet.count

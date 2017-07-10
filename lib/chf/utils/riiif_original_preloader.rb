@@ -13,25 +13,22 @@ module CHF
     class RiiifOriginalPreloader
       include RiiifHelper
 
-      attr_reader :file_id
-      def initialize(file_id)
+      attr_reader :file_id, :riiif_base
+      def initialize(file_id, riiif_base: CHF::Env.lookup(:internal_riiif_url))
         @file_id = file_id
+        @riiif_base = riiif_base
+        unless riiif_base.present?
+          raise ArgumentError, "Need an :internal_riiif_url config. Can set in env with INTERNAL_RIIIF_URL=http://localhost:3000 or INTERNAL_RIIIF_URL=https://$internal_riiif_ip"
+        end
       end
 
       def ping_to_preload
-        Faraday.head ping_url
+        conn = Faraday.new(riiif_base)
+        response = conn.head ping_path
       end
 
-      def ping_url
-        unless CHF::Env.lookup(:public_riiif_url).present?
-          raise ArgumentError, "We need a config :public_riiif_url to know where to ping. In dev, you could set ENV PUBLIC_RIIIF_URL=http://localhost:3000 if correct"
-        end
-
-        # The RiiifHelper#riiif_info_url method doesn't work here, because
-        # of the way engine route helpers are being called from that context. :(
-        # But we can still use it's #create_riiif_url method to add the
-        # proper hostname according to config.
-        create_riiif_url(Riiif::Engine.routes.url_helpers.info_path(file_id, locale: nil))
+      def ping_path
+        Riiif::Engine.routes.url_helpers.info_path(file_id, locale: nil)
       end
     end
   end

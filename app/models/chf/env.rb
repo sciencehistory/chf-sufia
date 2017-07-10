@@ -123,6 +123,7 @@ module CHF
     ######
 
     define_key :public_riiif_url
+    define_key :internal_riiif_url
     define_key :app_role
     define_key :service_level
 
