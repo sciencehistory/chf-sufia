@@ -223,6 +223,25 @@ namespace :chf do
       Pathname.new(CHF::Env.lookup(:riiif_originals_cache)).children.each { |p| p.rmtree }
       Pathname.new(CHF::Env.lookup(:riiif_derivatives_cache)).children.each { |p| p.rmtree }
     end
+
+    desc "ping riiif server to fetch all originals from fedora"
+    task :preload_originals => :environment do
+      total = FileSet.count
+
+      $stderr.puts "Ping'ing riiif server at `#{CHF::Env.lookup(:public_riiif_url)}` for all #{total} FileSet original files"
+
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
+
+      # There's probably a faster way to do this, maybe from Solr instead of fedora?
+      # Or getting original_file_id without the extra fetch? Not sure. This is slow.
+      FileSet.find_each do |fs|
+        if original_file_id = fs.original_file.try(:id)
+          CHF::Utils::RiiifOriginalPreloader.new(original_file_id).ping_to_preload
+          progress.increment
+        end
+      end
+      progress.finish
+    end
   end
 
 
