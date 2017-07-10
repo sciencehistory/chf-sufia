@@ -225,6 +225,7 @@ namespace :chf do
     end
 
     # eg INTERNAL_RIIIF_URL=http://localhost:3000 rake chf:riiif:preload_originals
+    # Note this will not work on non-public images if we implement riiif auth.
     desc "ping riiif server to fetch all originals from fedora"
     task :preload_originals => :environment do
       total = FileSet.count
@@ -233,17 +234,28 @@ namespace :chf do
 
       progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
 
+      riiif_base = CHF::Env.lookup(:internal_riiif_url)
+      errors = 0
+
       # There's probably a faster way to do this, maybe from Solr instead of fedora?
       # Or getting original_file_id without the extra fetch? Not sure. This is slow.
       FileSet.find_each do |fs|
         if original_file_id = fs.original_file.try(:id)
-          CHF::Utils::RiiifOriginalPreloader.new(original_file_id).ping_to_preload
+          preloader = CHF::Utils::RiiifOriginalPreloader.new(original_file_id, riiif_base: riiif_base)
+          response = preloader.ping_to_preload
+
+          if response.status != 200
+            errors += 1
+            progress.log "Unexpected #{response.status} response (#{errors} total) at #{riiif_base} #{preloader.ping_path}"
+          end
+
           progress.increment
         end
       end
       progress.finish
+      if errors > 0
+        $stderr.puts "#{errors} total error responses out of #{total} info requests"
+      end
     end
   end
-
-
 end

@@ -10,6 +10,9 @@ module CHF
     # on command line before running chf:riiif:preload_originals task.
     #
     #     CHF::Utils::RiiifOriginalPreloader.new(file_id).ping_to_preload
+    #
+    # NOTE: This does no auth, so will not work on non-public images if we
+    # implement riiif auth.
     class RiiifOriginalPreloader
       include RiiifHelper
 
@@ -22,9 +25,10 @@ module CHF
         end
       end
 
+      # Returns Faraday::Response
       def ping_to_preload
         conn = Faraday.new(riiif_base)
-        response = conn.head ping_path
+        conn.head ping_path
       end
 
       def ping_path
