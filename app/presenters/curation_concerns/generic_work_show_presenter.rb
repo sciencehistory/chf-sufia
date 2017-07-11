@@ -83,5 +83,15 @@ module CurationConcerns
       return if representative_presenter.nil?
       representative_presenter.riiif_file_id
     end
+
+    def representative_height
+      return if representative_presenter.nil?
+      representative_presenter.height
+    end
+
+    def representative_width
+      return if representative_presenter.nil?
+      representative_presenter.width
+    end
   end
 end
