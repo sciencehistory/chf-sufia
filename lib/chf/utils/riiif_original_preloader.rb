@@ -3,16 +3,12 @@ module CHF
     # Ping the riiif server with a HEAD info request for a given file id, to trigger
     # caching of original asset on riiif server.
     #
-    # You need config :public_riiif_url set, for instance maybe PUBLIC_RIIIF_URL=http://localhost:3000
+    # You need config :internal_riiif_url set, for instance maybe INTERNAL_RIIIF_URL=http://localhost:3000
     # if you really want to ping your dev server.
-    #
-    # Even in production, you may want to set it to the internal AWS IP, for instance
-    # on command line before running chf:riiif:preload_originals task.
     #
     #     CHF::Utils::RiiifOriginalPreloader.new(file_id).ping_to_preload
     #
-    # NOTE: This does no auth, so will not work on non-public images if we
-    # implement riiif auth.
+    # NOTE: This does no auth, so will not work on non-public images
     class RiiifOriginalPreloader
       include RiiifHelper
 

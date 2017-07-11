@@ -225,12 +225,12 @@ namespace :chf do
     end
 
     # eg INTERNAL_RIIIF_URL=http://localhost:3000 rake chf:riiif:preload_originals
-    # Note this will not work on non-public images if we implement riiif auth.
-    desc "ping riiif server to fetch all originals from fedora"
+    # Note this will not work on non-public images
+    desc "ping riiif server to fetch all originals of publicly-visible images from fedora"
     task :preload_originals => :environment do
       total = FileSet.count
 
-      $stderr.puts "Ping'ing riiif server at `#{CHF::Env.lookup(:public_riiif_url)}` for all #{total} FileSet original files"
+      $stderr.puts "Ping'ing riiif server at `#{CHF::Env.lookup(:internal_riiif_url)}` for all #{total} FileSet original files"
 
       progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
 
