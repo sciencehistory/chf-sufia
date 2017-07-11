@@ -19,5 +19,14 @@ module CHF
         return FileSet.find(id).original_file.id
       end
     end
+
+    def representative_height
+      height
+    end
+
+    def representative_width
+      width
+    end
+
   end
 end

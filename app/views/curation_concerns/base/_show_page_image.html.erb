@@ -35,6 +35,7 @@
                     class: "lazyload show-page-image-image",
                     alt: "",
                     data: {
+                      aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
                       src: riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
                       srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
                     }
@@ -45,6 +46,7 @@
                     srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width),
                     alt: "",
                     data: {
+                      aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
                       trigger: "chf_image_viewer",
                       member_id: member.id
                     }
