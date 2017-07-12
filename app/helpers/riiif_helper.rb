@@ -48,7 +48,10 @@ module RiiifHelper
       }
     }
 
-    if lazy
+    if member.riiif_file_id.nil?
+      # if there's no image, show the default thumbnail (it gets indexed)
+      args[:src] = member.thumbnail_path
+    elsif lazy
       args[:class] << "lazyload"
       args[:data][:src]    = riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},")
       args[:data][:srcset] = riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)

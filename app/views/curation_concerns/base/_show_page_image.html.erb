@@ -24,18 +24,11 @@
       },
       class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do
 %>
-    <% if member.riiif_file_id.nil? %>
-      <%# if there's no image, show the default thumbnail (it gets indexed) %>
-      <%= image_tag member.thumbnail_path,
-                    class: "show-page-image-image",
-                    alt: ""
-      %>
-    <% else %>
-      <%= member_image_tag(member,
-                           size_key: local_assigns[:size],
-                           lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
-       %>
-    <% end %>
+
+    <%= member_image_tag(member,
+                         size_key: local_assigns[:size],
+                         lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
+    %>
 
     <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
       <div class="show-page-member-title">
