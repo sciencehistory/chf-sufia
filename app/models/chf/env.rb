@@ -137,6 +137,10 @@ module CHF
     define_key :app_role
     define_key :service_level
 
+    define_key :use_image_server_on_show_page,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> { true }
+
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
     }
