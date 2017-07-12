@@ -101,8 +101,16 @@ ChfImageViewer.prototype.restoreFocus =  function() {
   }
 };
 
-ChfImageViewer.prototype.removeLoading =  function(viewer) {
-  $('.viewer-image').removeClass('viewer-image-loading');
+ChfImageViewer.prototype.addLoading =  function() {
+  this.loadingSpinnerDisplayed = true;
+  $('.viewer-image').addClass('viewer-image-loading');
+}
+
+ChfImageViewer.prototype.removeLoading =  function() {
+  if (this.loadingSpinnerDisplayed) {
+    $('.viewer-image').removeClass('viewer-image-loading');
+    this.loadingSpinnerDisplayed = false;
+  }
 };
 
 ChfImageViewer.prototype.selectThumb = function(thumbElement) {
@@ -121,7 +129,7 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
   var tileSource = thumbElement.getAttribute('data-tile-source');
 
-  $('.viewer-image').addClass('viewer-image-loading');
+  this.addLoading();
 
   this.viewer.open(tileSource);
 
@@ -382,7 +390,12 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
   // must be a better way to do this, sorry for the hack.
   this.viewer.container.style.position = "absolute";
 
-  this.viewer.addHandler("open", this.removeLoading);
+  // The OSD 'open' event is fired when it tries to request an image,
+  // but hasn't neccesarily received it yet. Riiif can be really slow.
+  // The first 'tile-drawing' event means we've actually got _something_
+  // to paint on screen, better later point to remove spinner.
+  var _self = this;
+  this.viewer.addHandler("tile-drawing", function() { _self.removeLoading() } );
 };
 
 ChfImageViewer.prototype.hideUiElement = function(element) {
