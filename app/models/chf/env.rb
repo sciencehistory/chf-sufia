@@ -22,6 +22,9 @@ module CHF
   #     define_key(:some_key, default: "foo")
   #     define_key(:some_key, default: -> { proc_that_provides_value} ) # will only be called once and cached
   #
+  # Since ENV values can only be strings, you can define a lambda transformation that will
+  # only act on ENV values, with the :system_env_transform arg. There is a built-in
+  # CHF::Env::BOOLEAN_TRANSFORM that can be used.
   #
   # All values are cached after first lookup for performance and stabilty -- this
   # kind of environmental configuration should not change for life of process.
@@ -36,6 +39,8 @@ module CHF
     NoValueProvided = Object.new
     private_constant :NoValueProvided
 
+    BOOLEAN_TRANSFORM = lambda { |v| v.in?(ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES) }
+
     def initialize
       @key_definitions = {}
       @local_env_path = Rails.root.join('config', 'local_env.yml')
@@ -49,11 +54,12 @@ module CHF
       instance.lookup(*args)
     end
 
-    def define_key(name, env_key: nil, default: nil)
+    def define_key(name, env_key: nil, default: nil, system_env_transform: nil)
       @key_definitions[name.to_sym] = {
         name: name.to_s,
         env_key: env_key,
-        default: default
+        default: default,
+        system_env_transform: system_env_transform
       }
     end
 
@@ -75,10 +81,14 @@ module CHF
     def system_env_lookup(defn)
       return NoValueProvided if defn[:env_key] == false
 
-      if defn[:env_key] && ENV.has_key?(defn[:env_key].to_s)
+      value = if defn[:env_key] && ENV.has_key?(defn[:env_key].to_s)
         ENV[defn[:env_key].to_s]
       elsif ENV.has_key?(defn[:name].upcase)
         ENV[defn[:name].upcase]
+      end
+
+      if value
+        defn[:system_env_transform] ? defn[:system_env_transform].call(value) : value
       else
         NoValueProvided
       end

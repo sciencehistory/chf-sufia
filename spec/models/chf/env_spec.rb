@@ -63,4 +63,18 @@ describe CHF::Env do
       end
     end
   end
+
+  describe "booelan transform from ENV" do
+    let(:instance) do
+      CHF::Env.new.tap do |e|
+        e.define_key test_key, default: default_value, system_env_transform: CHF::Env::BOOLEAN_TRANSFORM
+      end
+    end
+    before do
+      stub_const('ENV', ENV.to_hash.merge(test_key.to_s.upcase => "true"))
+    end
+    it "converts to boolean" do
+      expect(instance.lookup(test_key)).to eq true
+    end
+  end
 end
