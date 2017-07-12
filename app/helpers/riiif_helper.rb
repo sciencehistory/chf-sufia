@@ -38,7 +38,7 @@ module RiiifHelper
   #
   # if use_image_server is false, size_key is ignored and no srcsets are generated,
   # we just use the stock hydra-derivative created image labelled 'jpeg'
-  def member_image_tag(member, size_key: nil, lazy: false, use_image_server: CHF::Env.lookup(:use_image_server_on_show_page))
+  def member_image_tag(parent_id, member, size_key: nil, lazy: false, use_image_server: CHF::Env.lookup(:use_image_server_on_show_page))
     base_width = size_key == :large ? 525 : 208
 
     args = {
@@ -48,6 +48,9 @@ module RiiifHelper
         trigger: "chf_image_viewer",
         member_id: member.id,
         aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
+        analytics_category: "Work",
+        analytics_action: "view",
+        analytics_label: parent_id
       }
     }
 
