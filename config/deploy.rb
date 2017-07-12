@@ -49,7 +49,7 @@ namespace :chf do
   # Restart resque-pool.
   desc "Restart resque-pool"
   task :resquepoolrestart do
-    on roles(:app) do
+    on roles(:jobs) do
       execute :sudo, "/usr/sbin/service resque-pool restart"
     end
   end
