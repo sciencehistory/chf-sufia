@@ -32,18 +32,21 @@ locals:
                     analytics_value: (member.representative_id if member)
                   }) %>
     </li>
-    <li>
-      <%= link_to("Full-size JPEG",
-                  (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
-                  target: "_new",
-                  data: {
-                    content_hook: "dl-jpeg-link",
-                    # These action/labels are based on what sufia/hyrax uses, although
-                    # a bit weird.
-                    analytics_event: "Files",
-                    analytics_label: "Downloaded-jpg",
-                    analytics_value: (member.representative_id if member)
-                  }) %>
-    </li>
+
+    <% if CHF::Env.lookup(:use_image_server_downloads) %>
+      <li>
+        <%= link_to("Full-size JPEG",
+                    (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
+                    target: "_new",
+                    data: {
+                      content_hook: "dl-jpeg-link",
+                      # These action/labels are based on what sufia/hyrax uses, although
+                      # a bit weird.
+                      analytics_event: "Files",
+                      analytics_label: "Downloaded-jpg",
+                      analytics_value: (member.representative_id if member)
+                    }) %>
+      </li>
+    <% end %>
   </ul>
 

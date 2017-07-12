@@ -141,6 +141,15 @@ module CHF
       system_env_transform: BOOLEAN_TRANSFORM,
       default: -> { true }
 
+    define_key :use_image_server_on_viewer,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> { true }
+
+    define_key :use_image_server_downloads,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> { true }
+
+
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
     }
