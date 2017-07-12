@@ -162,12 +162,16 @@ module CHF
     # but for now we calculate based on app_role value, but do it here
     # so we have one place to change.
     # Can still override with ENV or local_env.yml locally, nice!
-    define_key :serve_riiif_paths, default: -> {
-      lookup(:app_role).blank? || lookup(:app_role) == "riiif"
-    }
-    define_key :serve_app_paths, default: -> {
-      lookup(:app_role).blank? || lookup(:app_role) == "app"
-    }
+    define_key :serve_riiif_paths,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> {
+        lookup(:app_role).blank? || lookup(:app_role) == "riiif"
+      }
+    define_key :serve_app_paths,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> {
+        lookup(:app_role).blank? || lookup(:app_role) == "app"
+      }
 
   end
 end
