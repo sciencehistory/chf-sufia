@@ -31,6 +31,35 @@ module RiiifHelper
     end.join(", ")
   end
 
+  # create an image tag for a 'member' (could be fileset or child work) thumb,
+  # for use on show page. Calculates proper image tag based on lazy or not,
+  # use of riiif for images or not, and desired size. Includes proper
+  # attributes for triggering viewer, analytics, etc.
+  def member_image_tag(member, size_key: nil, lazy: false)
+    base_width = size_key == :large ? 525 : 208
+
+    args = {
+      class: ["show-page-image-image"],
+      alt: "",
+      data: {
+        trigger: "chf_image_viewer",
+        member_id: member.id,
+        aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
+      }
+    }
+
+    if lazy
+      args[:class] << "lazyload"
+      args[:data][:src]    = riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},")
+      args[:data][:srcset] = riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+    else
+      args[:src]    = riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},")
+      args[:srcset] = riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+    end
+
+    image_tag(args.delete(:src), args)
+  end
+
   private
 
   def create_riiif_url(path)
