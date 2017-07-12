@@ -36,9 +36,9 @@ module RiiifHelper
   # use of riiif for images or not, and desired size. Includes proper
   # attributes for triggering viewer, analytics, etc.
   #
-  # if use_riiif is false, size_key is ignored and no srcsets are generated,
+  # if use_image_server is false, size_key is ignored and no srcsets are generated,
   # we just use the stock hydra-derivative created image labelled 'jpeg'
-  def member_image_tag(member, size_key: nil, lazy: false)
+  def member_image_tag(member, size_key: nil, lazy: false, use_image_server: true)
     base_width = size_key == :large ? 525 : 208
 
     args = {
@@ -53,11 +53,17 @@ module RiiifHelper
 
     src_args = if member.riiif_file_id.nil?
       # if there's no image, show the default thumbnail (it gets indexed)
-      { src:  member.thumbnail_path }
-    else
+      {
+        src:  member.thumbnail_path
+      }
+    elsif use_image_server
       {
         src: riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
         srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+      }
+    else
+      {
+        src: main_app.download_path(member.representative_id, file: "jpeg")
       }
     end
 
