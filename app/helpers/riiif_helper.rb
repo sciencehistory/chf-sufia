@@ -35,6 +35,9 @@ module RiiifHelper
   # for use on show page. Calculates proper image tag based on lazy or not,
   # use of riiif for images or not, and desired size. Includes proper
   # attributes for triggering viewer, analytics, etc.
+  #
+  # if use_riiif is false, size_key is ignored and no srcsets are generated,
+  # we just use the stock hydra-derivative created image labelled 'jpeg'
   def member_image_tag(member, size_key: nil, lazy: false)
     base_width = size_key == :large ? 525 : 208
 
@@ -48,16 +51,21 @@ module RiiifHelper
       }
     }
 
-    if member.riiif_file_id.nil?
+    src_args = if member.riiif_file_id.nil?
       # if there's no image, show the default thumbnail (it gets indexed)
-      args[:src] = member.thumbnail_path
-    elsif lazy
-      args[:class] << "lazyload"
-      args[:data][:src]    = riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},")
-      args[:data][:srcset] = riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+      { src:  member.thumbnail_path }
     else
-      args[:src]    = riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},")
-      args[:srcset] = riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+      {
+        src: riiif_image_url(member.riiif_file_id, format: "jpg", size: "#{base_width},"),
+        srcset: riiif_image_srcset_pixel_density(member.riiif_file_id, base_width)
+      }
+    end
+
+    if lazy
+      args[:class] << "lazyload"
+      args[:data].merge!(src_args)
+    else
+      args.merge!(src_args)
     end
 
     image_tag(args.delete(:src), args)
