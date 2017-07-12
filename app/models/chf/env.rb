@@ -139,15 +139,15 @@ module CHF
 
     define_key :use_image_server_on_show_page,
       system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { true }
+      default: -> { false }
 
     define_key :use_image_server_on_viewer,
       system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { true }
+      default: -> { false }
 
     define_key :use_image_server_downloads,
       system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { true }
+      default: -> { false }
 
 
     define_key :riiif_originals_cache, default: -> {
