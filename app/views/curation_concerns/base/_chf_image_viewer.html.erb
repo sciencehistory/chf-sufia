@@ -52,7 +52,9 @@
                       member_id: member_presenter.representative_id,
                       member_show_url: contextual_path(member_presenter, work),
                       member_dl_original_url: main_app.download_path(member_presenter.representative_id),
-                      member_dl_jpeg_url: riiif_image_url(member_presenter.riiif_file_id, format: "jpg", size: "full"),
+                      member_dl_jpeg_url: (if CHF::Env.lookup(:use_image_server_downloads)
+                                            riiif_image_url(member_presenter.riiif_file_id, format: "jpg", size: "full")
+                                          end),
                       tile_source: (if CHF::Env.lookup(:use_image_server_on_viewer)
                                       riiif_info_url(member_presenter.riiif_file_id)
                                     else
