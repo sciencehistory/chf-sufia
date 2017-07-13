@@ -46,7 +46,7 @@ module RiiifHelper
       alt: "",
       data: {
         trigger: "chf_image_viewer",
-        member_id: member.id,
+        member_id: member.representative_id,
         aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
         analytics_category: "Work",
         analytics_action: "view",
