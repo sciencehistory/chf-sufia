@@ -139,7 +139,16 @@ module CHF
 
     define_key :use_image_server_on_show_page,
       system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { true }
+      default: -> { false }
+
+    define_key :use_image_server_on_viewer,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> { false }
+
+    define_key :use_image_server_downloads,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> { false }
+
 
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
@@ -153,12 +162,16 @@ module CHF
     # but for now we calculate based on app_role value, but do it here
     # so we have one place to change.
     # Can still override with ENV or local_env.yml locally, nice!
-    define_key :serve_riiif_paths, default: -> {
-      lookup(:app_role).blank? || lookup(:app_role) == "riiif"
-    }
-    define_key :serve_app_paths, default: -> {
-      lookup(:app_role).blank? || lookup(:app_role) == "app"
-    }
+    define_key :serve_riiif_paths,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> {
+        lookup(:app_role).blank? || lookup(:app_role) == "riiif"
+      }
+    define_key :serve_app_paths,
+      system_env_transform: BOOLEAN_TRANSFORM,
+      default: -> {
+        lookup(:app_role).blank? || lookup(:app_role) == "app"
+      }
 
   end
 end

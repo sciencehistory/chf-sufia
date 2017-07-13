@@ -31,18 +31,18 @@ locals:
                     analytics_label: parent.id
                   }) %>
     </li>
-    <li>
-      <%= link_to("Full-size JPEG",
-                  (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
-                  target: "_new",
-                  data: {
-                    content_hook: "dl-jpeg-link",
-                    # These action/labels are based on what sufia/hyrax uses, although
-                    # a bit weird.
-                    analytics_category: "Work",
-                    analytics_action: "download-jpg",
-                    analytics_label: parent.id
-                  }) %>
-    </li>
+    <% if CHF::Env.lookup(:use_image_server_downloads) %>
+      <li>
+        <%= link_to("Full-size JPEG",
+                    (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
+                    target: "_new",
+                    data: {
+                      content_hook: "dl-jpeg-link",
+                      analytics_category: "Work",
+                      analytics_action: "download-jpg",
+                      analytics_label: parent.id
+                    }) %>
+      </li>
+    <% end %>
   </ul>
 
