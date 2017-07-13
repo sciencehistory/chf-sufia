@@ -5,9 +5,10 @@
 //
 // https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
 
-$(document).on('click', '*[data-analytics-event]', function(e) {
+$(document).on('click', '*[data-analytics-category]', function(e) {
   _gaq.push(['_trackEvent',
-             e.target.getAttribute("data-analytics-event"),
+             e.target.getAttribute("data-analytics-category"),
+             e.target.getAttribute("data-analytics-action"),
              e.target.getAttribute("data-analytics-label"),
              e.target.getAttribute("data-analytics-value")
             ]);
