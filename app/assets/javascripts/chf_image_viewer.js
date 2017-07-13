@@ -451,13 +451,6 @@ jQuery(document).ready(function($) {
       event.preventDefault();
       var id = this.getAttribute('data-member-id');
       chf_image_viewer().show(id);
-
-      // GA
-      _gaq.push(['_trackEvent',
-           'ImageViewer',
-           'fileSetId',
-           id
-          ]);
     });
 
     // with keyboard-tab nav to our thumbs, let return/space trigger click as for normal links
