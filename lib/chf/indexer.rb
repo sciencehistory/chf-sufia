@@ -29,11 +29,15 @@ module CHF
         # skip root url
         next if uri == ActiveFedora.fedora.base_uri
 
-        Rails.logger.debug "Re-index everything ... #{uri}"
-        batch << ActiveFedora::Base.find(ActiveFedora::Base.uri_to_id(uri)).to_solr
-        if (batch.count % batch_size).zero?
-          ActiveFedora::SolrService.add(batch, softCommit: softCommit)
-          batch.clear
+        begin
+          Rails.logger.debug "Re-index everything ... #{uri}"
+          batch << ActiveFedora::Base.find(ActiveFedora::Base.uri_to_id(uri)).to_solr
+          if (batch.count % batch_size).zero?
+            ActiveFedora::SolrService.add(batch, softCommit: softCommit)
+            batch.clear
+          end
+        rescue Ldp::Gone
+          Rails.logger.warn "Re-index everything hit Ldp::Gone with uri #{uri}"
         end
 
         progress_bar_controller.increment if progress_bar_controller
