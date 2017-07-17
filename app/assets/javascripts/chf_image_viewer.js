@@ -435,14 +435,15 @@ jQuery(document).ready(function($) {
 
     $(document).on("click", "*[data-trigger='chf_image_viewer']", function(event) {
       event.preventDefault();
+      var parent_id = this.getAttribute('data-parent-id');
       var id = this.getAttribute('data-member-id');
       chf_image_viewer().show(id);
 
       // GA
       _gaq.push(['_trackEvent',
-           'ImageViewer',
-           'fileSetId',
-           id
+           'Work',
+           'view',
+           parent_id
           ]);
     });
 

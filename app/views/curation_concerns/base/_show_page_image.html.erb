@@ -4,6 +4,7 @@
       tabindex: "0",
       data: {
         trigger: "chf_image_viewer",
+        parent_id: @presenter.id,
         member_id: member.representative_id
       },
       class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do
@@ -22,6 +23,7 @@
                     alt: "",
                     data: {
                       trigger: "chf_image_viewer",
+                      parent_id: @presenter.id,
                       member_id: member.id
                     }
       %>
@@ -59,9 +61,9 @@
                             label: member.id,
                             # These action/labels are what sufia/hyrax uses, although
                             # a bit weird. https://github.com/samvera/hyrax/blob/1e504c200fd9c39120f514ac33cd42cd843de9fa/app/assets/javascripts/hyrax/ga_events.js
-                            analytics_event: "Files",
-                            analytics_label: "Downloaded",
-                            analytics_value: member.representative_id
+                            analytics_category: "Work",
+                            analytics_action: "download-tiff",
+                            analytics_label: @presenter.id
                           } do %>
                   Original Image
               <% end %>
