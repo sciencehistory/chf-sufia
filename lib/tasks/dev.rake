@@ -51,19 +51,44 @@ unless ENV['RAILS_ENV'] == "production"
       end
     end
 
+    # Creates some works. First task arg is email of account to register as
+    # uploader. Second arg is password if you want the account to be created
+    # too.
+    #
+    # ENV[NUM_PUBLIC_WORKS] number of works to create, default 5
+    # ENV[NUM_PRIVATE_WORKS] number of works to create, default 1
+    # ENV[NUM_FILESETS] number of filesets to create per work, default 1
+    # ENV[TITLE_BASE] title to use for the works, will have an integer appended
+    #
+    #    BASE_TITLE="Lots of files" NUM_PUBLIC_WORKS=1 NUM_PRIVATE_WORKS=0 NUM_FILESETS=200 bundle exec rake dev:data[jrochkind@chemheritage.org]
     desc 'create some sample data for dev'
     task :data, [:email, :password] => :environment do |t, args|
-      user_arg = []
+      other_keyword_args = {}
+
+      num_public_works =(ENV['NUM_PUBLIC_WORKS'] || 5).to_i
+      num_private_works = (ENV['NUM_PRIVATE_WORKS'] || 5).to_i
 
       if args[:email]
         user = User.find_by_email(args[:email]) || User.create!(email: args[:email], password: args[:password])
-        user_arg << { user: user }
+        other_keyword_args[:user] = user
       end
 
-      5.times do
-        FactoryGirl.create(:full_public_work, *user_arg)
+      num_public_works.times do |i|
+        FactoryGirl.create(:full_public_work,
+            num_images: (ENV['NUM_FILESETS'] || 1).to_i,
+            title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_#{i +1}"],
+            **other_keyword_args).tap do |w|
+          $stderr.puts "created public work: #{w.id}"
+        end
       end
-      FactoryGirl.create(:private_work, :with_complete_metadata, :real_public_image, *user_arg)
+      num_private_works.times do |i|
+        FactoryGirl.create(:private_work, :with_complete_metadata, :real_public_image,
+            num_images: (ENV['NUM_FILESETS'] || 1).to_i,
+            title: ["#{(ENV['BASE_TITLE'] || "Dev Private Work")}_#{i +1}"],
+            **other_keyword_args).tap do |w|
+          $stderr.puts "created private work: #{w.id}"
+        end
+      end
     end
 
     require 'active_fedora/cleaner'

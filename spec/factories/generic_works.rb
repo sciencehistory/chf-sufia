@@ -67,18 +67,21 @@ FactoryGirl.define do
     trait :real_public_image do
       transient do
         image_path { Rails.root + "spec/fixtures/sample.jpg" }
+        num_images { 1 }
       end
       before(:create) do |work, evaluator|
-        fileset = FactoryGirl.create(:file_set, :public,
-          user: evaluator.user,
-          title: [File.basename(evaluator.image_path)],
-          label: File.basename(evaluator.image_path))
-        work.ordered_members << fileset
-        work.representative = fileset
-        work.thumbnail = fileset
+        evaluator.num_images.times do |i|
+          fileset = FactoryGirl.create(:file_set, :public,
+            user: evaluator.user,
+            title: ["#{File.basename(evaluator.image_path)}_#{i+1}_#{evaluator.title.first}"],
+            label: File.basename(evaluator.image_path))
+          work.ordered_members << fileset
+          work.representative = fileset
+          work.thumbnail = fileset
 
-        # Try to attach a real image
-        IngestFileJob.perform_now(fileset, evaluator.image_path.to_s, evaluator.user)
+          # Try to attach a real image
+          IngestFileJob.perform_now(fileset, evaluator.image_path.to_s, evaluator.user)
+        end
       end
     end
 
