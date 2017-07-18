@@ -44,7 +44,6 @@
             <%# less space for admin, just use icon %>
             <i class='fa fa-download'></i> <% if ! current_ability.current_user.staff? %> Download <% end %>
           </button>
-
           <%= render "chf_download_menu", member: member, parent: @presenter %>
         </div>
 
