@@ -24,15 +24,15 @@ module CurationConcerns
       # schema allows multiple rights, we only use one.
       # we have added our own metadata to the liceneses.yml that the CC
       # class doens't really have accessors for, we'll kinda hack it.
-      case CurationConcerns::LicenseService.new.authority.find(identifier).fetch("category", nil)
-      when "in_copyright"
-        "rightsstatements-InC.Icon-Only.dark.svg"
-      when "no_copyright"
-        "rightsstatements-NoC.Icon-Only.dark.svg"
-      else
-        "rightsstatements-Other.Icon-Only.dark.svg"
+      case CHF::RightsTerms.category_for(identifier)
+        when "in_copyright"
+          "rightsstatements-InC.Icon-Only.dark.svg"
+        when "no_copyright"
+          "rightsstatements-NoC.Icon-Only.dark.svg"
+        else
+          "rightsstatements-Other.Icon-Only.dark.svg"
+        end
       end
-    end
 
     def rights_url(identifier = rights.first)
       # we use resolvable urls already
@@ -42,7 +42,7 @@ module CurationConcerns
     def rights_icon_label(identifier = rights.first)
       # we have added our own metadata to the liceneses.yml that the CC
       # class doens't really have accessors for, we'll kinda hack it.
-      CurationConcerns::LicenseService.new.authority.find(identifier).fetch("short_label_html", "").html_safe
+      (CHF::RightsTerms.short_label_html_for(identifier) || "").html_safe
     end
 
     # Override to only display if NOT open access. We assume open access, but
