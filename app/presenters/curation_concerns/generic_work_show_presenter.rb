@@ -22,8 +22,9 @@ module CurationConcerns
 
     def rights_icon(identifier = rights.first)
       # schema allows multiple rights, we only use one.
-      # we have added our own metadata to the liceneses.yml that the CC
-      # class doens't really have accessors for, we'll kinda hack it.
+      # we have added our own metadata to the licenses.yml used by
+      # CC/QA, but the CC/QA code makes it difficult to access
+      # efficiently, so we use our own CHF::RightsTerms
       case CHF::RightsTerms.category_for(identifier)
         when "in_copyright"
           "rightsstatements-InC.Icon-Only.dark.svg"

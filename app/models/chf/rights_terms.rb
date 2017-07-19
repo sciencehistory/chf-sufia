@@ -25,10 +25,14 @@ module CHF
       metadata_for(id).try { |h| h["short_label_html"] }
     end
 
+    # A global/default instance of this object, a singleton-like
+    # pattern, but we aren't enforcing only one object can exist.
     def self.global
       @global ||= self.new
     end
 
+    # This weird code was what I ame up with to succesfully use Rails
+    # 'delegate' to the #global class method containing a global instance.
     class << self
       delegate :metadata_for, :category_for, :short_label_html_for, to: :global
     end
@@ -36,6 +40,8 @@ module CHF
     private
 
     def terms_by_id
+      # from the array of term hashes, to an array of [id, term_hash], that
+      # can be turned into a hash keyded on `id`, by using Array#to_h
       @terms_by_id ||= YAML.load(File.read(@yaml_file_path))["terms"].collect do |hash|
                         [hash["id"], hash]
                       end.to_h
