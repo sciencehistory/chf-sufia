@@ -40,11 +40,11 @@
     <div class="show-page-image-bar">
       <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
         <div class="btn-group dropup">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenu_downloads_<%= member.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <%# less space for admin, just use icon %>
             <i class='fa fa-download'></i> <% if ! current_ability.current_user.staff? %> Download <% end %>
           </button>
-          <%= member_download_menu(member, parent: @presenter) %>
+          <%= member_download_menu(member, parent: @presenter, labelled_by: "dropdownMenu_downloads_#{member.id}") %>
         </div>
 
       <% end %>

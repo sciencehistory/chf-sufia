@@ -19,12 +19,11 @@ module MemberHelper
   # that way, but performance impact of partial was too much, on work pages
   # that wanted to display many members and call these many times. Not entirely
   # sure why partial so much slower than helper, even in production config.
-  def member_download_menu(member, parent:)
+  def member_download_menu(member, parent:, labelled_by: nil)
     list_elements = []
 
     if parent.has_rights_statement?
-      list_elements <<
-        content_tag("li",
+      list_elements << dropdown_menuitem(
           link_to(parent.rights_url,
                     target: "_blank",
                     class: 'rights-statement-inline') do
@@ -32,13 +31,13 @@ module MemberHelper
                        " ",
                        content_tag("span", parent.rights_icon_label, class: "rights-statement-label")])
           end
-        )
+      )
       list_elements << "<li class='divider'></li>".html_safe
     end
 
     list_elements << '<li class="dropdown-header">Download this image</li>'.html_safe
 
-    list_elements << content_tag("li",
+    list_elements << dropdown_menuitem(
                       link_to("Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
                         target: "_new",
                         id: "file_download",
@@ -53,7 +52,7 @@ module MemberHelper
                       )
 
     if CHF::Env.lookup(:use_image_server_downloads)
-      list_elements << content_tag("li",
+      list_elements << dropdown_menuitem(
                         link_to("Full-size JPEG",
                           (member ? riiif_image_url(member.riiif_file_id, format: "jpg", size: "full") : "#"),
                           target: "_new",
@@ -66,7 +65,11 @@ module MemberHelper
                         )
     end
 
-    content_tag("ul", safe_join(list_elements), class: "dropdown-menu")
+    content_tag("ul",
+                safe_join(list_elements),
+                class: "dropdown-menu",
+                role: "menu",
+                :'aria-labelledby' => labelled_by)
   end
 
   # Used for controls (edit etc) on a 'file_set', normally only showed
