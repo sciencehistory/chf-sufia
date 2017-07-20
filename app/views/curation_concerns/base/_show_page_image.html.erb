@@ -50,7 +50,12 @@
       <% end %>
 
       <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
-        <%= render "show_page_image_file_set_actions", file_set: member, presenter: @presenter %>
+        <div class="btn-group dropup">
+          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_actions_<%= member.id %>" aria-haspopup="true">
+            Admin
+          </button>
+          <%= file_set_actions_menu(member, parent: @presenter, labelled_by: "dropdownMenu_actions_#{member.id}" ) %>
+        </div>
       <% elsif member.model_name.singular.to_sym != :file_set %>
         <%= link_to "Info", contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
       <% end %>
