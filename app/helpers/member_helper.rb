@@ -43,8 +43,6 @@ module MemberHelper
                         id: "file_download",
                         data: {
                           content_hook: "dl-original-link",
-                          # These action/labels are what sufia/hyrax uses, although
-                          # a bit weird. https://github.com/samvera/hyrax/blob/1e504c200fd9c39120f514ac33cd42cd843de9fa/app/assets/javascripts/hyrax/ga_events.js
                           analytics_category: "Work",
                           analytics_action: "download-tiff",
                           analytics_label: parent.id
