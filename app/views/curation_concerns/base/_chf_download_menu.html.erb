@@ -14,7 +14,12 @@ locals:
 
   <ul class="dropdown-menu">
     <% if parent.has_rights_statement? %>
-      <li><%= render 'rights_statement', presenter: parent, theme: 'inline' %></li>
+      <li>
+        <%= link_to parent.rights_url, target: "_blank", class: 'rights-statement-inline' do %>
+          <%= image_tag(parent.rights_icon, class: "rights-statement-logo")  %>
+          <span class="rights-statement-label"><%= parent.rights_icon_label %></span>
+        <% end %>
+      </li>
       <li class="divider"></li>
     <% end %>
     <li class="dropdown-header">Download this image</li>

@@ -173,7 +173,10 @@
   }
 }
 
-.rights-statement.inline {
+// This applies to image viewer too, where it's not inside a .work-show
+// div, so has to be out here. Sorry that it's in this .scss file, work
+// in progress.
+.rights-statement-inline {
   // turn br into space
   .rights-statement-label br {
     content: " ";
