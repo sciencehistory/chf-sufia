@@ -1,9 +1,13 @@
 # An environment configured for performance profiling.
 # We want to cache like production, but use dev data
-# Copied from production, except use inline job queue
+# Copied from production, except use inline job queue and compile assets
 Rails.application.configure do
   # use inline job queue, as we do in development
   config.active_job.queue_adapter = :inline
+
+  # we have to run the asset pipeline in this environment.
+  config.assets.compile = true
+
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_mailer.default_url_options = { :host => 'digital.chemheritage.org' }
@@ -38,7 +42,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  #config.assets.compile = false
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
