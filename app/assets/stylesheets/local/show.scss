@@ -82,20 +82,6 @@
     }
   }
 
-  .rights-statement-inline {
-    // turn br into space
-    .rights-statement-label br {
-      content: " ";
-      &:after {
-        content:" ";
-      }
-    }
-    .rights-statement-logo {
-      width: 1em;
-      vertical-align: middle;
-    }
-  }
-
   // An image with overlaid action buttons and metadata, used for
   // representative image and thumbs on show page. Internal overlay
   // elements are absolutely positioned within it.
@@ -184,5 +170,22 @@
         width: calc(50% / 3 - 10px);
       }
     }
+  }
+}
+
+// This applies to image viewer too, where it's not inside a .work-show
+// div, so has to be out here. Sorry that it's in this .scss file, work
+// in progress.
+.rights-statement-inline {
+  // turn br into space
+  .rights-statement-label br {
+    content: " ";
+    &:after {
+      content:" ";
+    }
+  }
+  .rights-statement-logo {
+    width: 1em;
+    vertical-align: middle;
   }
 }
