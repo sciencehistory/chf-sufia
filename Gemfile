@@ -70,7 +70,7 @@ group :development do
   gem 'capistrano-maintenance', '~> 1.0', require: false
 end
 
-group :development, :test do
+group :development, :test, :profile do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
   gem 'sqlite3'
@@ -89,6 +89,7 @@ group :development, :test do
   gem 'equivalent-xml'
   ## debugging
   #gem 'httplog'
+  gem 'ruby-prof'
 end
 
 group :test do
