@@ -6,8 +6,12 @@ Riiif::Image.cache = ActiveSupport::Cache::FileStore.new(CHF::Env.lookup(:riiif_
 
 # If these are nil / not set, ImageMagick commands will be used
 # set to "gm convert" and "gm identify" to use GraphicsMagick
-Riiif::ImagemagickCommandFactory.external_command = CHF::Env.lookup(:riiif_convert_command)
-Riiif::ImageMagickInfoExtractor.external_command  = CHF::Env.lookup(:riiif_identify_command)
+if CHF::Env.lookup(:riiif_convert_command).present?
+  Riiif::ImagemagickCommandFactory.external_command = CHF::Env.lookup(:riiif_convert_command)
+end
+if CHF::Env.lookup(:riiif_identify_command).present?
+  Riiif::ImageMagickInfoExtractor.external_command  = CHF::Env.lookup(:riiif_identify_command)
+end
 
 # Tell RIIIF how to resolve the identifier to a URI in Fedora
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
