@@ -84,6 +84,7 @@ unless ENV['RAILS_ENV'] == "production"
           num_child_works.times do |i|
             w.ordered_members << FactoryGirl.create(:full_public_work, num_images: 1, title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_CHILD_#{i +1}"])
           end
+          w.save
 
           $stderr.puts "created public work: #{w.id}"
         end
@@ -97,6 +98,7 @@ unless ENV['RAILS_ENV'] == "production"
           num_child_works.times do |i|
             w.ordered_members << FactoryGirl.create(:private_work, num_images: 1, title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_CHILD_#{i +1}"])
           end
+          w.save
 
           $stderr.puts "created private work: #{w.id}"
         end
