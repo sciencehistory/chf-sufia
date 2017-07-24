@@ -81,18 +81,15 @@ module CurationConcerns
     end
 
     def riiif_file_id
-      return if representative_presenter.nil?
-      representative_presenter.riiif_file_id
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')]
     end
 
     def representative_height
-      return if representative_presenter.nil?
-      representative_presenter.height
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)]
     end
 
     def representative_width
-      return if representative_presenter.nil?
-      representative_presenter.width
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]
     end
   end
 end
