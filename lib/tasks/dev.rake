@@ -69,6 +69,7 @@ unless ENV['RAILS_ENV'] == "production"
       num_public_works =(ENV['NUM_PUBLIC_WORKS'] || 5).to_i
       num_private_works = (ENV['NUM_PRIVATE_WORKS'] || 5).to_i
       num_child_works = (ENV['NUM_CHILD_WORKS'] || 0).to_i
+      work_base_title = ENV['TITLE_BASE'].presence || "Dev Public Work"
 
       if args[:email]
         user = User.find_by_email(args[:email]) || User.create!(email: args[:email], password: args[:password])
@@ -78,11 +79,11 @@ unless ENV['RAILS_ENV'] == "production"
       num_public_works.times do |i|
         FactoryGirl.create(:full_public_work,
             num_images: (ENV['NUM_FILESETS'] || 1).to_i,
-            title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_#{i +1}"],
+            title: ["#{work_base_title}_#{i +1}"],
             **other_keyword_args).tap do |w|
 
           num_child_works.times do |i|
-            w.ordered_members << FactoryGirl.create(:full_public_work, num_images: 1, title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_CHILD_#{i +1}"])
+            w.ordered_members << FactoryGirl.create(:full_public_work, num_images: 1, title: ["#{work_base_title}_CHILD_#{i +1}"])
           end
           w.save
 
