@@ -49,7 +49,7 @@ module CHF
       # If works representative is another work, find IT's representative,
       # recursively, until you get a terminal node, presumably fileset.
       def ultimate_representative(work)
-        return work unless work.respond_to?(:representative)
+        return work unless work.respond_to?(:representative) && work.representative.present?
 
         candidate = work.representative
         if candidate.respond_to?(:representative) &&
