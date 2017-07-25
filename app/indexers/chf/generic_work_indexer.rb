@@ -31,9 +31,10 @@ module CHF
 
         if object.representative_id && object.representative
           # need to index these for when it's a child work on a parent's show page
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = object.representative.width.first if object.representative.width.present?
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = object.representative.height.first if object.representative.height.present?
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = object.representative.original_file.id if object.representative.original_file
+          representative = ultimate_representative(object.representative)
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
         end
       end
     end
@@ -43,6 +44,22 @@ module CHF
         entries = object.send(field).to_a
         entries.uniq! {|e| e.id} # can return nil
         entries
+      end
+
+      # If works representative is another work, find IT's representative,
+      # recursively, until you get a terminal node, presumably fileset.
+      def ultimate_representative(work)
+        return work unless work.respond_to?(:representative)
+
+        candidate = work.representative
+        if candidate.respond_to?(:representative) &&
+            candidate.representative_id.present? &&
+            candidate.representative.present? &&
+            ! candidate.reprsentative.equal?(candidate)
+          ultimate_representative(candidate)
+        else
+          candidate
+        end
       end
   end
 end

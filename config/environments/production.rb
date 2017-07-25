@@ -4,6 +4,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :sendmail
 
   # Code is not reloaded between requests.
+  # Note this also sets config.action_view.cache_template_loading unless that's set independently
   config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
