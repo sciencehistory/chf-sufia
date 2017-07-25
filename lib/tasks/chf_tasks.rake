@@ -46,7 +46,7 @@ namespace :chf do
     end
   end
 
-  desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives.'
+  desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives. `RAILS_ENV=production bundle exec rake chf:recharacterize`'
   task recharacterize: :environment do
     progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
     Sufia.primary_work_type.all.find_each do |work|
@@ -59,7 +59,7 @@ namespace :chf do
     end
   end
 
-  desc 'Re-generate all derivatives'
+  desc 'Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`'
   task create_derivatives: :environment do
     require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
@@ -83,7 +83,7 @@ namespace :chf do
     puts 'migration complete'
   end
 
-  desc 'Reindex everything'
+  desc 'Reindex everything. `RAILS_ENV=production bundle exec rake chf:reindex`'
   task reindex: :environment do
     CHF::Indexer.new.reindex_everything(progress_bar: true, final_commit: true)
   end
@@ -101,7 +101,7 @@ namespace :chf do
     puts "total: #{reporter.matches.size}"
   end
 
-  desc 'Reindex Collections'
+  desc 'Reindex Collections. `RAILS_ENV=production bundle exec rake chf:reindex_collections`'
   task reindex_collections: :environment do
     # reindex only Collections
     # not a frequent task but useful in upgrade to sufia 7.3
@@ -117,7 +117,7 @@ namespace :chf do
     $stderr.puts 'reindex_collections complete'
   end
 
-  desc 'Reindex all GenericWorks'
+  desc 'Reindex all GenericWorks. `RAILS_ENV=production bundle exec rake chf:reindex_works`'
   task reindex_works: :environment do
     # Like :reindex, but only GenericWorks, makes it faster,
     # plus let's us use other solr techniques to make it faster,
@@ -173,7 +173,7 @@ namespace :chf do
 
   namespace :admin do
 
-    desc 'Grant admin role to existing user.'
+    desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
     task :grant, [:email] => :environment do |t, args|
       begin
         CHF::Utils::Admin.grant(args[:email])
@@ -198,7 +198,7 @@ namespace :chf do
   end
 
   namespace :user do
-    desc 'Create a user without a password; they can request one from the UI'
+    desc 'Create a user without a password; they can request one from the UI. `RAILS_ENV=production bundle exec rake chf:user:create[newuser@chemheritage.org]`'
     task :create, [:email] => :environment do |t, args|
       u = User.create!(email: args[:email])
       puts "User created with email address #{u.email}."
@@ -215,7 +215,7 @@ namespace :chf do
   end
 
   namespace :riiif do
-    desc "Delete all files in both riiif caches"
+    desc 'Delete all files in both riiif caches. `RAILS_ENV=production bundle execrake chf:riiif:clear_caches`'
     task :clear_caches do
       # We're not doing an :environment rake dep for speed so need to load
       # our CHF::Env.
@@ -224,9 +224,8 @@ namespace :chf do
       Pathname.new(CHF::Env.lookup(:riiif_derivatives_cache)).children.each { |p| p.rmtree }
     end
 
-    # eg INTERNAL_RIIIF_URL=http://localhost:3000 rake chf:riiif:preload_originals
     # Note this will not work on non-public images
-    desc "ping riiif server to fetch all originals of publicly-visible images from fedora"
+    desc 'ping riiif server to fetch all originals of publicly-visible images from fedora. `RAILS_ENV=production INTERNAL_RIIIF_URL=http://localhost bundle execrake chf:riiif:preload_originals`'
     task :preload_originals => :environment do
       total = FileSet.count
 
