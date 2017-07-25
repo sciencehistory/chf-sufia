@@ -27,6 +27,13 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
         # If the thing isn't found in the license service, just ignore it.
         license_service.authority.find(id).fetch('term', nil)
       end.compact
+
+      if object.representative_id && object.representative
+        # need to index these for when it's a child work on a parent's show page
+        doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = object.representative.width.first if object.representative.width.present?
+        doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = object.representative.height.first if object.representative.height.present?
+        doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = object.representative.original_file.id if object.representative.original_file
+      end
     end
   end
 
