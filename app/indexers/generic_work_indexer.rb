@@ -28,9 +28,9 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
         license_service.authority.find(id).fetch('term', nil)
       end.compact
 
-      if object.representative_id && object.representative
+      representative = ultimate_representative(object)
+      if representative
         # need to index these for when it's a child work on a parent's show page
-        representative = ultimate_representative(object.representative)
         doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
         doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
         doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
@@ -47,18 +47,17 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
 
     # If works representative is another work, find IT's representative,
     # recursively, until you get a terminal node, presumably fileset.
+    # Return nil if there is no terminal representative.
     def ultimate_representative(work)
-      return work unless work.respond_to?(:representative) && work.representative.present?
+      return nil unless work.representative_id && work.representative
 
       candidate = work.representative
-      if candidate.respond_to?(:representative) &&
-          candidate.representative_id.present? &&
-          candidate.representative.present? &&
-          ! candidate.reprsentative.equal?(candidate)
+      return nil if candidate.equal?(work) # recursive self-pointing representative, bah
+
+      if candidate.respond_to?(:representative)
         ultimate_representative(candidate)
       else
         candidate
       end
     end
-
 end

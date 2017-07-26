@@ -41,4 +41,92 @@ RSpec.describe GenericWorkIndexer do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 3
   end
 
+  # These are slow, was hard to get them to work reliably and be reliably testing at all
+  describe "representative fields" do
+    let(:width) { 100 }
+    let(:height) { 200 }
+    let(:width_field) { Solrizer.solr_name("representative_width", type: :integer) }
+    let(:height_field) { Solrizer.solr_name("representative_height", type: :integer) }
+    let(:file_id_field) { Solrizer.solr_name("representative_original_file_id") }
+
+    describe "standard work with representative fileset" do
+      let(:work) do
+        FactoryGirl.create(:work, :real_public_image) do |work|
+          work.representative.original_file.width = [width]
+          work.representative.original_file.height = [height]
+        end
+      end
+      it "indexes representative fields" do
+        expect(solr_document[file_id_field]).to eq(work.representative.original_file.id)
+        expect(solr_document[width_field]).to eq(width)
+        expect(solr_document[height_field]).to eq(height)
+      end
+    end
+
+    describe "work with no representative" do
+      let(:work) { FactoryGirl.create(:work) }
+      before do
+        # precondition, make sure we set things up right
+        expect(work.representative).to eq(nil)
+      end
+      it "indexes without those fields without raising" do
+        expect(solr_document[file_id_field]).to be nil
+        expect(solr_document[width_field]).to be nil
+        expect(solr_document[height_field]).to be nil
+      end
+    end
+
+    describe "work with representative child work" do
+      let(:child_work) do
+        FactoryGirl.create(:work, :real_public_image) do |w|
+          w.representative.original_file.width = [width]
+          w.representative.original_file.height = [height]
+        end
+      end
+      let(:work) do
+        FactoryGirl.create(:work) do |w|
+          w.representative_id = child_work.id
+          w.representative = child_work
+        end
+      end
+      it "indexes representative from child work" do
+        expect(solr_document[file_id_field]).to eq(work.representative.representative.original_file.id)
+        expect(solr_document[width_field]).to eq(width)
+        expect(solr_document[height_field]).to eq(height)
+      end
+    end
+
+    describe "with with representative child work with no representative" do
+      let(:work) do
+        FactoryGirl.create(:work) do |w|
+          w.representative = FactoryGirl.create(:work)
+        end
+      end
+      before do
+        # precondition, make sure we set things up right
+        expect(work.representative.representative).to eq(nil)
+      end
+      it "indexes without those fields without raising" do
+        expect(solr_document[file_id_field]).to be nil
+        expect(solr_document[width_field]).to be nil
+        expect(solr_document[height_field]).to be nil
+      end
+    end
+
+    describe "with self-pointing representative" do
+      # pathological, but since the model can do it, we want to make sure
+      # we don't infinite loop on it.
+      let(:work) do
+        FactoryGirl.create(:work) do |w|
+          w.representative_id = w.id
+          w.representative = w
+        end
+      end
+      it "finishes with blank values" do
+        expect(solr_document[file_id_field]).to be nil
+        expect(solr_document[width_field]).to be nil
+        expect(solr_document[height_field]).to be nil
+      end
+    end
+  end
 end
