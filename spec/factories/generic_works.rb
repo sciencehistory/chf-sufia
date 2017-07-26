@@ -64,6 +64,9 @@ FactoryGirl.define do
 
     # Real image that will resolve in a browser. It's slow cause it's going
     # through some hydra characterization, stored in fedora, etc. But it's real.
+    #
+    # Warning this fails on CI since something deep in the stack needs fits
+    # installed which we don't have on CI. Sorry. We use it in dev though. :(
     trait :real_public_image do
       transient do
         image_path { Rails.root + "spec/fixtures/sample.jpg" }
@@ -86,6 +89,8 @@ FactoryGirl.define do
     end
 
     # a public work with complete metadata and a real image! Slow.
+    # Warning this fails on CI since it uses :real_public_image and then something
+    # deep in the stack needs fits installed which we don't have on CI. Sorry. We use it in dev though. :(
     factory :full_public_work do
       with_complete_metadata
       real_public_image
