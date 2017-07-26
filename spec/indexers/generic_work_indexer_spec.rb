@@ -76,6 +76,7 @@ RSpec.describe GenericWorkIndexer do
       end
     end
 
+    # This is a mess and very slow, better way to test?
     describe "work with representative child work" do
       let(:child_work) do
         FactoryGirl.create(:work, :real_public_image) do |w|
@@ -93,6 +94,33 @@ RSpec.describe GenericWorkIndexer do
         expect(solr_document[file_id_field]).to eq(work.representative.representative.original_file.id)
         expect(solr_document[width_field]).to eq(width)
         expect(solr_document[height_field]).to eq(height)
+      end
+
+      describe "when child work representative is updated" do
+        let(:new_width) { 1000 }
+        let(:new_height) { 2000 }
+        let(:new_file_set) { FactoryGirl.create(:file_set, :public) }
+
+        before do
+          # have to get original work in index, so child work can find it
+          # to update it.
+          work.ordered_members << work.representative
+          work.save!
+        end
+
+        it "updates parent work in index" do
+          child_work.ordered_members << new_file_set
+          IngestFileJob.perform_now(new_file_set, (Rails.root + "spec/fixtures/sample.jpg").to_s, nil)
+          child_work.representative = new_file_set
+
+          indexed_parent = SolrDocument.find(work.id)
+          expect(indexed_parent["representative_original_file_id_tesim"]).not_to include(new_file_set.original_file.id)
+
+          child_work.save!
+
+          indexed_parent = SolrDocument.find(work.id)
+          expect(indexed_parent["representative_original_file_id_tesim"]).to include(new_file_set.original_file.id)
+        end
       end
     end
 

@@ -31,6 +31,8 @@ class GenericWorkIndexer < CurationConcerns::WorkIndexer
       representative = ultimate_representative(object)
       if representative
         # need to index these for when it's a child work on a parent's show page
+        # Note corresponding code in GenericWork#update_index makes sure works using
+        # this work as a representative also get updated.
         doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
         doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
         doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file

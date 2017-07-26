@@ -14,6 +14,30 @@ class GenericWork < ActiveFedora::Base
 
   validate :legal_representative_id, :legal_thumbnail_id
 
+  # If this work is a representative for some OTHER work, changes to it's
+  # representative requires reindexing that parent, so some expensive work
+  # is sadly needed.
+  #
+  # We want to try to do this expensive thing only do this if representative has actually
+  # changed, but hard to count on getting changes in various circumstances, forwards-compatibly.
+  # We try, but if both changes and previous_changes are blank, we figure
+  # we better do it anyway. Not totally sure if this catching the right things,
+  # but it seems to work not missing anything.
+  #
+  # This code goes with custom code in indexer to index representative_width,
+  # representative_height, and representative_original_file_id.
+  def update_index(*args)
+    super.tap do
+      if self.changes.keys.include?("representative_id") ||
+         self.previous_changes.keys.include?("representative_id") ||
+         (self.changes.blank? && self.previous_changes.blank?)
+        GenericWork.where(GenericWork.reflections[:representative_id].solr_key => self.id).each do |parent_work|
+          parent_work.update_index
+        end
+      end
+    end
+  end
+
   protected
 
   def legal_representative_id
