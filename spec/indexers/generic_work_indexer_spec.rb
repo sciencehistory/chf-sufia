@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe GenericWorkIndexer do
+  before do
+    # taken from hyrax, seems to be a way to keep the deep stack from
+    # trying to call `fits` when `fits` is not avail on CI server.
+    # https://github.com/samvera/hyrax/blob/dd1c46b7a20032497b952220ade22f1e4d54b5ad/spec/features/create_work_spec.rb#L16-L17
+    allow(CharacterizeJob).to receive(:perform_later)
+  end
+
   let (:work) do
     FactoryGirl.create(:generic_work, dates_of_work: []).tap do |w|
       w.physical_container = "b2|f3|v4|p5|g234"
