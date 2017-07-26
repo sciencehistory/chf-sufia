@@ -104,8 +104,6 @@ RSpec.describe GenericWorkIndexer do
       end
 
       describe "when child work representative is updated" do
-        let(:new_width) { 1000 }
-        let(:new_height) { 2000 }
         let(:new_file_set) { FactoryGirl.create(:file_set, :public) }
 
         before do
@@ -126,7 +124,7 @@ RSpec.describe GenericWorkIndexer do
           child_work.save!
 
           indexed_parent = SolrDocument.find(work.id)
-          expect(indexed_parent["representative_original_file_id_tesim"]).to include(new_file_set.original_file.id)
+          expect(indexed_parent["representative_original_file_id_tesim"]).to contain_exactly(new_file_set.original_file.id)
         end
       end
     end
