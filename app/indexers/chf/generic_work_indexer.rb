@@ -32,9 +32,16 @@ module CHF
         if object.representative_id && object.representative
           # need to index these for when it's a child work on a parent's show page
           representative = ultimate_representative(object.representative)
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
-          doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
+
+          # temporary, figure out what's going on
+          if !representative.is_a?(FileSet)
+            Rails.logger.warn("Could not find proper representative on indexing for work #{object.id}")
+            $stderr.puts "Could not find proper representative on indexing for work #{object.id}"
+          end
+
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.respond_to?(:width) && representative.width.present?
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.respond_to?(:height) && representative.height.present?
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.respond_to?(:original_file) && representative.original_file
         end
       end
     end
@@ -60,6 +67,8 @@ module CHF
         else
           candidate
         end
+      rescue StandardError => e
+
       end
   end
 end
