@@ -204,57 +204,7 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
         return this._tileHeight;
     },
 
-    /**
-     * @function
-     * @param {Number} level
-     */
-    getLevelScale: function ( level ) {
 
-        if(this.emulateLegacyImagePyramid) {
-            var levelScale = NaN;
-            if (this.levels.length > 0 && level >= this.minLevel && level <= this.maxLevel) {
-                levelScale =
-                    this.levels[level].width /
-                    this.levels[this.maxLevel].width;
-            }
-            return levelScale;
-        }
-
-        return $.TileSource.prototype.getLevelScale.call(this, level);
-    },
-
-    /**
-     * @function
-     * @param {Number} level
-     */
-    getNumTiles: function( level ) {
-
-        if(this.emulateLegacyImagePyramid) {
-            var scale = this.getLevelScale(level);
-            if (scale) {
-                return new $.Point(1, 1);
-            } else {
-                return new $.Point(0, 0);
-            }
-        }
-
-        return $.TileSource.prototype.getNumTiles.call(this, level);
-    },
-
-
-    /**
-     * @function
-     * @param {Number} level
-     * @param {OpenSeadragon.Point} point
-     */
-    getTileAtPoint: function( level, point ) {
-
-        if(this.emulateLegacyImagePyramid) {
-            return new $.Point(0, 0);
-        }
-
-        return $.TileSource.prototype.getTileAtPoint.call(this, level, point);
-    },
 
 
     /**
@@ -335,27 +285,5 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
     }
 
 });
-
-
-    /**
-     * Build the legacy pyramid URLs (one tile per level)
-     * @function
-     * @param {object} options - infoJson
-     * @throws {Error}
-     */
-    function constructLevels(options) {
-        var levels = [];
-        for(var i = 0; i < options.sizes.length; i++) {
-            levels.push({
-                url: options['@id'] + '/full/' + options.sizes[i].width + ',/0/default.jpg',
-                width: options.sizes[i].width,
-                height: options.sizes[i].height
-            });
-        }
-        return levels.sort(function(a, b) {
-            return a.width - b.width;
-        });
-    }
-
 
 }( OpenSeadragon ));
