@@ -295,8 +295,7 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
             remoteTileW,
             remoteTileH,
             remoteSize,
-            imgixRectValue,
-            uri;
+            imgixRectValue
 
         tileWidth = this.getTileWidth(level);
         tileHeight = this.getTileHeight(level);
@@ -317,13 +316,25 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
             imgixRectValue = remoteTileX + "," + remoteTileY + "," + remoteTileW + "," + remoteTileH;
         }
 
-        // TODO better url manipulation. config'd 'auto' values.
-        uri = this.baseUrl + "?auto=compress%2Cformat&fm=jpg&rect=" + encodeURIComponent(imgixRectValue) + "&w=" + remoteSize;
 
-        return uri;
+        return this.baseUrl + "?" + this.serializeQueryParams({
+            "auto": "compress,format",
+            "fm": "jpg",
+            "rect": imgixRectValue,
+            "w": remoteSize
+        });
+    },
+
+    serializeQueryParams: function(obj) {
+      var str = [];
+      for(var p in obj)
+        if (obj.hasOwnProperty(p)) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+      return str.join("&");
     }
 
-  });
+});
 
 
     /**
