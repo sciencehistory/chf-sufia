@@ -7,7 +7,6 @@
  *
  * IN PROGRESS:
  *  * support fetching height/width from fm=json imgix response
- *  * configure imgix "auto" param
  *  * code needs lots of clenaing up, and tests, and then maybe submit to OSD.
  *
  * Copyright (C) 2009 CodePlex Foundation
@@ -52,8 +51,9 @@
  * @see http://iiif.io/api/image/
  */
 $.ImgixTileSource = function( options ){
-
     /* eslint-disable camelcase */
+
+    this.imgixAutoParam = "compress,format"; // default can be overridden by option
 
     $.extend( true, this, options );
 
@@ -318,7 +318,7 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
 
 
         return this.baseUrl + "?" + this.serializeQueryParams({
-            "auto": "compress,format",
+            "auto": this.imgixAutoParam,
             "fm": "jpg",
             "rect": imgixRectValue,
             "w": remoteSize
