@@ -1,6 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe GenericWorkIndexer do
+
+RSpec.describe CHF::GenericWorkIndexer do
+
   before do
     # taken from hyrax, seems to be a way to keep the deep stack from
     # trying to call `fits` when `fits` is not avail on CI server.

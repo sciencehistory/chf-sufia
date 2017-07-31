@@ -1,3 +1,10 @@
+# Our roles:
+# :web - the box is running rails code & serving it over http
+# :app - the box is our primary app server
+# :jobs - the box is running our background jobs
+# :db - the box is running our rails db
+# :solr - the box is running our solr index
+
 # config valid only for current version of Capistrano
 lock '3.8.1'
 
@@ -18,7 +25,7 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 set :whenever_roles, [:app, :jobs]
 
 # not all machines should run bundler; some won't have ruby
-set :bundle_roles, [:app, :jobs]
+set :bundle_roles, [:web, :jobs]
 
 # Prompt which branch to deploy; default to current.
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -27,7 +34,7 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/initializers/devise.rb', 'config/blacklight.yml', 'config/database.yml', 'config/fedora.yml', 'config/redis.yml', 'config/resque-pool.yml', 'config/secrets.yml', 'config/solr.yml')
+set :linked_files, fetch(:linked_files, []).push('config/initializers/devise.rb', 'config/blacklight.yml', 'config/database.yml', 'config/fedora.yml', 'config/redis.yml', 'config/resque-pool.yml', 'config/secrets.yml', 'config/solr.yml', 'config/local_env.yml')
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system')
 # Default value for default_env is {}

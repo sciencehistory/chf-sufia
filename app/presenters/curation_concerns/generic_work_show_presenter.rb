@@ -9,7 +9,7 @@ module CurationConcerns
       :extent, :division, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
       :inscription, :date_of_work, :engraver, :printer,
-      :printer_of_plates, :after,
+      :printer_of_plates, :after, :thumbnail_path,
       to: :solr_document
 
     def additional_title
@@ -78,6 +78,18 @@ module CurationConcerns
           viewable_member_presenters
         end
       end
+    end
+
+    def riiif_file_id
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')]
+    end
+
+    def representative_height
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)]
+    end
+
+    def representative_width
+      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]
     end
   end
 end

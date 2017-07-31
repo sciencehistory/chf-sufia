@@ -58,6 +58,7 @@ unless ENV['RAILS_ENV'] == "production"
     # ENV[NUM_PUBLIC_WORKS] number of works to create, default 5
     # ENV[NUM_PRIVATE_WORKS] number of works to create, default 1
     # ENV[NUM_FILESETS] number of filesets to create per work, default 1
+    # ENV[NUM_CHILD_WORKS] number of child works to add to each work created, default 0.
     # ENV[TITLE_BASE] title to use for the works, will have an integer appended
     #
     #    BASE_TITLE="Lots of files" NUM_PUBLIC_WORKS=1 NUM_PRIVATE_WORKS=0 NUM_FILESETS=200 bundle exec rake dev:data[jrochkind@chemheritage.org]
@@ -67,6 +68,8 @@ unless ENV['RAILS_ENV'] == "production"
 
       num_public_works =(ENV['NUM_PUBLIC_WORKS'] || 5).to_i
       num_private_works = (ENV['NUM_PRIVATE_WORKS'] || 5).to_i
+      num_child_works = (ENV['NUM_CHILD_WORKS'] || 0).to_i
+      work_base_title = ENV['TITLE_BASE'].presence || "Dev Public Work"
 
       if args[:email]
         user = User.find_by_email(args[:email]) || User.create!(email: args[:email], password: args[:password])
@@ -76,8 +79,14 @@ unless ENV['RAILS_ENV'] == "production"
       num_public_works.times do |i|
         FactoryGirl.create(:full_public_work,
             num_images: (ENV['NUM_FILESETS'] || 1).to_i,
-            title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_#{i +1}"],
+            title: ["#{work_base_title}_#{i +1}"],
             **other_keyword_args).tap do |w|
+
+          num_child_works.times do |i|
+            w.ordered_members << FactoryGirl.create(:full_public_work, num_images: 1, title: ["#{work_base_title}_CHILD_#{i +1}"])
+          end
+          w.save
+
           $stderr.puts "created public work: #{w.id}"
         end
       end
@@ -86,6 +95,12 @@ unless ENV['RAILS_ENV'] == "production"
             num_images: (ENV['NUM_FILESETS'] || 1).to_i,
             title: ["#{(ENV['BASE_TITLE'] || "Dev Private Work")}_#{i +1}"],
             **other_keyword_args).tap do |w|
+
+          num_child_works.times do |i|
+            w.ordered_members << FactoryGirl.create(:private_work, num_images: 1, title: ["#{(ENV['BASE_TITLE'] || "Dev Public Work")}_CHILD_#{i +1}"])
+          end
+          w.save
+
           $stderr.puts "created private work: #{w.id}"
         end
       end
@@ -122,8 +137,8 @@ unless ENV['RAILS_ENV'] == "production"
 
       # You may want to follow up with:
       # rake chf:user:test:create[somebody@chemheritage.org,password] chf:admin:grant[somebody@chemheritage.org]
-      desc "Reset db, solr, and fedora, and proper setup for blank slate"
-      task :all => [:solr, :fedora, :derivatives, :redis, "db:reset"]  do
+      desc "Reset db, solr, fedora, some caches, and proper setup for blank slate"
+      task :all => [:solr, :fedora, :derivatives, :redis, "db:reset", "chf:riiif:clear_caches"]  do
         Rake::Task['curation_concerns:workflow:load'].invoke
         Rake::Task['sufia:default_admin_set:create'].invoke
       end

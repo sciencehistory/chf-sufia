@@ -27,7 +27,12 @@
   <div class="work-show-representative">
       <%= show_page_representative_media(@presenter) %>
       <div class="rights-and-social">
-        <%= render 'rights_statement', presenter: @presenter, theme: 'large' %>
+        <% if @presenter.has_rights_statement? %>
+            <%= link_to @presenter.rights_url, target: "_blank", class: 'rights-statement large' do %>
+              <%= image_tag(@presenter.rights_icon, class: "rights-statement-logo")  %>
+              <span class="rights-statement-label"><%= @presenter.rights_icon_label %></span>
+            <% end %>
+        <% end %>
         <%= render 'social_media' %>
       </div>
   </div>
