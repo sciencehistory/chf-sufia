@@ -7,7 +7,7 @@
  *
  * IN PROGRESS:
  *  * support fetching height/width from fm=json imgix response
- *  * code needs lots of clenaing up, and tests, and then maybe submit to OSD.
+ *  * code tests, and then maybe submit to OSD.
  *
  * Copyright (C) 2009 CodePlex Foundation
  * Copyright (C) 2010-2013 OpenSeadragon contributors
@@ -64,7 +64,6 @@ $.ImgixTileSource = function( options ){
 
     options.tileSizePerScaleFactor = {};
 
-    // N.B. 2.0 renamed scale_factors to scaleFactors
     if ( this.tile_width && this.tile_height ) {
         options.tileWidth = this.tile_width;
         options.tileHeight = this.tile_height;
