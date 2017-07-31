@@ -113,7 +113,7 @@ $.ImgixTileSource = function( options ){
         }
     }
 
-    if (!options.maxLevel && !this.emulateLegacyImagePyramid) {
+    if (!options.maxLevel) {
         if (!this.scale_factors) {
             options.maxLevel = Number(Math.ceil(Math.log(Math.max(this.width, this.height), 2)));
         } else {
@@ -172,11 +172,6 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
      * @param {Number} level
      */
     getTileWidth: function( level ) {
-
-        if(this.emulateLegacyImagePyramid) {
-            return $.TileSource.prototype.getTileWidth.call(this, level);
-        }
-
         var scaleFactor = Math.pow(2, this.maxLevel - level);
 
         if (this.tileSizePerScaleFactor && this.tileSizePerScaleFactor[scaleFactor]) {
@@ -191,11 +186,6 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
      * @param {Number} level
      */
     getTileHeight: function( level ) {
-
-        if(this.emulateLegacyImagePyramid) {
-            return $.TileSource.prototype.getTileHeight.call(this, level);
-        }
-
         var scaleFactor = Math.pow(2, this.maxLevel - level);
 
         if (this.tileSizePerScaleFactor && this.tileSizePerScaleFactor[scaleFactor]) {
@@ -217,15 +207,6 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
      * @throws {Error}
      */
     getTileUrl: function( level, x, y ){
-
-        if(this.emulateLegacyImagePyramid) {
-            var url = null;
-            if ( this.levels.length > 0 && level >= this.minLevel && level <= this.maxLevel ) {
-                url = this.levels[ level ].url;
-            }
-            return url;
-        }
-
         //# constants
         var IIIF_ROTATION = '0',
             //## get the scale (level as a decimal)
