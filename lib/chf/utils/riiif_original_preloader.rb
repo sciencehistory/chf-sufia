@@ -17,7 +17,7 @@ module CHF
         @file_id = file_id
         @riiif_base = riiif_base
         unless riiif_base.present?
-          raise ArgumentError, "Need an :iiif_internal_url config. Can set in env with IIIF_INTERNAL_URL=http://localhost:3000 or IIIF_INTERNAL_URL=https://$internal_riiif_ip"
+          raise ArgumentError, "Need an :iiif_internal_url config. Can set in env with, e.g., IIIF_INTERNAL_URL=http://localhost:3000/image-service"
         end
       end
 
@@ -28,12 +28,9 @@ module CHF
       end
 
       def ping_path
-        case CHF::Env.lookup(:image_server)
-        when 'riiif'
-          Riiif::Engine.routes.url_helpers.info_path(file_id, locale: nil)
-        when 'cantaloupe'
-          "/iiif/2/#{CGI.escape(file_id)}/info.json"
-        end
+        path_prefix = Addressable::URI.parse(riiif_base).path # may have terminal slash, may not
+        path_prefix << '/' if path_prefix[-1] != '/' # ensure terminal slash
+        path_prefix + "#{CGI.escape(file_id)}/info.json"
       end
     end
   end
