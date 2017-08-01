@@ -257,4 +257,44 @@ namespace :chf do
       end
     end
   end
+
+  namespace :imgix do
+    # TODO merge with iiif:preload task? Or leave separate?
+    desc "ping every fileset on imgix to preload"
+    task :ping_all => :environment do
+      total = FileSet.count
+
+      $stderr.puts "Ping'ing imgix server at `#{CHF::Env.lookup(:imgix_host)}` for all #{total} FileSet id's"
+
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
+
+      errors = 0
+
+      raise "Need CHF::Env.lookup(:imgix_host)" unless CHF::Env.lookup(:imgix_host).present?
+
+      base = Addressable::URI.parse(CHF::Env.lookup(:imgix_host)).tap do |addressable|
+        addressable.path += "/" unless addressable.path.end_with?("/")
+      end
+
+      # There's probably a faster way to do this, maybe from Solr instead of fedora?
+      # Or getting original_file_id without the extra fetch? Not sure. This is slow.
+      FileSet.find_each do |fs|
+
+          ping_url = base + "#{fs.id}?fm=json"
+
+          response = Faraday.head ping_url
+
+          if response.status != 200
+            errors += 1
+            progress.log "Unexpected #{response.status} response (#{errors} total) at #{ping_url}"
+          end
+
+          progress.increment
+      end
+      progress.finish
+      if errors > 0
+        $stderr.puts "#{errors} total error responses out of #{total} info requests"
+      end
+    end
+  end
 end
