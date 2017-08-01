@@ -6,10 +6,10 @@ module CHF
     # You need config :iiif_internal_url set, for instance maybe IIIF_INTERNAL_URL=http://localhost:3000
     # if you really want to ping your dev server.
     #
-    #     CHF::Utils::RiiifOriginalPreloader.new(file_id).ping_to_preload
+    #     CHF::Utils::IiifOriginalPreloader.new(file_id).ping_to_preload
     #
     # NOTE: This does no auth, so will not work on non-public images
-    class RiiifOriginalPreloader
+    class IiifOriginalPreloader
       include ImageServiceHelper
 
       attr_reader :file_id, :riiif_base
