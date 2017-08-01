@@ -1,21 +1,17 @@
 module ImageServiceHelper
 
   # Returns the IIIF info.json document, suitable as an OpenSeadragon tile source/
-  #
-  # Returns relative url unless we've defind a riiif server in config/environments/*.rb
   def iiif_info_url(image_file_id)
     path = "#{CGI.escape(image_file_id)}/info.json"
     create_iiif_url(path)
   end
 
-  # Request an image URL from the riiif server. Format, size, and quality
+  # Request an image URL from the iiif server. Format, size, and quality
   # arguments are optional, but must be formatted for IIIF api.
   # May make sense to make cover methods on top of this one
   # for specific images in specific places.
   #
   # Defaults copied from riiif defaults. https://github.com/curationexperts/riiif/blob/67ff0c49af198ba6afcf66d3db9d3d36a8694023/lib/riiif/routes.rb#L21
-  #
-  # Returns relative url unless we've defind a riiif server in config/environments/*.rb
   def iiif_image_url(image_file_id, format: 'jpg', size: "full", quality: 'default')
     path = iiif_image_path(image_file_id, size: size, format: format, quality: quality)
     create_iiif_url(path)
@@ -31,7 +27,7 @@ module ImageServiceHelper
   # any responsiveness page layout. Sends somewhat more bytes when needed at some responsive
   # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
   # prob good enough.
-  def riiif_image_srcset_pixel_density(file_id, base_width, format: 'jpg', quality: 'default')
+  def iiif_image_srcset_pixel_density(file_id, base_width, format: 'jpg', quality: 'default')
     [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
       iiif_image_url(file_id, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
     end.join(", ")
@@ -39,7 +35,7 @@ module ImageServiceHelper
 
   # create an image tag for a 'member' (could be fileset or child work) thumb,
   # for use on show page. Calculates proper image tag based on lazy or not,
-  # use of riiif for images or not, and desired size. Includes proper
+  # use of iiif for images or not, and desired size. Includes proper
   # attributes for triggering viewer, analytics, etc.
   #
   # if use_image_server is false, size_key is ignored and no srcsets are generated,
@@ -68,7 +64,7 @@ module ImageServiceHelper
     elsif use_image_server
       {
         src: iiif_image_url(member.representative_file_id, format: "jpg", size: "#{base_width},"),
-        srcset: riiif_image_srcset_pixel_density(member.representative_file_id, base_width)
+        srcset: iiif_image_srcset_pixel_density(member.representative_file_id, base_width)
       }
     else
       {
