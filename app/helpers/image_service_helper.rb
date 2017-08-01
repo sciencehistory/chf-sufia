@@ -2,8 +2,7 @@ module ImageServiceHelper
 
   # Returns the IIIF info.json document, suitable as an OpenSeadragon tile source/
   def iiif_info_url(image_file_id)
-    path = "#{CGI.escape(image_file_id)}/info.json"
-    create_iiif_url(path)
+    create_iiif_url("#{CGI.escape(image_file_id)}/info.json")
   end
 
   # Request an image URL from the iiif server. Format, size, and quality
@@ -13,14 +12,10 @@ module ImageServiceHelper
   #
   # Defaults copied from riiif defaults. https://github.com/curationexperts/riiif/blob/67ff0c49af198ba6afcf66d3db9d3d36a8694023/lib/riiif/routes.rb#L21
   def iiif_image_url(image_file_id, format: 'jpg', size: "full", quality: 'default')
-    path = iiif_image_path(image_file_id, size: size, format: format, quality: quality)
-    create_iiif_url(path)
-  end
-
-  def iiif_image_path(file_id, size:, format:, quality:)
+    # Make these args some day? For now servs as documentation:
     region = 'full'
     rotation = '0'
-    "#{CGI.escape(file_id)}/#{region}/#{size}/#{rotation}/#{quality}.#{format}"
+    create_iiif_url("#{CGI.escape(image_file_id)}/#{region}/#{size}/#{rotation}/#{quality}.#{format}")
   end
 
   # On show page, we just use pixel density source set, passing in the LARGEST width needed for
@@ -82,21 +77,21 @@ module ImageServiceHelper
     image_tag(args.delete(:src), args)
   end
 
+  # private may not do much in a helper, but documentation of our intent, these
+  # are just meant to be called by above, not called directly.
   private
 
-  attr_accessor :public_host
-
-  def public_host
-    @public_host ||= begin
-      url = Addressable::URI.parse(CHF::Env.lookup(:iiif_public_url))
-      raise "iiif_public_url requires a valid URL with host and path, eg `http://example.com/image-service` or `//12.345.67.89/iiif/2`" if url.host.nil?
-      url = url.to_s
-      url << '/' if url[-1] != '/' # Make sure url ends with a slash
-      url
+  def _iiif_public_url_addressable
+    @_iiif_public_url_addressable ||= Addressable::URI.parse(CHF::Env.lookup(:iiif_public_url)).tap do |addressable|
+      raise "iiif_public_url requires a valid URL with host and path, eg `http://example.com/image-service` or `//12.345.67.89/iiif/2`" if addressable.host.nil?
+      unless addressable.path[-1] == ("/")
+        # Make sure path ends in slash so relative joins will work as we need
+        addressable.path = addressable.path + "/"
+      end
     end
   end
 
   def create_iiif_url(path)
-    return Addressable::URI.join(public_host, path).to_s
+    return _iiif_public_url_addressable.join(path).to_s
   end
 end
