@@ -240,7 +240,7 @@ namespace :chf do
       # Or getting original_file_id without the extra fetch? Not sure. This is slow.
       FileSet.find_each do |fs|
         if original_file_id = fs.original_file.try(:id)
-          preloader = CHF::Utils::IiifOriginalPreloader.new(original_file_id, riiif_base: iiif_base)
+          preloader = CHF::Utils::IiifOriginalPreloader.new(original_file_id, iiif_base: iiif_base)
           response = preloader.ping_to_preload
 
           if response.status != 200
