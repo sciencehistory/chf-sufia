@@ -28,9 +28,9 @@ module CHF
       end
 
       def ping_path
-        path_prefix = Addressable::URI.parse(iiif_base).path # may have terminal slash, may not
-        path_prefix << '/' if path_prefix[-1] != '/' # ensure terminal slash
-        path_prefix + "#{CGI.escape(file_id)}/info.json"
+        Addressable::URI.parse(iiif_base).tap do |addressable|
+          addressable.path += '/' unless addressable.path.end_with?('/')
+        end + "#{CGI.escape(file_id)}/info.json"
       end
     end
   end
