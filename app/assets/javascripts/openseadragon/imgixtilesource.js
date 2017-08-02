@@ -6,8 +6,32 @@
  * dead code still in here, work in progress.
  *
  * IN PROGRESS:
- *  * support fetching height/width from fm=json imgix response
- *  * code tests, and then maybe submit to OSD.
+ *  * some code just copied from IIIF tile source, and I don't totally
+ *    understand what it's doing or if it still makes sense. But it works.
+ *  * code tests
+ *
+ * Two ways to use. With an imgix fm=json response URL, with magic token.
+ *
+ *      OpenSeadragon("https://somewhere.imgix.net/something?fm=json&osd=imgix")
+ *
+ *  The osd=imgix is ignored by imgix, just a magic token for OSD to recognize
+ *  it as an imgix URL.  The fm=json will use imgix json response to get
+ *  actual image height/width. That first request for fm=json will also
+ *  serve as a 'priming' request for imgix, so it is forced to fetch
+ *  the original image if it hasn't already, before OSD starts asking it
+ *  for lots of tiles. One downside is I've found at least some images
+ *  where imgix fails to get height/width out, even though it can display
+ *  them fine.
+ *
+ * Or, direct configuration, you are required to supply height and width:
+ *
+ *      OpenSeadragon({ type: "imgix",
+ *                      baseUrl: "https://somewhere.imgix.net/something",
+ *                      width: 1000,
+ *                      height: 1000 })
+ *
+ *
+ *
  *
  * Copyright (C) 2009 CodePlex Foundation
  * Copyright (C) 2010-2013 OpenSeadragon contributors
@@ -52,7 +76,6 @@
  */
 $.ImgixTileSource = function( options ){
     /* eslint-disable camelcase */
-
     this.imgixAutoParam = "compress,format"; // default can be overridden by option
 
     $.extend( true, this, options );
@@ -133,13 +156,13 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
 
     supports: function( data, url ) {
         if (url) {
-            var match = (new Regexp('//([^/]+)/')).exec(url);
-            if (match && match[1] && match[1].endsWith("imgix.com") || match[1].endsWith("imgix.net")) {
-                return true;
-            }
+            // You've got to add an artificial "osd=imgix" param to your
+            // URL so we can recognzie it, nothing in the response lets us reliably be sure.
+            return url.match(/(\?|\&)osd=imgix(\&|$)/) != null;
+        } else {
+            // direct config options
+            return (data.type && "imgix" == data.type);
         }
-
-        return (data.type && "imgix" == data.type);
     },
 
     /**
@@ -158,11 +181,18 @@ $.extend( $.ImgixTileSource.prototype, $.TileSource.prototype, /** @lends OpenSe
      * }
      */
     configure: function( data, url ){
-        data = data || {};
-        if (!data["baseUrl"]) {
-            data["baseUrl"] = url;
+        if (url) {
+            // configuration from imgix json response, and the data is
+            // that response.
+            return {
+                "width":  data["PixelWidth"],
+                "height": data["PixelHeight"],
+                "baseUrl": url.replace(/\?.*$/, '')
+            }
+        } else {
+            // configuration from options directly passed into OSD
+            return data;
         }
-        return data;
     },
 
     /**
