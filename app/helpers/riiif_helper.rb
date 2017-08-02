@@ -31,10 +31,12 @@ module RiiifHelper
     end.join(", ")
   end
 
-  def imgix_url(file_set_id)
+  def imgix_url(file_set_id, **manual_args)
     host = CHF::Env.lookup(:imgix_host)
     raise ArgumentError.new("Need CHF::Env.lookup(:imgix_host)") unless host.present?
-    "//#{host}/#{CGI.escape file_set_id}"
+    Addressable::URI.parse("//#{host}/#{CGI.escape file_set_id}").tap do |addressable|
+      addressable.query_values = manual_args if manual_args.present?
+    end.to_s
   end
 
   # create an image tag for a 'member' (could be fileset or child work) thumb,
