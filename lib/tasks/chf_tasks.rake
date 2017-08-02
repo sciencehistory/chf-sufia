@@ -259,41 +259,60 @@ namespace :chf do
   end
 
   namespace :imgix do
-    # TODO merge with iiif:preload task? Or leave separate?
+    # TODO merge with iiif:preload task? Or leave separate? Extract into helper cause
+    # this code has gotten complicated with error handling?
     desc "ping every fileset on imgix to preload"
     task :ping_all => :environment do
-      total = FileSet.count
+      try_limit = 3
+      begin
+        raise "Need CHF::Env.lookup(:imgix_host)" unless CHF::Env.lookup(:imgix_host).present?
 
-      $stderr.puts "Ping'ing imgix server at `#{CHF::Env.lookup(:imgix_host)}` for all #{total} FileSet id's"
+        base = Addressable::URI.parse(CHF::Env.lookup(:imgix_host)).tap do |addressable|
+          addressable.path += "/" unless addressable.path.end_with?("/")
+        end
 
-      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
+        raise "Need CHF::Env.lookup(:imgix_host) in format http(s)://host" unless base.host.present? && base.scheme.present?
 
-      errors = 0
+        total = FileSet.count
+        errors = 0
+        processed = 0
+        progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
 
-      raise "Need CHF::Env.lookup(:imgix_host)" unless CHF::Env.lookup(:imgix_host).present?
+        $stderr.puts "Ping'ing imgix server at `#{CHF::Env.lookup(:imgix_host)}` for all #{total} FileSet id's\n\n"
 
-      base = Addressable::URI.parse(CHF::Env.lookup(:imgix_host)).tap do |addressable|
-        addressable.path += "/" unless addressable.path.end_with?("/")
-      end
+        # There's probably a faster way to do this, maybe from Solr instead of fedora?
+        # Or getting original_file_id without the extra fetch? Not sure. This is slow.
+        FileSet.find_each do |fs|
+            ping_url = base + "#{fs.id}?fm=json"
 
-      # There's probably a faster way to do this, maybe from Solr instead of fedora?
-      # Or getting original_file_id without the extra fetch? Not sure. This is slow.
-      FileSet.find_each do |fs|
+            tries = 0
+            begin
+              tries += 1
+              response = Faraday.head ping_url
 
-          ping_url = base + "#{fs.id}?fm=json"
+              if response.status != 200
+                raise "HTTP #{response.status} response"
+              end
+            rescue StandardError => e
+              if tries < try_limit
+                progress.log "   RETRYING: #{e}: at #{ping_url}: (#{errors} total)"
+                retry
+              else
+                errors += 1
+                progress.log "GIVING UP: #{e}: at #{ping_url}: (#{errors} total)"
+              end
+            end
 
-          response = Faraday.head ping_url
-
-          if response.status != 200
-            errors += 1
-            progress.log "Unexpected #{response.status} response (#{errors} total) at #{ping_url}"
-          end
-
-          progress.increment
-      end
-      progress.finish
-      if errors > 0
-        $stderr.puts "#{errors} total error responses out of #{total} info requests"
+            progress.increment
+            processed += 1
+        end
+        progress.finish
+      ensure
+        progress.stop unless progress.finished?
+        $stderr.puts "** Total processed: #{processed}"
+        if errors > 0
+          $stderr.puts "   with #{errors} error responses"
+        end
       end
     end
   end
