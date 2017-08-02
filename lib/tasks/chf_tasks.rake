@@ -276,6 +276,8 @@ namespace :chf do
         total = FileSet.count
         errors = 0
         processed = 0
+        cache_misses = 0
+        cache_hits = 0
         progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
 
         $stderr.puts "Ping'ing imgix server at `#{CHF::Env.lookup(:imgix_host)}` for all #{total} FileSet id's\n\n"
@@ -292,6 +294,11 @@ namespace :chf do
 
               if response.status != 200
                 raise "HTTP #{response.status} response"
+              end
+              if response.headers["x-cache"].include?("HIT")
+                cache_hits += 1
+              else
+                cache_misses += 1
               end
             rescue StandardError => e
               if tries < try_limit
@@ -313,6 +320,8 @@ namespace :chf do
         if errors > 0
           $stderr.puts "   with #{errors} error responses"
         end
+        $stderr.puts "   imgix cache hits: #{cache_hits}"
+        $stderr.puts "   imgix cache misses: #{cache_misses}"
       end
     end
   end
