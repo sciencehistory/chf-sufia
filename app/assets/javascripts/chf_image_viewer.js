@@ -395,7 +395,19 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
   // The first 'tile-drawing' event means we've actually got _something_
   // to paint on screen, better later point to remove spinner.
   var _self = this;
-  this.viewer.addHandler("tile-drawing", function() { _self.removeLoading() } );
+  this.viewer.addHandler("tile-drawing", function() {
+    _self.removeLoading()
+  } );
+  this.viewer.addHandler("open-failed", function() { _self.removeLoading() } );
+  // If we haven't loaded a single tile yet, and get a tile-load-failed, error message
+  // and no spinner.
+  this.viewer.addHandler("tile-load-failed", function(event) {
+    if (_self.loadingSpinnerDisplayed) {
+      _self.viewer._showMessage("Tile load failed: " + event.message + ": " + event.tile.url);
+      _self.removeLoading();
+    }
+  });
+
 };
 
 ChfImageViewer.prototype.hideUiElement = function(element) {
