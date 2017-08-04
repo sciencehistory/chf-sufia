@@ -88,6 +88,7 @@ ChfImageViewer.prototype.hide = function() {
   if (OpenSeadragon.isFullScreen()) {
     OpenSeadragon.exitFullScreen();
   }
+  this.viewer.close();
   $(this.modal).modal("hide");
   this.removeLocationUrl();
   this.restoreFocus();
