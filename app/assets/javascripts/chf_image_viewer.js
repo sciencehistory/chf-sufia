@@ -130,6 +130,8 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
   var tileSource = thumbElement.getAttribute('data-tile-source');
 
+  this.viewer.close();
+
   this.addLoading();
 
   this.viewer.open(tileSource);
