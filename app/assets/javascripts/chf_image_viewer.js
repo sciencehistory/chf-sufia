@@ -88,6 +88,7 @@ ChfImageViewer.prototype.hide = function() {
   if (OpenSeadragon.isFullScreen()) {
     OpenSeadragon.exitFullScreen();
   }
+  this.viewer.close();
   $(this.modal).modal("hide");
   this.removeLocationUrl();
   this.restoreFocus();
@@ -128,6 +129,8 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   var downloadOriginalUrl = thumbElement.getAttribute('data-member-dl-original-url');
   var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
   var tileSource = thumbElement.getAttribute('data-tile-source');
+
+  this.viewer.close();
 
   this.addLoading();
 
