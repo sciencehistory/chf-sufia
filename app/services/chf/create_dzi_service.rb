@@ -21,6 +21,9 @@ module CHF
   #  * dzi_s3_bucket
   #  * dzi_s3_bucket_region
   #
+  # MAYBE would we better off using actual libvips bindings at https://github.com/jcupitt/ruby-vips
+  #   instead of shell out? I think it probably doesn't matter.
+  #
   # TODO what do we want to do in dev? create dzi's to public/? No DZIs?
   #
   # TODO some cleverer concurrency stuff if two of these jobs try acting at the same
@@ -68,12 +71,16 @@ module CHF
     # streaming for efficiency.
     def fetch_from_fedora!
       response = nil
-      # We hope this is the right way to get the actual uri to fetch?
+      # We hope this is the right way to get the actual uri to fetch cheaply?
       uri = URI.parse(FileSet.translate_id_to_uri.call(file_id))
 
       fedora_fetch_benchmark = Benchmark.measure do
         response = Net::HTTP.start(uri.host, uri.port) do |http|
           request = Net::HTTP::Get.new uri
+
+          if ActiveFedora.fedora.user || ActiveFedora.fedora.password
+            request.basic_auth(ActiveFedora.fedora.user, ActiveFedora.fedora.password)
+          end
 
           http.request request do |response|
             open local_original_file_path, 'wb' do |io|
