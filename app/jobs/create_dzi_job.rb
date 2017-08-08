@@ -1,4 +1,5 @@
 require 'concurrent'
+require 'aws-sdk'
 
 # Needs 'vips' installed.
 # Will overwrite if it's already there on S3 (or other fog destination)
@@ -14,7 +15,7 @@ class CreateDziJob < ActiveJob::Base
 
   #WORKING_DIR = CHF::Env.lookup(:dzi_job_working_dir)
   WORKING_DIR = "./tmp/dzi-job-working"
-  UPLOAD_THREADS = 10000
+  UPLOAD_THREADS = 128
 
   class_attribute :vips_command
   self.vips_command = "vips"
@@ -86,37 +87,35 @@ class CreateDziJob < ActiveJob::Base
   # We apply a healthy dose of concurrency.
   def upload_to_s3!
     s_time = Time.now
-    begin
-      file = File.open(local_dzi_file_path, "rb")
-      # .dzi file
-      fog_directory.files.create(
-        key: dzi_file_name,
-        body: file,
-        public: true, # TODO auth
-      )
-    ensure
-      file.close if file
-    end
+    # begin
+    #   file = File.open(local_dzi_file_path, "rb")
+    #   # .dzi file
+    #   fog_directory.files.create(
+    #     key: dzi_file_name,
+    #     body: file,
+    #     public: true, # TODO auth
+    #   )
+    # ensure
+    #   file.close if file
+    # end
 
-    futures = []
+    s3_bucket.
+      object(dzi_file_name).
+      upload_file(local_dzi_file_path, acl:'public-read')
 
-    dir_path = Pathname.new(local_dzi_dir_path)
+
     # All the jpgs, which are in a _files/ dir, and subdirs of that.
+    futures = []
+    dir_path = Pathname.new(local_dzi_dir_path)
+    path_prefix_re = /\A#{Regexp.quote WORKING_DIR}/
+
     Dir.glob("#{dir_path}/**/*.jpg").each do |full_path|
       # using the :io executor, we're gonna use as many threads as we have files.
       # That seems to be ok?
       futures << Concurrent::Future.execute(executor: :io) do
-        begin
-          thread_file = File.open(full_path, "rb")
-          thread_key_path = Pathname.new(full_path).relative_path_from(Pathname.new(WORKING_DIR)).to_s
-          fog_directory.files.create(
-            key: thread_key_path,
-            body: thread_file,
-            public: true # todo AUTH
-          )
-        ensure
-          thread_file.close if file
-        end
+        s3_bucket.
+          object(full_path.sub(path_prefix_re, '')).
+          upload_file(full_path, acl:'public-read')
       end
     end
 
@@ -124,7 +123,6 @@ class CreateDziJob < ActiveJob::Base
     futures.collect(&:value)
 
     Rails.logger.debug("#{self.class.name}: upload_to_s3: #{Time.now - s_time}")
-
 
     # any errors? Raise one of em.
     if rejected = futures.find(&:rejected?)
@@ -142,6 +140,7 @@ class CreateDziJob < ActiveJob::Base
         fallback_policy: :abort # shouldn't matter -- 0 max queue
     )
   end
+  self.thread_pool_executor # init now
 
   # include the checksum so it's self-cache-busting if file at this URL
   # changes, say, due to versioning.
@@ -176,20 +175,17 @@ class CreateDziJob < ActiveJob::Base
     FileUtils.mkdir_p WORKING_DIR
   end
 
-  def fog_connection
-    @fog_connection = Fog::Storage.new({
-      :provider                 => 'AWS',
-      :region                   => "us-east-1",
-      :aws_access_key_id        => "",
-      :aws_secret_access_key    => ""
-    })
+
+  # Using Aws::S3 directly appeared to give us a lot faster bulk upload
+  # than via fog.
+  def s3_bucket
+    @s3_bucket ||= Aws::S3::Resource.new(
+      credentials: Aws::Credentials.new('AKIAJDFGVNWP3GSRVBYA', '924BGJ/hCDx+/PT3GEkBkkGReicgq50rdaateRXb'),
+      region: "us-east-1"
+    ).bucket('chf-cache')
   end
 
-  def fog_directory
-    # warning don't 'create' here if you can avoid it, AWS gets mad with too
-    # many creates. bucket should already exist.
-    @fog_directory ||= fog_connection.directories.get("chf-cache")
-  end
+
 
 
 end

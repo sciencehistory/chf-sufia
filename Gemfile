@@ -54,8 +54,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'openseadragon'
 
 # for our derivatives on s3
-gem 'fog-aws', "~> 1.4"
-gem 'fog-local' # convenient for dev, local file system via fog api
+gem 'aws-sdk', '~> 2.5'
 gem 'concurrent-ruby', "~> 1.0"
 
 
