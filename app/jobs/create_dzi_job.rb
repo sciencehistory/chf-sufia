@@ -13,8 +13,7 @@ require 'aws-sdk'
 class CreateDziJob < ActiveJob::Base
   queue_as :dzi
 
-  #WORKING_DIR = CHF::Env.lookup(:dzi_job_working_dir)
-  WORKING_DIR = "./tmp/dzi-job-working"
+  WORKING_DIR = CHF::Env.lookup(:dzi_job_tmp_dir)
   UPLOAD_THREADS = 128
 
   class_attribute :vips_command
@@ -107,12 +106,12 @@ class CreateDziJob < ActiveJob::Base
     # All the jpgs, which are in a _files/ dir, and subdirs of that.
     futures = []
     dir_path = Pathname.new(local_dzi_dir_path)
-    path_prefix_re = /\A#{Regexp.quote WORKING_DIR}/
+    path_prefix_re = /\A#{Regexp.quote(WORKING_DIR.end_with?('/') ? WORKING_DIR : WORKING_DIR + '/')}/
 
     Dir.glob("#{dir_path}/**/*.jpg").each do |full_path|
       # using the :io executor, we're gonna use as many threads as we have files.
       # That seems to be ok?
-      futures << Concurrent::Future.execute(executor: :io) do
+      futures << Concurrent::Future.execute(executor: self.class.thread_pool_executor) do
         s3_bucket.
           object(full_path.sub(path_prefix_re, '')).
           upload_file(full_path, acl:'public-read')
@@ -143,7 +142,9 @@ class CreateDziJob < ActiveJob::Base
   self.thread_pool_executor # init now
 
   # include the checksum so it's self-cache-busting if file at this URL
-  # changes, say, due to versioning.
+  # changes, say, due to versioning. HOWEVER, this does make indexing
+  # somewhat slower. TODO optimize somehow. Less fetches to fedora and/or get
+  # from solr.
   def base_file_name
     @base_file_name ||= CGI.escape "#{file_obj.id}_checksum#{file_obj.checksum.value}"
   end
@@ -180,12 +181,8 @@ class CreateDziJob < ActiveJob::Base
   # than via fog.
   def s3_bucket
     @s3_bucket ||= Aws::S3::Resource.new(
-      credentials: Aws::Credentials.new('AKIAJDFGVNWP3GSRVBYA', '924BGJ/hCDx+/PT3GEkBkkGReicgq50rdaateRXb'),
-      region: "us-east-1"
-    ).bucket('chf-cache')
+      credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
+      region: CHF::Env.lookup('dzi_s3_bucket_region')
+    ).bucket(CHF::Env.lookup('dzi_s3_bucket'))
   end
-
-
-
-
 end
