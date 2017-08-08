@@ -53,6 +53,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
 
+# for our derivatives on s3
+gem 'fog-aws', "~> 1.4"
+gem 'fog-local' # convenient for dev, local file system via fog api
+gem 'concurrent-ruby', "~> 1.0"
+
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-lazysizes'
 end
