@@ -235,11 +235,14 @@ namespace :chf do
           CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy)
           progress.increment
         rescue StandardError => e
-          errors += file.id
+          errors << file.id
           progress.log("Could not create and push DZI for #{file.id}: #{e}")
         end
       end
       progress.finish
+      if errors.count
+        $stderr.puts "#{errors.count} errors"
+      end
     end
   end
 
