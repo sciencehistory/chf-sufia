@@ -13,7 +13,7 @@ Hydra::Works::AddFileToFileSet.class_eval do
     def call(file_set, file, type, update_existing: true, versioning: true)
       super.tap do
         # Got here without an error? Trigger DZI creation
-        if CHF::Env.fetch(:dzi_auto_create)
+        if CHF::Env.lookup(:dzi_auto_create)
           CreateDziJob.perform_later(file_set.id, repo_file_type: type.to_s)
         end
       end
