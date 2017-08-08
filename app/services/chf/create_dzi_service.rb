@@ -21,6 +21,7 @@ module CHF
   #  * dzi_s3_bucket
   #  * dzi_s3_bucket_region
   #
+  # TODO what do we want to do in dev? create dzi's to public/? No DZIs?
   #
   # TODO some cleverer concurrency stuff if two of these jobs try acting at the same
   # time, keep the out of using each others files, or let them actually share/wait
@@ -34,6 +35,9 @@ module CHF
 
     class_attribute :jpeg_quality
     self.jpeg_quality = "85"
+
+    class_attribute :suppress_vips_stderr
+    self.suppress_vips_stderr = true
 
     attr_accessor :file_id
     attr_accessor :checksum
@@ -88,7 +92,13 @@ module CHF
 
     def create_dzi!
       dzi_benchmark = Benchmark.measure do
-        system(vips_command, "dzsave", local_original_file_path, local_dzi_base_path, "--suffix", ".jpg[Q=#{jpeg_quality}]") or raise StandardError.new("vips dzsave failed")
+        args = [vips_command, "dzsave", local_original_file_path, local_dzi_base_path, "--suffix", ".jpg[Q=#{jpeg_quality}]"]
+
+        if suppress_vips_stderr
+          args << { :err => "/dev/null" }
+        end
+
+        system(*args) or raise StandardError.new("vips dzsave failed")
       end
       Rails.logger.debug("#{self.class.name}: create_dzi: #{dzi_benchmark}")
     end
