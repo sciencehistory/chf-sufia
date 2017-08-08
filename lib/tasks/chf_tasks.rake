@@ -214,6 +214,32 @@ namespace :chf do
     end
   end
 
+  namespace :dzi do
+    # TODO, better API to call here, better performance, this is just WIP proof of concept
+    # Threaded more than one fs at a time?
+    desc "create and push all dzi to s3"
+    task :push_all => :environment do
+      errors = []
+      total = FileSet.count
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
+
+      # Get this from Solr instead would be faster, but it's a pain
+      FileSet.find_each do |fs|
+        begin
+          # A bit expensive to get all these, is there a faster way? Not sure.
+          file = fs.original_file
+          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call
+          progress.increment
+        rescue StandardError => e
+          errors += file.id
+          progress.log("Could not create and push DZI for #{file.id}: #{e}")
+        end
+      end
+      progress.finish
+    end
+  end
+
+
   namespace :iiif do
     desc 'Delete all files in both iiif caches. `RAILS_ENV=production bundle exec rake chf:iiif:clear_caches`'
     task :clear_caches do
