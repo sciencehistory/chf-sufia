@@ -52,7 +52,15 @@ module CHF
 
     # Downloads datastream and creates DZI files in WORKING_DIR,
     # uploads them to S3.
-    def call
+    #
+    # If lazy is true, will first check to see if the .dzi file already exists
+    # on S3, and if it does skip generation and upload. It doesn't check
+    # to make sure all tiles are correct, just dzi file exists.
+    def call(lazy: false)
+      if lazy && s3_bucket.object(dzi_file_name).exists?
+        return false
+      end
+
       ensure_dirs
 
       fetch_from_fedora!
@@ -60,6 +68,8 @@ module CHF
       create_dzi!
 
       upload_to_s3!
+
+      return true
     ensure
       clean_up_tmp_files
     end

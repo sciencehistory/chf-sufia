@@ -217,8 +217,12 @@ namespace :chf do
   namespace :dzi do
     # TODO, better API to call here, better performance, this is just WIP proof of concept
     # Threaded more than one fs at a time?
+    #
+    # To lazy-create, call as `rake chf:dzi:push_all[lazy]`
     desc "create and push all dzi to s3"
-    task :push_all => :environment do
+    task :push_all, [:option_list] => :environment do |t, args|
+      lazy = (args[:option_list] || "").split(",").include?("lazy")
+
       errors = []
       total = FileSet.count
       progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
@@ -226,9 +230,9 @@ namespace :chf do
       # Get this from Solr instead would be faster, but it's a pain
       FileSet.find_each do |fs|
         begin
-          # A bit expensive to get all these, is there a faster way? Not sure.
+          # A bit expensive to get all the id and checksums, is there a faster way? Not sure.
           file = fs.original_file
-          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call
+          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy)
           progress.increment
         rescue StandardError => e
           errors += file.id
