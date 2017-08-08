@@ -21,6 +21,6 @@ class CreateDziJob < ActiveJob::Base
     file_obj = file_set.send(repo_file_type)
     checksum = file_obj.checksum.value
 
-    CHF::CreateDziService.new(file_obj.id, checksum: checksum).call
+    CHF::CreateDziService.new(file_obj.id, checksum: checksum, file_set_id: file_set_id).call
   end
 end
