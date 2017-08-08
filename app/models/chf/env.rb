@@ -151,6 +151,12 @@ module CHF
       system_env_transform: BOOLEAN_TRANSFORM,
       default: -> { false }
 
+    define_key :aws_access_key_id
+    define_key :aws_secret_access_key
+    define_key :dzi_s3_bucket, default: "chf-cache"
+    define_key :dzi_s3_bucket_region, default: "us-east-1"
+    define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+
 
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
