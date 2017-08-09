@@ -4,13 +4,18 @@ require 'aws-sdk'
 
 module CHF
   # Needs 'vips' installed.
-  # Will overwrite if it's already there on S3 (or other fog destination)
+  # Will overwrite if it's already there on S3, unless called with `lazy:true`, which
+  # is mainly useful for speed.
   #
   # s3 bucket needs CORS turned on! http://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-cors-configuration.html
   #
   # For performance, pass in just a file_id, it's all we need, we try to avoid lookups,
   # but if you can pass in a checksum that you got cheaply, you'll avoid us having to get
   # it expensively.
+  #
+  # objects are stored in S3 with a key created from both file_id and checksum, to make them
+  # self-cache-busting if the datastream at a file_id changes (versioning?). Does
+  # make the s3 keys kind of non-human-readable, but I think that's okay.
   #
   # Uses a bunch of Chf::Env settings:
   # required:
@@ -20,6 +25,8 @@ module CHF
   #  * dzi_job_tmp_dir
   #  * dzi_s3_bucket
   #  * dzi_s3_bucket_region
+  #
+  # Seek rake chf:dzi for tools for managing the S3 bucket contents.
   #
   # MAYBE would we better off using actual libvips bindings at https://github.com/jcupitt/ruby-vips
   #   instead of shell out? I think it probably doesn't matter.
@@ -46,6 +53,7 @@ module CHF
     attr_accessor :checksum
 
     def initialize(file_id, checksum: nil)
+      raise ArgumentError("file_id arg can not be empty") if file_id.blank?
       @file_id = file_id
       @checksum = checksum
     end
