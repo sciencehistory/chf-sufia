@@ -232,7 +232,11 @@ namespace :chf do
         begin
           # A bit expensive to get all the id and checksums, is there a faster way? Not sure.
           file = fs.original_file
-          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy) if file
+          if file
+            CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy)
+          else
+            Rails.logger.warn("No original file for #{fs.id}? Could not push DZI")
+          end
           progress.increment
         rescue StandardError => e
           errors << file.id

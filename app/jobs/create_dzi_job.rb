@@ -18,9 +18,12 @@ class CreateDziJob < ActiveJob::Base
     # It's a bit expensive to get all this stuff, is there a cheaper way
     # to get it from fedora? Or from Solr, and would that be reliable enough?
     file_set = FileSet.find(file_set_id)
-    file_obj = file_set.send(repo_file_type)
-    checksum = file_obj.checksum.value
-
-    CHF::CreateDziService.new(file_obj.id, checksum: checksum, file_set_id: file_set_id).call
+    file_obj = file_set.send(repo_file_type) if file_set
+    if file_obj
+      checksum = file_obj.checksum.value
+      CHF::CreateDziService.new(file_obj.id, checksum: checksum, file_set_id: file_set_id).call
+    else
+      Rails.logger.warn("No original_file for #{file_set_id}? Could not push dzi")
+    end
   end
 end
