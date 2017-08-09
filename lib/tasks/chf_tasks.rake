@@ -232,7 +232,7 @@ namespace :chf do
         begin
           # A bit expensive to get all the id and checksums, is there a faster way? Not sure.
           file = fs.original_file
-          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy)
+          CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy) if file
           progress.increment
         rescue StandardError => e
           errors << file.id
