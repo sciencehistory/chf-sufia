@@ -21,7 +21,8 @@ module CHF
     end
 
     def representative_checksum
-      original_checksum
+      # somehow coming back as array instead of single element, only sometimes
+      Array(original_checksum).first
     end
 
     def representative_height
