@@ -65,6 +65,13 @@ module ImageServiceHelper
     end
   end
 
+  # Returns nil if none available
+  def full_res_jpg_url(member_presenter)
+    if CHF::Env.lookup(:use_image_server_downloads)
+      iiif_image_url(member_presenter.representative_file_id, format: "jpg", size: "full")
+    end
+  end
+
   ######
   #
   # Try to avoid these helpers below that assume specific image server API. Maybe
