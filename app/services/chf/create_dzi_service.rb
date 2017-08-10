@@ -194,10 +194,8 @@ module CHF
     def self.base_file_name(file_id, checksum)
       CGI.escape "#{file_id}_checksum#{checksum}"
     end
-    # oops, confusingly need to escape the base_file_name AGAIN. Maybe we should
-    # not actually have escaped it in the key name, not sure.
     def self.s3_dzi_url_for(file_id: file_id, checksum: checksum)
-      "//#{CHF::Env.lookup('dzi_s3_bucket')}.s3.amazonaws.com/#{CGI.escape base_file_name(file_id, checksum)}.dzi"
+      "//#{CHF::Env.lookup('dzi_s3_bucket')}.s3.amazonaws.com/#{base_file_name(file_id, checksum)}.dzi"
     end
     def base_file_name
       @base_file_name ||= self.class.base_file_name(file_id, checksum)
