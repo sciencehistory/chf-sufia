@@ -15,7 +15,7 @@ describe ImageServiceHelper do
   describe "#tile_source_url" do
     before do
       allow(CHF::Env).to receive(:lookup).with(:iiif_public_url).and_return('http://localhost:3000/image-service')
-      allow(CHF::Env).to receive(:lookup).with(:use_image_server_on_viewer).and_return(true)
+      allow(CHF::Env).to receive(:lookup).with(:image_server_on_viewer).and_return("iiif")
     end
 
     context "info.json" do
@@ -53,7 +53,7 @@ describe ImageServiceHelper do
     describe "with base url with path" do
       before do
         allow(CHF::Env).to receive(:lookup).with(:iiif_public_url).and_return('http://localhost:3000/image-service')
-        allow(CHF::Env).to receive(:lookup).with(:use_image_server_on_show_page).and_return(true)
+        allow(CHF::Env).to receive(:lookup).with(:image_server_on_show_page).and_return("iiif")
       end
 
       let(:html) { Nokogiri::HTML.fragment(helper.member_image_tag(member: mock_member_presenter, parent_id: parent_id)) }

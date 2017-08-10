@@ -139,17 +139,10 @@ module CHF
     define_key :app_role
     define_key :service_level
 
-    define_key :use_image_server_on_show_page,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
-
-    define_key :use_image_server_on_viewer,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
-
-    define_key :use_image_server_downloads,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
+    # should be a recognized image service type, or nil/false for none, just hydra-derivatives
+    define_key :image_server_on_show_page
+    define_key :image_server_on_viewer
+    define_key :image_server_downloads
 
     define_key :aws_access_key_id
     define_key :aws_secret_access_key
