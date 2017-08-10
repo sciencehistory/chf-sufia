@@ -25,7 +25,7 @@ class GenericWork < ActiveFedora::Base
   # but it seems to work not missing anything.
   #
   # This code goes with custom code in indexer to index representative_width,
-  # representative_height, and representative_original_file_id.
+  # representative_height, representative_original_file_id, and representative_checksum
   def update_index(*args)
     super.tap do
       if self.changes.keys.include?("representative_id") ||

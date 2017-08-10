@@ -84,6 +84,10 @@ module CurationConcerns
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')]).first
     end
 
+    def representative_checksum
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_checksum')]).first
+    end
+
     def representative_height
       solr_document[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)]
     end

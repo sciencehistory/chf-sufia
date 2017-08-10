@@ -57,6 +57,7 @@ RSpec.describe CHF::GenericWorkIndexer do
     let(:width_field) { Solrizer.solr_name("representative_width", type: :integer) }
     let(:height_field) { Solrizer.solr_name("representative_height", type: :integer) }
     let(:file_id_field) { Solrizer.solr_name("representative_original_file_id") }
+    let(:file_checksum_field) { Solrizer.solr_name("representative_checksum")}
 
     describe "standard work with representative fileset" do
       let(:work) do
@@ -67,6 +68,7 @@ RSpec.describe CHF::GenericWorkIndexer do
       end
       it "indexes representative fields" do
         expect(solr_document[file_id_field]).to eq(work.representative.original_file.id)
+        expect(solr_document[file_checksum_field]).to eq(work.representative.original_file.checksum.value)
         expect(solr_document[width_field]).to eq(width)
         expect(solr_document[height_field]).to eq(height)
       end
