@@ -1,32 +1,12 @@
 module ImageServiceHelper
 
-  # Returns the IIIF info.json document, suitable as an OpenSeadragon tile source/
-  def iiif_info_url(image_file_id)
-    create_iiif_url("#{CGI.escape(image_file_id)}/info.json")
-  end
-
-  # Request an image URL from the iiif server. Format, size, and quality
-  # arguments are optional, but must be formatted for IIIF api.
-  # May make sense to make cover methods on top of this one
-  # for specific images in specific places.
+  #####
   #
-  # Defaults copied from riiif defaults. https://github.com/curationexperts/riiif/blob/67ff0c49af198ba6afcf66d3db9d3d36a8694023/lib/riiif/routes.rb#L21
-  def iiif_image_url(image_file_id, format: 'jpg', size: "full", quality: 'default')
-    # Make these args some day? For now servs as documentation:
-    region = 'full'
-    rotation = '0'
-    create_iiif_url("#{CGI.escape(image_file_id)}/#{region}/#{size}/#{rotation}/#{quality}.#{format}")
-  end
-
-  # On show page, we just use pixel density source set, passing in the LARGEST width needed for
-  # any responsiveness page layout. Sends somewhat more bytes when needed at some responsive
-  # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
-  # prob good enough.
-  def iiif_image_srcset_pixel_density(file_id, base_width, format: 'jpg', quality: 'default')
-    [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
-      iiif_image_url(file_id, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
-    end.join(", ")
-  end
+  # Try to use these completely server-agnostic helpers, which will do the
+  # right thing for image service depending on config, instead of
+  # of the IIIF or other service specific ones below.
+  #
+  #####
 
   # create an image tag for a 'member' (could be fileset or child work) thumb,
   # for use on show page. Calculates proper image tag based on lazy or not,
@@ -75,6 +55,50 @@ module ImageServiceHelper
     end
 
     image_tag(args.delete(:src), args)
+  end
+
+  def tile_source_url(member_presenter)
+    if CHF::Env.lookup(:use_image_server_on_viewer)
+      iiif_info_url(member_presenter.representative_file_id)
+    else
+      {"type" => "image", "url" => main_app.download_path(member_presenter.representative_id, file: "jpeg")}.to_json
+    end
+  end
+
+  ######
+  #
+  # Try to avoid these helpers below that assume specific image server API. Maybe
+  # refactor out of rails helpers?
+  #
+  ######
+
+
+  # Returns the IIIF info.json document, suitable as an OpenSeadragon tile source/
+  def iiif_info_url(image_file_id)
+    create_iiif_url("#{CGI.escape(image_file_id)}/info.json")
+  end
+
+  # Request an image URL from the iiif server. Format, size, and quality
+  # arguments are optional, but must be formatted for IIIF api.
+  # May make sense to make cover methods on top of this one
+  # for specific images in specific places.
+  #
+  # Defaults copied from riiif defaults. https://github.com/curationexperts/riiif/blob/67ff0c49af198ba6afcf66d3db9d3d36a8694023/lib/riiif/routes.rb#L21
+  def iiif_image_url(image_file_id, format: 'jpg', size: "full", quality: 'default')
+    # Make these args some day? For now servs as documentation:
+    region = 'full'
+    rotation = '0'
+    create_iiif_url("#{CGI.escape(image_file_id)}/#{region}/#{size}/#{rotation}/#{quality}.#{format}")
+  end
+
+  # On show page, we just use pixel density source set, passing in the LARGEST width needed for
+  # any responsiveness page layout. Sends somewhat more bytes when needed at some responsive
+  # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
+  # prob good enough.
+  def iiif_image_srcset_pixel_density(file_id, base_width, format: 'jpg', quality: 'default')
+    [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
+      iiif_image_url(file_id, format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
+    end.join(", ")
   end
 
   # private may not do much in a helper, but documentation of our intent, these
