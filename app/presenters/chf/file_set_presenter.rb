@@ -2,7 +2,7 @@ module CHF
   # Add some things we can use for our custom UI
   class FileSetPresenter < Sufia::FileSetPresenter
 
-    delegate :original_file_id, :original_checksum, to: :solr_document
+    delegate :original_file_id, to: :solr_document
 
     # Consistent API with GenericWorkShowPresenter, on show pages we often
     # only show permissoin badge if not open access.
@@ -21,8 +21,7 @@ module CHF
     end
 
     def representative_checksum
-      # somehow coming back as array instead of single element, only sometimes
-      Array(original_checksum).first
+      Array(solr_document[Solrizer.solr_name("original_file_checksum")]).first
     end
 
     def representative_height
