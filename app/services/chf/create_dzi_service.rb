@@ -191,8 +191,14 @@ module CHF
     # changes, say, due to versioning. HOWEVER, this does make indexing
     # somewhat slower. TODO optimize somehow. Less fetches to fedora and/or get
     # from solr.
+    def self.base_file_name(file_id, checksum)
+      CGI.escape "#{file_id}_checksum#{checksum}"
+    end
+    def self.s3_dzi_url_for(file_id: file_id, checksum: checksum)
+      "//#{CHF::Env.lookup('dzi_s3_bucket')}.s3.amazonaws.com/#{base_file_name(file_id, checksum)}.dzi"
+    end
     def base_file_name
-      @base_file_name ||= CGI.escape "#{file_id}_checksum#{checksum}"
+      @base_file_name ||= self.class.base_file_name(file_id, checksum)
     end
 
     # If not already set, we have to fetch from fedora, which is kinda slow with AF.
