@@ -35,7 +35,7 @@ module ImageServiceHelper
       {
         src:  member.thumbnail_path
       }
-    elsif service = _image_url_service(CHF::Env.lookup(:image_server_on_show_page), member.representative_file_id)
+    elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
       {
         src:    service.thumb_url(size: size_key),
         srcset: service.thumb_srcset_pixel_density(size: size_key)
@@ -57,7 +57,7 @@ module ImageServiceHelper
   end
 
   def tile_source_url(member_presenter)
-    if service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter.representative_file_id)
+    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
       service.tile_source_url
     else
       {"type" => "image", "url" => main_app.download_path(member_presenter.representative_id, file: "jpeg")}.to_json
@@ -66,7 +66,7 @@ module ImageServiceHelper
 
   # Returns nil if none available
   def full_res_jpg_url(member_presenter)
-    if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter.representative_file_id)
+    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
       service.full_res_jpg_url
     end
   end
@@ -75,9 +75,9 @@ module ImageServiceHelper
 
   # Returns nil if no image service available. Otherwise an image
   # service that has tile_source_url, thumb_url, etc., methods.
-  def _image_url_service(service_type, file_id)
+  def _representative_image_url_service(service_type, member)
     if service_type.downcase == "iiif"
-      CHF::IiifUrlService.new(file_id)
+      CHF::IiifUrlService.new(member.representative_file_id, checksum: member.representative_checksum)
     elsif (!service_type) || service_type == "false"
       nil
     else
