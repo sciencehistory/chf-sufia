@@ -76,8 +76,10 @@ module ImageServiceHelper
   # Returns nil if no image service available. Otherwise an image
   # service that has tile_source_url, thumb_url, etc., methods.
   def _representative_image_url_service(service_type, member)
-    if service_type.downcase == "iiif"
+    if service_type == "iiif"
       CHF::IiifUrlService.new(member.representative_file_id, checksum: member.representative_checksum)
+    elsif service_type == "dzi_s3"
+      CHF::DziS3UrlService.new(member.representative_file_id, checksum: member.representative_checksum)
     elsif (!service_type) || service_type == "false"
       nil
     else
