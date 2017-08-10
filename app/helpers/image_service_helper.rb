@@ -14,7 +14,7 @@ module ImageServiceHelper
   # we just use the stock hydra-derivative created image labelled 'jpeg'
   def member_image_tag(parent_id:, member:, size_key: :standard, lazy: false)
     unless BASE_WIDTHS.keys.include?(size_key)
-      raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{SIZE_BASE_WIDTHS.keys}")
+      raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{BASE_WIDTHS.keys}")
     end
 
     args = {
