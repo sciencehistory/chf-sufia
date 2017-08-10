@@ -12,7 +12,9 @@ module ImageServiceHelper
   #
   # if use_image_server is false, size_key is ignored and no srcsets are generated,
   # we just use the stock hydra-derivative created image labelled 'jpeg'
-  def member_image_tag(parent_id:, member:, size_key: :standard, lazy: false)
+  def member_image_tag(parent_id:, member:, size_key: nil, lazy: false)
+    size_key = :standard if size_key.blank?
+
     unless BASE_WIDTHS.keys.include?(size_key)
       raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{BASE_WIDTHS.keys}")
     end
