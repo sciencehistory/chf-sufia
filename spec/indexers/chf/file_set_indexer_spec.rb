@@ -4,6 +4,7 @@ RSpec.describe CHF::FileSetIndexer do
   let(:mock_file) {
       mock_model('MockFile',
                  id: 'totally_a_file_id',
+                 checksum: OpenStruct.new(value: 'totally_a_checksum'),
                  # test fails if we don't include all these:
                  mime_type:         'text/plain',
                  format_label:      [],
