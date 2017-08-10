@@ -8,7 +8,8 @@ describe ImageServiceHelper do
         representative_file_id: file_id,
         representative_id: "maybe_a_work",
         representative_width: "100",
-        representative_height: "100")
+        representative_height: "100",
+        representative_checksum: "adfadfadfadfadfasdf")
   }
 
 
