@@ -117,6 +117,7 @@ module CHF
 
     def create_dzi!
       dzi_benchmark = Benchmark.measure do
+        # http://libvips.blogspot.com/2013/03/making-deepzoom-zoomify-and-google-maps.html
         args = [vips_command, "dzsave", local_original_file_path, local_dzi_base_path, "--suffix", ".jpg[Q=#{jpeg_quality}]"]
 
         if suppress_vips_stderr
@@ -132,22 +133,6 @@ module CHF
     # We apply a healthy dose of concurrency.
     def upload_to_s3!
       s_time = Time.now
-      # begin
-      #   file = File.open(local_dzi_file_path, "rb")
-      #   # .dzi file
-      #   fog_directory.files.create(
-      #     key: dzi_file_name,
-      #     body: file,
-      #     public: true, # TODO auth
-      #   )
-      # ensure
-      #   file.close if file
-      # end
-
-      s3_bucket.
-        object(dzi_file_name).
-        upload_file(local_dzi_file_path, acl:'public-read')
-
 
       # All the jpgs, which are in a _files/ dir, and subdirs of that.
       futures = []
@@ -167,12 +152,18 @@ module CHF
       # wait on em all
       futures.collect(&:value)
 
-      Rails.logger.debug("#{self.class.name}: upload_to_s3: #{Time.now - s_time}")
-
       # any errors? Raise one of em.
       if rejected = futures.find(&:rejected?)
         raise rejected.reason
       end
+
+      # upload .dzi AFTER all the tiles, so it's not there until they are
+      s3_bucket.
+        object(dzi_file_name).
+        upload_file(local_dzi_file_path, acl:'public-read')
+
+
+      Rails.logger.debug("#{self.class.name}: upload_to_s3: #{Time.now - s_time}")
     end
 
     def self.thread_pool_executor
