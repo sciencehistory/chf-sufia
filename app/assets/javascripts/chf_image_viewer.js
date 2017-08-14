@@ -410,12 +410,11 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
     _self.removeLoading()
   } );
   this.viewer.addHandler("open-failed", function(event) {
-    debugger;
-
     // Try fallback URL if available
     var fileId = _self.selectedThumb.getAttribute('data-member-id');
     var fallbackOsdOpenArg = _self.fallbackOsdOpenArg(fileId)
     if (fallbackOsdOpenArg && fallbackOsdOpenArg !==  event.source) {
+      _self.displayAlert("Sorry, full zooming is not currently available.")
       _self.viewer.open(fallbackOsdOpenArg);
     } else {
       _self.removeLoading();
@@ -444,6 +443,17 @@ ChfImageViewer.prototype.hideUiElement = function(element) {
 ChfImageViewer.prototype.showUiElement = function(element) {
   element.style.display = "";
 };
+
+ChfImageViewer.prototype.displayAlert = function(msg) {
+  var alertHtml = '<div class="viewer-alert alert alert-warning alert-dismissible" role="alert">' +
+                  '    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                  '    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' +
+                       msg +
+                  '</div>';
+
+  var container = document.querySelector("*[data-alert-container]");
+  container.insertAdjacentHTML('beforebegin', alertHtml);
+}
 
 jQuery(document).ready(function($) {
   var viewerElement = document.getElementById('chf-image-viewer');
