@@ -158,6 +158,19 @@ module CHF
       Rails.env.production? ? "/var/sufia/riiif-derivatives" : Rails.root.join("tmp", "riiif-derivatives").to_s
     }
 
+    # Only matters on a job server, used in resque-pool.yml
+    define_key :job_queues, default: -> {
+      if Rails.env.development? || Rails.env.test?
+        "*"
+      elsif lookup(:app_role) == "jobs"
+        # jobs server
+        "dzi"
+      else
+        # production-type app server, handling the rest currently
+        "default, ingest, mailers, event"
+      end
+    }
+
 
     # Ideally these would be in local_env.yml independently,
     # but for now we calculate based on app_role value, but do it here
