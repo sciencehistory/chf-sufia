@@ -186,6 +186,14 @@ ChfImageViewer.prototype.prev = function() {
   }
 };
 
+// If open fails, try this one?
+ChfImageViewer.prototype.fallbackOsdOpenArg = function(fileId) {
+  return {
+    type: "image",
+    url: ("/downloads/" + encodeURIComponent(fileId) + "?file=jpeg")
+  };
+};
+
 ChfImageViewer.prototype.setLocationUrl = function() {
   var currentPath = location.pathname;
   var selectedID = this.selectedThumb.getAttribute('data-member-id');
@@ -401,7 +409,18 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
   this.viewer.addHandler("tile-drawing", function() {
     _self.removeLoading()
   } );
-  this.viewer.addHandler("open-failed", function() { _self.removeLoading() } );
+  this.viewer.addHandler("open-failed", function(event) {
+    debugger;
+
+    // Try fallback URL if available
+    var fileId = _self.selectedThumb.getAttribute('data-member-id');
+    var fallbackOsdOpenArg = _self.fallbackOsdOpenArg(fileId)
+    if (fallbackOsdOpenArg && fallbackOsdOpenArg !==  event.source) {
+      _self.viewer.open(fallbackOsdOpenArg);
+    } else {
+      _self.removeLoading();
+    }
+  });
   // If we haven't loaded a single tile yet, and get a tile-load-failed, error message
   // and no spinner.
   this.viewer.addHandler("tile-load-failed", function(event) {
