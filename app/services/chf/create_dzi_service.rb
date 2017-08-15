@@ -233,6 +233,16 @@ module CHF
       FileUtils.mkdir_p WORKING_DIR
     end
 
+    def self.bucket_name
+      CHF::Env.lookup('dzi_s3_bucket')
+    end
+
+    def self.s3_client!
+      Aws::S3::Client.new(
+        credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
+        region: CHF::Env.lookup('dzi_s3_bucket_region')
+      )
+    end
 
     # Using Aws::S3 directly appeared to give us a lot faster bulk upload
     # than via fog.
@@ -240,7 +250,7 @@ module CHF
       Aws::S3::Resource.new(
         credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
         region: CHF::Env.lookup('dzi_s3_bucket_region')
-      ).bucket(CHF::Env.lookup('dzi_s3_bucket'))
+      ).bucket(bucket_name)
     end
     def s3_bucket
       @s3_bucket ||= self.class.s3_bucket!

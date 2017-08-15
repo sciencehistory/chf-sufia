@@ -174,7 +174,7 @@ namespace :chf do
   namespace :admin do
 
     desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
-    task :grant, [:email] => :environment do |t, args|
+    task :grant, [:email] => :environment do
       begin
         CHF::Utils::Admin.grant(args[:email])
       rescue ActiveRecord::RecordNotFound
@@ -251,18 +251,13 @@ namespace :chf do
 
     # not sure why these 'require' are required
     require 'hydra/pcdm'
-
-    # Note if you have orphaned tiles in _files/ without even a .dzi, this
-    # won't currently find them, just looks through *.dzi's and finds ones
-    # with id/checksum no longer in fedora.
     desc "remove .dzi and files not associated with current fedora data"
     task :clean_orphaned => :environment do |t, args|
-      # get a list of ALL top-level objects, which will be just .dzi files. If there are somehow
-      # already _files objects without a dzi, this won't find em, hmm.
+      # get a list of ALL top-level objects, which will be just .dzi files.
       bucket = CHF::CreateDziService.s3_bucket!
       scope = bucket.objects(delimiter: '/')
 
-      $stderr.puts "Scanning S3 bucket '#{bucket.name}' for files not currently in repo '#{ActiveFedora.fedora.base_uri}'\n\n"
+      $stderr.puts "Scanning S3 bucket '#{bucket.name}' for .dzi of file IDs not currently in repo '#{ActiveFedora.fedora.base_uri}'...\n\n"
 
       # Don't know total, too expensive to look up.
       progress = ProgressBar.create(:total => nil)
@@ -306,9 +301,38 @@ namespace :chf do
         progress.increment
         progress.title = "#{i} scanned, #{deleted.count} deleted"
       end
+      progress.finish
+
+      # Have to do this a bit hackily, we'll actually iterate through every
+      # key, but the sdk #list_objects methods gets 'directories' out
+      # for us with #prefix
+      $stderr.puts "\nScanning for orphaned _files/ tiles...\n\n"
+      progress = ProgressBar.create(:total => nil)
+      i = 0
+      deleted = []
+      client = CHF::CreateDziService.s3_client!
+      marker = nil
+      begin
+        s3_response = client.list_objects(bucket: CHF::CreateDziService.bucket_name, marker: marker, delimiter: '/')
+        marker = s3_response.next_marker
+        s3_response.common_prefixes.collect(&:prefix).each do |prefix|
+          i += 1
+          dzi_file_name = prefix.sub(/_files\/$/, '.dzi')
+          unless bucket.object(dzi_file_name).exists?
+            # delete tiles
+            deleted << prefix
+            bucket.objects(prefix: prefix).each do |tile_obj|
+              progress.increment
+              tile_obj.delete
+            end
+          end
+          progress.increment
+          progress.title = "~#{i} sets scanned, #{deleted.count} deleted"
+        end
+      end while marker != nil
+      progress.finish
     end
   end
-
 
   namespace :iiif do
     desc 'Delete all files in both iiif caches. `RAILS_ENV=production bundle exec rake chf:iiif:clear_caches`'
