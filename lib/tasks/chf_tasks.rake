@@ -248,6 +248,65 @@ namespace :chf do
         $stderr.puts "#{errors.count} errors"
       end
     end
+
+    # not sure why these 'require' are required
+    require 'hydra/pcdm'
+
+    # Note if you have orphaned tiles in _files/ without even a .dzi, this
+    # won't currently find them, just looks through *.dzi's and finds ones
+    # with id/checksum no longer in fedora.
+    desc "remove .dzi and files not associated with current fedora data"
+    task :clean_orphaned => :environment do |t, args|
+      # get a list of ALL top-level objects, which will be just .dzi files. If there are somehow
+      # already _files objects without a dzi, this won't find em, hmm.
+      bucket = CHF::CreateDziService.s3_bucket!
+      scope = bucket.objects(delimiter: '/')
+
+      $stderr.puts "Scanning S3 bucket '#{bucket.name}' for files not currently in repo '#{ActiveFedora.fedora.base_uri}'\n\n"
+
+      # Don't know total, too expensive to look up.
+      progress = ProgressBar.create(:total => nil)
+      i = 0
+      deleted = []
+
+      objects = scope.each do |s3_obj|
+        i += 1
+
+        file_id, checksum = CHF::CreateDziService.parse_dzi_file_name( s3_obj.key )
+
+        # Believe it or not, this seems to be the way to figure out file existence, took
+        # me hours to figure out. Not sure how many round-trips to fedora it will
+        # take, but this is good enough, i'm tired.
+        file_obj = Hydra::PCDM::File.new(file_id)
+        exists  = begin
+                    file_obj.persisted?
+                  rescue Ldp::Gone
+                    false
+                  end
+        stored_checksum = begin
+                            file_obj.checksum.value
+                          rescue Ldp::Gone
+                            false
+                          end
+
+        unless exists && stored_checksum == checksum
+          # either file_id does not exist, or no longer has this checksum.
+          # orphaned!
+          deleted << [file_id, checksum]
+
+          #first .dzi, so it won't be visible to front-end
+          s3_obj.delete
+
+          # then any associated tiles
+          bucket.objects(prefix: s3_obj.key.sub(/\.dzi$/, '_files/')).each do |tile_obj|
+            progress.increment
+            tile_obj.delete
+          end
+        end
+        progress.increment
+        progress.title = "#{i} scanned, #{deleted.count} deleted"
+      end
+    end
   end
 
 

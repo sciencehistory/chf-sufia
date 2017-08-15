@@ -82,7 +82,6 @@ module CHF
       clean_up_tmp_files
     end
 
-
     protected
 
     # Fetch Hydra::PCDM::File from fedora and save to WORKING_DIR,
@@ -185,6 +184,13 @@ module CHF
     def self.base_file_name(file_id, checksum)
       CGI.escape "#{file_id}_checksum#{checksum}"
     end
+
+    # returns [file_id, checksum]
+    def self.parse_dzi_file_name(base_file_name)
+      parts = CGI.unescape(base_file_name.sub(/\.dzi$/, '')).split("_checksum")
+      return parts.first, parts.second
+    end
+
     # oops, confusingly need to escape the base_file_name AGAIN. Maybe we should
     # not actually have escaped it in the key name, not sure.
     def self.s3_dzi_url_for(file_id:, checksum:)
@@ -230,11 +236,14 @@ module CHF
 
     # Using Aws::S3 directly appeared to give us a lot faster bulk upload
     # than via fog.
-    def s3_bucket
-      @s3_bucket ||= Aws::S3::Resource.new(
+    def self.s3_bucket!
+      Aws::S3::Resource.new(
         credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
         region: CHF::Env.lookup('dzi_s3_bucket_region')
       ).bucket(CHF::Env.lookup('dzi_s3_bucket'))
+    end
+    def s3_bucket
+      @s3_bucket ||= self.class.s3_bucket!
     end
   end
 end
