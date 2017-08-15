@@ -146,7 +146,14 @@ module CHF
 
     define_key :aws_access_key_id
     define_key :aws_secret_access_key
-    define_key :dzi_s3_bucket, default: "chf-cache"
+    define_key :dzi_s3_bucket, default: -> {
+      if Rails.env.development?
+        "chf-dzi-dev"
+      elsif lookup(:service_level) == "stage"
+        "chf-dzi-staging"
+      end
+      # production just configure it in env please
+    }
     define_key :dzi_s3_bucket_region, default: "us-east-1"
     define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
     define_key :dzi_auto_create, default: Rails.env.production?, system_env_transform: BOOLEAN_TRANSFORM
