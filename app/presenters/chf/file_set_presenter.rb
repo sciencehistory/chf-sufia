@@ -20,6 +20,10 @@ module CHF
       end
     end
 
+    def representative_checksum
+      Array(solr_document[Solrizer.solr_name("original_file_checksum")]).first
+    end
+
     def representative_height
       height
     end
