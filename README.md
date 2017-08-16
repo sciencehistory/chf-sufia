@@ -75,6 +75,12 @@ You also need a hydra and a fedora server running to run tests. You can:
   when running tests. See `ENV` keys mentioned above in "development setup",
   but replace `_DEVELOPMENT` with `_TEST`.
 
+### Other docs
+
+See [docs](./docs) subdir.
+
+* [DZI Tiles on S3](./docs/dzi_tiles_on_s3.md)
+
 
 ## Deployment
 bundle exec cap [target machine] deploy
