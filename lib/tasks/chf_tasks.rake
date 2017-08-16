@@ -215,6 +215,26 @@ namespace :chf do
   end
 
   namespace :dzi do
+    desc "set bucket configuration"
+    task :configure_bucket => :environment do
+      # for now just CORS, and a very generous CORS.
+      client = CHF::CreateDziService.s3_client!
+      client.put_bucket_cors(
+        bucket: CHF::CreateDziService.bucket_name,
+        cors_configuration: {
+          cors_rules: [
+            {
+              allowed_methods: ["GET"],
+              allowed_origins: ["*"],
+              max_age_seconds: 12.hours,
+              allowed_headers: ["*"]
+            }
+          ]
+        }
+      )
+    end
+
+
     # TODO, better API to call here, better performance, this is just WIP proof of concept
     # Threaded more than one fs at a time?
     #

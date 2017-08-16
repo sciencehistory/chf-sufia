@@ -48,6 +48,9 @@ something has gotten corrupted or out of sync or you want to re-generate
 for whatever reason, there are rake tasks. Rake tasks should be run
 on an instance set up with proper Env variables and repo connection.
 
+* 'rake chf:dzi:configure_bucket' set CORS and any other bucket-level
+  config. idempotent.
+
 * `rake chf:dzi:push_all` -- create DZI and tiles or every file in the repo,
 upload them to S3. Takes approximately 50 minutes per 1000 files.
 
