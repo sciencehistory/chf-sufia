@@ -52,6 +52,9 @@ module CHF
     class_attribute :cache_control
     self.cache_control = "max-age=31536000"
 
+    class_attribute :acl
+    self.acl = 'public-read'
+
 
     attr_accessor :file_id
     attr_accessor :checksum
@@ -146,7 +149,7 @@ module CHF
         futures << Concurrent::Future.execute(executor: self.class.thread_pool_executor) do
           s3_bucket.
             object(full_path.sub(path_prefix_re, '')).
-            upload_file(full_path, acl:'public-read', cache_control: cache_control)
+            upload_file(full_path, acl: acl, cache_control: cache_control)
         end
       end
 
@@ -161,7 +164,7 @@ module CHF
       # upload .dzi AFTER all the tiles, so it's not there until they are
       s3_bucket.
         object(dzi_file_name).
-        upload_file(local_dzi_file_path, acl:'public-read', cache_control: cache_control)
+        upload_file(local_dzi_file_path, acl: acl, cache_control: cache_control)
 
 
       Rails.logger.debug("#{self.class.name}: upload_to_s3: #{Time.now - s_time}")

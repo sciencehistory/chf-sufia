@@ -217,8 +217,8 @@ namespace :chf do
   namespace :dzi do
     desc "set bucket configuration"
     task :configure_bucket => :environment do
-      # for now just CORS, and a very generous CORS.
       client = CHF::CreateDziService.s3_client!
+
       client.put_bucket_cors(
         bucket: CHF::CreateDziService.bucket_name,
         cors_configuration: {
@@ -232,6 +232,29 @@ namespace :chf do
           ]
         }
       )
+
+      client.put_bucket_acl(
+        acl: CHF::CreateDziService.acl,
+        bucket: CHF::CreateDziService.bucket_name,
+      )
+    end
+
+    desc "ensure s3 acl set properly on all objects"
+    task :set_acl => :environment do
+      client = CHF::CreateDziService.s3_client!
+      bucket = CHF::CreateDziService.s3_bucket!
+      progress = ProgressBar.create(total: nil)
+      i = 0
+      bucket.objects.each do |s3_obj|
+        i += 1
+        client.put_object_acl(bucket: CHF::CreateDziService.bucket_name, key: s3_obj.key, acl: CHF::CreateDziService.acl)
+        if i % 10 == 0
+          progress.increment
+          progress.title = i
+        end
+      end
+      progress.title = i
+      progress.finish
     end
 
 
