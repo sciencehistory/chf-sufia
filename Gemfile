@@ -53,6 +53,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
 
+gem 'honeybadger', '~> 3.1'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-lazysizes'
 end
