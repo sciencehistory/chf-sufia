@@ -49,6 +49,10 @@ module CHF
     class_attribute :suppress_vips_stderr
     self.suppress_vips_stderr = true
 
+    class_attribute :cache_control
+    self.cache_control = "max-age=31536000"
+
+
     attr_accessor :file_id
     attr_accessor :checksum
 
@@ -139,12 +143,10 @@ module CHF
       path_prefix_re = /\A#{Regexp.quote(WORKING_DIR.end_with?('/') ? WORKING_DIR : WORKING_DIR + '/')}/
 
       Dir.glob("#{dir_path}/**/*.jpg").each do |full_path|
-        # using the :io executor, we're gonna use as many threads as we have files.
-        # That seems to be ok?
         futures << Concurrent::Future.execute(executor: self.class.thread_pool_executor) do
           s3_bucket.
             object(full_path.sub(path_prefix_re, '')).
-            upload_file(full_path, acl:'public-read')
+            upload_file(full_path, acl:'public-read', cache_control: cache_control)
         end
       end
 
@@ -159,7 +161,7 @@ module CHF
       # upload .dzi AFTER all the tiles, so it's not there until they are
       s3_bucket.
         object(dzi_file_name).
-        upload_file(local_dzi_file_path, acl:'public-read')
+        upload_file(local_dzi_file_path, acl:'public-read', cache_control: cache_control)
 
 
       Rails.logger.debug("#{self.class.name}: upload_to_s3: #{Time.now - s_time}")
