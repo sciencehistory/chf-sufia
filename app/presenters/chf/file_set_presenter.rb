@@ -21,8 +21,6 @@ module CHF
     end
 
     def representative_checksum
-      # I can not explain why this didn't work with a delegate to solr_document
-      # like original_file_id, but it took me like three hours to debug.
       Array(solr_document[Solrizer.solr_name("original_file_checksum")]).first
     end
 
