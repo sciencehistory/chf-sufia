@@ -240,7 +240,7 @@ module CHF
     end
 
     def self.bucket_name
-      CHF::Env.lookup('dzi_s3_bucket')
+      CHF::Env.lookup('dzi_s3_bucket') || raise ArgumentError.new("No bucket name provided! Need a `CHF::Env.lookup('dzi_s3_bucket')`")
     end
 
     def self.s3_client!
