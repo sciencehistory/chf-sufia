@@ -56,13 +56,14 @@ module CHF
     self.acl = 'public-read'
 
 
-    attr_accessor :file_id
-    attr_accessor :checksum
+    attr_accessor :file_id, :checksum, :s3_bucket
+
 
     def initialize(file_id, checksum: nil)
       raise ArgumentError("file_id arg can not be empty") if file_id.blank?
       @file_id = file_id
       @checksum = checksum
+      @s3_bucket = self.class.s3_bucket!
     end
 
     # Downloads datastream and creates DZI files in WORKING_DIR,
@@ -257,8 +258,6 @@ module CHF
         region: CHF::Env.lookup('dzi_s3_bucket_region')
       ).bucket(bucket_name)
     end
-    def s3_bucket
-      @s3_bucket ||= self.class.s3_bucket!
-    end
+
   end
 end
