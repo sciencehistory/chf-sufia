@@ -268,7 +268,7 @@ namespace :chf do
 
       errors = []
       total = FileSet.count
-      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e", :smoothing => 0.5)
 
       # Get this from Solr instead would be faster, but it's a pain
       FileSet.find_each do |fs|
