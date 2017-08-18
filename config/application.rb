@@ -157,6 +157,21 @@ module Chufia
       'Woodcuts'
     ]
 
+    config.exhibitions = [
+      "Making Modernity",
+      "Transmutations",
+      "Things Fall Apart",
+      "Second Skin",
+      "Science at Play",
+      "Books of Secrets",
+      "Sensing Change",
+      "The Alchemical Quest",
+      "Inspiring Youth in Chemistry",
+      "Elemental Matters",
+      "Marvels and Ciphers",
+      "Molecules That Matter"
+    ]
+
     config.physical_container_fields = {
       'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part', 'g'=>'page'
     }

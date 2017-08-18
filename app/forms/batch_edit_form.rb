@@ -39,6 +39,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     :place_of_manufacture,
     :place_of_publication,
     :place_of_creation,
+    :exhibition,
     :genre_string,
     :medium,
     :extent,

@@ -36,6 +36,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.description = ['Fun']
       w.subject = ['gold coins']
       w.division = 'Nintendo'
+      w.exhibition = ['Transmutations']
       w.series_arrangement = ['Ongoing']
       w.related_url = ['example.com']
       w.rights = ['http =//rightsstatements.org/vocab/InC/1.0/']
@@ -102,6 +103,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Fun/
       expect(rendered).to match /gold coins/
       expect(rendered).to match /Nintendo/
+      expect(rendered).to match /Transmutations/
       expect(rendered).to match /Ongoing/
       expect(rendered).to match /example.com/
       expect(rendered).to match /rightsstatements\.org/

@@ -92,6 +92,9 @@ class SolrDocument
   def division
     self[Solrizer.solr_name('division')]
   end
+  def exhibition
+    self[Solrizer.solr_name('exhibition')]
+  end
   def series_arrangement
     self[Solrizer.solr_name('series_arrangement')]
   end
