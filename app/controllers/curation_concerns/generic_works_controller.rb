@@ -34,5 +34,11 @@ module CurationConcerns
     end
     helper HelperOverride
 
+    # Adds the 'My Works' breadcrumb; we only want this for logged-in users
+    # overrides https://github.com/samvera/sufia/blob/v7.3.1/app/controllers/concerns/sufia/works_controller_behavior.rb#L93
+    def add_breadcrumb_for_controller
+      super if current_ability.current_user.staff?
+    end
+
   end
 end
