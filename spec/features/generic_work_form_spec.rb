@@ -56,6 +56,14 @@ RSpec.feature "Editing metadata of generic work" do
       expect(page.find('li.artist').text).to eq('Zeldog')
     end
 
+    scenario "allows deletion of physical_container", js: true do
+      fill_in 'generic_work_volume', with: ''
+      fill_in 'generic_work_part', with: ''
+      fill_in 'generic_work_page', with: ''
+      click_button 'Save'
+      expect(page).not_to have_selector('li.physical_container')
+    end
+
     # this test passing erroneously
     xscenario "saves a new external id field", js: true  do
       visit "/concern/generic_works/#{@work.id}/edit"
