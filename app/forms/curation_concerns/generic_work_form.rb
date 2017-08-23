@@ -22,6 +22,7 @@ module CurationConcerns
         :inscription,
         :subject,
         :division,
+        :exhibition,
         :series_arrangement,
         :physical_container,
         :related_url,

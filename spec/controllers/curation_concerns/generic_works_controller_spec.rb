@@ -462,6 +462,8 @@ describe CurationConcerns::GenericWorksController do
         patch :update, id: work, generic_work: {
           box: '2',
           folder: '3',
+          volume: '',
+          part: '',
           page: '14',
         }
 
