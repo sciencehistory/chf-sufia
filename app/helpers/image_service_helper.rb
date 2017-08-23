@@ -12,7 +12,9 @@ module ImageServiceHelper
   #
   # if use_image_server is false, size_key is ignored and no srcsets are generated,
   # we just use the stock hydra-derivative created image labelled 'jpeg'
-  def member_image_tag(parent_id:, member:, size_key: :standard, lazy: false)
+  def member_image_tag(parent_id:, member:, size_key: nil, lazy: false)
+    size_key = :standard if size_key.blank?
+
     unless BASE_WIDTHS.keys.include?(size_key)
       raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{BASE_WIDTHS.keys}")
     end
@@ -35,10 +37,10 @@ module ImageServiceHelper
       {
         src:  member.thumbnail_path
       }
-    elsif CHF::Env.lookup(:use_image_server_on_show_page)
+    elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
       {
-        src:    CHF::IiifUrlService.new(member.representative_file_id).thumb_url(size: size_key),
-        srcset: CHF::IiifUrlService.new(member.representative_file_id).thumb_srcset_pixel_density(size: size_key)
+        src:    service.thumb_url(size: size_key),
+        srcset: service.thumb_srcset_pixel_density(size: size_key)
       }
     else
       {
@@ -57,8 +59,8 @@ module ImageServiceHelper
   end
 
   def tile_source_url(member_presenter)
-    if CHF::Env.lookup(:use_image_server_on_viewer)
-      CHF::IiifUrlService.new(member_presenter.representative_file_id).tile_source_url
+    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
+      service.tile_source_url
     else
       {"type" => "image", "url" => main_app.download_path(member_presenter.representative_id, file: "jpeg")}.to_json
     end
@@ -66,8 +68,25 @@ module ImageServiceHelper
 
   # Returns nil if none available
   def full_res_jpg_url(member_presenter)
-    if CHF::Env.lookup(:use_image_server_downloads)
-      CHF::IiifUrlService.new(member_presenter.representative_file_id).full_res_jpg_url
+    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
+      service.full_res_jpg_url
     end
   end
+
+  private
+
+  # Returns nil if no image service available. Otherwise an image
+  # service that has tile_source_url, thumb_url, etc., methods.
+  def _representative_image_url_service(service_type, member)
+    if service_type == "iiif"
+      CHF::IiifUrlService.new(member.representative_file_id, checksum: member.representative_checksum)
+    elsif service_type == "dzi_s3"
+      CHF::DziS3UrlService.new(member.representative_file_id, checksum: member.representative_checksum)
+    elsif (!service_type) || service_type == "false"
+      nil
+    else
+      raise ArgumentError.new("Unrecognized image service type: #{service_type}")
+    end
+  end
+
 end

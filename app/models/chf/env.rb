@@ -139,24 +139,44 @@ module CHF
     define_key :app_role
     define_key :service_level
 
-    define_key :use_image_server_on_show_page,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
+    # should be a recognized image service type, or nil/false for only using hydra-derivatives thumbs
+    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_representative_image_url_service
+    define_key :image_server_on_show_page
+    define_key :image_server_on_viewer
+    define_key :image_server_downloads
 
-    define_key :use_image_server_on_viewer,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
-
-    define_key :use_image_server_downloads,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> { false }
-
+    define_key :aws_access_key_id
+    define_key :aws_secret_access_key
+    define_key :dzi_s3_bucket, default: -> {
+      if Rails.env.development?
+        "chf-dzi-dev"
+      elsif lookup(:service_level) == "stage"
+        "chf-dzi-staging"
+      end
+      # production just configure it in env please
+    }
+    define_key :dzi_s3_bucket_region, default: "us-east-1"
+    define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+    define_key :dzi_auto_create, default: Rails.env.production?, system_env_transform: BOOLEAN_TRANSFORM
 
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
     }
     define_key :riiif_derivatives_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-derivatives" : Rails.root.join("tmp", "riiif-derivatives").to_s
+    }
+
+    # Only matters on a job server, used in resque-pool.yml
+    define_key :job_queues, default: -> {
+      if Rails.env.development? || Rails.env.test?
+        "*"
+      elsif lookup(:app_role) == "jobs"
+        # jobs server
+        "dzi"
+      else
+        # production-type app server, handling the rest currently
+        "default, ingest, mailers, event"
+      end
     }
 
 
