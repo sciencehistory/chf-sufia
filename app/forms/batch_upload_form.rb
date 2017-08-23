@@ -15,6 +15,7 @@ class BatchUploadForm < Sufia::Forms::BatchUploadForm
       :inscription,
       :subject,
       :division,
+      :exhibition,
       :series_arrangement,
       :physical_container,
       :related_url,

@@ -24,6 +24,7 @@ RSpec.describe GenericWork do
     creator_of_work: 'http://purl.org/dc/elements/1.1/creator',
     admin_note: 'http://chemheritage.org/ns/hasAdminNote',
     division: 'http://chemheritage.org/ns/hasDivision',
+    exhibition: 'http://opaquenamespace.org/ns/exhibit',
     after: 'http://chemheritage.org/ns/after',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
     author: 'http://id.loc.gov/vocabulary/relators/aut',

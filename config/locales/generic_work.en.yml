@@ -37,6 +37,7 @@ en:
         inscription: "Use for text on a work that is captioned, dedicated, or inscribed. Input the inscription location (<strong><em>Ex: • Inside front cover • Verso bottom left • Back panel</strong></em>) and transcribe the text exactly as is on the work, including capturing misspellings, crossouts, or other anomalies as they appear."
         subject: "Topical terms describing the “aboutness” of the work. Depicted persons, places, and time periods are covered here as well. Field supports FAST (derived from Library of Congress authorities) autocomplete. <strong><em>Ex: • Alchemy • Integrated circuits</strong></em>. Recommended."
         division: "Select the CHF administrative entity responsible for the management and curation of the physical work. Required."
+        exhibition: "Select any current or past Museum exhibition(s) that the work has been displayed in, if applicable. If a desired entry is not available, contact the Digital Projects and Metadata Librarian."
         series_arrangement: "Archival materials only: specify series and subseries of work, where relevant. Capture the information as listed in the finding aid."
         physical_container: "Archival and serialized materials only: specify either box/folder or volume/part numbers, where relevant."
         #this field doesn't exist...
