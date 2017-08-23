@@ -171,14 +171,15 @@ module WorkFormBehavior
       def self.encode_physical_container(params, clean_params)
         result = []
         CHF::Utils::ParseFields.physical_container_fields.values.each do |k|
-          # check for some data
+          # When saving permissions / version changes, these params aren't in the form.
+          #   return unchanged params at first nil to avoid losing data.
+          return clean_params if params[k].nil?
+          # But we do want to be able to blank it out otherwise, so check for empty string.
           if params[k].present?
             result << "#{CHF::Utils::ParseFields.physical_container_fields_reverse[k]}#{params[k]}"
           end
         end
-        unless result.empty?
-          clean_params['physical_container'] = result.join('|')
-        end
+        clean_params['physical_container'] = result.join('|')
         clean_params
       end
 
@@ -199,7 +200,6 @@ module WorkFormBehavior
         end
         clean_params
       end
-
 
   end
 end

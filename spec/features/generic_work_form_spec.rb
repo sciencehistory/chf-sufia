@@ -45,15 +45,23 @@ RSpec.feature "Editing metadata of generic work" do
       page.assert_selector('input.physical_container', :count => 5)
     end
 
-    xscenario "saves a new maker field", js: true  do
+    scenario "saves a new maker field", js: true  do
       # TODO: test one or more nested fields'
-      expect(page).to have_text 'Maker'
+      expect(page).to have_text 'Creator'
       expect(page).to have_no_field('generic_work_photographer')
       select 'Artist', from: 'generic_work_maker'
       # change below to look more like the "fills in correctly" tests.
       fill_in 'generic_work_artist', with: 'Zeldog'
-      click_button 'Save Descriptions'
-      expect(page.find('div.generic_work_maker').first('input').value).to eq('Zeldog')
+      click_button 'Save'
+      expect(page.find('li.artist').text).to eq('Zeldog')
+    end
+
+    scenario "allows deletion of physical_container", js: true do
+      fill_in 'generic_work_volume', with: ''
+      fill_in 'generic_work_part', with: ''
+      fill_in 'generic_work_page', with: ''
+      click_button 'Save'
+      expect(page).not_to have_selector('li.physical_container')
     end
 
     # this test passing erroneously
