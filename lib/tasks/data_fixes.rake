@@ -1,6 +1,5 @@
 require 'chf/data_fixes/util'
 require 'chf/data_fixes/work_dates'
-require 'chf/data_fixes/add_catlu_access'
 require 'chf/data_fixes/strip_strings'
 require 'chf/data_fixes/genre_document'
 
@@ -18,7 +17,6 @@ namespace :chf do
       CHF::DataFixes::Util.update_works do |w|
         [
           CHF::DataFixes::WorkDates.new(w).change,
-          CHF::DataFixes::AddCatluAccess.new(w).change,
           CHF::DataFixes::StripStrings.new(w).change,
           CHF::DataFixes::LibraryDivisionChange.new(w).change,
           CHF::DataFixes::GenreDocument.new(w).change
@@ -30,13 +28,6 @@ namespace :chf do
     task :fix_work_dates => :environment do
       CHF::DataFixes::Util.update_works do |w|
         CHF::DataFixes::WorkDates.new(w).change
-      end
-    end
-
-    desc "Add clu@chemheritage.org to all edit_users"
-    task :add_catlu_access => :environment do
-      CHF::DataFixes::Util.update_works do |w|
-        CHF::DataFixes::AddCatluAccess.new(w).change
       end
     end
 
