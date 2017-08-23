@@ -115,7 +115,7 @@ module CHF
         end
       end
       Rails.logger.debug("#{self.class.name}: fetch_from_fedora: #{fedora_fetch_benchmark}")
-      unless response.code == "200"
+      unless response && response.code == "200"
         raise StandardError.new("Could not fetch file from fedora: #{uri}")
       end
     end
