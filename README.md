@@ -20,6 +20,8 @@ dev box, without a VM.
 	* `brew install redis`
 		* `brew services start redis`
 	* postgres (on osx, i like https://postgresapp.com/)
+  * `brew install vips` **IF** you want to turn on .dzi tile creation for deep-zooming
+     in dev. See [dzi_tiles_on_s3](./docs/dzi_tiles_on_s3.md)
 
 * `cp config/secrets.yml.example config/secrets.yml`
 	* you will need to fill out some secret sierra connection config in here

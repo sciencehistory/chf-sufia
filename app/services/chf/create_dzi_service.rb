@@ -21,9 +21,9 @@ module CHF
   # required:
   #  * aws_access_key_id
   #  * aws_secret_access_key
+  #  * dzi_s3_bucket (required only in production, otherwise sensible defaults)
   # optional (cause they have defaults):
   #  * dzi_job_tmp_dir
-  #  * dzi_s3_bucket
   #  * dzi_s3_bucket_region
   #
   # Seek rake chf:dzi for tools for managing the S3 bucket contents.
@@ -31,9 +31,7 @@ module CHF
   # MAYBE would we better off using actual libvips bindings at https://github.com/jcupitt/ruby-vips
   #   instead of shell out? I think it probably doesn't matter.
   #
-  # TODO what do we want to do in dev? create dzi's to public/? No DZIs?
-  #
-  # TODO some cleverer concurrency stuff if two of these jobs try acting at the same
+  # POSSIBLE IMPROVEMENT some cleverer concurrency stuff if two of these jobs try acting at the same
   # time, keep the out of using each others files, or let them actually share/wait
   # on each other files.
   class CreateDziService
@@ -50,7 +48,7 @@ module CHF
     self.suppress_vips_stderr = true
 
     class_attribute :cache_control
-    self.cache_control = "max-age=31536000"
+    self.cache_control = "max-age=31536000" # one year in seconds.
 
     class_attribute :acl
     self.acl = 'public-read'
@@ -144,6 +142,8 @@ module CHF
       # All the jpgs, which are in a _files/ dir, and subdirs of that.
       futures = []
       dir_path = Pathname.new(local_dzi_dir_path)
+      # We get back full paths from FS root from Dir.glob, need to change then
+      # to relative to working dir to get the S3 keys we want.
       path_prefix_re = /\A#{Regexp.quote(WORKING_DIR.end_with?('/') ? WORKING_DIR : WORKING_DIR + '/')}/
 
       Dir.glob("#{dir_path}/**/*.jpg").each do |full_path|
@@ -185,8 +185,7 @@ module CHF
 
     # include the checksum so it's self-cache-busting if file at this URL
     # changes, say, due to versioning. HOWEVER, this does make indexing
-    # somewhat slower. TODO optimize somehow. Less fetches to fedora and/or get
-    # from solr.
+    # somewhat slower.
     def self.base_file_name(file_id, checksum)
       CGI.escape "#{file_id}_checksum#{checksum}"
     end

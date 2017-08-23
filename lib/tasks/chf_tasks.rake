@@ -258,9 +258,6 @@ namespace :chf do
     end
 
 
-    # TODO, better API to call here, better performance, this is just WIP proof of concept
-    # Threaded more than one fs at a time?
-    #
     # To lazy-create, call as `rake chf:dzi:push_all[lazy]`
     desc "create and push all dzi to s3"
     task :push_all, [:option_list] => :environment do |t, args|

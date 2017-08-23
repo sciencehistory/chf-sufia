@@ -139,7 +139,8 @@ module CHF
     define_key :app_role
     define_key :service_level
 
-    # should be a recognized image service type, or nil/false for none, just hydra-derivatives
+    # should be a recognized image service type, or nil/false for only using hydra-derivatives thumbs
+    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_representative_image_url_service
     define_key :image_server_on_show_page
     define_key :image_server_on_viewer
     define_key :image_server_downloads

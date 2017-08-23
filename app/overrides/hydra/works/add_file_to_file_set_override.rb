@@ -3,14 +3,12 @@
 #
 # https://bibwild.wordpress.com/2017/07/11/on-hooking-into-sufiahyrax-after-file-has-been-uploaded/
 #
-# TODO: Test for uploading a new version of a file, do you still get this?
-# TODO in dev does this end up prepended multiple times and calling super multiple times?
-#      make that not so.
-
 Hydra::Works::AddFileToFileSet.class_eval do
 
   AddFileToFileSetClassOverrides = Module.new do
     def call(file_set, file, type, update_existing: true, versioning: true)
+      # super at hydra-works 0.16.0 when implemented.
+      # https://github.com/samvera/hydra-works/blob/v0.16.0/lib/hydra/works/services/add_file_to_file_set.rb#L10
       super.tap do
         # Got here without an error? Trigger DZI creation
         if CHF::Env.lookup(:dzi_auto_create)

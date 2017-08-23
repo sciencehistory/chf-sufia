@@ -29,7 +29,7 @@ code for defaults](../app/models/chf/env.rb) in case this doc has not been kept 
 
 * `aws_access_key_id` -- required
 * `aws_secret_access_key` -- required
-* `dzi_s3_bucket` -- recommended, but may default to something reasonable
+* `dzi_s3_bucket` -- recommended, but may default to something reasonable in non-production
 * `dzi_s3_bucket_region` -- defaults to `"us-east-1"`
 
 * `dzi_job_tmp_dir` -- defaults to Rails.root ./tmp/dzi-creation-tmp-working. Where the
@@ -49,7 +49,7 @@ for whatever reason, there are rake tasks. Rake tasks should be run
 on an instance set up with proper Env variables and repo connection.
 
 * 'rake chf:dzi:configure_bucket' set CORS and any other bucket-level
-  config. idempotent.
+  config. idempotent. (see http://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-cors-configuration.html)
 
 * `rake chf:dzi:push_all` -- create DZI and tiles or every file in the repo,
 upload them to S3. Takes approximately 50 minutes per 1000 files.
@@ -72,8 +72,17 @@ per 1000 .dzi in S3, plus additional time if orphaned files are detected.
 TBD. As of this writing, in default dev environment you do not get
 DZI creation or deep zooming in viewer. You get a viewer with
 limited viewing based on a large jpg derivative. You can of course
-set the Chf::Env variables as above to turn on DZI in dev. (Use
-unix ENV or a ./config/local_env.yml to set Chf::Env variables)
+set the Chf::Env variables as above to turn on DZI in dev. Use
+unix ENV or a ./config/local_env.yml to set Chf::Env variables, eg:
+
+~~~yaml
+dzi_auto_create: true
+image_server_on_viewer: dzi_s3
+dzi_s3_bucket: $some_bucket
+aws_access_key_id: $correct_id_that_can_access_bucket
+aws_secret_access_key: $correct_key
+~~~
+
 
 ## Auth -- Not Yet
 
