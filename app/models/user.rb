@@ -34,4 +34,8 @@ class User < ActiveRecord::Base
   def staff?
     groups.include? 'registered'
   end
+
+  # Use on a current_user to ensure it's not a guest / nil object user
+  alias_method :logged_in?, :persisted?
+
 end
