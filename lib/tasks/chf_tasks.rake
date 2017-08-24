@@ -174,7 +174,7 @@ namespace :chf do
   namespace :admin do
 
     desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
-    task :grant, [:email] => :environment do
+    task :grant, [:email] => :environment do |t, args|
       begin
         CHF::Utils::Admin.grant(args[:email])
       rescue ActiveRecord::RecordNotFound
