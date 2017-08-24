@@ -26,6 +26,13 @@ namespace :chf do
       end
     end
 
+    desc "'Diagrams' to 'Charts, diagrams, etc' in genre"
+    task :genre_charts => :environment do
+      CHF::DataFixes::Util.update_works do |w|
+        CHF::DataFixes::GenreCharts.new(w).change
+      end
+    end
+
     desc "Fix Work dates to be Dates"
     task :fix_work_dates => :environment do
       CHF::DataFixes::Util.update_works do |w|

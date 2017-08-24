@@ -118,6 +118,7 @@ module Chufia
       'Artifacts',
       'Business correspondence',
       'Catalogs',
+      'Charts, diagrams, etc',
       'Chemistry sets',
       'Clothing & dress',
       'Diagrams',
