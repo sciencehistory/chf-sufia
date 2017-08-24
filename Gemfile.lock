@@ -336,6 +336,7 @@ GEM
       railties (>= 3.1)
     highline (1.7.8)
     hiredis (0.6.1)
+    honeybadger (3.1.2)
     html_aware_truncation (1.0.0)
       nokogiri (~> 1.0)
     htmlentities (4.3.4)
@@ -821,6 +822,7 @@ DEPENDENCIES
   fcrepo_wrapper
   guard-rspec
   highline
+  honeybadger (~> 3.1)
   html_aware_truncation (~> 1.0)
   hydra-editor!
   hydra-role-management

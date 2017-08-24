@@ -1,0 +1,6 @@
+---
+api_key: <%= CHF::Env.lookup(:honeybadger_api_key) %>
+env: <%= CHF::Env.lookup(:service_level) || Rails.env.to_s %>
+
+
+# http://docs.honeybadger.io/ruby/gem-reference/configuration.html

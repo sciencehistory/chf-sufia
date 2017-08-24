@@ -195,5 +195,7 @@ module CHF
         lookup(:app_role).blank? || lookup(:app_role) == "app"
       }
 
+    define_key :honeybadger_api_key
+
   end
 end
