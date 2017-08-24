@@ -58,5 +58,9 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       expect(page).to have_selector "select[id='generic_work_rights']"
       expect(page).not_to have_selector "select[id='generic_work_rights'][multiple='multiple']"
     end
+
+    it "renders exhibition as a select" do
+      expect(page).to have_selector "select[id='generic_work_exhibition']"
+    end
   end
 end

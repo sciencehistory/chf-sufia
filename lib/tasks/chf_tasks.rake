@@ -174,7 +174,7 @@ namespace :chf do
   namespace :admin do
 
     desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
-    task :grant, [:email] => :environment do |t, args|
+    task :grant, [:email] => :environment do
       begin
         CHF::Utils::Admin.grant(args[:email])
       rescue ActiveRecord::RecordNotFound
@@ -211,6 +211,169 @@ namespace :chf do
         u = User.create!(email: args[:email], password: args[:pass])
         puts "Test user created"
       end
+    end
+  end
+
+  namespace :dzi do
+    desc "set bucket configuration"
+    task :configure_bucket => :environment do
+      client = CHF::CreateDziService.s3_client!
+
+      client.put_bucket_cors(
+        bucket: CHF::CreateDziService.bucket_name,
+        cors_configuration: {
+          cors_rules: [
+            {
+              allowed_methods: ["GET"],
+              allowed_origins: ["*"],
+              max_age_seconds: 12.hours,
+              allowed_headers: ["*"]
+            }
+          ]
+        }
+      )
+
+      client.put_bucket_acl(
+        acl: CHF::CreateDziService.acl,
+        bucket: CHF::CreateDziService.bucket_name,
+      )
+    end
+
+    desc "ensure s3 acl set properly on all objects"
+    task :set_acl => :environment do
+      client = CHF::CreateDziService.s3_client!
+      bucket = CHF::CreateDziService.s3_bucket!
+      progress = ProgressBar.create(total: nil)
+      i = 0
+      bucket.objects.each do |s3_obj|
+        i += 1
+        client.put_object_acl(bucket: CHF::CreateDziService.bucket_name, key: s3_obj.key, acl: CHF::CreateDziService.acl)
+        if i % 10 == 0
+          progress.increment
+          progress.title = i
+        end
+      end
+      progress.title = i
+      progress.finish
+    end
+
+
+    # To lazy-create, call as `rake chf:dzi:push_all[lazy]`
+    desc "create and push all dzi to s3"
+    task :push_all, [:option_list] => :environment do |t, args|
+      lazy = (args[:option_list] || "").split(",").include?("lazy")
+      backtrace = (args[:option_list] || "").split(",").include?("backtrace")
+
+      errors = []
+      total = FileSet.count
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e", :smoothing => 0.5)
+
+      # Get this from Solr instead would be faster, but it's a pain
+      FileSet.find_each do |fs|
+        begin
+          # A bit expensive to get all the id and checksums, is there a faster way? Not sure.
+          file = fs.original_file
+          if file
+            CHF::CreateDziService.new(file.id, checksum: file.checksum.value).call(lazy: lazy)
+          else
+            Rails.logger.warn("No original file for #{fs.id}? Could not push DZI")
+          end
+          progress.increment
+        rescue StandardError => e
+          errors << file.id
+          msg = "Could not create and push DZI for #{file.id}: #{e.inspect}"
+          msg += "\n   #{e.backtrace.join("\n   ")}" if backtrace
+          progress.log(msg)
+        end
+      end
+      progress.finish
+      if errors.count
+        $stderr.puts "#{errors.count} errors"
+      end
+    end
+
+    # not sure why these 'require' are required
+    require 'hydra/pcdm'
+    desc "remove .dzi and files not associated with current fedora data"
+    task :clean_orphaned => :environment do |t, args|
+      # get a list of ALL top-level objects, which will be just .dzi files.
+      bucket = CHF::CreateDziService.s3_bucket!
+      scope = bucket.objects(delimiter: '/')
+
+      $stderr.puts "Scanning S3 bucket '#{bucket.name}' for .dzi of file IDs not currently in repo '#{ActiveFedora.fedora.base_uri}'...\n\n"
+
+      # Don't know total, too expensive to look up.
+      progress = ProgressBar.create(:total => nil)
+      i = 0
+      deleted = []
+
+      objects = scope.each do |s3_obj|
+        i += 1
+
+        file_id, checksum = CHF::CreateDziService.parse_dzi_file_name( s3_obj.key )
+
+        # Believe it or not, this seems to be the way to figure out file existence, took
+        # me hours to figure out. Not sure how many round-trips to fedora it will
+        # take, but this is good enough, i'm tired.
+        file_obj = Hydra::PCDM::File.new(file_id)
+        exists  = begin
+                    file_obj.persisted?
+                  rescue Ldp::Gone
+                    false
+                  end
+        stored_checksum = begin
+                            file_obj.checksum.value
+                          rescue Ldp::Gone
+                            false
+                          end
+
+        unless exists && stored_checksum == checksum
+          # either file_id does not exist, or no longer has this checksum.
+          # orphaned!
+          deleted << [file_id, checksum]
+
+          #first .dzi, so it won't be visible to front-end
+          s3_obj.delete
+
+          # then any associated tiles
+          bucket.objects(prefix: s3_obj.key.sub(/\.dzi$/, '_files/')).each do |tile_obj|
+            progress.increment
+            tile_obj.delete
+          end
+        end
+        progress.increment
+        progress.title = "#{i} scanned, #{deleted.count} deleted"
+      end
+      progress.finish
+
+      # Have to do this a bit hackily, we'll actually iterate through every
+      # key, but the sdk #list_objects methods gets 'directories' out
+      # for us with #prefix
+      $stderr.puts "\nScanning for orphaned _files/ tiles...\n\n"
+      progress = ProgressBar.create(:total => nil)
+      i = 0
+      deleted = []
+      client = CHF::CreateDziService.s3_client!
+      marker = nil
+      begin
+        s3_response = client.list_objects(bucket: CHF::CreateDziService.bucket_name, marker: marker, delimiter: '/')
+        marker = s3_response.next_marker
+        s3_response.common_prefixes.collect(&:prefix).each do |prefix|
+          i += 1
+          dzi_file_name = prefix.sub(/_files\/$/, '.dzi')
+          unless bucket.object(dzi_file_name).exists?
+            # delete tiles
+            deleted << prefix
+            bucket.objects(prefix: prefix).each do |tile_obj|
+              progress.increment
+              tile_obj.delete
+            end
+          end
+          progress.increment
+          progress.title = "~#{i} sets scanned, #{deleted.count} deleted"
+        end
+      end while marker != nil
+      progress.finish
     end
   end
 

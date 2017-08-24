@@ -53,7 +53,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
 
+
 gem 'honeybadger', '~> 3.1'
+
+# for our derivatives on s3
+gem 'aws-sdk', '~> 2.5'
+gem 'concurrent-ruby', "~> 1.0"
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-lazysizes'

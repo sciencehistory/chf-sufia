@@ -49,10 +49,10 @@ module MemberHelper
                         })
                       )
 
-    if CHF::Env.lookup(:use_image_server_downloads)
+    if member && full_res_jpg_url = full_res_jpg_url(member)
       list_elements << dropdown_menuitem(
                         link_to("Full-size JPEG",
-                          (member && full_res_jpg_url(member) || "#"),
+                          full_res_jpg_url,
                           target: "_new",
                           data: {
                             content_hook: "dl-jpeg-link",

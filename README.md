@@ -20,6 +20,8 @@ dev box, without a VM.
 	* `brew install redis`
 		* `brew services start redis`
 	* postgres (on osx, i like https://postgresapp.com/)
+  * `brew install vips` **IF** you want to turn on .dzi tile creation for deep-zooming
+     in dev. See [dzi_tiles_on_s3](./docs/dzi_tiles_on_s3.md)
 
 * `cp config/secrets.yml.example config/secrets.yml`
 	* you will need to fill out some secret sierra connection config in here
@@ -74,6 +76,12 @@ You also need a hydra and a fedora server running to run tests. You can:
   way, you may want to set `ENV` variables to the app knows where to find them
   when running tests. See `ENV` keys mentioned above in "development setup",
   but replace `_DEVELOPMENT` with `_TEST`.
+
+### Other docs
+
+See [docs](./docs) subdir.
+
+* [DZI Tiles on S3](./docs/dzi_tiles_on_s3.md)
 
 
 ## Deployment

@@ -86,7 +86,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: "search",
       rows: 10,
-      qf: "title_tesim name_tesim"
+      qf: "#{chf_search_fields.join(" ")} file_format_tesim all_text_timv",
     }
 
     # solr field configuration for document/show views

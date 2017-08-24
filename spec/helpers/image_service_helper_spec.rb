@@ -8,14 +8,15 @@ describe ImageServiceHelper do
         representative_file_id: file_id,
         representative_id: "maybe_a_work",
         representative_width: "100",
-        representative_height: "100")
+        representative_height: "100",
+        representative_checksum: "adfadfadfadfadfasdf")
   }
 
 
   describe "#tile_source_url" do
     before do
       allow(CHF::Env).to receive(:lookup).with(:iiif_public_url).and_return('http://localhost:3000/image-service')
-      allow(CHF::Env).to receive(:lookup).with(:use_image_server_on_viewer).and_return(true)
+      allow(CHF::Env).to receive(:lookup).with(:image_server_on_viewer).and_return("iiif")
     end
 
     context "info.json" do
@@ -53,7 +54,7 @@ describe ImageServiceHelper do
     describe "with base url with path" do
       before do
         allow(CHF::Env).to receive(:lookup).with(:iiif_public_url).and_return('http://localhost:3000/image-service')
-        allow(CHF::Env).to receive(:lookup).with(:use_image_server_on_show_page).and_return(true)
+        allow(CHF::Env).to receive(:lookup).with(:image_server_on_show_page).and_return("iiif")
       end
 
       let(:html) { Nokogiri::HTML.fragment(helper.member_image_tag(member: mock_member_presenter, parent_id: parent_id)) }
