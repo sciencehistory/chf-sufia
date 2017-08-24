@@ -262,6 +262,7 @@ namespace :chf do
     desc "create and push all dzi to s3"
     task :push_all, [:option_list] => :environment do |t, args|
       lazy = (args[:option_list] || "").split(",").include?("lazy")
+      backtrace = (args[:option_list] || "").split(",").include?("backtrace")
 
       errors = []
       total = FileSet.count
@@ -280,7 +281,9 @@ namespace :chf do
           progress.increment
         rescue StandardError => e
           errors << file.id
-          progress.log("Could not create and push DZI for #{file.id}: #{e}")
+          msg = "Could not create and push DZI for #{file.id}: #{e.inspect}"
+          msg += "\n   #{e.backtrace.join("\n   ")}" if backtrace
+          progress.log(msg)
         end
       end
       progress.finish
