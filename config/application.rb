@@ -40,6 +40,10 @@ module Chufia
     config.fedora_sufia6_user = "fedoraAdmin"
     config.fedora_sufia6_password = "fedoraAdmin"
 
+    if ENV["LOG_LEVEL"].present?
+      config.log_level = ENV["LOG_LEVEL"].to_s
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
