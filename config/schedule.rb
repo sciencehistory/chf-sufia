@@ -7,7 +7,10 @@ every 1.month, roles: [:app] do
   rake "chf:metadata_report"
 end
 
-every 1.day, :at => '2:30 am', roles: [:jobs] do
+# if we decide to move this to the jobs box, wse'll need to
+# update the postgres configuration to accept non-localhost connections
+# will require brief downtime of staff functionality
+every 1.day, :at => '2:30 am', roles: [:app] do
   rake "chf:fixity_checks"
 end
 
