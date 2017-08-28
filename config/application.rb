@@ -125,7 +125,6 @@ module Chufia
       'Charts, diagrams, etc',
       'Chemistry sets',
       'Clothing & dress',
-      'Diagrams',
       'Documents',
       'Drawings',
       'Encyclopedias and dictionaries',
