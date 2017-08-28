@@ -66,6 +66,14 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     # due to a bug released in sufia 7.3:
     # https://github.com/projecthydra-labs/hyrax/issues/652
     clean_params['permissions_attributes'] = params['permissions_attributes'] if params['permissions_attributes']
+
+    # temporary while both terms are in the drop-down due to changing data
+    old_value = "Diagrams"
+    new_value = "Charts, diagrams, etc"
+    if clean_params[:genre_string] && clean_params[:genre_string].include?(old_value)
+      clean_params[:genre_string] = clean_params[:genre_string].map { |s| s == old_value ? new_value : s }
+    end
+
     clean_params
   end
 

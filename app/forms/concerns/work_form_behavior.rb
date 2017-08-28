@@ -86,6 +86,13 @@ module WorkFormBehavior
         end
       end
 
+      # temporary while both terms are in the drop-down due to changing data
+      old_value = "Diagrams"
+      new_value = "Charts, diagrams, etc"
+      if clean_params[:genre_string] && clean_params[:genre_string].include?(old_value)
+        clean_params[:genre_string] = clean_params[:genre_string].map { |s| s == old_value ? new_value : s }
+      end
+
       clean_params
     end
   end
