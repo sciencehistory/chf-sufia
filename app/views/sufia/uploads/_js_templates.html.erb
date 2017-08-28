@@ -33,10 +33,8 @@
 
 <!-- function used by the following template -->
 <script type="text/javascript">
-  // CHF edit to make this work for multi-select
-  // to be released in sufia 7.3
-  function setAllResourceTypes() {
-    var firstResourceType = $(".resource_type_dropdown")[0];
+  function setAllResourceTypes(resourceTypeId) {
+    var firstResourceType = $("#resource_type_" + resourceTypeId.toString())[0];
     var selected_options = [];
     for (var i = 0; i < firstResourceType.length; i++) {
       if (firstResourceType.options[i].selected) {
@@ -82,16 +80,10 @@
                 </div>
                 <label for="resource_type_{%=file.id%}" class="col-sm-5 control-label">Format</label>
                 <div class="col-sm-7">
-                  <!-- CHF edit to make this multiple, increase size -->
                   <select class="form-control resource_type_dropdown" multiple="multiple" size="6" name="resource_type[{%=file.id%}][]" id="resource_type_{%=file.id%}" value="{%=file.name%}">
-                    <% ResourceTypesService.select_options.each do |type| %>
-                      <option value="<%= type[0] %>"><%= type[1] %></option>
-                    <% end %>
+                    <%= options_for_select(ResourceTypesService.select_options) %>
                   </select>
-                  <!-- TODO: Why is the button drawn for all files? -->
-                  {% if (i == 0) { %}
-                    <button class="btn pull-right resource_type_button" onClick="setAllResourceTypes(); return false;">Set all to this Format</button>
-                  {% } %}
+                  <button class="btn pull-right resource_type_button" onClick="setAllResourceTypes({%= file.id %}); return false;">Set all to this Format</button>
                 </div>
               </div>
             </div>
