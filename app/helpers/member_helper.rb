@@ -35,10 +35,10 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    list_elements << '<li class="dropdown-header">Download this image</li>'.html_safe
+    #list_elements << '<li class="dropdown-header">Download this image</li>'.html_safe
 
     list_elements << dropdown_menuitem(
-                      link_to("Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
+                      link_to("Download Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
                         target: "_new",
                         id: "file_download",
                         data: {
@@ -51,7 +51,7 @@ module MemberHelper
 
     if member && full_res_jpg_url = full_res_jpg_url(member)
       list_elements << dropdown_menuitem(
-                        link_to("Full-size JPEG",
+                        link_to("Download Full-size JPEG",
                           full_res_jpg_url,
                           target: "_new",
                           data: {
