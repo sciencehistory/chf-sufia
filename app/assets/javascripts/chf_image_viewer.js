@@ -503,12 +503,21 @@ jQuery(document).ready(function($) {
       }
     });
 
+    //
+    $(document).on("keydown", "#chf-image-viewer-modal *[data-toggle='dropdown'][aria-expanded='false']", function(event) {
+      if (event.which == 27) {
+        chf_image_viewer().onKey(event);
+      }
+    });
 
     $(document).on("click", "*[data-trigger='chf_image_viewer_close']", function(event) {
       event.preventDefault();
       chf_image_viewer().hide();
     });
 
+
+    // Escape with bootstrap dropdown trigger focused, when dropdown is NOT actually
+    // visible, let it close the modal even though bootstrap 3 cancels it.
     $(document).on("click", "*[data-trigger='change-viewer-source']", function(event) {
       event.preventDefault();
       chf_image_viewer().selectThumb(this);
