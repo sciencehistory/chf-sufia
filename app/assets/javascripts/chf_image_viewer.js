@@ -244,7 +244,9 @@ ChfImageViewer.prototype.locationWithNewPath = function(newPath) {
 
 // Bind to keypress and keydown
 ChfImageViewer.prototype.onKey = function(event) {
-  if (this.dropdownVisible) {
+  // If dropdown is showing and it has links (unlike our shortcut legend),
+  // let it capture keyboard to select and activate links.
+  if ($(".dropdown-menu:visible a").length > 0) {
     return;
   }
   // Many parts copied/modified from OSD source, no way to proxy to it directly.
