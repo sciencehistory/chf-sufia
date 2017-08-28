@@ -95,7 +95,7 @@ ChfImageViewer.prototype.hide = function() {
     OpenSeadragon.exitFullScreen();
   }
 
-  $(document).off("keypress.chf_image_viewer keydown.chf_image_viewer");
+  $("body").off("keypress.chf_image_viewer keydown.chf_image_viewer");
 
   this.viewer.close();
   $(this.modal).modal("hide");
@@ -517,7 +517,7 @@ jQuery(document).ready(function($) {
       chf_image_viewer().selectThumb(this);
     });
 
-    $(document).on("keypress", "*[data-trigger='change-viewer-source']", function(event) {
+    $("body").on("keypress", "*[data-trigger='change-viewer-source']", function(event) {
       // space or enter trigger click for keyboard control
       if (event.which == 13 || event.which == 32) {
         event.preventDefault();
