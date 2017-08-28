@@ -47,6 +47,12 @@ ChfImageViewer.prototype.show = function(id) {
   // show the viewer
   $(this.modal).modal("show");
   this.scrollSelectedIntoView();
+
+  // Catch keyboard controls
+  var _self = this;
+  $(document).on("keypress.chf_image_viewer keydown.chf_image_viewer", function(event) {
+    _self.onKey(event);
+  });
 };
 
 // position can be 'start', 'end'
@@ -88,6 +94,9 @@ ChfImageViewer.prototype.hide = function() {
   if (OpenSeadragon.isFullScreen()) {
     OpenSeadragon.exitFullScreen();
   }
+
+  $(document).off("keypress.chf_image_viewer keydown.chf_image_viewer");
+
   this.viewer.close();
   $(this.modal).modal("hide");
   this.removeLocationUrl();
@@ -455,10 +464,6 @@ jQuery(document).ready(function($) {
       // we have a viewer thumb in URL, let's load the viewer on page load!
       chf_image_viewer().show(viewerUrlMatch[1]);
     }
-
-    $(chf_image_viewer().modal).on("keypress.chf_image_viewer keydown.chf_image_viewer", function(event) {
-      chf_image_viewer().onKey(event);
-    });
 
     // Record whether dropdown is showing, so we can avoid keyboard handling
     // for viewer when it is, let the dropdown have it. Prob better to
