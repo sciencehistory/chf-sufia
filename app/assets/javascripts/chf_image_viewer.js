@@ -139,6 +139,10 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
   var tileSource = thumbElement.getAttribute('data-tile-source');
 
+  // hide any currently visible alerts, they only apply to
+  // previously current image.
+  $(this.modal).find(".viewer-alert").remove();
+
   this.viewer.close();
 
   this.addLoading();
