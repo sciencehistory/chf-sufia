@@ -171,7 +171,7 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
 };
 
 ChfImageViewer.prototype.next = function() {
-  var nextElement = this.selectedThumb.nextElementSibling;
+  var nextElement = $(this.selectedThumb).next().get();
   if (nextElement) {
     this.selectThumb(nextElement);
     this.scrollSelectedIntoView("start");
@@ -179,7 +179,7 @@ ChfImageViewer.prototype.next = function() {
 };
 
 ChfImageViewer.prototype.prev = function() {
-  var prevElement = this.selectedThumb.previousElementSibling;
+  var prevElement = $(this.selectedThumb).prev().get();
   if (prevElement) {
     this.selectThumb(prevElement);
     this.scrollSelectedIntoView("end");
