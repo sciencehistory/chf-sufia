@@ -229,17 +229,16 @@ ChfImageViewer.prototype.locationWithNewPath = function(newPath) {
   return newUrl;
 };
 
-ChfImageViewer.prototype.onKeyDown = function(event) {
+// Bind to keypress and keydown
+ChfImageViewer.prototype.onKey = function(event) {
   if (this.dropdownVisible) {
     return;
   }
-
   // Many parts copied/modified from OSD source, no way to proxy to it directly.
   // This one expects a jQuery event.
-  // And has a couple custom mappings added to it.
   // https://github.com/openseadragon/openseadragon/blob/e81e30c81cd8be566a4c8011ad7f592ac1df30d3/src/viewer.js#L2414-L2499
-  if ( !event.preventDefaultAction && !event.ctrl && !event.alt && !event.meta ) {
-      switch( event.keyCode ){
+  if ( !event.preventDefaultAction && !event.ctrlKey && !event.altKey && !event.metaKey ) {
+        switch( event.which ){
           case 27: // ESC
             this.hide();
             return false;
@@ -279,25 +278,7 @@ ChfImageViewer.prototype.onKeyDown = function(event) {
               this.viewer.viewport.applyConstraints();
               return false;
             }
-          default:
-              //console.log( 'navigator keycode %s', event.keyCode );
-              return true;
-      }
-  } else {
-      return true;
-  }
-}
 
-ChfImageViewer.prototype.onKeyPress = function(event) {
-  if (this.dropdownVisible) {
-    return;
-  }
-
-  // Many parts copied/modified from OSD source, no way to proxy to it directly.
-  // This one expects a jQuery event.
-  // https://github.com/openseadragon/openseadragon/blob/e81e30c81cd8be566a4c8011ad7f592ac1df30d3/src/viewer.js#L2414-L2499
-  if ( !event.preventDefaultAction && !event.ctrlKey && !event.altKey && !event.metaKey ) {
-        switch( event.which ){
           case 46: //.|>
           case 62: //.|>
             this.next();
@@ -475,12 +456,10 @@ jQuery(document).ready(function($) {
       chf_image_viewer().show(viewerUrlMatch[1]);
     }
 
-    $(chf_image_viewer().modal).on("keypress.chf_image_viewer", function(event) {
-      chf_image_viewer().onKeyPress(event);
+    $(chf_image_viewer().modal).on("keypress.chf_image_viewer keydown.chf_image_viewer", function(event) {
+      chf_image_viewer().onKey(event);
     });
-    $(chf_image_viewer().modal).on("keydown.chf_image_viewer", function(event) {
-      chf_image_viewer().onKeyDown(event);
-    });
+
     // Record whether dropdown is showing, so we can avoid keyboard handling
     // for viewer when it is, let the dropdown have it. Prob better to
     // do this with jquery on/off, but this was easiest for now.
