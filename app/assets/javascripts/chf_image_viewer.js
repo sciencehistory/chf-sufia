@@ -426,11 +426,6 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
 };
 
 ChfImageViewer.prototype.hideUiElement = function(element) {
-  if (document.activeElement == element) {
-    // If it was focused and we're hiding it, make sure to switch focus
-    // to modal, so keyboard shortcuts and tab still works right.
-    this.modal.focus();
-  }
   element.style.display = "none";
 };
 
