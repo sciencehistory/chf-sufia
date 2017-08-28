@@ -23,6 +23,16 @@ module CHF
           ::User.audit_user.send_message(user, message, subject)
         end
       end
+
+      # Honeybadger notify
+      if defined? Honeybadger
+        Honeybadger.notify("Fixity check failure", context: {
+          file_set: @file_set.inspect,
+          checksum_audit_log: @checksum_audit_log.inspect,
+          expected_result: expected_result,
+          fedora_uri: checked_uri_fedora_metadata_uri
+        })
+      end
     end
 
     def message
