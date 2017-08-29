@@ -379,8 +379,11 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     show: false,
     keyboard: false
   });
-  $(this.modal).on("shown.bs.modal", function(event) {
-    _self.setThumbAspectRatios();
+  $(this.modal).on("show.bs.modal", function(event) {
+    setTimeout(function() {
+      alert('shown');
+    }, 1)
+    //_self.setThumbAspectRatios();
   });
 };
 
