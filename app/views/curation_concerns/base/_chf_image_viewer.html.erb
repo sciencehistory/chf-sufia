@@ -45,7 +45,9 @@
                     tabindex: "0",
                     role: "button",
                     data: {
-                      aspectratio: "#{member_presenter.representative_width}/#{member_presenter.representative_height}", # used for lazysizes-aspectratio
+                      # we don't want lazysizes-aspectratio to catch this right away, our own custom
+                      # JS will convert it to a normal `data-aspectratio` and call lazysizes-aspectratio on it.
+                      delayed_aspectratio: "#{member_presenter.representative_width}/#{member_presenter.representative_height}", # used for lazysizes-aspectratio
                       trigger: 'change-viewer-source',
                       index: i + 1,
                       title: member_presenter.link_name,

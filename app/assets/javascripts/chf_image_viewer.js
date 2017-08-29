@@ -55,6 +55,14 @@ ChfImageViewer.prototype.show = function(id) {
   });
 };
 
+ChfImageViewer.prototype.setThumbAspectRatios = function() {
+  this.modal.find("[data-delayed-aspectratio]").each(function() {
+    this.setAttribute("data-aspectratio", this.getAttribute("data-delayed-aspectratio"));
+    this.removeAttribute("data-delayed-aspectratio");
+    imageRatio.processImages(this);
+  });
+}
+
 // position can be 'start', 'end'
 ChfImageViewer.prototype.scrollSelectedIntoView = function(position) {
   // only if the selected thing is not currently in scroll view, scroll
@@ -365,10 +373,14 @@ ChfImageViewer.prototype.onKeyDown = function(event) {
 // tricky issues of full-body scroll and tabindex. We need to
 // restyle some of it in CSS to be full-screen.
 ChfImageViewer.prototype.initModal = function(modalElement) {
+  var _self = this;
   this.modal = modalElement;
   this.modal = $(this.modal).modal({
     show: false,
     keyboard: false
+  });
+  $(this.modal).on("shown.bs.modal", function(event) {
+    _self.setThumbAspectRatios();
   });
 };
 
