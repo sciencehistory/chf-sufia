@@ -379,15 +379,15 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     show: false,
     keyboard: false
   });
-  $(this.modal).on("shown.bs.modal", function(event) {
-    // waitValue needs to be MORE than (?) the transition-duration
-    // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
-    // don't call it until the modal is actually visible.
-    var waitValue = 1000; // ms
-    setTimeout(function() {
-      _self.setThumbAspectRatios();
-    }, waitValue)
-  });
+  // $(this.modal).on("shown.bs.modal", function(event) {
+  //   // waitValue needs to be MORE than (?) the transition-duration
+  //   // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
+  //   // don't call it until the modal is actually visible.
+  //   var waitValue = 1000; // ms
+  //   setTimeout(function() {
+  //     _self.setThumbAspectRatios();
+  //   }, waitValue)
+  // });
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {
