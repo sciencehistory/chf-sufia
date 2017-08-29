@@ -277,6 +277,8 @@
     max-height: 100%; // IE 11 needs this, although others don't, i dunno.
 
     .viewer-thumb-img {
+      display: inline-block; // this helps firefox for some reason
+
       height: 80px;
       max-width: 240px;
 
