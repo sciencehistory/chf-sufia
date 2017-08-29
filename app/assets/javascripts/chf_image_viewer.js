@@ -385,9 +385,9 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     // don't call it until the modal is actually visible.
     var waitValue = 1000; // ms
     setTimeout(function() {
-      window.debug = true;
+      console.log("starting aspectratio calc");
       _self.setThumbAspectRatios();
-      window.debug = false;
+      console.log("done with aspectratio calc");
     }, waitValue)
   });
 };
