@@ -22,6 +22,7 @@ module ImageServiceHelper
     args = {
       class: ["show-page-image-image"],
       alt: "",
+      tabindex: 0,
       data: {
         trigger: "chf_image_viewer",
         member_id: member.representative_id,

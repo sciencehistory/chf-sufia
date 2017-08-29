@@ -47,6 +47,12 @@ ChfImageViewer.prototype.show = function(id) {
   // show the viewer
   $(this.modal).modal("show");
   this.scrollSelectedIntoView();
+
+  // Catch keyboard controls
+  var _self = this;
+  $("body").on("keydown.chf_image_viewer", function(event) {
+    _self.onKeyDown(event);
+  });
 };
 
 // position can be 'start', 'end'
@@ -88,6 +94,9 @@ ChfImageViewer.prototype.hide = function() {
   if (OpenSeadragon.isFullScreen()) {
     OpenSeadragon.exitFullScreen();
   }
+
+  $("body").off("keydown.chf_image_viewer");
+
   this.viewer.close();
   $(this.modal).modal("hide");
   this.removeLocationUrl();
@@ -234,66 +243,15 @@ ChfImageViewer.prototype.locationWithNewPath = function(newPath) {
 };
 
 ChfImageViewer.prototype.onKeyDown = function(event) {
-  if (this.dropdownVisible) {
+  // If dropdown is showing and it has links (unlike our shortcut legend),
+  // let it capture keyboard to select and activate links.
+  if ($(".dropdown-menu:visible a").length > 0) {
     return;
   }
 
-  // Many parts copied/modified from OSD source, no way to proxy to it directly.
-  // This one expects a jQuery event.
-  // And has a couple custom mappings added to it.
-  // https://github.com/openseadragon/openseadragon/blob/e81e30c81cd8be566a4c8011ad7f592ac1df30d3/src/viewer.js#L2414-L2499
-  if ( !event.preventDefaultAction && !event.ctrl && !event.alt && !event.meta ) {
-      switch( event.keyCode ){
-          case 27: // ESC
-            this.hide();
-            return false;
-          case 38://up arrow
-              if ( event.shiftKey ) {
-                  this.viewer.viewport.zoomBy(1.1);
-              } else {
-                  this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, -40)));
-              }
-              this.viewer.viewport.applyConstraints();
-              return false;
-          case 40://down arrow
-              if ( event.shiftKey ) {
-                  this.viewer.viewport.zoomBy(0.9);
-              } else {
-                  this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, 40)));
-              }
-              this.viewer.viewport.applyConstraints();
-              return false;
-          case 37://left arrow
-              if (event.shiftKey) {
-                // custom CHF, next doc
-                this.prev();
-                return false;
-              } else {
-                this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(-40, 0)));
-                this.viewer.viewport.applyConstraints();
-                return false;
-              }
-          case 39://right arrow
-            if (event.shiftKey) {
-              // custom CHF, prev doc
-              this.next();
-              return false;
-            } else {
-              this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(40, 0)));
-              this.viewer.viewport.applyConstraints();
-              return false;
-            }
-          default:
-              //console.log( 'navigator keycode %s', event.keyCode );
-              return true;
-      }
-  } else {
-      return true;
-  }
-}
-
-ChfImageViewer.prototype.onKeyPress = function(event) {
-  if (this.dropdownVisible) {
+  // Otherwise, if a drop down is visible, still ignore ESC key,
+  // to let it close the dropdown.
+  if (event.which == 27 && $("#chf-image-viewer-modal *[data-toggle='dropdown'][aria-expanded='true']").length > 0) {
     return;
   }
 
@@ -302,55 +260,99 @@ ChfImageViewer.prototype.onKeyPress = function(event) {
   // https://github.com/openseadragon/openseadragon/blob/e81e30c81cd8be566a4c8011ad7f592ac1df30d3/src/viewer.js#L2414-L2499
   if ( !event.preventDefaultAction && !event.ctrlKey && !event.altKey && !event.metaKey ) {
         switch( event.which ){
-          case 46: //.|>
-          case 62: //.|>
-            this.next();
-            return false;
-          case 44: //,|<
-          case 50: //,|<
-            this.prev();
-            return false;
-          case 43://=|+
-          case 61://=|+
-              this.viewer.viewport.zoomBy(1.1);
-              this.viewer.viewport.applyConstraints();
-              return false;
-          case 45://-|_
-              this.viewer.viewport.zoomBy(0.9);
-              this.viewer.viewport.applyConstraints();
-              return false;
-          case 48://0|)
-              this.viewer.viewport.goHome();
-              this.viewer.viewport.applyConstraints();
-              return false;
-          case 119://w
-          case 87://W
+          case 27: // ESC
+              this.hide();
+              event.stopPropagation();
+              break;
+          case 38://up arrow
               if ( event.shiftKey ) {
                   this.viewer.viewport.zoomBy(1.1);
               } else {
                   this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, -40)));
               }
               this.viewer.viewport.applyConstraints();
-              return false;
-          case 115://s
-          case 83://S
+              event.stopPropagation();
+              break;
+          case 40://down arrow
               if ( event.shiftKey ) {
                   this.viewer.viewport.zoomBy(0.9);
               } else {
                   this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, 40)));
               }
               this.viewer.viewport.applyConstraints();
-              return false;
-          case 97://a
+              event.stopPropagation();
+              break;
+          case 37://left arrow
+              if (event.shiftKey) {
+                // custom CHF, next doc
+                this.prev();
+              } else {
+                this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(-40, 0)));
+                this.viewer.viewport.applyConstraints();
+              }
+              event.stopPropagation();
+              break;
+          case 39://right arrow
+              if (event.shiftKey) {
+                // custom CHF, prev doc
+                this.next();
+              } else {
+                this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(40, 0)));
+                this.viewer.viewport.applyConstraints();
+              }
+              event.stopPropagation();
+              break;
+          case 190: // . or >
+              this.next();
+              event.stopPropagation();
+              break;
+          case 188: // , or <
+              this.prev();
+              event.stopPropagation();;
+          case 187: // = or +
+              this.viewer.viewport.zoomBy(1.1);
+              this.viewer.viewport.applyConstraints();
+              event.stopPropagation();
+              break;
+          case 189: // - or _
+              this.viewer.viewport.zoomBy(0.9);
+              this.viewer.viewport.applyConstraints();
+              event.stopPropagation();
+              break;
+          case 48: // 0 or )
+              this.viewer.viewport.goHome();
+              this.viewer.viewport.applyConstraints();
+              event.stopPropagation();
+              break;
+          case 87: //w or W
+              if ( event.shiftKey ) {
+                  this.viewer.viewport.zoomBy(1.1);
+              } else {
+                  this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, -40)));
+              }
+              this.viewer.viewport.applyConstraints();
+              event.stopPropagation();
+              break;
+          case 83: //s or S
+              if ( event.shiftKey ) {
+                  this.viewer.viewport.zoomBy(0.9);
+              } else {
+                  this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(0, 40)));
+              }
+              this.viewer.viewport.applyConstraints();
+              event.stopPropagation();
+              break;
+          case 65://a
               this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(-40, 0)));
               this.viewer.viewport.applyConstraints();
-              return false;
-          case 100://d
+              event.stopPropagation();
+              break;
+          case 68: // d or D
               this.viewer.viewport.panBy(this.viewer.viewport.deltaPointsFromPixels(new OpenSeadragon.Point(40, 0)));
               this.viewer.viewport.applyConstraints();
-              return false;
+              event.stopPropagation();
+              break;
           default:
-              //console.log( 'navigator keycode %s', event.keyCode );
               return true;
         }
     } else {
@@ -436,11 +438,6 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
 };
 
 ChfImageViewer.prototype.hideUiElement = function(element) {
-  if (document.activeElement == element) {
-    // If it was focused and we're hiding it, make sure to switch focus
-    // to modal, so keyboard shortcuts and tab still works right.
-    this.modal.focus();
-  }
   element.style.display = "none";
 };
 
@@ -479,12 +476,6 @@ jQuery(document).ready(function($) {
       chf_image_viewer().show(viewerUrlMatch[1]);
     }
 
-    $(chf_image_viewer().modal).on("keypress.chf_image_viewer", function(event) {
-      chf_image_viewer().onKeyPress(event);
-    });
-    $(chf_image_viewer().modal).on("keydown.chf_image_viewer", function(event) {
-      chf_image_viewer().onKeyDown(event);
-    });
     // Record whether dropdown is showing, so we can avoid keyboard handling
     // for viewer when it is, let the dropdown have it. Prob better to
     // do this with jquery on/off, but this was easiest for now.
@@ -522,7 +513,6 @@ jQuery(document).ready(function($) {
       }
     });
 
-
     $(document).on("click", "*[data-trigger='chf_image_viewer_close']", function(event) {
       event.preventDefault();
       chf_image_viewer().hide();
@@ -533,7 +523,7 @@ jQuery(document).ready(function($) {
       chf_image_viewer().selectThumb(this);
     });
 
-    $(document).on("keypress", "*[data-trigger='change-viewer-source']", function(event) {
+    $("body").on("keypress", "*[data-trigger='change-viewer-source']", function(event) {
       // space or enter trigger click for keyboard control
       if (event.which == 13 || event.which == 32) {
         event.preventDefault();
