@@ -261,8 +261,8 @@ namespace :chf do
     # To lazy-create, call as `rake chf:dzi:push_all[lazy]`
     desc "create and push all dzi to s3"
     task :push_all, [:option_list] => :environment do |t, args|
-      lazy = (args[:option_list] || "").split(",").include?("lazy")
-      backtrace = (args[:option_list] || "").split(",").include?("backtrace")
+      lazy = args.to_a.include?("lazy")
+      backtrace = args.to_a.include?("backtrace")
 
       errors = []
       total = FileSet.count
