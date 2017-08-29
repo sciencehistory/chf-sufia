@@ -89,11 +89,11 @@ module CurationConcerns
     end
 
     def representative_height
-      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)]
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)]).first
     end
 
     def representative_width
-      solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
     end
   end
 end
