@@ -59,7 +59,7 @@ ChfImageViewer.prototype.setThumbAspectRatios = function() {
   this.modal.find("[data-delayed-aspectratio]").each(function() {
     this.setAttribute("data-aspectratio", this.getAttribute("data-delayed-aspectratio"));
     this.removeAttribute("data-delayed-aspectratio");
-    imageRatio.processImages(this);
+    imageRatio.processImages([this]);
   });
 }
 
@@ -379,15 +379,17 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     show: false,
     keyboard: false
   });
-  // $(this.modal).on("shown.bs.modal", function(event) {
-  //   // waitValue needs to be MORE than (?) the transition-duration
-  //   // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
-  //   // don't call it until the modal is actually visible.
-  //   var waitValue = 1000; // ms
-  //   setTimeout(function() {
-  //     _self.setThumbAspectRatios();
-  //   }, waitValue)
-  // });
+  $(this.modal).on("shown.bs.modal", function(event) {
+    // waitValue needs to be MORE than (?) the transition-duration
+    // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
+    // don't call it until the modal is actually visible.
+    var waitValue = 1000; // ms
+    setTimeout(function() {
+      window.debug = true;
+      _self.setThumbAspectRatios();
+      window.debug = false;
+    }, waitValue)
+  });
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {
