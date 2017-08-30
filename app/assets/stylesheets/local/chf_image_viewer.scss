@@ -279,6 +279,7 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
     max-height: 100%; // IE 11 needs this, although others don't, i dunno.
 
     .viewer-thumb-img {
+      display: inline-block; // makes FF respect width on unloaded image, not sure why needed
       max-height: 80px;
       width: $chf_image_viewer_thumb_width;
 
