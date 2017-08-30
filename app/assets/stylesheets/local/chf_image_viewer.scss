@@ -20,7 +20,7 @@
     contents and have CSS properties relevant to that too.
 */
 
-$chf_image_viewer_thumb_width: 60px;
+$chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUMB_WIDTH
 
 // Override some bootstrap modal stuff to give us a full-viewport modal
 #chf-image-viewer-modal {

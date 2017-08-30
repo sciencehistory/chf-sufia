@@ -116,4 +116,19 @@ module MemberHelper
                 role: "menu",
                 :'aria-labelledby' => labelled_by)
   end
+
+
+  VIEWER_THUMB_WIDTH = 60
+  # Calculate height matching width for a aspect ratio of member_presenter.
+  # default target_width should match CSS, in chf_image_viewer.scss, .viewer-thumb-img `width`
+  def member_proportional_height(member_presenter, target_width: VIEWER_THUMB_WIDTH)
+    original_width = member_presenter.representative_width.try(:to_i)
+    original_height = member_presenter.representative_height.try(:to_i)
+
+    if original_width && original_width > 0 && original_height && original_height > 0
+      target_width * original_height / original_width
+    end
+  end
+
+
 end
