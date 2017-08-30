@@ -154,7 +154,7 @@ namespace :chf do
     CHF::Metadata::RelatedUrlReport.new.to_csv(output)
   end
 
-  desc "set collection thumbnails. `RAILS_ENV=production bundle exec rake chf:collection_images[dr26xx95r=collections/dr26xx95r_2x.jpg]"
+  desc "set collection thumbnails. Assumes image is in `collections/` subdir. `RAILS_ENV=production bundle exec rake chf:collection_images[dr26xx95r=dr26xx95r_2x.jpg]`"
   task :collection_images, [:arg_str] => :environment do |t, args|
     args[:arg_str].split(',').each do |pair|
       id, path = pair.split("=")
