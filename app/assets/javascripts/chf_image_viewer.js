@@ -44,6 +44,21 @@ ChfImageViewer.prototype.show = function(id) {
   }
   this.selectThumb(selectedThumb);
 
+
+
+
+
+  $(this.modal).on("lazybeforeunveil", "img.viewer-thumb-img",  function(event) {
+    var img = event.target;
+    img.setAttribute("data-aspectratio", img.getAttribute("data-delayed-aspectratio"));
+    img.removeAttribute("data-delayed-aspectratio");
+    imageRatio.processImages([img]);
+  });
+
+
+
+
+
   // show the viewer
   $(this.modal).modal("show");
   this.scrollSelectedIntoView();
@@ -379,17 +394,17 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     show: false,
     keyboard: false
   });
-  $(this.modal).on("shown.bs.modal", function(event) {
-    // waitValue needs to be MORE than (?) the transition-duration
-    // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
-    // don't call it until the modal is actually visible.
-    var waitValue = 1000; // ms
-    setTimeout(function() {
-      console.log("starting aspectratio calc");
-      _self.setThumbAspectRatios();
-      console.log("done with aspectratio calc");
-    }, waitValue)
-  });
+  // $(this.modal).on("shown.bs.modal", function(event) {
+  //   // waitValue needs to be MORE than (?) the transition-duration
+  //   // set in CSS for #chf-image-viewer-modal .modal-dialog, so we
+  //   // don't call it until the modal is actually visible.
+  //   var waitValue = 1000; // ms
+  //   setTimeout(function() {
+  //     console.log("starting aspectratio calc");
+  //     _self.setThumbAspectRatios();
+  //     console.log("done with aspectratio calc");
+  //   }, waitValue)
+  // });
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {
