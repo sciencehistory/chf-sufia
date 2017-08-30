@@ -295,6 +295,7 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
       &.lazyload, &.lazyloading, &.lazyload {
         background: #AAA asset-url('spinner.svg') no-repeat center;
         background-size: 34px 34px;
+        background-clip: content-box;
       }
     }
   }
