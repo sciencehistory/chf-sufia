@@ -22,4 +22,7 @@ Rails.application.config.to_prepare do
     klass.send(:include, SearchBuilder::SyntheticCategoryLimit)
   end
 
+  unless klass.ancestors.include? SearchBuilder::PublicDomainFilter
+    klass.send(:include, SearchBuilder::PublicDomainFilter)
+  end
 end

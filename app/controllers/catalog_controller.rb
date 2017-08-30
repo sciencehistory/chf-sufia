@@ -8,16 +8,6 @@ class CatalogController < ApplicationController
   before_filter :enforce_show_permissions, only: :show
   skip_before_filter :default_html_head
 
-  def index
-    # look for the checkbox; transform it into a facet param
-    if params.delete("filter-public-domain")
-      params[:f] ||= {}
-      public_domain_filter = { 'rights_sim' => ['http://creativecommons.org/publicdomain/mark/1.0/'] }
-      params[:f] = params.fetch(:f).merge(public_domain_filter)
-    end
-    super
-  end
-
   def self.uploaded_field
     solr_name('system_create', :stored_sortable, type: :date)
   end
