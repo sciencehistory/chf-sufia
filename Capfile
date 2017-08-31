@@ -24,6 +24,7 @@ require 'capistrano/rails/migrations'
 require 'capistrano/passenger'
 require 'capistrano/maintenance'
 require 'whenever/capistrano'
+require 'slackistrano/capistrano'
 
 # git is no longer the default
 require "capistrano/scm/git"
