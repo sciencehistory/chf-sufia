@@ -42,9 +42,10 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 
 set :honeybadger_env, fetch(:stage)
 
+require_relative '../lib/chf/slackistrano_messaging'
 set :slackistrano, {
-  channel: '#digital-general',
-  webhook: 'TBD-your-incoming-webhook-url'
+  klass: Chf::SlackistranoMessaging,
+  webhook: 'tbd'
 }
 
 namespace :deploy do
