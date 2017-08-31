@@ -1,5 +1,5 @@
 require 'concurrent'
-require 'aws-sdk'
+require 'aws-sdk-s3'
 
 # Needs 'vips' installed.
 # Will overwrite if it's already there on S3 (or other fog destination)
