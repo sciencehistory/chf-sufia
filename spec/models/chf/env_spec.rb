@@ -77,4 +77,16 @@ describe CHF::Env do
       expect(instance.lookup(test_key)).to eq true
     end
   end
+
+  describe "#lookup!" do
+    let(:instance) do
+      CHF::Env.new.tap do |e|
+        e.define_key "no_value_provided"
+      end
+    end
+    it "raises on no value provided" do
+      expect { instance.lookup!("no_value_provided")}.to raise_error(TypeError)
+    end
+  end
+
 end

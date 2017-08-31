@@ -14,6 +14,10 @@ module CHF
   #
   #     Chf::Env.lookup("some_key")
   #
+  # Or, to raise quickly on nil/blank value...
+  #
+  #     Chf::Env.lookup!("some_key")
+  #
   # You can only look up keys defined like so:
   #
   #     define_key(:some_key)
@@ -73,6 +77,13 @@ module CHF
         result = default_lookup(defn) if result == NoValueProvided
         result = nil if result == NoValueProvided
         result
+      end
+    end
+
+    # like lookup, but raises on no or blank value.
+    def lookup!(name)
+      lookup(name).tap do |value|
+        raise TypeError, "No value was provided for `#{name}`" if value.blank?
       end
     end
 
