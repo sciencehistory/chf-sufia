@@ -158,7 +158,9 @@
       img.show-page-image-image {
         width: 100%;
         &.lazyload, &.lazyloading {
-          background: #AAA asset-url('spinner.svg') no-repeat center;
+          background: #AAA asset-url('static-progress.svg') no-repeat;
+          background-position: center center;
+          background-size: 50%;
         }
         vertical-align: bottom;
         min-height: 100px; // just so it's something!
