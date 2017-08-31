@@ -43,10 +43,16 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 set :honeybadger_env, fetch(:stage)
 
 require_relative '../lib/chf/slackistrano_messaging'
-set :slackistrano, {
-  klass: Chf::SlackistranoMessaging,
-  webhook: 'tbd'
-}
+slack_notification_webhook = ENV["SLACK_NOTIFICATION_WEBHOOK"]
+if slack_notification_webhook
+  set :slackistrano, {
+    klass: Chf::SlackistranoMessaging,
+    webhook: slack_notification_webhook
+  }
+else
+  set :slackistrano, false
+  $stderr.puts "WARN: No ENV['SLACK_NOTIFICATION_WEBHOOK'], can't do slack notification"
+end
 
 namespace :deploy do
 
