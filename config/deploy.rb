@@ -42,6 +42,11 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 
 set :honeybadger_env, fetch(:stage)
 
+set :slackistrano, {
+  channel: '#digital-general',
+  webhook: 'TBD-your-incoming-webhook-url'
+}
+
 namespace :deploy do
 
   after :restart, :clear_cache do

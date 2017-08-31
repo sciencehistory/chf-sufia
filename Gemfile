@@ -60,6 +60,9 @@ gem 'honeybadger', '~> 3.1'
 gem 'aws-sdk-s3', '~> 1.0'
 gem 'concurrent-ruby', "~> 1.0"
 
+# slack notifications on capistrano deploys
+gem 'slackistrano', "~> 3.8"
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-lazysizes'
 end
