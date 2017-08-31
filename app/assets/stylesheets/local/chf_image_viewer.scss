@@ -20,6 +20,8 @@
     contents and have CSS properties relevant to that too.
 */
 
+$chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUMB_WIDTH
+
 // Override some bootstrap modal stuff to give us a full-viewport modal
 #chf-image-viewer-modal {
   .modal-dialog {
@@ -277,8 +279,9 @@
     max-height: 100%; // IE 11 needs this, although others don't, i dunno.
 
     .viewer-thumb-img {
-      height: 80px;
-      max-width: 240px;
+      display: inline-block; // makes FF respect width on unloaded image, not sure why needed
+      max-height: 80px;
+      width: $chf_image_viewer_thumb_width;
 
       cursor: pointer;
 
@@ -293,6 +296,7 @@
       &.lazyload, &.lazyloading, &.lazyload {
         background: #AAA asset-url('spinner.svg') no-repeat center;
         background-size: 34px 34px;
+        background-clip: content-box;
       }
     }
   }
@@ -319,14 +323,11 @@
       overflow-y: auto;
       overflow-x: hidden;
       // need to leave enough room for scroll-bar on browsers that count that inside
-      width: calc(60px * 2 + 7px * 3 + 1em);
+      width: calc(#{$chf_image_viewer_thumb_width} * 2 + 7px * 3 + 1em);
       flex-shrink: 0;
 
       .viewer-thumb-img {
-        height: auto;
-        max-width: none;
-        width: 60px;
-        max-height: 120px;
+        max-height: $chf_image_viewer_thumb_width * 2;
       }
     }
     .viewer-download {

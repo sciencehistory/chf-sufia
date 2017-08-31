@@ -91,6 +91,8 @@
     cursor: pointer;
 
     .show-page-image-image {
+      // not sure why inline-block seems now neccesary to get JS aspectratio setting to work
+      display: inline-block;
       width: 100%;
       // sanity max-height to keep keep crazy long aspect ratio images from
       // totally ruining page. Very difficult to get this right based on
