@@ -173,7 +173,8 @@ module Chufia
       "Inspiring Youth in Chemistry",
       "Elemental Matters",
       "Marvels and Ciphers",
-      "Molecules That Matter"
+      "Molecules That Matter",
+      "The Sky's the Limit"
     ]
 
     config.physical_container_fields = {
