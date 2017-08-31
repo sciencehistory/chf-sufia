@@ -4,7 +4,7 @@ module Chf
       channels = if fetch(:stage).to_s == "production"
         ["#digital-general"]
       else
-        ["#{}digital-technical"]
+        ["#digital-technical"]
       end
       if action == :failed
         channels << "#digital-technical"
