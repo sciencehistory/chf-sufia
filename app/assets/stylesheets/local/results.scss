@@ -93,7 +93,7 @@ ol.catalog {
     color: #888;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.85em;
+    font-size: $font_size_base - 2px;
     letter-spacing: 0.015em;
     margin-right: 0.66em;
   }
