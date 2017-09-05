@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:extrabold,bold,semibold,regular,light,');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&amp;subset=latin-ext');
 
+
+a {
+  transition: color 0.25s ease;
+}
+
 /* informational dls, as on faq, policy page */
 dl.info {
   dt {
