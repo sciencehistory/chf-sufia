@@ -73,3 +73,12 @@ ol.catalog {
   }
 }
 
+// Actual results, restyled by us
+
+.chf-results-list-item {
+  display: flex;
+  .chf-results-list-item-thumb {
+    width: 200px;
+  }
+}
+
