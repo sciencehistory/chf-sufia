@@ -60,6 +60,7 @@ class CatalogController < ApplicationController
       solr_name("series_arrangement", :stored_searchable),
       solr_name("inscription", :stored_searchable),
       solr_name("additional_credit", :stored_searchable),
+      solr_name("exhibition", :stored_searchable),
       solr_name('rights_label', :searchable)
     ]
   end
