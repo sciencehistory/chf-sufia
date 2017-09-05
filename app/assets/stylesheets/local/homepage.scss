@@ -1,5 +1,5 @@
 .homepage-content-wrapper {
-  margin-top: -20px; /* overcome the bottom margin on navbar */
+  margin-top: (-1 * $navbar-margin-bottom); /* overcome the bottom margin on navbar */
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0 !important; /* overcome id-based css */
