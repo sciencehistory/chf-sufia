@@ -80,5 +80,14 @@ ol.catalog {
   .chf-results-list-item-thumb {
     width: 200px;
   }
+  .chf-results-list-item-head {
+    margin-top: 0;
+    a {
+      color: $brand-inverse;
+      &:hover, &:focus {
+        color: $link-hover-color;
+      }
+    }
+  }
 }
 

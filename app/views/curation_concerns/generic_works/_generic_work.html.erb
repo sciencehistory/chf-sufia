@@ -17,8 +17,10 @@
       <%= render_thumbnail_tag generic_work %>
     </div>
 
-    <div class="chf=results-list-item-content">
-      <%= render_document_partial(generic_work, :index_header, document_counter: generic_work_counter) %>
+    <div class="chf-results-list-item-content">
+      <h2 class="chf-results-list-item-head brand-alt-h2">
+        <%= link_to generic_work.title_or_label, generic_work %>
+      </h2>
 
       <table class="table">
         <% doc_presenter = index_presenter(generic_work) %>
