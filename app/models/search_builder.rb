@@ -15,4 +15,5 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   include SearchBuilder::RestrictAdminSearchFields
   include SearchBuilder::SyntheticCategoryLimit
+  include SearchBuilder::PublicDomainFilter
 end
