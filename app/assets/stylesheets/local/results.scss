@@ -78,7 +78,7 @@ ol.catalog {
 .chf-results-list-item {
   display: flex;
   .chf-results-list-item-thumb {
-    width: 200px;
+    width: 208px; // Should match ImageServiceHelper::BASE_WIDTHS[:standard]
   }
   .chf-results-list-item-head {
     margin-top: 0;
