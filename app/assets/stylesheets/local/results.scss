@@ -2,3 +2,40 @@
 ol.catalog {
   list-style: none;
 }
+
+// override sufia facet widget styles to be more brand-like, and generally neater
+.facets {
+  .panel-heading {
+     border-radius: 0;
+     h3 {
+      font-size: $font-size-base;
+      color: $brand-inverse;
+      font-weight: 600;
+      line-height: 1.4;
+     }
+   }
+
+  .facet_limit {
+    border-radius: 0;
+    border-top: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .panel-group .panel + .panel {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .top-panel-heading {
+    margin: 0;
+    background-color: $dark-navy;
+    color: $bg-lightly-shaded;
+    text-transform: uppercase;
+    h2.facets-heading {
+      margin: 0;
+      font-weight: 600;
+      font-size: $font-size-base;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+     }
+  }
+}
