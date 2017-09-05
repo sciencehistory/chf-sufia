@@ -15,6 +15,9 @@ ol.catalog {
       line-height: 1.4;
      }
    }
+   .panel-heading.collapse-toggle .panel-title:after {
+     padding-top: 4px;
+   }
 
   .facet_limit {
     border-radius: 0;
