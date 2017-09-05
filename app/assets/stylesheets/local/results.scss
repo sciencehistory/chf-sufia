@@ -50,6 +50,17 @@ ol.catalog {
   .facets-toggle {
     margin-right: 0;
   }
+
+  a.more_facets_link {
+    display: block;
+    margin-top: 15px;
+
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: .8em;
+    letter-spacing: 0.01em;
+    color: $dark-navy;
+  }
 }
 
 @media (max-width: 768px) {
