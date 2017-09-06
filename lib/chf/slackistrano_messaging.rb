@@ -16,5 +16,21 @@ module Chf
     def username
       "Deploy Notification"
     end
+
+    def payload_for_updated
+      current = fetch(:current_revision)
+      previous = fetch(:previous_revision)
+
+      super.tap do |payload|
+        if current && previous
+          payload[:attachments] ||= []
+          payload[:attachments] << {
+              title: "Github Diff",
+              title_link: "https://github.com/chemheritage/chf-sufia/compare/#{CGI.escape previous}...#{CGI.escape current}",
+              short: false
+            }
+        end
+      end
+    end
   end
 end
