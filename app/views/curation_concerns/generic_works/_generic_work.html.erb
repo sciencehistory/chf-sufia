@@ -34,7 +34,13 @@
         <%= link_to generic_work.title_or_label, generic_work, itemprop: "url" %>
       </h2>
 
-      <ul class="list-unstyled">
+      <% if doc_presenter.has_values_for?(Solrizer.solr_name("additional_title", :stored_searchable)) %>
+        <div class="chf-results-list-item-additional-titles">
+          <%= doc_presenter.field_value(Solrizer.solr_name("additional_title", :stored_searchable), join_type: :list) %>
+        </div>
+      <% end %>
+
+      <ul class="list-unstyled chf-results-list-values">
         <% index_fields(generic_work).each do |field_name, field| -%>
           <% if should_render_index_field? generic_work, field %>
             <li>

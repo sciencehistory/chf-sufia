@@ -82,12 +82,15 @@ ol.catalog {
 .chf-results-list-item {
   display: flex;
   margin-bottom: 30px;
+
   .chf-results-list-item-thumb {
     width: 208px; // Should match ImageServiceHelper::BASE_WIDTHS[:standard]
     margin-right: 30px;
   }
+
   .chf-results-list-item-head {
     margin-top: 0;
+    margin-bottom: 0;
     font-size: $font-size-h3;
     a {
       color: $brand-inverse;
@@ -96,9 +99,23 @@ ol.catalog {
       }
     }
   }
+
   .chf-results-list-item-genre {
     @extend %special-label;
   }
+
+  .chf-results-list-item-additional-titles {
+    ul {
+      @extend .list-unstyled;
+      font-size: $font-size-h4;
+      font-family: $brand-alt-header-font;
+    }
+  }
+
+  .chf-results-list-values {
+    margin-top: ($line-height-computed / 2);
+  }
+
   .attribute-label {
     @extend %special-label;
     margin-right: 0.66em;

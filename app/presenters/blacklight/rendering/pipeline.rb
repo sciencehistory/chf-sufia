@@ -11,7 +11,7 @@ module Blacklight
     #
     # 2) Options that can be passed in to trigger certain customization of the pipeline:
     #
-    #       join_type: :sentence (default), :separator (just commas usually), or :list
+    #       join_type: :sentence (default), :separator (just commas usually), or :list (a <ul>)
     #       search_type: TO BE DONE, NOT YET. facet or straight search.
     #
 
@@ -76,7 +76,15 @@ module Blacklight
 
       # Added by us, not upstream
       class ListJoin < AbstractStep
-        # TBD
+        include ActionView::Helpers::OutputSafetyHelper
+
+        def render
+          return "" unless values.present?
+          list_values = values.collect { |v| context.content_tag("li", v)}
+          next_step(
+            safe_join(["<ul>".html_safe] + list_values + ["</ul>".html_safe])
+          )
+        end
 
       end
 
