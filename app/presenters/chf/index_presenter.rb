@@ -9,7 +9,7 @@ module Chf
   # hard to know if we have API-compatibility with the other one, but this
   # was the lesser evil.
   class IndexPresenter < Blacklight::IndexPresenter
-    delegate :description, to: :solr_document
+    delegate :description, :thumbnail_path, to: :solr_document
 
     # Make it look more like a sufia presenter
     def current_ability
@@ -55,10 +55,14 @@ module Chf
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
     end
 
-    # also to make it like a show presenter
-    def thumbnail_path
-      solr_document.thumbnail_path
+    def needs_permission_badge?
+      solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    # Copied from curationconcerns presenter.
+    # https://github.com/samvera/curation_concerns/blob/v1.7.7/app/presenters/curation_concerns/presents_attributes.rb#L23-L29
+    def permission_badge
+      CurationConcerns::PermissionBadge.new(solr_document).render
+    end
   end
 end
