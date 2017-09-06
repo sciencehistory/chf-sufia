@@ -31,11 +31,11 @@
       <% end %>
 
       <h2 class="chf-results-list-item-head brand-alt-h2" itemprop="name">
+        <%= link_to generic_work.title_or_label, generic_work, itemprop: "url" %>
+
         <% if doc_presenter.needs_permission_badge? %>
           <small class="chf-results-list-item-permission"><%= doc_presenter.permission_badge %></small>
         <% end %>
-
-        <%= link_to generic_work.title_or_label, generic_work, itemprop: "url" %>
       </h2>
 
       <% if doc_presenter.has_values_for?(Solrizer.solr_name("additional_title", :stored_searchable)) %>
