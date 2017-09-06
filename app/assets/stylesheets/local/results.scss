@@ -108,6 +108,7 @@ ol.catalog {
 
   .chf-results-list-item-genre {
     @extend %special-label;
+    color: $special-label-muted-color;
     margin-bottom: 4px;
   }
 
