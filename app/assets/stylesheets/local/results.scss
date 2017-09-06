@@ -126,6 +126,9 @@ ol.catalog {
       @extend .list-unstyled;
       margin-top: ($line-height-computed / 2);
     }
+    li {
+      margin-top: 4px;
+    }
   }
 
   .chf-results-list-item-description {
