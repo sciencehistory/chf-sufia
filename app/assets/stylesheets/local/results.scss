@@ -81,11 +81,13 @@ ol.catalog {
 
 .chf-results-list-item {
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 45px;
 
   .chf-results-list-item-thumb {
+    flex-basis: 208px;
     width: 208px; // Should match ImageServiceHelper::BASE_WIDTHS[:standard]
     margin-right: 30px;
+    flex-shrink: 0;
   }
 
   .chf-results-list-item-head {
@@ -119,14 +121,12 @@ ol.catalog {
   .chf-results-list-item-date {
     ul {
       @extend .list-unstyled;
+      margin-top: ($line-height-computed / 2);
     }
   }
 
   .chf-results-list-item-description {
     margin-top: ($line-height-computed / 2);
-    p {
-      margin-bottom: 0;
-    }
   }
 
   .chf-results-list-values {
