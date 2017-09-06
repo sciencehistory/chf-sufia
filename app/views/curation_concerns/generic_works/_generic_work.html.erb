@@ -40,6 +40,14 @@
         </div>
       <% end %>
 
+      <% if doc_presenter.has_values_for?(Solrizer.solr_name("description", :stored_searchable)) %>
+        <div class="chf-results-list-item-description">
+          <% doc_presenter.description.each do |description| %>
+            <%= format_description(description, truncate: true) %>
+          <% end %>
+        </div>
+      <% end %>
+
       <ul class="list-unstyled chf-results-list-values">
         <% index_fields(generic_work).each do |field_name, field| -%>
           <% if should_render_index_field? generic_work, field %>

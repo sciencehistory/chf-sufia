@@ -9,6 +9,7 @@ module Chf
   # hard to know if we have API-compatibility with the other one, but this
   # was the lesser evil.
   class IndexPresenter < Blacklight::IndexPresenter
+    delegate :description, to: :solr_document
 
     # Make it look more like a sufia presenter
     def current_ability
