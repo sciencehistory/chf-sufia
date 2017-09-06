@@ -125,6 +125,9 @@ ol.catalog {
 
   .chf-results-list-item-description {
     margin-top: ($line-height-computed / 2);
+    p {
+      margin-bottom: 0;
+    }
   }
 
   .chf-results-list-values {
