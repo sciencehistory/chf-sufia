@@ -24,8 +24,8 @@
     </div>
 
     <div class="chf-results-list-item-content">
-      <h2 class="chf-results-list-item-head brand-alt-h2">
-        <%= link_to generic_work.title_or_label, generic_work %>
+      <h2 class="chf-results-list-item-head brand-alt-h2" itemprop="name">
+        <%= link_to generic_work.title_or_label, generic_work, itemprop: "url" %>
       </h2>
 
       <ul class="list-unstyled">

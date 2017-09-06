@@ -118,22 +118,22 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'name', if: :present?
+    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'alternateName', if: :present?
     config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
-    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date'
-    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'after', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date_created'
+    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'about', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'addressee', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator_of_work', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("engraver", :stored_searchable), label: "Engraver", itemprop: 'engraver', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("interviewee", :stored_searchable), label: "Interviewee", itemprop: 'interviewee', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("interviewer", :stored_searchable), label: "Interviewer", itemprop: 'interviewer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'subject', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("engraver", :stored_searchable), label: "Engraver", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("interviewee", :stored_searchable), label: "Interviewee", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("interviewer", :stored_searchable), label: "Interviewer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("manufacturer", :stored_searchable), label: "Manufacturer", itemprop: 'manufacturer', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'photographer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'printer_of_plates', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'printer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
     config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable)
