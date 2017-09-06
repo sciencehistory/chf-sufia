@@ -112,6 +112,17 @@ ol.catalog {
     }
   }
 
+  .chf-results-list-item-date {
+    ul {
+      @extend .list-unstyled;
+      font-weight: 600;
+    }
+  }
+
+  .chf-results-list-item-description {
+    margin-top: ($line-height-computed / 2);
+  }
+
   .chf-results-list-values {
     margin-top: ($line-height-computed / 2);
   }
