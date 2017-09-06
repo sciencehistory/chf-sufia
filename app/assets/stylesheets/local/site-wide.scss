@@ -22,3 +22,14 @@ dl.info {
   font-family: $brand-alt-header-font;
   font-weight: $brand-alt-header-weight;
 }
+
+%special-label{
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: $font_size_base - 2px;
+  letter-spacing: 0.02em;
+  a:not(:focus):not(:hover) {
+    color: #888;
+  }
+}

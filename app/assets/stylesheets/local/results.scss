@@ -96,12 +96,11 @@ ol.catalog {
       }
     }
   }
+  .chf-results-list-item-genre {
+    @extend %special-label;
+  }
   .attribute-label {
-    color: #888;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: $font_size_base - 2px;
-    letter-spacing: 0.02em;
+    @extend %special-label;
     margin-right: 0.66em;
   }
 }

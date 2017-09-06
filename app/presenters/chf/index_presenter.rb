@@ -26,6 +26,11 @@ module Chf
       view_context.request
     end
 
+    # handy
+    def has_values_for?(field_name)
+      solr_document[field_name].present?
+    end
+
     # "representative_" methods are copied from GenericWorkShowPresenter, so
     # we can use this presenter the same way for displaying representative images.
     # Possible improvement: DRY this code between here and there.

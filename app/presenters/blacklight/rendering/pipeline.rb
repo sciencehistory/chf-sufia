@@ -64,6 +64,8 @@ module Blacklight
         include ActionView::Helpers::OutputSafetyHelper
 
         def render
+          return "" unless values.present?
+
           separator = options[:separator] || I18n.t("support.array.words_connector") || ", "
           separated_values = values.zip([separator] * (values.size - 1))
           next_step(
