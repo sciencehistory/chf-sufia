@@ -108,7 +108,7 @@ ol.catalog {
 
   .chf-results-list-item-genre {
     @extend %special-label;
-    margin-bottom: 0.25em;
+    margin-bottom: 4px;
   }
 
   .chf-results-list-item-additional-titles {
@@ -116,6 +116,8 @@ ol.catalog {
       @extend .list-unstyled;
       font-size: $font-size-h4;
       font-family: $brand-alt-header-font;
+      line-height: normal;
+      margin-top: 4px;
     }
   }
 
