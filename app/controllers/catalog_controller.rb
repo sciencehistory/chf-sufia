@@ -118,9 +118,6 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'alternateName', if: :present?
-    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
-    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date_created'
     config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'about', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
@@ -136,7 +133,15 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
-    config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable)
+    # These are marked false so they don't show up in the automatic list, but we
+    # still use them to manually place on our search results screen
+    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date_created', if: false
+    config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable), if: false
+    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index, if: false
+    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'alternateName', if: false # if: :present?,
+
+
+
 
 
     # "fielded" search configuration. Used by pulldown among other places.
