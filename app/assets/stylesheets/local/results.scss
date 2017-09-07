@@ -138,6 +138,11 @@ ol.catalog {
 
   .chf-results-list-values {
     margin-top: ($line-height-computed / 2);
+    li {
+      // hanging indent, serving to add margin to subsequent lines
+      padding-left: 0.66em;
+      text-indent: -0.66em;
+    }
   }
 
   .attribute-label {
