@@ -1,0 +1,64 @@
+<%# This is a search result view
+
+sufia 7.3's original was simply:
+
+  <%= render partial: 'catalog/document', locals: { document: collection, document_counter: collection_counter }
+
+We override to use CSS classes to match our localized
+    app/views/curation_concerns/generic_works/_generic_work.html.erb
+
+Didn't bother DRYing the template, just use common CSS classes %>
+
+<%# This is a search result view %>
+
+<%# sufia generated this:
+
+  render 'catalog/document', document: generic_work, document_counter: generic_work_counter
+
+# But we're taking it over to do what we want instead using simpler partials without
+# so many layers of indirection.
+
+# If we want to override only for certain list-view-types, may want to guard with
+    document_index_view_type == :list
+%>
+
+
+<li id="document_<%= collection.to_param %>" class="chf-results-list-item document <%= render_document_class collection %>" itemscope itemtype="http://schema.org/Collection">
+    <% doc_presenter = Chf::IndexPresenter.new(collection, self) %>
+
+    <div class="chf-results-list-item-thumb">
+      <%= link_to collection do %>
+        <% image_tag CHF::CollectionShowPresenter.thumbnail_src(doc_presenter.solr_document) %>
+      <% end %>
+    </div>
+
+    <div class="chf-results-list-item-content">
+
+      <div class="chf-results-list-item-genre">
+        <a href="/collections">Collections</a>
+      </div>
+
+
+      <h2 class="chf-results-list-item-head brand-alt-h2" itemprop="name">
+        <%= link_to collection.title_or_label, collection, itemprop: "url" %>
+
+        <% if doc_presenter.needs_permission_badge? %>
+          <small class="chf-results-list-item-permission"><%= doc_presenter.permission_badge %></small>
+        <% end %>
+      </h2>
+
+
+      <% if doc_presenter.has_values_for?(Solrizer.solr_name("description", :stored_searchable)) %>
+        <div class="chf-results-list-item-description">
+          <% doc_presenter.description.each do |description| %>
+            <%= format_description(description, truncate: true) %>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+</li>
+
+
+
+
