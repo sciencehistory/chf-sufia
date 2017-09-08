@@ -6,6 +6,10 @@ gem 'blacklight_range_limit', ">= 6.1.2"
 gem 'riiif', '~> 1.4'
 # It may seem like this is a dependency upstream, but we need it here.
 # https://project-hydra.slackarchive.io/dev/page-100/ts-1491587437169731
+# Update: slackarchive permalink doesn't work after some max. search for 'rsolr' and look
+# at April 7 results for hints of the conversation? Unfortunately you can't get context.
+# I tried relaxing this with the sufia 7.4 upgrade but it a bug where submitting a record
+# edit form did not correctly load the redirect back to the show page.
 gem 'rsolr', '~> 1.0'
 gem 'active-fedora', '~>11.1.6'
 gem 'curation_concerns', '~>1.7.7'
