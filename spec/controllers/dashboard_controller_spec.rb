@@ -36,9 +36,9 @@ RSpec.describe DashboardController, type: :controller do
         it 'assigns an instance variable' do
           get :index
           expect(response).to be_success
-          expect(assigns[:incoming].count).to eq 1
-          expect(assigns[:incoming].first).to be_kind_of ProxyDepositRequest
-          expect(assigns[:incoming].first.work_id).to eq(incoming_work.id)
+          expect(controller.instance_variable_get(:@incoming).count).to eq 1
+          expect(controller.instance_variable_get(:@incoming).first).to be_kind_of ProxyDepositRequest
+          expect(controller.instance_variable_get(:@incoming).first.work_id).to eq(incoming_work.id)
         end
       end
     end

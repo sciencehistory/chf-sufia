@@ -23,8 +23,8 @@ describe BatchEditsController do
       expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.my.works'), Sufia::Engine.routes.url_helpers.dashboard_works_path)
       get :edit
       expect(response).to be_successful
-      expect(assigns[:form].terms).not_to include :keyword
-      expect(assigns[:form].class).to eq BatchEditForm
+      expect(controller.instance_variable_get(:@form).terms).not_to include :keyword
+      expect(controller.instance_variable_get(:@form).class).to eq BatchEditForm
     end
 
     describe "when updating visibility" do

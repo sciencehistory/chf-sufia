@@ -17,8 +17,8 @@ describe CurationConcerns::GenericWorksController do
     context "with a public user" do
       it "uses our presenter" do
         get :show, id: work.id
-        expect(assigns(:presenter)).to be_kind_of CurationConcerns::GenericWorkShowPresenter
-        expect(assigns(:presenter)).to be_kind_of Sufia::WorkShowPresenter
+        expect(controller.instance_variable_get(:@presenter)).to be_kind_of CurationConcerns::GenericWorkShowPresenter
+        expect(controller.instance_variable_get(:@presenter)).to be_kind_of Sufia::WorkShowPresenter
       end
     end
   end
@@ -27,7 +27,7 @@ describe CurationConcerns::GenericWorksController do
     it "includes genre" do
       get :edit, id: work.id
       expect(response).to be_successful
-      expect(assigns['form'].genre_string).to eq [""]
+      expect(controller.instance_variable_get(:@form).genre_string).to eq [""]
     end
   end
 
