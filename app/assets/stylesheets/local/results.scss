@@ -151,3 +151,50 @@ ol.catalog {
   }
 }
 
+// UNDO it being a well (should we override template so it doesn't include
+// class that makes it a BS well instead?)
+// Apply proper spacing for having it right under navbar.
+// Other brand-specific styling.
+#appliedParams.constraints-container {
+  margin-top: -1 * $navbar-margin-bottom + ($line-height-computed / 4);
+  margin-bottom: $navbar-margin-bottom;
+  margin-right: 0;
+  margin-left: 0;
+
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 15px; // match bootstrap col padding so we match searchbar above
+  padding-right: 15px;
+
+  // min-width matches search bar above it, it can grow to be bigger
+  // with lots of content, but with little line up left hand sides
+  display: inline-block;
+  min-width: 50%;
+  float: right;
+
+
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+
+  background-color: transparent;
+
+  a.remove {
+    @extend .btn-default;
+    width: 48px;
+  }
+
+  .constraints-label {
+    font-size: $font-size-base - 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-right: 0.66em;
+    color: #888;
+  }
+
+  .catalog_startOverLink {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+

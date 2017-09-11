@@ -2,6 +2,8 @@ en:
   blacklight:
     application_name: 'Chemical Heritage Foundation Digital Collections'
     search:
+      filters:
+        title: You searched for # remove colon from default
       fields:
         show:
           resource_type: Format
