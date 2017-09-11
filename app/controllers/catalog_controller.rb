@@ -190,6 +190,9 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    # We don't want per-page choosing widget, nobody uses it
+    config.index.collection_actions.delete(:per_page_widget)
   end
 
   # disable the bookmark control from displaying in gallery view
