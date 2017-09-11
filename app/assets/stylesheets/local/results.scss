@@ -179,6 +179,10 @@ ol.catalog {
 
   background-color: transparent;
 
+  .appliedFilter {
+    margin-right: 0.33em;
+  }
+
   a.remove {
     @extend .btn-default;
     width: 48px;
