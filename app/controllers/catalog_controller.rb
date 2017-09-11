@@ -88,10 +88,12 @@ class CatalogController < ApplicationController
     config.view.gallery.partials = [:index_header, :index]
     config.view.slideshow.partials = [:index]
 
+    config.default_per_page = 25
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
-      rows: 10,
+      rows: 25,
       qf: "#{chf_search_fields.join(" ")} file_format_tesim all_text_timv",
     }
 
