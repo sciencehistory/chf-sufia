@@ -19,6 +19,14 @@ ol.catalog {
   margin-right: 0.66em;
 }
 
+.chf-sort-and-per-page {
+  //flexbox works a lot better than float here
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 // override sufia facet widget styles to be more brand-like, and generally neater
 .facets {
   .panel-heading {
