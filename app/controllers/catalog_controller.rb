@@ -193,6 +193,12 @@ class CatalogController < ApplicationController
 
     # We don't want per-page choosing widget, nobody uses it
     config.index.collection_actions.delete(:per_page_widget)
+
+    # We only want two search result view types. We'll call them
+    # list and gallery, although we're gonna override gallery too.
+    config.view.delete(:masonry)
+    config.view.delete(:slideshow)
+    # config.view[:gallery][:partials] = ["custom"]
   end
 
   # disable the bookmark control from displaying in gallery view
