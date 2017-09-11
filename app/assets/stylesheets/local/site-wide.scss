@@ -23,6 +23,15 @@ dl.info {
   font-weight: $brand-alt-header-weight;
 }
 
+hr.brand {
+  width: 65px;
+  height: 3px;
+  background-color: $brand-primary;
+  border: none;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
 %special-label{
   font-weight: 600;
   text-transform: uppercase;
