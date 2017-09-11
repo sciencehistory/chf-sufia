@@ -192,6 +192,13 @@ ol.catalog {
     color: #888;
   }
 
+  .constraint-value {
+    background-color: $bg-lightly-highlight;
+    &:hover, &:focus {
+      background-color: $bg-lightly-highlight;
+    }
+  }
+
   .catalog_startOverLink {
     text-transform: uppercase;
     font-weight: 600;

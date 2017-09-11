@@ -1,7 +1,10 @@
 $dark-navy: #1f2534;
 $bright-blue: #02BAF4;
 $bg-grey: #f1f3f4;
+$lt-blue: #e4f1fe;
+
 $bg-lightly-shaded: $bg-grey;
+$bg-lightly-highlight: $lt-blue;
 $brand-alt-header-font: "Roboto Condensed";
 $brand-alt-header-weight: 700;
 // should be lighter than normal muted, cause it's bolded a bit and such
@@ -23,6 +26,11 @@ $navbar-default-bg: $bg-lightly-shaded;
 $panel-default-heading-bg: $bg-lightly-shaded;
 $panel-footer-bg: $bg-lightly-shaded;
 $breadcrumb-bg: $bg-lightly-shaded;
+
+// border radius matching some elements on chemheritage.org, larger than bootstrap default
+$border-radius-base:        9px !default;
+$border-radius-large:       9px !default;
+$border-radius-small:       9px !default;
 
 $transparent-background: rgba(0,0,0,0.25);
 
