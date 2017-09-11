@@ -15,6 +15,10 @@ ol.catalog {
 
 }
 
+.search-widgets > div:not(:last-child) {
+  margin-right: 0.66em;
+}
+
 // override sufia facet widget styles to be more brand-like, and generally neater
 .facets {
   .panel-heading {
