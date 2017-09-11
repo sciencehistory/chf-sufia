@@ -203,6 +203,7 @@ ol.catalog {
 .chf-constraints-wrapper {
   @extend .chf-container-fluid;
   @extend .clearfix;
+  text-align: center;
 }
 
 #appliedParams.constraints-container {
@@ -216,11 +217,12 @@ ol.catalog {
   padding-left: 15px; // match bootstrap col padding so we match searchbar above
   padding-right: 15px;
 
-  // min-width matches search bar above it, it can grow to be bigger
-  // with lots of content, but with little line up left hand sides
+
   display: inline-block;
-  min-width: 50%;
-  float: right;
+  text-align: left;
+  float: none;
+  //min-width: 50%;
+  //float: right;
 
 
   border-radius: 0;
