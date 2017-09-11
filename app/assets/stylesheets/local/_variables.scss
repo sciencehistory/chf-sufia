@@ -10,7 +10,9 @@ $brand-alt-header-weight: 700;
 // should be lighter than normal muted, cause it's bolded a bit and such
 $special-label-muted-color: #888;
 
-
+// via experimentation, on search results page larger than this the
+// results column text is way too wide for reading text.
+$chf-fluid-max-width: 1300px;
 
 // Bootstrap 3.x overrides
 $line-height-base: 1.5; // closer to chemheritage.org brand, and more readable than BS default 1.428571429

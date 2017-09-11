@@ -176,6 +176,11 @@ ol.catalog {
 // class that makes it a BS well instead?)
 // Apply proper spacing for having it right under navbar.
 // Other brand-specific styling.
+.chf-constraints-wrapper {
+  @extend .chf-container-fluid;
+  @extend .clearfix;
+}
+
 #appliedParams.constraints-container {
   margin-top: -1 * $navbar-margin-bottom + ($line-height-computed / 4);
   margin-bottom: $navbar-margin-bottom;

@@ -8,6 +8,8 @@
   $sidebar-space-left: 15px;
 
   @extend .container-fluid;
+  max-width: $chf-fluid-max-width;
+
   // in our fluid container, sidebar should be fixed-width with good right margin
   // emulated by padding, until the screen is too small for a sidebar column.
   #sidebar {
