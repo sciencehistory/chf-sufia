@@ -33,6 +33,12 @@
   }
 }
 
+#search-field-header {
+  // override to use bootstrap variables, which we set
+  border-top-left-radius: $border-radius-base;
+  border-bottom-left-radius: $border-radius-base;
+}
+
 a {
   transition: color 0.25s ease;
 }
