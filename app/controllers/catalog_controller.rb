@@ -4,6 +4,11 @@ class CatalogController < ApplicationController
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
 
+  # use the standard local 'application' layout, which we've actually
+  # customized based on sufia layout. Ordinarily it would go through
+  # the stack to choose a layout in a somewhat confusing way.
+  layout 'application'
+
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
   skip_before_filter :default_html_head
