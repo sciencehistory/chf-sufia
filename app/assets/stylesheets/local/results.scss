@@ -2,6 +2,18 @@
 ol.catalog {
   list-style: none;
 }
+.page_links  {
+  strong {
+    font-weight: 600; // open sans semi-bold
+  }
+  .next {
+    margin-left: 0.66em;
+  }
+  .prev {
+    margin-right: 0.66em;
+  }
+
+}
 
 // override sufia facet widget styles to be more brand-like, and generally neater
 .facets {
