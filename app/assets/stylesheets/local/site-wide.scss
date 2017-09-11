@@ -4,7 +4,7 @@
 
 .chf-container-fluid {
   $sidebar-width: 235px;
-  $sidebar-space-right: $line-height-computed * 2;
+  $sidebar-space-right: ($line-height-computed * 2) - 15px;;
   $sidebar-space-left: 15px;
 
   @extend .container-fluid;
