@@ -28,11 +28,11 @@
 
     <%= render partial: '/flash_msg' %>
     <%= content_for(:precontainer_content) %>
-    <div id="content-wrapper" class="<%= content_for?(:container_class) ? yield(:container_class) : 'container' %>" role="main">
+    <div id="content-wrapper" class="<%= content_for?(:container_class) ? yield(:container_class) : 'chf-container-fluid' %>" role="main">
       <a name="skip_to_content"></a>
 
       <% if content_for?(:sidebar) %>
-        <div class="col-xs-12 col-sm-9 col-sm-push-3 main-content">
+        <div class="main-content">
           <% if content_for?(:page_header) %>
             <div class="row">
               <div class="col-xs-12 main-header">
@@ -43,9 +43,9 @@
 
           <%= content_for?(:content) ? yield(:content) : yield %>
         </div>
-        <div id="sidebar" class="col-xs-12 col-sm-3 col-sm-pull-9 sidebar"><%= yield :sidebar %></div>
+        <div id="sidebar" class="sidebar"><%= yield :sidebar %></div>
       <% else %>
-        <div class="col-xs-12">
+        <div class="main-content">
           <% if content_for?(:page_header) %>
             <div class="row">
               <div class="col-xs-12 main-header">

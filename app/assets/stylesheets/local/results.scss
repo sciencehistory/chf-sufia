@@ -105,8 +105,10 @@ ol.catalog {
   .chf-results-list-item-thumb {
     flex-basis: 208px;
     width: 208px; // Should match ImageServiceHelper::BASE_WIDTHS[:standard]
+    max-width: 33%; // on smaller screens, more space for text
     margin-right: $line-height-computed;
     flex-shrink: 0;
+    text-align: right;
   }
 
   .chf-results-list-item-head {
