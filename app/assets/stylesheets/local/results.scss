@@ -25,6 +25,25 @@ ol.catalog {
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  // less bling than BL default
+  .facet_limit-active {
+    color: inherit;
+    border-color: #ddd;
+    & > .panel-heading {
+      background-color: $bg-lightly-highlight;
+      color: inherit;
+      border-color: #ddd;
+    }
+    .panel-heading + .panel-collapse > .panel-body {
+      border-color: #ddd;
+    }
+  }
+  .facet-values li .selected {
+    color: $headings-color;
+  }
+
+
   .panel-group .panel + .panel {
     margin-top: 0;
     margin-bottom: 0;
