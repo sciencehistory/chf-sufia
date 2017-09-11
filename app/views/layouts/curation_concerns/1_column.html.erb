@@ -1,0 +1,10 @@
+<%# don't really understand what this layout template IS or how it gets called,
+    but overriding it to just call our custom sufia-ready application template,
+    which needs no other preparation, it has proper breadcrumbs and
+    constraints built-in.
+
+    original:
+    https://github.com/samvera/sufia/blob/v7.3.0/app/views/layouts/curation_concerns/1_column.html.erb
+%>
+
+<%= render template: 'layouts/application' %>
