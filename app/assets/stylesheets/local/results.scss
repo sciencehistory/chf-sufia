@@ -12,6 +12,11 @@ ol.catalog {
   .prev {
     margin-right: 0.66em;
   }
+  .next, .prev {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
 
 }
 
