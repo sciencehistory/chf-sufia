@@ -100,6 +100,9 @@ ol.catalog {
   .facet-values li .selected {
     color: $headings-color;
   }
+  .facet-values .remove {
+    vertical-align: middle;
+  }
 
 
   .panel-group .panel + .panel {
