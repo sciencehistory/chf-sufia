@@ -270,7 +270,6 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
   }
 
 
-  $thumbSelectedColor: #f15c2b; // used on Distillations website, perhaps use as an alterante highlight sitewide
 
   // single row with horizontal scrolling
   .viewer-thumbs {
@@ -292,7 +291,7 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
       padding: 1px;
 
       &.viewer-thumb-selected {
-        border: 2px solid $thumbSelectedColor;
+        border: 2px solid $brand-highlight-color;
       }
 
       &.lazyload, &.lazyloading, &.lazyload {
