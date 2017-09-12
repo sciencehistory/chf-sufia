@@ -86,12 +86,12 @@ ol.catalog {
 
   // less bling than BL default
   .facet_limit-active {
-    color: inherit;
-    border-color: #ddd;
+    color: $brand-highlight-color;
+    border-color: $panel-default-border;
     & > .panel-heading {
-      background-color: $bg-lightly-highlight;
+      background-color: $panel-default-heading-bg;
       color: inherit;
-      border-color: #ddd;
+      border-color: $panel-default-border;
     }
     .panel-heading + .panel-collapse > .panel-body {
       border-color: #ddd;
