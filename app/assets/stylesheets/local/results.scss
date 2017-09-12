@@ -86,7 +86,7 @@ ol.catalog {
 
   // less bling than BL default
   .facet_limit-active {
-    color: $brand-highlight-color;
+    color: inherit;
     border-color: $panel-default-border;
     & > .panel-heading {
       background-color: $panel-default-heading-bg;
@@ -98,7 +98,7 @@ ol.catalog {
     }
   }
   .facet-values li .selected {
-    color: $headings-color;
+    color: $brand-highlight-color;
   }
   .facet-values .remove {
     vertical-align: middle;
