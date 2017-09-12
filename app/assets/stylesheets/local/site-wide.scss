@@ -33,10 +33,10 @@
   }
 }
 
-#search-field-header {
-  // override to use bootstrap variables, which we set
-  border-top-left-radius: $border-radius-base;
-  border-bottom-left-radius: $border-radius-base;
+// We set more-rounded corners, but only for buttons not input elements,
+// make sure buttons in input groups match original less rounded.
+.input-group .btn {
+  border-radius: $border-radius-base;
 }
 
 a {

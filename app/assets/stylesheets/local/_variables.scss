@@ -30,9 +30,9 @@ $panel-footer-bg: $bg-lightly-shaded;
 $breadcrumb-bg: $bg-lightly-shaded;
 
 // border radius matching some elements on chemheritage.org, larger than bootstrap default
-$border-radius-base:        9px !default;
-$border-radius-large:       9px !default;
-$border-radius-small:       9px !default;
+$btn-border-radius-base:        9px !default;
+$btn-border-radius-large:       9px !default;
+$btn-border-radius-small:       9px !default;
 
 $transparent-background: rgba(0,0,0,0.25);
 
