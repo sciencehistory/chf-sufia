@@ -34,9 +34,6 @@ ol.catalog {
     color: $text-color;
   }
 }
-.pagination-alt-expanded {
-  display: block; // so we can center the inline block within
-}
 // eyeballed for when to switch from full to compact pagination
 @media (max-width: 1010px) {
   .pagination-alt-expanded {
