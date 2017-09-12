@@ -1,0 +1,9 @@
+<% if show_pagination? and @response.total_pages > 1 %>
+ <div class="row record-padding">
+  <div class="col-md-12">
+    <div class="pagination">
+      <%= paginate @response, :window => 2, :theme => 'twitter-bootstrap-3' %>
+    </div>
+  </div>
+ </div>
+<% end %>
