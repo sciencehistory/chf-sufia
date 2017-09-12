@@ -35,6 +35,19 @@ ol.catalog {
   }
 }
 
+// eyeballed for when to switch from full to compact pagination
+
+@media (max-width: 1010px) {
+  .pagination-alt-expanded {
+    display: none;
+  }
+}
+@media (min-width: 1011px) {
+  .pagination-alt-compact {
+    display: none;
+  }
+}
+
 .search-widgets > div:not(:last-child) {
   margin-right: 0.66em;
 }
