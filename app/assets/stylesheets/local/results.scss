@@ -2,6 +2,8 @@
 ol.catalog {
   list-style: none;
 }
+
+// compact pagination
 .page_links  {
   strong {
     font-weight: 600; // open sans semi-bold
@@ -17,7 +19,20 @@ ol.catalog {
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
+}
 
+// full pagination
+.pagination {
+  .first, .prev, .next, .next_page, .last {
+    text-transform: uppercase;
+    font-weight: 600; // open sans semi-bold
+    letter-spacing: 0.03em;
+  }
+  .active > a, .active > a:hover, .active > a:focus {
+    background-color: $bg-lightly-shaded;
+    border-color: $pagination-border;
+    color: $text-color;
+  }
 }
 
 .search-widgets > div:not(:last-child) {
