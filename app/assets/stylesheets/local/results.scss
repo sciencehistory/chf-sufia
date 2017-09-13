@@ -171,7 +171,8 @@ ol.catalog {
     .chf-results-list-item-num-members {
       @extend %special-label;
       color: $special-label-muted-color;
-      text-align: center;
+      text-align: right;
+      padding-right: 0.66em;
       margin-top: 4px;
     }
   }
