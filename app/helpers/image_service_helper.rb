@@ -16,9 +16,11 @@ module ImageServiceHelper
         src:    service.thumb_url(size: size_key),
         srcset: service.thumb_srcset_pixel_density(size: size_key)
       }
-    elsif member.representative_file_set_id
+    elsif member.representative_file_set_id || member.representative_id
+      # representative_file_set_id is the RIGHT one, but being defensive in case
+      # only the other is in index, it will be the same thing MOST of the time.
       {
-        src: main_app.download_path(member.representative_file_set_id, file: "jpeg")
+        src: main_app.download_path(member.representative_file_set_id || member.representative_id, file: "jpeg")
       }
     else
       # no can do
