@@ -16,10 +16,13 @@ module ImageServiceHelper
         src:    service.thumb_url(size: size_key),
         srcset: service.thumb_srcset_pixel_density(size: size_key)
       }
-    else
+    elsif member.representative_file_set_id
       {
         src: main_app.download_path(member.representative_file_set_id, file: "jpeg")
       }
+    else
+      # no can do
+      {}
     end
   end
 
