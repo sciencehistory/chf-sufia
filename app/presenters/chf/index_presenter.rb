@@ -45,7 +45,7 @@ module Chf
     # suggests this may be the right place for it.
     def render_num_members
       if num_members
-        label = view_context.pluralize(num_members, 'item')
+        label = view_context.number_with_delimiter(num_members) + ' item'.pluralize(num_members)
 
         view_context.content_tag("div", class: "chf-results-list-item-num-members") do
           if num_members > 0 && representative_file_id.present?
