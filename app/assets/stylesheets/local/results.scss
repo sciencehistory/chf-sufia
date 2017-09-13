@@ -167,6 +167,12 @@ ol.catalog {
     margin-right: $line-height-computed;
     flex-shrink: 0;
     text-align: right;
+
+    .chf-results-list-item-num-members {
+      @extend %special-label;
+      color: $special-label-muted-color;
+      text-align: center;
+    }
   }
 
   .chf-results-list-item-head {

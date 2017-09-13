@@ -21,6 +21,11 @@
       <%= link_to generic_work do %>
         <%= tag "img", member_src_attributes(member: doc_presenter, size_key: :standard) %>
       <% end %>
+      <% if doc_presenter.num_members %>
+        <%= content_tag("div", class: "chf-results-list-item-num-members") do %>
+          <%= pluralize(doc_presenter.num_members, 'item') %>
+        <% end %>
+      <% end %>
     </div>
 
     <div class="chf-results-list-item-content">

@@ -32,6 +32,12 @@ module Chf
       solr_document[field_name].present?
     end
 
+    # Currently indexed as all members, regardless of public/private access controls
+    # returned as single integer.
+    def num_members
+      solr_document["num_members_is"]
+    end
+
     # "representative_" methods are copied from GenericWorkShowPresenter, so
     # we can use this presenter the same way for displaying representative images.
     # Possible improvement: DRY this code between here and there.

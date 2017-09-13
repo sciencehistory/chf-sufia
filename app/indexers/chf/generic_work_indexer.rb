@@ -29,6 +29,12 @@ module CHF
           license_service.authority.find(id).fetch('term', nil)
         end.compact
 
+        # index number of items so we can show them on search results. For the moment
+        # this is straight number of members not taking into account public/private access
+        # controls. stored as non-indexed single-valued integer.
+        doc["num_members_is"] = object.member_ids.length
+
+        # Index representative image to use as thumb on search results etc
         representative = ultimate_representative(object)
         if representative
           # need to index these for when it's a child work on a parent's show page
