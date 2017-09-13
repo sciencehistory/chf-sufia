@@ -33,10 +33,10 @@ module Chf
     end
 
     # Currently indexed as all members, regardless of public/private access controls
-    # returned as single integer.
-    # Or if this is a collection, we look at what we've got in the index for that.
+    # returned as single integer. The member_ids_ssim list is indexed by some
+    # upstream part of the stack.
     def num_members
-      solr_document["num_members_is"] || solr_document["member_ids_ssim"].try(:length)
+      solr_document["member_ids_ssim"].try(:length) || 0
     end
 
     # used on both work and collection results partials, so useful to have
