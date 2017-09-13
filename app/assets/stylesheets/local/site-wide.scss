@@ -54,8 +54,7 @@ dl.info {
 }
 
 form label {
-  // open sans has a nice semi-bold, let's use it.
-  font-weight: 600;
+  font-weight: $semi-bold-weight;
 }
 
 // chemheritage.org uses these as default/standard h1-h6, but we're not
@@ -75,7 +74,7 @@ hr.brand {
 }
 
 %special-label{
-  font-weight: 600;
+  font-weight: $semi-bold-weight;
   text-transform: uppercase;
   font-size: $font_size_base - 2px;
   line-height: normal;

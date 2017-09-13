@@ -12,6 +12,9 @@ $special-label-muted-color: #888;
 $brand-highlight-color: #f15c2b; // an orange used on Distillations website, perhaps use as an alterante highlight sitewide
 
 
+// open sans has a convenient medium/semi-bold weight
+$semi-bold-weight: 600;
+
 // via experimentation, on search results page larger than this the
 // results column text is way too wide for reading text.
 $chf-fluid-max-width: 1300px;

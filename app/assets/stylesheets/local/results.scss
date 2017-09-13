@@ -6,7 +6,7 @@ ol.catalog {
 // compact pagination
 .page_links  {
   strong {
-    font-weight: 600; // open sans semi-bold
+    font-weight: $semi-bold-weight;
   }
   .next {
     margin-left: 0.66em;
@@ -15,7 +15,7 @@ ol.catalog {
     margin-right: 0.66em;
   }
   .next, .prev {
-    font-weight: 600;
+    font-weight: $semi-bold-weight;
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
@@ -25,7 +25,7 @@ ol.catalog {
 .pagination {
   .first, .prev, .next, .next_page, .last {
     text-transform: uppercase;
-    font-weight: 600; // open sans semi-bold
+    font-weight: $semi-bold-weight;
     letter-spacing: 0.03em;
   }
   .active > a, .active > a:hover, .active > a:focus {
@@ -66,7 +66,7 @@ ol.catalog {
      h3 {
       font-size: $font-size-base;
       color: $brand-inverse;
-      font-weight: 600;
+      font-weight: $semi-bold-weight;
       line-height: 1.4;
      }
    }
@@ -113,7 +113,7 @@ ol.catalog {
     text-transform: uppercase;
     h2.facets-heading {
       margin: 0;
-      font-weight: 600;
+      font-weight: $semi-bold-weight;
       font-size: $font-size-base;
       line-height: 1.4;
       letter-spacing: 0.01em;
@@ -133,7 +133,7 @@ ol.catalog {
     margin-top: 15px;
 
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: $semi-bold-weight;
     font-size: .8em;
     letter-spacing: 0.01em;
     color: $dark-navy;
@@ -285,7 +285,7 @@ ol.catalog {
   .constraints-label {
     font-size: $font-size-base - 2px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: $semi-bold-weight;
     margin-right: 0.66em;
     color: #888;
     vertical-align: middle;
@@ -300,7 +300,7 @@ ol.catalog {
 
   .catalog_startOverLink {
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: $semi-bold-weight;
   }
 }
 
