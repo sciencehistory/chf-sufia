@@ -18,7 +18,7 @@ module ImageServiceHelper
       }
     else
       {
-        src: main_app.download_path(member.representative_id, file: "jpeg")
+        src: main_app.download_path(member.representative_file_set_id, file: "jpeg")
       }
     end
   end
