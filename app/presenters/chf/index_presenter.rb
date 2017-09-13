@@ -34,8 +34,27 @@ module Chf
 
     # Currently indexed as all members, regardless of public/private access controls
     # returned as single integer.
+    # Or if this is a collection, we look at what we've got in the index for that.
     def num_members
-      solr_document["num_members_is"]
+      solr_document["num_members_is"] || solr_document["member_ids_ssim"].try(:length)
+    end
+
+    # used on both work and collection results partials, so useful to have
+    # it in presenter for DRY. Fortunately we have a view_context so we can use
+    # helpers. Also how many times we called `doc_presenter` in this logic
+    # suggests this may be the right place for it.
+    def render_num_members
+      if num_members
+        label = view_context.pluralize(num_members, 'item')
+
+        view_context.content_tag("div", class: "chf-results-list-item-num-members") do
+          if num_members > 0 && representative_file_id.present?
+              view_context.link_to(label, view_context.viewer_path(id, representative_id))
+          else
+            label
+          end
+        end
+      end
     end
 
     # "representative_" methods are copied from GenericWorkShowPresenter, so

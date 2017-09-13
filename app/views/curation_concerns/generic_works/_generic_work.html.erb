@@ -21,16 +21,7 @@
       <%= link_to generic_work do %>
         <%= tag "img", member_src_attributes(member: doc_presenter, size_key: :standard) %>
       <% end %>
-      <% if doc_presenter.num_members %>
-        <%= content_tag("div", class: "chf-results-list-item-num-members") do %>
-          <% if doc_presenter.num_members > 0 && doc_presenter.representative_file_id.present? %>
-            <%= link_to( pluralize(doc_presenter.num_members, 'item'),
-                         viewer_path(doc_presenter.id, doc_presenter.representative_id)) %>
-          <% else %>
-            <%= pluralize(doc_presenter.num_members, 'item') %>
-          <% end %>
-        <% end %>
-      <% end %>
+      <%= doc_presenter.render_num_members %>
     </div>
 
     <div class="chf-results-list-item-content">

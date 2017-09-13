@@ -30,6 +30,7 @@ Didn't bother DRYing the template, just use common CSS classes %>
       <%= link_to collection do %>
         <% image_tag CHF::CollectionShowPresenter.thumbnail_src(doc_presenter.solr_document) %>
       <% end %>
+      <%= doc_presenter.render_num_members %>
     </div>
 
     <div class="chf-results-list-item-content">
