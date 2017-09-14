@@ -150,6 +150,15 @@ ol.catalog {
   }
 }
 
+#content {
+  // try harder keep it from overflowing viewport, esp on small screens
+  max-width: 100%;
+  // very long words will still ruin the layout, but these cause
+  // shorter words to hyphenate in weird places too, so no good now.
+  // word-break: break-all;
+  //hyphens: auto;
+}
+
 ol.catalog {
   padding: 0;
 }
