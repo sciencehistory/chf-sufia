@@ -170,7 +170,12 @@ ol.catalog {
 
     .chf-results-list-item-num-members {
       @extend %special-label;
-      color: $special-label-muted-color;
+      // hack we shoudl change special-label to a sass mixin
+      color: $text-color;
+      a:not(:focus):not(:hover) {
+        color: $text-color !important;
+      }
+
       text-align: right;
       margin-top: 4px;
     }
