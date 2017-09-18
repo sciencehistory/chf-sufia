@@ -3,6 +3,61 @@ ol.catalog {
   list-style: none;
 }
 
+// compact pagination
+.page_links  {
+  strong {
+    font-weight: $semi-bold-weight;
+  }
+  .next {
+    margin-left: 0.66em;
+  }
+  .prev {
+    margin-right: 0.66em;
+  }
+  .next, .prev {
+    font-weight: $semi-bold-weight;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
+// full pagination
+.pagination {
+  .first, .prev, .next, .next_page, .last {
+    text-transform: uppercase;
+    font-weight: $semi-bold-weight;
+    letter-spacing: 0.03em;
+  }
+  .active > a, .active > a:hover, .active > a:focus {
+    background-color: $bg-lightly-shaded;
+    border-color: $pagination-border;
+    color: $text-color;
+  }
+}
+// eyeballed for when to switch from full to compact pagination
+@media (max-width: 1010px) {
+  .pagination-alt-expanded {
+    display: none;
+  }
+}
+@media (min-width: 1011px) {
+  .pagination-alt-compact {
+    display: none;
+  }
+}
+
+.search-widgets > div:not(:last-child) {
+  margin-right: 0.66em;
+}
+
+.chf-sort-and-per-page {
+  //flexbox works a lot better than float here
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 // override sufia facet widget styles to be more brand-like, and generally neater
 .facets {
   .panel-heading {
@@ -11,7 +66,7 @@ ol.catalog {
      h3 {
       font-size: $font-size-base;
       color: $brand-inverse;
-      font-weight: 600;
+      font-weight: $semi-bold-weight;
       line-height: 1.4;
      }
    }
@@ -25,6 +80,28 @@ ol.catalog {
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  // less bling than BL default
+  .facet_limit-active {
+    color: inherit;
+    border-color: $panel-default-border;
+    & > .panel-heading {
+      background-color: $panel-default-heading-bg;
+      color: inherit;
+      border-color: $panel-default-border;
+    }
+    .panel-heading + .panel-collapse > .panel-body {
+      border-color: #ddd;
+    }
+  }
+  .facet-values li .selected {
+    color: $brand-highlight-color;
+  }
+  .facet-values .remove {
+    vertical-align: middle;
+  }
+
+
   .panel-group .panel + .panel {
     margin-top: 0;
     margin-bottom: 0;
@@ -36,10 +113,10 @@ ol.catalog {
     text-transform: uppercase;
     h2.facets-heading {
       margin: 0;
-      font-weight: 600;
+      font-weight: $semi-bold-weight;
       font-size: $font-size-base;
       line-height: 1.4;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.03em;
      }
   }
 
@@ -56,9 +133,9 @@ ol.catalog {
     margin-top: 15px;
 
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: $semi-bold-weight;
     font-size: .8em;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.03em;
     color: $dark-navy;
   }
 }
@@ -71,5 +148,177 @@ ol.catalog {
       line-height: 2.4;
     }
   }
+}
+
+#content {
+  // try harder keep it from overflowing viewport, esp on small screens
+  max-width: 100%;
+  // very long words will still ruin the layout, but these cause
+  // shorter words to hyphenate in weird places too, so no good now.
+  // word-break: break-all;
+  //hyphens: auto;
+}
+
+ol.catalog {
+  padding: 0;
+}
+
+// Actual results, restyled by us
+
+.chf-results-list-item {
+  display: flex;
+  margin-bottom: 45px;
+
+  .chf-results-list-item-thumb {
+    flex-basis: 208px;
+    width: 208px; // Should match ImageServiceHelper::BASE_WIDTHS[:standard]
+    max-width: 33%; // on smaller screens, more space for text
+    margin-right: $line-height-computed;
+    flex-shrink: 0;
+    text-align: right;
+
+    .chf-results-list-item-num-members {
+      @extend %special-label;
+      // hack we shoudl change special-label to a sass mixin
+      color: $text-color;
+      a:not(:focus):not(:hover) {
+        color: $text-color !important;
+      }
+
+      text-align: right;
+      margin-top: 4px;
+    }
+  }
+
+  .chf-results-list-item-head {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: $font-size-h3;
+    a {
+      color: $brand-inverse;
+      &:hover, &:focus {
+        color: $link-hover-color;
+      }
+    }
+    .chf-results-list-item-permission {
+      position: relative;
+      top: -0.3em;
+    }
+  }
+
+  .chf-results-list-item-genre {
+    @extend %special-label;
+    color: $special-label-muted-color;
+    margin-bottom: 4px;
+  }
+
+  .chf-results-list-item-additional-titles {
+    ul {
+      @extend .list-unstyled;
+      font-size: $font-size-h4;
+      font-family: $brand-alt-header-font;
+      line-height: normal;
+      margin-top: ($line-height-computed / 2);
+    }
+  }
+
+  .chf-results-list-item-date {
+    ul {
+      @extend .list-unstyled;
+      margin-top: ($line-height-computed / 2);
+    }
+    li {
+      margin-top: 4px;
+    }
+  }
+
+  .chf-results-list-item-description {
+    margin-top: ($line-height-computed / 2);
+  }
+
+  .chf-results-list-values {
+    margin-top: ($line-height-computed / 2);
+    li {
+      // hanging indent, serving to add margin to subsequent lines
+      padding-left: 0.66em;
+      text-indent: -0.66em;
+    }
+  }
+
+  .attribute-label {
+    @extend %special-label;
+    margin-right: 0.66em;
+  }
+}
+
+// UNDO it being a well (should we override template so it doesn't include
+// class that makes it a BS well instead?)
+// Apply proper spacing for having it right under navbar.
+// Other brand-specific styling.
+.chf-constraints-wrapper {
+  @extend .chf-container-fluid;
+  @extend .clearfix;
+  text-align: left;
+}
+
+#appliedParams.constraints-container {
+  margin-top: -1 * $navbar-margin-bottom + ($line-height-computed / 4);
+  margin-bottom: $navbar-margin-bottom;
+  margin-right: 0;
+  margin-left: 0;
+
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 15px; // match bootstrap col padding so we match searchbar above
+  padding-right: 15px;
+
+
+  display: inline-block;
+  text-align: left;
+  float: none;
+  //min-width: 50%;
+  //float: right;
+
+
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+
+  background-color: transparent;
+
+  .appliedFilter {
+    margin-right: 0.33em;
+  }
+
+  a.remove {
+    @extend .btn-default;
+    width: 48px;
+    background-color: $bg-lightly-highlight;
+  }
+
+  .constraints-label {
+    font-size: $font-size-base - 2px;
+    text-transform: uppercase;
+    font-weight: $semi-bold-weight;
+    margin-right: 0.66em;
+    color: #888;
+    vertical-align: middle;
+  }
+
+  .constraint-value {
+    background-color: $bg-lightly-shaded;
+    &:hover, &:focus {
+      background-color: $bg-lightly-shaded;
+    }
+  }
+
+  .catalog_startOverLink {
+    text-transform: uppercase;
+    font-weight: $semi-bold-weight;
+  }
+}
+
+#sortAndPerPage {
+  border: none;
 }
 

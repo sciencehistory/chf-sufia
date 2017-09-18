@@ -2,6 +2,43 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&amp;subset=latin-ext');
 
 
+.chf-container-fluid {
+  $sidebar-width: 235px;
+  $sidebar-space-right: ($line-height-computed * 2) - 15px;;
+  $sidebar-space-left: 15px;
+
+  @extend .container-fluid;
+  max-width: $chf-fluid-max-width;
+
+  // in our fluid container, sidebar should be fixed-width with good right margin
+  // emulated by padding, until the screen is too small for a sidebar column.
+  #sidebar {
+    width: $sidebar-width + $sidebar-space-left + $sidebar-space-right;
+    padding-left: $sidebar-space-left;
+    padding-right: $sidebar-space-right;
+    @media(max-width: $grid-float-breakpoint-max) {
+      width: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  #content {
+    width: calc(100% - (#{$sidebar-width} + #{$sidebar-space-left} + #{$sidebar-space-right}));
+    float: left;
+    @media(max-width: $grid-float-breakpoint-max) {
+      width: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+// We set more-rounded corners, but only for buttons not input elements,
+// make sure buttons in input groups match original less rounded.
+.input-group .btn {
+  border-radius: $border-radius-base;
+}
+
 a {
   transition: color 0.25s ease;
 }
@@ -16,9 +53,33 @@ dl.info {
   }
 }
 
+form label {
+  font-weight: $semi-bold-weight;
+}
+
 // chemheritage.org uses these as default/standard h1-h6, but we're not
 // ready to there yet, keep them in classes.
 .brand-alt-h1, .brand-alt-h2, .brand-alt-h3, .brand-alt-h4, .brand-alt-h5, .brand-alt-h6 {
   font-family: $brand-alt-header-font;
   font-weight: $brand-alt-header-weight;
+}
+
+hr.brand {
+  width: 65px;
+  height: 3px;
+  background-color: $brand-primary;
+  border: none;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+%special-label{
+  font-weight: $semi-bold-weight;
+  text-transform: uppercase;
+  font-size: $font_size_base - 2px;
+  line-height: normal;
+  letter-spacing: 0.03em;
+  a:not(:focus):not(:hover) {
+    color: #888;
+  }
 }

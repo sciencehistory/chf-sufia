@@ -45,7 +45,7 @@
   </div><!-- /.input-group -->
   <div>
     <%# hidden field is required in order to allow users to un-check the box %>
-    <%= hidden_field_tag 'filter_public_domain', value=0 %>
+    <%= hidden_field_tag 'filter_public_domain', value=0, options={ id: "filter_public_domain_hidden" } %>
     <%= check_box_tag 'filter_public_domain', value=1, checked=(params.fetch("filter_public_domain", 0).to_i > 0) %>
     <label for="filter_public_domain"><%= "Search only Public Domain" %></label>
   </div>

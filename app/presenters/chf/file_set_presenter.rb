@@ -10,6 +10,10 @@ module CHF
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    def representative_file_set_id
+      id
+    end
+
     def representative_file_id
       # if it's not in solr, get it from fedora
       if original_file_id

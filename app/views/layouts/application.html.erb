@@ -1,14 +1,64 @@
+<%# We have designed our local application layout BASED on the sufia layout
+    https://github.com/samvera/sufia/blob/v7.3.0/app/views/layouts/sufia.html.erb
+
+    But we have want to localize, to put breadcrumbs in a different place,
+    result constraints in a differnet place, and stop using bootstrap column
+    layout (we use our own flexbox instead). (some of these are WIP)
+
+    For the beginning, we are using this only on search results page, by
+    explicitly calling it as `layout` in our local CatalogController
+
+    Trying this as `application` layout, but we can change it to a special
+    one just for catalog if we need to later.
+%>
+
 <!DOCTYPE html>
-<html>
-<head>
-  <title>CHF Hydra</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<html lang="<%= t("sufia.document_language", default: '') %>" prefix="og:http://ogp.me/ns#">
+  <head>
+    <%= render partial: 'layouts/head_tag_content' %>
+    <%= content_for(:head) %>
+  </head>
 
-<%= yield %>
+  <body>
+    <a href="#skip_to_content" class="sr-only">Skip to Content</a>
+    <%= render partial: '/masthead' %>
+    <%= content_for(:navbar) %>
+    <%# CHF hard-code 'controls' here instead of relying on it being supplied as content_for(:navbar) %>
+    <%= render '/controls' %>
 
-</body>
+    <%= render partial: '/flash_msg' %>
+    <%= content_for(:precontainer_content) %>
+    <div id="content-wrapper" class="<%= content_for?(:container_class) ? yield(:container_class) : 'chf-container-fluid' %>" role="main">
+      <a name="skip_to_content"></a>
+
+      <% if content_for?(:sidebar) %>
+        <div class="main-content">
+          <% if content_for?(:page_header) %>
+            <div class="row">
+              <div class="col-xs-12 main-header">
+                <%= yield(:page_header) %>
+              </div>
+            </div>
+          <% end %>
+
+          <%= content_for?(:content) ? yield(:content) : yield %>
+        </div>
+        <div id="sidebar" class="sidebar"><%= yield :sidebar %></div>
+      <% else %>
+        <div class="main-content">
+          <% if content_for?(:page_header) %>
+            <div class="row">
+              <div class="col-xs-12 main-header">
+                <%= yield(:page_header) %>
+              </div>
+            </div>
+          <% end %>
+
+          <%= content_for?(:content) ? yield(:content) : yield %>
+        </div>
+      <% end %>
+    </div><!-- /#content-wrapper -->
+    <%= render 'shared/footer' %>
+    <%= render 'shared/ajax_modal' %>
+  </body>
 </html>

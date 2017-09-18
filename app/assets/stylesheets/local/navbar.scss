@@ -39,3 +39,14 @@
     }
   }
 }
+
+.breadcrumbs-navbar-wrapper {
+  margin-top: 0.5em;
+  ul.breadcrumb {
+    margin-bottom: 0;
+  }
+}
+
+#searchbar label[for="filter_public_domain"] {
+  font-weight: normal;
+}

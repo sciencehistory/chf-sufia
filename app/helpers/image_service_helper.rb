@@ -5,6 +5,29 @@ module ImageServiceHelper
   }.freeze
 
 
+  def member_src_attributes(member:, size_key:)
+    if member.representative_file_id.nil?
+      # if there's no image, show the default thumbnail (it gets indexed)
+      {
+        src:  member.thumbnail_path
+      }
+    elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
+      {
+        src:    service.thumb_url(size: size_key),
+        srcset: service.thumb_srcset_pixel_density(size: size_key)
+      }
+    elsif member.representative_file_set_id || member.representative_id
+      # representative_file_set_id is the RIGHT one, but being defensive in case
+      # only the other is in index, it will be the same thing MOST of the time.
+      {
+        src: main_app.download_path(member.representative_file_set_id || member.representative_id, file: "jpeg")
+      }
+    else
+      # no can do
+      {}
+    end
+  end
+
   # create an image tag for a 'member' (could be fileset or child work) thumb,
   # for use on show page. Calculates proper image tag based on lazy or not,
   # use of iiif for images or not, and desired size. Includes proper
@@ -33,21 +56,7 @@ module ImageServiceHelper
       }
     }
 
-    src_args = if member.representative_file_id.nil?
-      # if there's no image, show the default thumbnail (it gets indexed)
-      {
-        src:  member.thumbnail_path
-      }
-    elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
-      {
-        src:    service.thumb_url(size: size_key),
-        srcset: service.thumb_srcset_pixel_density(size: size_key)
-      }
-    else
-      {
-        src: main_app.download_path(member.representative_id, file: "jpeg")
-      }
-    end
+    src_args = member_src_attributes(member: member, size_key: size_key)
 
     if lazy
       args[:class] << "lazyload"

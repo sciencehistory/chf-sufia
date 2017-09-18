@@ -1,0 +1,18 @@
+<%# customized from blacklight to remove 'constraints' from 'search_header',
+    we put em in our layout instead
+    https://github.com/projectblacklight/blacklight/blob/v6.7.2/app/views/catalog/_search_header.html.erb
+%>
+
+<%= render 'did_you_mean' %>
+
+
+
+<%# render 'sort_and_per_page' %>
+<%# we render our own sort and per page controls, just to remove the bootstrap pull-right
+    class, so we can use flexbox instead without fighting with it.
+%>
+
+<div id="sortAndPerPage" class="chf-sort-and-per-page">
+  <%= render :partial => "paginate_compact", :object => @response if show_pagination? %>
+  <%= render_results_collection_tools wrapping_class: "search-widgets" %>
+</div>
