@@ -120,7 +120,7 @@ module CHF
     def create_dzi!
       dzi_benchmark = Benchmark.measure do
         # http://libvips.blogspot.com/2013/03/making-deepzoom-zoomify-and-google-maps.html
-        TTY::Command(printer: :null).run(vips_command, "dzsave", local_original_file_path, local_dzi_base_path, "--suffix", ".jpg[Q=#{jpeg_quality}]")
+        TTY::Command.new(printer: :null).run(vips_command, "dzsave", local_original_file_path, local_dzi_base_path, "--suffix", ".jpg[Q=#{jpeg_quality}]")
       end
       Rails.logger.debug("#{self.class.name}: create_dzi: #{dzi_benchmark}")
     end
