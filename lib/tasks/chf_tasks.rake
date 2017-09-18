@@ -288,7 +288,7 @@ namespace :chf do
       errors = []
       total = FileSet.where(condition).count
       progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e", :smoothing => 0.5)
-
+      $stderr.puts "Creating dzi for #{total} filesets"
       # Get this from Solr instead would be faster, but it's a pain
       FileSet.find_each(condition) do |fs|
         begin
