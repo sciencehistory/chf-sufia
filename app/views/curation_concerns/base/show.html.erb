@@ -12,6 +12,13 @@
   <div class="work-show-title">
     <header>
       <%= @presenter.permission_badge %>
+
+      <% if @presenter.has_values_for?(Solrizer.solr_name("genre_string", :stored_searchable)) %>
+        <div class="work-show-genre">
+          <%= @presenter.field_value(Solrizer.solr_name("genre_string", :stored_searchable), join_type: :separator) %>
+        </div>
+      <% end %>
+
       <h1><%= @presenter.title.first %></h1>
 
       <% if @presenter.additional_title.present? %>
