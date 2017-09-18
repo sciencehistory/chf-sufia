@@ -55,10 +55,74 @@
   <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
     <%= render 'relationships', presenter: @presenter %>
+
+
+  <table class="<%= dom_class(@presenter) %> attributes" <%= @presenter.microdata_type_to_html %>>
+    <tbody>
+      <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:creator_of_work, render_as: :faceted, search_field: 'maker_facet' ) %>
+      <%= @presenter.attribute_to_html(:engraver, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:interviewee, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:interviewer, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:manufacturer, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:photographer, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:contributor, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:after, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:printer, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:printer_of_plates, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:publisher, render_as: :faceted, search_field: 'maker_facet') %>
+      <%= @presenter.attribute_to_html(:date_of_work) %>
+      <%= @presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
+      <%= @presenter.attribute_to_html(:place_of_creation, render_as: :faceted, search_field: 'place_facet') %>
+      <%= @presenter.attribute_to_html(:place_of_interview, render_as: :faceted, search_field: 'place_facet') %>
+      <%= @presenter.attribute_to_html(:place_of_manufacture, render_as: :faceted, search_field: 'place_facet') %>
+      <%= @presenter.attribute_to_html(:place_of_publication, render_as: :faceted, search_field: 'place_facet') %>
+      <%= @presenter.attribute_to_html(:resource_type, render_as: :faceted, label: "Format" ) %>
+      <%= @presenter.attribute_to_html(:genre_string, render_as: :faceted) %>
+      <%= @presenter.attribute_to_html(:medium, render_as: :faceted) %>
+      <%= @presenter.attribute_to_html(:extent) %>
+      <%= @presenter.attribute_to_html(:language, render_as: :faceted ) %>
+      <%= @presenter.attribute_to_html(:inscription) %>
+      <%= @presenter.attribute_to_html(:subject, render_as: :faceted ) %>
+      <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
+      <%= @presenter.attribute_to_html(:exhibition) %>
+      <%= @presenter.attribute_to_html(:series_arrangement) %>
+      <%# TODO: , render_as: :physical_container %>
+      <%= @presenter.attribute_to_html(:physical_container) %>
+      <%= @presenter.attribute_to_html(:related_url, render_as: :blank_target) %>
+      <%= @presenter.attribute_to_html(:rights, render_as: :rights) %>
+      <%= @presenter.attribute_to_html(:rights_holder) %>
+      <%= @presenter.attribute_to_html(:credit_line) %>
+      <%= @presenter.attribute_to_html(:additional_credit) %>
+    </tbody>
+  </table>
+
+
+
+  <%# TODO get rid of _attribute_rows entirely, no longer using? %>
     <%= render 'metadata', presenter: @presenter %>
+
+
+
+
+
     <% if current_ability.current_user.staff? %>
       <%= t('.last_modified', value: @presenter.date_modified) %>
+
+      <%# TODO need to put this in a table  %>
+      <%= @presenter.attribute_to_html(:identifier, render_as: :identifier) %>
+      <%= @presenter.attribute_to_html(:file_creator) %>
+      <%= @presenter.attribute_to_html(:admin_note) %>
+      <%= @presenter.attribute_to_html(:embargo_release_date, render_as: :date) %>
+      <%= @presenter.attribute_to_html(:lease_expiration_date, render_as: :date) %>
+      <%# CHF edit: remove rights; we put it higher up in the metadata list. %>
+
     <% end %>
+
+
+
     <%= render 'citations', presenter: @presenter %>
   </div>
 
