@@ -34,13 +34,25 @@
   }
 
   header h1 {
+    @extend .h2;
+    @extend .brand-alt-h2;
     margin-top: 0;
+    margin-bottom: 0;
   }
 
   .additional-titles {
+    margin-bottom: 0;
     h2 {
-      @extend h4;
+      font-family: $brand-alt-header-font;
+      font-weight: normal;
+      @extend h3;
+      margin-bottom: 0;
+      margin-top: $font-size-base;
     }
+  }
+
+  .work-show-metadata {
+    margin-top: $line-height-computed;
   }
 
   .rights-and-social {
