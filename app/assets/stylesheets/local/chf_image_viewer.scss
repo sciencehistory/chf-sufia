@@ -97,6 +97,7 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
       padding: 0;
       margin: 0 15px;
 
+      font-family: $brand-alt-header-font;
       font-size: $font-size-h3;
       line-height: normal;
       overflow: hidden;
