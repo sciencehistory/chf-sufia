@@ -11,7 +11,11 @@
 
   <div class="work-show-title">
     <header>
-      <%= @presenter.permission_badge %>
+      <% if @presenter.needs_permission_badge? %>
+        <div class="work-show-permission-badge">
+          <%= @presenter.permission_badge %>
+        </div>
+      <% end %>
 
       <% if @presenter.has_values_for?(Solrizer.solr_name("genre_string", :stored_searchable)) %>
         <div class="work-show-genre">
@@ -98,7 +102,7 @@
   </table>
 
 
-  <h2 class="brand-alt-h3 h3">At the Chemical Heritage Foundation</h2>
+  <h2 class="attribute-sub-head">At the Chemical Heritage Foundation</h2>
   <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
       <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
       <%= @presenter.attribute_to_html(:exhibition) %>
@@ -123,7 +127,7 @@
 
 
     <% if current_ability.current_user.staff? %>
-      <h2 class="brand-alt-h3 h3">Staff-only information</h2>
+      <h2 class="attribute-sub-head">Staff-only information</h2>
 
       <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
         <tr>

@@ -39,9 +39,17 @@
     margin-bottom: 5px;
   }
 
+  .work-show-permission-badge {
+    font-size: 16px;
+    margin-bottom: 15px;
+    .label {
+      font-size: $font-size-base - 2px;
+    }
+  }
+
   header h1 {
-    @extend .h2;
-    @extend .brand-alt-h2;
+    @extend .h1;
+    @extend .brand-alt-h1;
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -57,8 +65,15 @@
     }
   }
 
+  .work-show-date {
+    ul {
+      @extend .list-unstyled;
+    }
+    margin-top: $font-size-base;
+  }
+
   .work-show-metadata {
-    margin-top: $line-height-computed;
+    margin-top: $font-size-base
   }
 
   .rights-and-social {
@@ -101,27 +116,37 @@
     }
   }
 
+  $attribute-cell-padding: 0.66em;
+
   .chf-attributes {
     & > tbody > tr:first-child  {
       td, th {
-        border: none;
+        border-top: 2px solid $table-border-color;
       }
     }
 
     td, th {
       vertical-align: baseline;
-      padding-top: 0.66em;
-      padding-bottom: 0.66em;
+      padding-top: $attribute-cell-padding;
+      padding-bottom: $attribute-cell-padding;
     }
     th {
       font-weight: normal;
       width: 33%;
-      padding-right: 0.66em;
+      padding-right: $attribute-cell-padding;
     }
     td ul {
       padding-left: 0;
       margin-bottom: 0;
     }
+  }
+
+  .attribute-sub-head {
+    @extend .brand-alt-h3;
+    @extend .h3;
+    margin-top: $line-height-computed * 2;
+    margin-bottom: 0;
+    padding: $table-condensed-cell-padding;
   }
 
   // An image with overlaid action buttons and metadata, used for
