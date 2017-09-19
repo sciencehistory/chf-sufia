@@ -3,6 +3,7 @@
 
   .work-show-admin {
     text-align: right;
+    margin-bottom: $line-height-computed;
   }
 
 
@@ -31,6 +32,11 @@
   // and be big big
   .work-show-representative .show-page-image .show-page-image-bar .btn {
     font-size: 125%;
+  }
+
+  .work-show-genre {
+    @extend %special-label;
+    margin-bottom: 5px;
   }
 
   header h1 {
@@ -92,6 +98,29 @@
       text-transform: uppercase;
       font-weight: bold;
       line-height: 1
+    }
+  }
+
+  .chf-attributes {
+    & > tbody > tr:first-child  {
+      td, th {
+        border: none;
+      }
+    }
+
+    td, th {
+      vertical-align: baseline;
+      padding-top: 0.66em;
+      padding-bottom: 0.66em;
+    }
+    th {
+      font-weight: normal;
+      width: 33%;
+      padding-right: 0.66em;
+    }
+    td ul {
+      padding-left: 0;
+      margin-bottom: 0;
     }
   }
 

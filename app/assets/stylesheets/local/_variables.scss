@@ -52,3 +52,14 @@ $transparent-background: rgba(0,0,0,0.25);
     opacity: 1;
   }
 }
+
+%special-label{
+  font-weight: $semi-bold-weight;
+  text-transform: uppercase;
+  font-size: $font_size_base - 2px;
+  line-height: normal;
+  letter-spacing: 0.03em;
+  a:not(:focus):not(:hover) {
+    color: #888;
+  }
+}
