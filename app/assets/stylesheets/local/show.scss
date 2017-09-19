@@ -230,7 +230,7 @@
     &.thumb {
       display: inline-block;
       width: 160px;
-      margin: 4px 4px 0 0;
+      margin: 4px 4px $line-height-computed 0;
 
       img.show-page-image-image {
         width: 100%;
