@@ -62,7 +62,6 @@
 
   <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
-    <%= render 'relationships', presenter: @presenter %>
 
   <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
       <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
