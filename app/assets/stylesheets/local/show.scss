@@ -98,6 +98,7 @@
   .work-show-date {
     ul {
       @extend .list-unstyled;
+      margin-bottom: 0;
     }
     margin-top: $font-size-base;
   }
