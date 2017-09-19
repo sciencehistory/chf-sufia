@@ -36,7 +36,8 @@
 
   .work-show-genre {
     @extend %special-label;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    font-size: $font-size-base;
   }
 
   .work-show-permission-badge {
