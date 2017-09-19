@@ -26,6 +26,11 @@ module CurationConcerns
       @parent_work_presenters ||= grouped_presenters(filtered_by: "generic_work").values.flatten
     end
 
+    # similar to parent_work_presenters, but for collections. Yes, this is all confusing.
+    def in_collection_presenters
+      @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end

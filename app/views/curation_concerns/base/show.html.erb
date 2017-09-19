@@ -103,6 +103,19 @@
   <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
       <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
       <%= @presenter.attribute_to_html(:exhibition) %>
+
+      <% if @presenter.in_collection_presenters.present? %>
+        <tr>
+          <th>Collection</th>
+          <td>
+            <ul class="tabular">
+              <% @presenter.in_collection_presenters.each do |parent| %>
+                <li><%= link_to Array(parent.title).first, [main_app, parent] %></li>
+              <% end %>
+            </ul>
+          </td>
+      <% end %>
+
       <%= @presenter.attribute_to_html(:series_arrangement) %>
       <%= @presenter.attribute_to_html(:physical_container) %>
   </table>
