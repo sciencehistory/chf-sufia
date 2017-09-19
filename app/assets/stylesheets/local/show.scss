@@ -65,8 +65,7 @@
 
   .work-show-genre {
     @extend %special-label;
-    margin-bottom: 6px;
-    font-size: $font-size-base;
+    margin-bottom: 5px;
   }
 
   .work-show-permission-badge {
@@ -78,8 +77,8 @@
   }
 
   header h1 {
-    @extend .h1;
-    @extend .brand-alt-h1;
+    @extend .h2;
+    @extend .brand-alt-h2;
     margin-top: 0;
     margin-bottom: 0;
   }
