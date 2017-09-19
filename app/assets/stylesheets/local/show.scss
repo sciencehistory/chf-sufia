@@ -83,16 +83,18 @@
     justify-content: space-between;
     padding: 15px 0;
 
+
     .rights-statement.large, .social-media {
-      flex: 1;
-      flex-basis: 170px;
       padding: 0;
-      margin: 0;
+      margin-bottom: $line-height-computed / 2;
     }
+
+    .rights-statement.large {
+      margin-right: $line-height-computed;
+    }
+
     .social-media {
-      @media (min-width: $screen-lg-min) {
-        text-align: right;
-       }
+      padding-top: 12px;
     }
   }
 
