@@ -102,17 +102,18 @@
     @include clearfix;
 
     .rights-statement-logo {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       float: left;
       margin-right: 0.5em;
+      margin-top: 4px;
     }
     .rights-statement-label {
+      display: inline-block;
       font-size: 18px;
-      line-height: 1;
+      line-height: 1.2;
       text-transform: uppercase;
-      font-weight: bold;
-      line-height: 1
+      font-weight: $semi-bold-weight;
     }
   }
 
@@ -255,6 +256,9 @@
 // div, so has to be out here. Sorry that it's in this .scss file, work
 // in progress.
 .rights-statement-inline {
+  .rights-statement-label {
+    vertical-align: middle;
+  }
   // turn br into space
   .rights-statement-label br {
     content: " ";
@@ -264,6 +268,7 @@
   }
   .rights-statement-logo {
     width: 1em;
+    height: 1em;
     vertical-align: middle;
   }
 }
