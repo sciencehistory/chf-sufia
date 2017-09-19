@@ -31,6 +31,18 @@ module CurationConcerns
       @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
     end
 
+    def catalog_bib_numbers
+      @catalog_big_numbers ||= solr_document.identifier.
+        find_all { |id| id.start_with?("bib-") }.
+        collect { |id| id.gsub(/\Abib-/, '').downcase }
+    end
+
+    def urls_to_catalog
+      @urls_to_catalog ||= catalog_bib_numbers.collect do |bib_num|
+        "http://othmerlib.chemheritage.org/record=#{CGI.escape bib_num}"
+      end
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end

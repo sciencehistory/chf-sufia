@@ -121,6 +121,16 @@
 
         <%= @presenter.attribute_to_html(:series_arrangement) %>
         <%= @presenter.attribute_to_html(:physical_container) %>
+
+        <% if @presenter.urls_to_catalog.present? %>
+          <tr>
+            <td colspan=2>
+            <% @presenter.urls_to_catalog.each do |url| %>
+              <%= content_tag "a", "View in library catalog", href: url, class: "btn btn-sm btn-default" %>
+            <% end %>
+            </td>
+          </tr>
+        <% end %>
     </table>
 
     <%# TODO get rid of _attribute_rows entirely, no longer using? %>
