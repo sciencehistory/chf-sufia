@@ -34,7 +34,10 @@ module CurationConcerns
     def catalog_bib_numbers
       @catalog_big_numbers ||= solr_document.identifier.
         find_all { |id| id.start_with?("bib-") }.
-        collect { |id| id.gsub(/\Abib-/, '').downcase }
+        collect { |id| id.gsub(/\Abib-/, '').downcase }.
+        # sometimes have an extra digit, should never have more than b+7
+        # https://github.com/chemheritage/chf-sufia/issues/862
+        collect { |id| id.slice(0, 8) }
     end
 
     def urls_to_catalog
