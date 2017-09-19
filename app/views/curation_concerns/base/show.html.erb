@@ -124,9 +124,9 @@
 
         <% if @presenter.urls_to_catalog.present? %>
           <tr>
-            <td colspan=2>
+            <td colspan=2 class="catalog-links">
             <% @presenter.urls_to_catalog.each do |url| %>
-              <%= content_tag "a", "View in library catalog", href: url, class: "btn btn-sm btn-default" %>
+              <%= content_tag "a", "View in library catalog", href: url %>
             <% end %>
             </td>
           </tr>
