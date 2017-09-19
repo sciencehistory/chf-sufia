@@ -67,7 +67,7 @@
   <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
 
-    <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
+    <table class="<%= dom_class(@presenter) %> chf-attributes chf-attributes-first">
         <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
@@ -103,7 +103,7 @@
 
 
     <h2 class="attribute-sub-head">At the Chemical Heritage Foundation</h2>
-    <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
+    <table class="<%= dom_class(@presenter) %> chf-attributes">
         <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
         <%= @presenter.attribute_to_html(:exhibition) %>
 
@@ -128,7 +128,7 @@
     <% if current_ability.current_user.staff? %>
       <h2 class="attribute-sub-head">Staff-only information</h2>
 
-      <table class="<%= dom_class(@presenter) %> chf-attributes table table-condensed">
+      <table class="<%= dom_class(@presenter) %> chf-attributes">
         <tr>
           <th>Last modified</th>
           <td><%= @presenter.date_modified %></td>

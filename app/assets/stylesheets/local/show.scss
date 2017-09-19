@@ -73,7 +73,7 @@
   }
 
   .work-show-metadata {
-    margin-top: $font-size-base
+    margin-top: $font-size-base;
   }
 
   .rights-and-social {
@@ -119,6 +119,9 @@
   $attribute-cell-padding: 0.66em;
 
   .chf-attributes {
+    @extend .table;
+    @extend .table-condensed;
+
     & > tbody > tr:first-child  {
       td, th {
         border-top: 2px solid $table-border-color;
@@ -139,6 +142,10 @@
       padding-left: 0;
       margin-bottom: 0;
     }
+  }
+
+  .chf-attributes-first {
+    margin-top: $line-height-computed;
   }
 
   .attribute-sub-head {
