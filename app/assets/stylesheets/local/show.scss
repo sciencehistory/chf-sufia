@@ -76,6 +76,10 @@
     }
   }
 
+  .work-show-title {
+    margin-bottom: $font-size-base;
+  }
+
   header h1 {
     @extend .h2;
     @extend .brand-alt-h2;
@@ -99,10 +103,6 @@
       @extend .list-unstyled;
       margin-bottom: 0;
     }
-    margin-top: $font-size-base;
-  }
-
-  .work-show-metadata {
     margin-top: $font-size-base;
   }
 
@@ -156,6 +156,8 @@
     @extend .table;
     @extend .table-condensed;
     width: 100%;
+    table-layout: fixed;
+    overflow: hidden;
 
     & > tbody > tr:first-child  {
       td, th {
