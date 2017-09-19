@@ -29,6 +29,14 @@
         </ul>
       <% end %>
 
+      <% if @presenter.parent_work_presenters.present? %>
+        <ul class="parent-works list-unstyled">
+          <% @presenter.parent_work_presenters.each do |parent| %>
+            <li>Part of <%= link_to Array(parent.title).first, [main_app, parent] %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
       <% if @presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
         <div class="work-show-date">
           <%= @presenter.field_value(Solrizer.solr_name("date_of_work", :stored_searchable), join_type: :list) %>

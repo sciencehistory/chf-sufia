@@ -18,6 +18,14 @@ module CurationConcerns
     # is what we're doing.
     attr_accessor :view_context
 
+    # Don't entirely understand what this is doing, but it returns
+    # some 'collection presenters', zero to many, each item is a parent work presenter.
+    def parent_work_presenters
+      # no idea why we have to `flatten`, the stack `grouped_presenters` method is
+      # confusing and barely documented.
+      @parent_work_presenters ||= grouped_presenters(filtered_by: "generic_work").values.flatten
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end

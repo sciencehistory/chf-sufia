@@ -46,9 +46,9 @@
     margin-bottom: 0;
   }
 
-  .additional-titles {
+  .additional-titles, .parent-works {
     margin-bottom: 0;
-    h2 {
+    &, h2 {
       font-family: $brand-alt-header-font;
       font-weight: normal;
       @extend h3;
