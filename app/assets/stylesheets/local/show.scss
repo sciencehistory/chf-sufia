@@ -7,6 +7,8 @@
   }
 
 
+  $column-gutter: 20px;
+
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
       width: 50%;
@@ -16,6 +18,7 @@
     .work-show-representative {
       float: left;
       padding-left: 0;
+      padding-right: $column-gutter;
     }
 
     .work-show-metadata, .work-show-title {
@@ -126,6 +129,7 @@
   .chf-attributes {
     @extend .table;
     @extend .table-condensed;
+    width: 100%;
 
     & > tbody > tr:first-child  {
       td, th {
@@ -142,6 +146,9 @@
       font-weight: normal;
       width: 33%;
       padding-right: $attribute-cell-padding;
+    }
+    td {
+      width: 67%;
     }
     td ul {
       padding-left: 0;
@@ -229,9 +236,13 @@
     }
 
     &.thumb {
+      $thumb-horizontal-margin: 4px;
+
       display: inline-block;
       width: 160px;
-      margin: 4px 4px $line-height-computed 0;
+      margin: $thumb-horizontal-margin $thumb-horizontal-margin $line-height-computed 0;
+
+
 
       img.show-page-image-image {
         width: 100%;
@@ -246,11 +257,11 @@
 
       @media (min-width: $screen-sm-min) {
         // 2 wide
-        width: calc(50% / 2 - 12px);
+        width: calc( ((50% - #{$column_gutter}) / 2) - (#{$thumb-horizontal-margin} * 1));
       }
       @media (min-width: $screen-lg-min) {
         // 3 wide
-        width: calc(50% / 3 - 10px);
+        width: calc( ((50% - #{$column_gutter}) / 3) - (#{$thumb-horizontal-margin} * 2) + 3px ); // no idea why that extra +2px, but it lines up right
       }
     }
   }
