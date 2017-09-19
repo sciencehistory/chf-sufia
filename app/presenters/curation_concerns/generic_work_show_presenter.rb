@@ -168,7 +168,7 @@ module CurationConcerns
       #
       # https://github.com/projectblacklight/blacklight/blob/v6.11.2/app/presenters/blacklight/index_presenter.rb#L100
       def field_config(field)
-        CatalogController.blacklight_config.index_fields.fetch(field) { Blacklight::Configuration::NullField.new(field) }
+        ::CatalogController.blacklight_config.index_fields.fetch(field) { Blacklight::Configuration::NullField.new(field) }
       end
 
 
