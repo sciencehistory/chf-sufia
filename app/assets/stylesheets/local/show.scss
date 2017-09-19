@@ -8,6 +8,10 @@
 
 
   $column-gutter: 20px;
+  $max-image-column: 545px;
+  // this is the point the image column is 'naturally' 525px, any bigger it's 'naturally' bigger
+  $max-image-column-breakpoint: 1150px;
+  $thumb-horizontal-margin: 4px;
 
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
@@ -24,6 +28,28 @@
     .work-show-metadata, .work-show-title {
       float: right;
       padding-right: 0;
+    }
+  }
+
+  @media (min-width: $max-image-column-breakpoint) {
+    // some crazy CSS calc arithmatic to keep the main image and the thumbs under it
+    // at $max-image-column, with still column break centered.
+    .work-show-representative {
+      width: $max-image-column;
+    }
+    .work-show-title, .work-show-metadata {
+      width: calc(50% + (50% - #{$max-image-column}));
+    }
+
+
+    & { // work-show
+      width: calc(100% - (50% - #{$max-image-column}));
+      position: relative;
+      left: calc(50% - #{$max-image-column} - #{$column-gutter}) ;
+    }
+
+    .show-page-image.thumb {
+      width: ($max-image-column / 3 - ($thumb-horizontal-margin * 3)) !important;
     }
   }
 
@@ -236,8 +262,6 @@
     }
 
     &.thumb {
-      $thumb-horizontal-margin: 4px;
-
       display: inline-block;
       width: 160px;
       margin: $thumb-horizontal-margin $thumb-horizontal-margin $line-height-computed 0;
@@ -259,7 +283,7 @@
         // 2 wide
         width: calc( ((50% - #{$column_gutter}) / 2) - (#{$thumb-horizontal-margin} * 1));
       }
-      @media (min-width: $screen-lg-min) {
+      @media (min-width: 1000px) {
         // 3 wide
         width: calc( ((50% - #{$column_gutter}) / 3) - (#{$thumb-horizontal-margin} * 2) + 3px ); // no idea why that extra +2px, but it lines up right
       }
