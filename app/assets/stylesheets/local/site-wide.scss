@@ -74,3 +74,29 @@ hr.brand {
 }
 
 
+// meant to be on a font-awesome icon
+.social-media-link {
+  display: inline-block;
+  font-size: 46px;
+  line-height: 1;
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+
+  &.facebook {
+    color: #3b5998;
+  }
+  &.twitter {
+    color: #1da1f2;
+  }
+  &.google-plus {
+    color: #dd4b39;
+  }
+  &.tumblr {
+    color: #35465c;
+  }
+  &:hover, &:focus {
+    color: $link-hover-color;
+  }
+
+}
