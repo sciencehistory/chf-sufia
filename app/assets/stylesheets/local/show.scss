@@ -187,7 +187,7 @@
   .attribute-sub-head {
     @extend .brand-alt-h3;
     @extend .h3;
-    margin-top: $line-height-computed * 2;
+    margin-top: $line-height-computed * 1.5;
     margin-bottom: 0;
     padding: $table-condensed-cell-padding;
   }
