@@ -67,7 +67,7 @@
   <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
 
-    <table class="<%= dom_class(@presenter) %> chf-attributes chf-attributes-first">
+    <table class="<%= dom_class(@presenter) %> chf-attributes">
         <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
