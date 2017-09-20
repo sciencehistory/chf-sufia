@@ -149,8 +149,13 @@
     }
   }
 
-  $attribute-cell-padding: 0.66em;
+  .work_description p {
+    max-width: 565px; // more readable length for text at this font/size
+  }
 
+
+
+  $attribute-cell-padding: 0.66em;
   .chf-attributes {
     @extend .table;
     @extend .table-condensed;
