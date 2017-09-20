@@ -58,6 +58,10 @@
               <%= image_tag(@presenter.rights_icon, class: "rights-statement-logo")  %>
               <span class="rights-statement-label"><%= @presenter.rights_icon_label %></span>
             <% end %>
+        <% else %>
+          <%# hacky spacer to keep flexbox intact and social-media on the right even
+              if there's no rights %>
+          <div class="rights-placeholder"></div>
         <% end %>
         <%= render 'social_media' %>
       </div>
