@@ -76,27 +76,35 @@ hr.brand {
 
 // meant to be on a font-awesome icon
 .social-media-link {
-  display: inline-block;
-  font-size: 46px;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  margin: 0;
+  margin-top: 4px; // i dunno, lines up with rights now
+
+  font-size: 26px;
+  line-height: 0;
+
   &:not(:last-child) {
     margin-right: 16px;
   }
 
   // &.facebook {
-  //   color: #3b5998;
+  //   background-color: #3b5998;
   // }
   // &.twitter {
-  //   color: #1da1f2;
+  //   background-color: #1da1f2;
   // }
   // &.google-plus {
-  //   color: #dd4b39;
+  //   background-color: #dd4b39;
   // }
   // &.tumblr {
-  //   color: #35465c;
-  // }
-  // &:hover, &:focus {
-  //   color: $link-hover-color;
+  //   background-color: #35465c;
   // }
 
 }

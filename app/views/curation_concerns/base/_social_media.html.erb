@@ -12,22 +12,22 @@
 <% share_url ||= request.original_url %>
 <div class="social-media">
   <!-- Sharingbutton Facebook -->
-  <%= link_to "https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}", class: 'social-media-link facebook', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
-      <i class="fa fa-facebook-square"></i>
+  <%= link_to "https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
+      <i class="fa fa-facebook-f"></i>
   <% end %>
 
   <!-- Sharingbutton Twitter -->
-  <%= link_to "https://twitter.com/intent/tweet/?#{{text: page_title, url: share_url}.to_param}", class: 'social-media-link twitter', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.twitter') do %>
-      <i class="fa fa-twitter-square"></i>
+  <%= link_to "https://twitter.com/intent/tweet/?#{{text: page_title, url: share_url}.to_param}", class: 'social-media-link twitter btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.twitter') do %>
+      <i class="fa fa-twitter"></i>
   <% end %>
 
   <!-- Sharingbutton Google+ -->
-  <%= link_to "https://plus.google.com/share?#{{url: share_url}.to_param}", class: 'social-media-link google-plus', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.google') do %>
-    <i class="fa fa-google-plus-square"></i>
+  <%= link_to "https://plus.google.com/share?#{{url: share_url}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.google') do %>
+    <i class="fa fa-google-plus"></i>
   <% end %>
 
   <!-- Sharingbutton Tumblr -->
-  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}", class: 'social-media-link tumblr', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.tumblr') do %>
-    <i class="fa fa-tumblr-square"></i>
+  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}", class: 'social-media-link tumblr btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.tumblr') do %>
+    <i class="fa fa-tumblr"></i>
   <% end %>
 </div>
