@@ -10,6 +10,7 @@ en:
           division: Department
           creator_of_work: Creator
           contributor: Contributor
+          genre_string: Genre
       index:
           list:
               label: "%{label}"
