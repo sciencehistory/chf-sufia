@@ -13,10 +13,6 @@
   $max-image-column-breakpoint: 1150px;
   $thumb-horizontal-margin: 4px;
 
-  .work-show-representative .show-page-image-bar .btn {
-    @extend .btn-primary;
-  }
-
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
       width: 50%;
