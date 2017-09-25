@@ -13,6 +13,10 @@
   $max-image-column-breakpoint: 1150px;
   $thumb-horizontal-margin: 4px;
 
+  .work-show-representative .show-page-image-bar .btn {
+    @extend .btn-primary;
+  }
+
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
       width: 50%;
@@ -48,19 +52,9 @@
       left: calc(50% - #{$max-image-column} - #{$column-gutter}) ;
     }
 
-    .show-page-image.thumb {
+    .show-page-image-wrapper.thumb {
       width: ($max-image-column / 3 - ($thumb-horizontal-margin * 3)) !important;
     }
-  }
-
-  // main one should have btn-primary colors.
-  .work-show-representative .show-page-image .show-page-image-bar .btn-primary:not(:hover):not(:active):not(:focus) {
-    background: transparentize($btn-primary-bg, .3);
-    border-color: darken($btn-primary-border, .3);
-  }
-  // and be big big
-  .work-show-representative .show-page-image .show-page-image-bar .btn {
-    font-size: 125%;
   }
 
   .work-show-genre {
@@ -201,7 +195,7 @@
   // elements are absolutely positioned within it.
   .show-page-image {
     position: relative;
-    cursor: pointer;
+    cursor: zoom-in;
 
     .show-page-image-image {
       // not sure why inline-block seems now neccesary to get JS aspectratio setting to work
@@ -217,7 +211,7 @@
     .show-page-member-title {
       position: absolute;
       padding: 7px;
-      top: 0;
+      bottom: 0;
       left: 0;
       right: 0;
       background: transparentize($brand-inverse, .3);
@@ -237,58 +231,68 @@
         border-bottom-right-radius: 0;
       }
     }
+  }
 
-    .show-page-image-bar {
-      position: absolute;
-      display: flex;
+  .show-page-image-wrapper.thumb {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 160px;
+    margin: $thumb-horizontal-margin $thumb-horizontal-margin $line-height-computed 0;
+
+    img.show-page-image-image {
       width: 100%;
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      .btn-group {
-        width: 100%;
-        .btn { width: 100%; }
-        .dropdown-menu {
-          left: 5px;
-        }
+      &.lazyload, &.lazyloading {
+        background: #AAA asset-url('static-progress.svg') no-repeat;
+        background-position: center center;
+        background-size: 50%;
       }
-      & > button, & > .btn, & > .btn-group > button {
-        flex: 1;
-        border-radius: 0;
-      }
-      .btn-primary:not(:hover):not(:active):not(:focus) {
-        background: transparentize($brand-inverse, .3);
-        border-color: darken($brand-inverse, 5%);
-      }
+      vertical-align: bottom;
+      min-height: 100px; // just so it's something!
     }
 
-    &.thumb {
-      display: inline-block;
-      width: 160px;
-      margin: $thumb-horizontal-margin $thumb-horizontal-margin $line-height-computed 0;
+    .btn {
+      @extend .btn-sm;
+      border-radius: 0;
+    }
 
+    @media (min-width: $screen-sm-min) {
+      // 2 wide
+      width: calc( ((50% - #{$column_gutter}) / 2) - (#{$thumb-horizontal-margin} * 1));
+    }
+    @media (min-width: 1000px) {
+      // 3 wide
+      width: calc( ((50% - #{$column_gutter}) / 3) - (#{$thumb-horizontal-margin} * 2) + 3px ); // no idea why that extra +2px, but it lines up right
+    }
+  }
 
+  .show-page-image-bar {
+    margin-top: 4px;
+    display: flex;
+    width: 100%;
 
-      img.show-page-image-image {
+    .btn-group {
+      width: 100%;
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
+      min-width: 0;
+
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
+
+      .btn {
         width: 100%;
-        &.lazyload, &.lazyloading {
-          background: #AAA asset-url('static-progress.svg') no-repeat;
-          background-position: center center;
-          background-size: 50%;
-        }
-        vertical-align: bottom;
-        min-height: 100px; // just so it's something!
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-
-      @media (min-width: $screen-sm-min) {
-        // 2 wide
-        width: calc( ((50% - #{$column_gutter}) / 2) - (#{$thumb-horizontal-margin} * 1));
+      .dropdown-menu {
+        left: 5px;
       }
-      @media (min-width: 1000px) {
-        // 3 wide
-        width: calc( ((50% - #{$column_gutter}) / 3) - (#{$thumb-horizontal-margin} * 2) + 3px ); // no idea why that extra +2px, but it lines up right
-      }
+    }
+    & > button, & > .btn, & > .btn-group > button {
+      flex: 1;
+      border-radius: 0;
     }
   }
 }

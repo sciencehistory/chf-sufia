@@ -28,6 +28,17 @@ module ImageServiceHelper
     end
   end
 
+  # can only be used on a page that has the viewer listening
+  def viewer_trigger_data_attributes(parent_id:, member:)
+    {
+      trigger: "chf_image_viewer",
+      member_id: member.representative_id,
+      analytics_category: "Work",
+      analytics_action: "view",
+      analytics_label: parent_id
+    }
+  end
+
   # create an image tag for a 'member' (could be fileset or child work) thumb,
   # for use on show page. Calculates proper image tag based on lazy or not,
   # use of iiif for images or not, and desired size. Includes proper
@@ -46,14 +57,9 @@ module ImageServiceHelper
       class: ["show-page-image-image"],
       alt: "",
       tabindex: 0,
-      data: {
-        trigger: "chf_image_viewer",
-        member_id: member.representative_id,
-        aspectratio: "#{member.representative_width}/#{member.representative_height}", # used for lazysizes-aspectratio
-        analytics_category: "Work",
-        analytics_action: "view",
-        analytics_label: parent_id
-      }
+      data: viewer_trigger_data_attributes(parent_id: parent_id, member: member).merge(
+        aspectratio: "#{member.representative_width}/#{member.representative_height}" # used for lazysizes-aspectratio
+      )
     }
 
     src_args = member_src_attributes(member: member, size_key: size_key)
