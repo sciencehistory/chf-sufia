@@ -40,5 +40,12 @@ module CurationConcerns
       super if current_ability.current_user.logged_in?
     end
 
+    # overriding presenter to pass in view_context
+    def presenter(*args)
+      super.tap do |pres|
+        pres.view_context = view_context if pres.respond_to?(:view_context=)
+      end
+    end
+
   end
 end

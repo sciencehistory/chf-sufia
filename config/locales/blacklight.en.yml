@@ -10,6 +10,8 @@ en:
           division: Department
           creator_of_work: Creator
           contributor: Contributor
+          genre_string: Genre
+          related_url: Related URL
       index:
           list:
               label: "%{label}"

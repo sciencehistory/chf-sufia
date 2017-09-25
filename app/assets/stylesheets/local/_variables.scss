@@ -4,7 +4,7 @@ $bg-grey: #f1f3f4;
 $lt-blue: #e4f1fe;
 
 $bg-lightly-shaded: $bg-grey;
-$bg-lightly-highlight: $lt-blue;
+$brand-btn-alt-bg: $lt-blue;
 $brand-alt-header-font: "Roboto Condensed";
 $brand-alt-header-weight: 700;
 // should be lighter than normal muted, cause it's bolded a bit and such
@@ -50,5 +50,16 @@ $transparent-background: rgba(0,0,0,0.25);
     color: white;
     text-decoration: none;
     opacity: 1;
+  }
+}
+
+%special-label{
+  font-weight: $semi-bold-weight;
+  text-transform: uppercase;
+  font-size: $font_size_base - 2px;
+  line-height: normal;
+  letter-spacing: 0.03em;
+  a:not(:focus):not(:hover) {
+    color: #888;
   }
 }

@@ -1,6 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:extrabold,bold,semibold,regular,light,');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&amp;subset=latin-ext');
 
+// hover and other unusual states just like btn-primary, but our light blue brand
+// color on standard state.
+.btn-brand-alt {
+  // color, bg, border
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  color: $text-color;
+  background-color: $brand-btn-alt-bg;
+  border-color: #ccc;
+}
+
 
 .chf-container-fluid {
   $sidebar-width: 235px;
@@ -73,13 +83,38 @@ hr.brand {
   margin-bottom: 3em;
 }
 
-%special-label{
-  font-weight: $semi-bold-weight;
-  text-transform: uppercase;
-  font-size: $font_size_base - 2px;
-  line-height: normal;
-  letter-spacing: 0.03em;
-  a:not(:focus):not(:hover) {
-    color: #888;
+
+// meant to be on a font-awesome icon
+.social-media-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  margin: 0;
+  margin-top: 4px; // i dunno, lines up with rights now
+
+  font-size: 26px;
+  line-height: 0;
+
+  &:not(:last-child) {
+    margin-right: 16px;
   }
+
+  // &.facebook {
+  //   background-color: #3b5998;
+  // }
+  // &.twitter {
+  //   background-color: #1da1f2;
+  // }
+  // &.google-plus {
+  //   background-color: #dd4b39;
+  // }
+  // &.tumblr {
+  //   background-color: #35465c;
+  // }
+
 }

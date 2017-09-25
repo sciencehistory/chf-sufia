@@ -59,10 +59,35 @@ describe 'curation_concerns/base/show.html.erb' do
   let(:user) { FactoryGirl.build(:user) }
   let(:ability) { double }
   let(:presenter) do
-    CurationConcerns::GenericWorkShowPresenter.new(solr_document, ability)
+    CurationConcerns::GenericWorkShowPresenter.new(solr_document, ability).tap do |presenter|
+      # our presenter needs a view_context now, custom CHF, so it can run BL presenters too.
+      # in a view spec, as we are in, we get a `view`.
+      presenter.view_context = view
+    end
+  end
+
+  # Turn off double verifying for these examples, cause we need to mock helper
+  # `search_state`, which is triggering, not really sure why.
+  around do |example|
+    original = nil
+    RSpec.configure do |config|
+      config.mock_with :rspec do |mocks|
+        original = mocks.verify_partial_doubles?
+        mocks.verify_partial_doubles = false
+      end
+    end
+
+    example.run
+
+    RSpec.configure do |config|
+      config.mock_with :rspec do |mocks|
+        mocks.verify_partial_doubles = original
+      end
+    end
   end
 
   before do
+    allow(view).to receive(:search_state).and_return( Blacklight::SearchState.new({}, CatalogController.blacklight_config)  )
     allow(view).to receive(:current_ability).and_return(ability)
     allow(ability).to receive(:current_user).and_return(user)
     stub_template 'curation_concerns/base/_relationships.html.erb' => ''

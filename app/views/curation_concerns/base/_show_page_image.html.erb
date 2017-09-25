@@ -10,51 +10,62 @@
 
 %>
 <%= content_tag("div",
-      class: ["show-page-image"] + Array(local_assigns[:extra_classes])) do
-%>
+      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes]),
+      data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)
+    ) do %>
+  <%= content_tag("div", class: "show-page-image") do %>
 
-    <%= member_image_tag(parent_id: @presenter.id, member: member,
-                         size_key: local_assigns[:size],
-                         lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
-    %>
+      <%= member_image_tag(parent_id: @presenter.id, member: member,
+                           size_key: local_assigns[:size],
+                           lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
+      %>
 
-    <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
-      <div class="show-page-member-title">
-        <%= member.title.first %>
+      <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
+        <div class="show-page-member-title">
+          <%= member.title.first %>
+        </div>
+      <% end %>
+
+      <div class="show-page-image-permission">
+        <% if member.needs_permission_badge? %>
+          <%= member.permission_badge %>
+        <% end %>
+      </div>
+  <% end %>
+  <div class="show-page-image-bar">
+    <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
+      <div class="btn-group dropup">
+        <button type="button" class="btn btn-brand-alt dropdown-toggle" id="dropdownMenu_downloads_<%= member.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%# less space for admin, just use icon %>
+          <i class='fa fa-download'></i> Download
+        </button>
+        <%= member_download_menu(member, parent: @presenter, labelled_by: "dropdownMenu_downloads_#{member.id}") %>
       </div>
     <% end %>
 
-    <div class="show-page-image-permission">
-      <% if member.needs_permission_badge? %>
-        <%= member.permission_badge %>
+    <% if local_assigns[:size].to_s == "large" %>
+      <div class="btn-group">
+        <%= content_tag("button", type: "button", class: "btn btn-brand-alt dropdown-toggle", data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)) do %>
+          <i class='fa fa-search'></i> View
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
+      <div class="btn-group dropup">
+        <button class="btn btn-brand-alt dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_actions_<%= member.id %>" aria-haspopup="true">
+          <i class='fa fa-cog'></i>  Admin
+        </button>
+        <%= file_set_actions_menu(member, parent: @presenter, labelled_by: "dropdownMenu_actions_#{member.id}" ) %>
+      </div>
+    <% elsif member.model_name.singular.to_sym != :file_set %>
+      <%= link_to  contextual_path(member, @presenter), class: "btn btn-brand-alt show-page-image-info" do %>
+         Info
       <% end %>
-    </div>
+    <% end %>
 
-    <div class="show-page-image-bar">
-      <% if (member.model_name.singular.to_sym == :file_set) && can?(:read, member.id) %>
-        <div class="btn-group dropup">
-          <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenu_downloads_<%= member.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%# less space for admin, just use icon %>
-            <i class='fa fa-download'></i> <% if ! current_ability.current_user.staff? %> Download <% end %>
-          </button>
-          <%= member_download_menu(member, parent: @presenter, labelled_by: "dropdownMenu_downloads_#{member.id}") %>
-        </div>
-
-      <% end %>
-
-      <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
-        <div class="btn-group dropup">
-          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_actions_<%= member.id %>" aria-haspopup="true">
-            Admin
-          </button>
-          <%= file_set_actions_menu(member, parent: @presenter, labelled_by: "dropdownMenu_actions_#{member.id}" ) %>
-        </div>
-      <% elsif member.model_name.singular.to_sym != :file_set %>
-        <%= link_to "Info", contextual_path(member, @presenter), class: "btn btn-primary show-page-image-info" %>
-      <% end %>
-
-    </div>
+  </div>
 <% end %>
-
 
 
