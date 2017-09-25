@@ -9,7 +9,10 @@
       * extra_classes: optional. extra CSS calsses added to the wrapper <div> tag.
 
 %>
-<%= content_tag("div",  class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes])) do %>
+<%= content_tag("div",
+      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes]),
+      data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)
+    ) do %>
   <%= content_tag("div", class: "show-page-image") do %>
 
       <%= member_image_tag(parent_id: @presenter.id, member: member,
