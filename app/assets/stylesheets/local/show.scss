@@ -233,7 +233,7 @@
     display: inline-block;
     vertical-align: bottom;
     width: 160px;
-    margin: $thumb-horizontal-margin $thumb-horizontal-margin $line-height-computed 0;
+    margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
 
     img.show-page-image-image {
       width: 100%;
