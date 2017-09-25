@@ -57,9 +57,9 @@ module ImageServiceHelper
       class: ["show-page-image-image"],
       alt: "",
       tabindex: 0,
-      data: viewer_trigger_data_attributes(parent_id: parent_id, member: member).merge(
+      data: {
         aspectratio: "#{member.representative_width}/#{member.representative_height}" # used for lazysizes-aspectratio
-      )
+      }
     }
 
     src_args = member_src_attributes(member: member, size_key: size_key)
