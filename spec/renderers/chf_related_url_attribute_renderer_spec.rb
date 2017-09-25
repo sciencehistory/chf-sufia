@@ -11,7 +11,7 @@ RSpec.describe ChfRelatedUrlAttributeRenderer do
     let(:expected) { Nokogiri::HTML(tr_content) }
 
     let(:tr_content) {
-      "<tr><th>Related url</th>" \
+      "<tr><th>Related URL</th>" \
         "<td><ul class=\"tabular\"><li class=\"attribute related_url\"><a target=\"_blank\" href=\"http://www.example.com/something\"><span class=\"glyphicon glyphicon-new-window\"></span>\u00A0www.example.com/...</a></li></ul></td>" \
         "</tr>"
     }
