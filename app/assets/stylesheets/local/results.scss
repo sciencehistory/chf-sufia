@@ -293,7 +293,7 @@ ol.catalog {
   a.remove {
     @extend .btn-default;
     width: 48px;
-    background-color: $bg-lightly-highlight;
+    background-color: $brand-btn-alt-bg;
   }
 
   .constraints-label {
