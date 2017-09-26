@@ -1,3 +1,5 @@
+
+
 .work-show, .collection-show {
   padding: 0 15px;
 
@@ -12,6 +14,31 @@
   // this is the point the image column is 'naturally' 525px, any bigger it's 'naturally' bigger
   $max-image-column-breakpoint: 1150px;
   $thumb-horizontal-margin: 4px;
+
+  .chf-collection-search {
+    margin: ($line-height-computed * 2) 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    .chf-collection-search-title, .chf-collection-search-form {
+      flex-basis: 50%;
+      min-width: 400px;
+    }
+    .chf-collection-search-title {
+      @extend .h3;
+      margin: 0;
+      font-family: $brand-alt-header-font;
+      padding-right: $column-gutter;
+    }
+    form, .input-group {
+      margin: 0;
+    }
+  }
+
+  .collection-top {
+    margin-bottom: $line-height-computed * 2;
+  }
+
 
   @media (min-width: $screen-sm-min) {
     .show-representative, .show-metadata, .show-title {

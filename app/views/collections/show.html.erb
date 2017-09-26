@@ -9,7 +9,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
 %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
-<div itemscope itemtype="http://schema.org/CollectionPage" class="row collection-show">
+<div itemscope itemtype="http://schema.org/CollectionPage" class="collection-show">
   <div class="show-admin">
     <%= render 'collections/show_actions', presenter: @presenter %>
   </div>
@@ -28,7 +28,6 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
         <div class="show-genre">Collection</div>
         <h1><%= @presenter.title.first %></h1>
       </header>
-      <%= pluralize(@presenter.total_items, "Item") %>
     </div>
 
     <div class="show-representative">
@@ -36,6 +35,8 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
     </div>
 
     <div class="show-metadata">
+      <p class="show-item-count"><%= pluralize(@presenter.total_items, "item") %></p>
+
       <%= render 'collection_description', presenter: @presenter %>
 
       <%# we handle metadata more like is done on work show page %>
@@ -55,12 +56,14 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
     </div>
   </div>
 
-  <div class="row chf-collection-search">
-    <h2 class="chf-collection-search-title">
-          Search within the <%= @presenter.title.first %>
-    </h2>
-    <div class="chf-collection-search-form"><%= render 'search_form', presenter: @presenter %></div>
-  </div>
+  <% if @presenter.total_items > blacklight_config.default_per_page %>
+    <div class="row chf-collection-search">
+      <h2 class="chf-collection-search-title">
+            Search within the <%= @presenter.title.first %>
+      </h2>
+      <div class="chf-collection-search-form"><%= render 'search_form', presenter: @presenter %></div>
+    </div>
+  <% end %>
 
 
   <%# built in sufia collections/sort_and_per_page overrides to some years old Blacklight. We want
@@ -89,7 +92,9 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
         to use the catalog view_type_group partial instead of the overridden sufia one which doesn't have
         the same classes
     %>
-    <%= render 'catalog/search_header' %>
+    <% if @member_docs.count != 1 %>
+      <%= render 'catalog/search_header' %>
+    <% end %>
 
 
   <%#  replacing `render_document_index @member_docs` %>

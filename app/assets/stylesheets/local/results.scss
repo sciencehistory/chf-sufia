@@ -5,25 +5,6 @@ ol.catalog {
   list-style: none;
 }
 
-.chf-collection-search {
-  margin: ($line-height-computed * 2) 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  .chf-collection-search-title, .chf-collection-search-form {
-    flex-basis: 50%;
-    min-width: 400px;
-  }
-  .chf-collection-search-title {
-    @extend .h3;
-    margin: 0;
-    font-family: $brand-alt-header-font;
-  }
-  form, .input-group {
-    margin: 0;
-  }
-}
-
 // compact pagination
 .page_links  {
   strong {
