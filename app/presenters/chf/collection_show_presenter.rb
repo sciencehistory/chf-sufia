@@ -12,5 +12,9 @@ module CHF
     def thumbnail_src(default: 'default_collection.svg')
       self.class.thumbnail_src(self.solr_document, default: default)
     end
+
+    def needs_permission_badge?
+      solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    end
   end
 end

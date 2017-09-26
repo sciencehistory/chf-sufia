@@ -15,10 +15,18 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
   </div>
 
   <div class="collection-top clearfix">
+
+
     <div class="show-title">
       <header>
+        <% if @presenter.needs_permission_badge? %>
+          <div class="show-permission-badge">
+            <%= @presenter.permission_badge %>
+          </div>
+        <% end %>
+
         <div class="show-genre">Collection</div>
-        <%= render 'collection_title', presenter: @presenter %>
+        <h1><%= @presenter.title.first %></h1>
       </header>
     </div>
 
