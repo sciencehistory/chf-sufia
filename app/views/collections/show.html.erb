@@ -39,7 +39,35 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
   <div class="col-xs-6 col-md-5 col-lg-6"><%= render 'search_form', presenter: @presenter %></div>
 </div>
 
-<%= render 'sort_and_per_page', collection: @presenter %>
+
+<%# built in sufia collections/sort_and_per_page overrides to some years old Blacklight. We want
+    the normal one we're actually using. %>
+  <%# render 'sort_and_per_page', collection: @presenter %>
+
+  <%# but first some preperatory stuff we don't understand from sufia collections/sort_and_per_page.
+      This may not actually be neccesary, but take from:
+      https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_sort_and_per_page.html.erb
+  %>
+  <div class="batch-info">
+    <div>
+      <%= render partial: 'collections/form_for_select_collection', locals: { user_collections: @user_collections }  %>
+    </div>
+
+    <% if params[:action] == "edit" && @response.response['numFound'] > 1 %>
+      <div class="batch-toggle">
+        <% session[:batch_edit_state] = "on" %>
+        <%= button_for_remove_selected_from_collection collection %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# now we just call out to our own overridden catalog/search_header
+      Note we are also setting blacklight_config.index.collection_actions["view_type_group"] in CollectionsController,
+      to use the catalog view_type_group partial instead of the overridden sufia one which doesn't have
+      the same classes
+  %>
+  <%= render 'catalog/search_header' %>
+
 
 <%#  replacing `render_document_index @member_docs` %>
   <%# not sure what some of this is about, but this is extracted from:
