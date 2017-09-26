@@ -18,6 +18,7 @@ module CHF
     end
 
     def urls_to_catalog
+      return [] unless @solr_document.related_url.present?
       @urls_to_catalog ||= @solr_document.related_url.find_all do |url|
         url.start_with? "http://othmerlib.chemheritage.org/record="
       end
