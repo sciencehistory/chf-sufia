@@ -55,11 +55,11 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
     </div>
   </div>
 
-  <div class="row">
-    <h2 class="col-sm-6 col-md-7 col-lg-6 h3 brand-alt-h3">
-          Search within this Collection
+  <div class="row chf-collection-search">
+    <h2 class="chf-collection-search-title">
+          Search within the <%= @presenter.title.first %>
     </h2>
-    <div class="col-sm-6 col-md-5 col-lg-6"><%= render 'search_form', presenter: @presenter %></div>
+    <div class="chf-collection-search-form"><%= render 'search_form', presenter: @presenter %></div>
   </div>
 
 
