@@ -1,3 +1,5 @@
+/* Search results, some styles also used for search results on collections show page */
+
 /* Remove brokenly styled numbers on search results */
 ol.catalog {
   list-style: none;
@@ -187,6 +189,10 @@ ol.catalog {
 
       text-align: right;
       margin-top: 4px;
+    }
+
+    img {
+      max-width: 100%;
     }
   }
 

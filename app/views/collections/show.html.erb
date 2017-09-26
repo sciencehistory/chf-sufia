@@ -1,0 +1,77 @@
+<%# overridden from sufia to:
+
+    * unwrap some of the layers of partial indirection, to make it easier to:
+    * use something for search results and sort/per-page that's more like our
+      standard search results (but still with special collections controls? not sure if needed.)
+    * cleaner layout of top collection description part, using more flexbox less bootstrap
+
+The underlying code in stack is a mess, so this override seems perhaps likely to break on future upgrades.
+%>
+
+<% provide :page_title, construct_page_title(@presenter.title) %>
+<div itemscope itemtype="http://schema.org/CollectionPage" class="row">
+  <div class="col-sm-10 pull-right">
+    <header>
+      <%= render 'collection_title', presenter: @presenter %>
+    </header>
+    <%= render 'collection_description', presenter: @presenter %>
+
+    <% unless has_collection_search_parameters? %>
+      <%= render 'collections/show_descriptions' %>
+    <% end %>
+  </div>
+  <div class="col-sm-2">
+    <%= render 'collections/media_display', presenter: @presenter %>
+    <% unless has_collection_search_parameters? %>
+      <%= render 'collections/show_actions', presenter: @presenter %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <h2 class="col-xs-6 col-md-7 col-lg-6">
+    <% if has_collection_search_parameters? %>
+        Search Results within this Collection
+    <% else %>
+        Items in this Collection
+    <% end %>
+  </h2>
+  <div class="col-xs-6 col-md-5 col-lg-6"><%= render 'search_form', presenter: @presenter %></div>
+</div>
+
+<%= render 'sort_and_per_page', collection: @presenter %>
+
+<%#  replacing `render_document_index @member_docs` %>
+  <%# not sure what some of this is about, but this is extracted from:
+      https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_document_list.html.erb
+
+      which ends up being called by `render_document_index` %>
+
+  <% @all_checked = false %>
+  <% @user = current_user %>
+
+  <% if @member_docs.empty? %>
+    <div class="alert alert-warning" role="alert"><%= t('sufia.collection.document_list.no_visible_works') %></div>
+  <% else %>
+    <% @document_list = @member_docs %>
+    <% if params[:action] == "edit" %>
+      <%= render partial:'my/_index_partials/default_group', locals:{documents: @member_docs, docs:@member_docs} %>
+    <% else %>
+      <%# this part we override to render our own thing instead of sufia's thing for individual
+           results. Used to be:  `render partial: 'show_document_list', locals:{documents: documents}`, which
+           would be: https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_show_document_list.html.erb %>
+      <ul class="list-unstyled">
+        <%# this assumes all members are GenericWorks suitable for rendering by this partial. Couldn't figure
+            out how to use Blacklight core stuff to choose the item-specific partial correctly. Sorry, fragile, yes. %>
+        <%= render partial: "curation_concerns/generic_works/generic_work", collection: @member_docs %>
+      </ul>
+    <% end %>
+  <% end %>
+
+<%# end replacing `render_document_index @member_docs/ %>
+
+
+
+<%# render_document_index @member_docs %>
+
+<%= render 'paginate' %>
