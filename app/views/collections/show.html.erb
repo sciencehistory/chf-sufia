@@ -102,4 +102,21 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
 
 <%# render_document_index @member_docs %>
 
-<%= render 'paginate' %>
+<%# render 'paginate' %>
+
+<%# copied from our customized catalog/results_pagination, sorry no DRY, it's beyond me at this point %>
+
+<% if show_pagination? and @response.total_pages > 1 %>
+    <%# expanded will be shown by CSS at large screen sizes, else compact %>
+
+    <div class="pagination pagination-alt-expanded">
+      <%= paginate @response, :window => 2, :outer_window => 0, :theme => 'twitter-bootstrap-3' %>
+    </div>
+
+    <div class="pagination pagination-alt-compact">
+      <%= paginate @response, :page_entries_info => page_entries_info(@response), :theme => 'blacklight_compact' %>
+    </div>
+
+<% end %>
+
+
