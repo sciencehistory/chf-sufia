@@ -44,7 +44,7 @@ module Chf
     # helpers. Also how many times we called `doc_presenter` in this logic
     # suggests this may be the right place for it.
     def render_num_members
-      if num_members
+      if num_members && num_members > 1
         label = view_context.number_with_delimiter(num_members) + ' item'.pluralize(num_members)
 
         view_context.content_tag("div", class: "chf-results-list-item-num-members") do
