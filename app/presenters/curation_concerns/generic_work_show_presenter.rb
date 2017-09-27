@@ -12,6 +12,40 @@ module CurationConcerns
       :printer_of_plates, :after, :thumbnail_path,
       to: :solr_document
 
+    # to make it more like a Blacklight presenter, so we can use
+    # logic in common, it needs a viewcontet. We'll override
+    # method in controller to make sure it gets set. Hacky, but this
+    # is what we're doing.
+    attr_accessor :view_context
+
+    # Don't entirely understand what this is doing, but it returns
+    # some 'collection presenters', zero to many, each item is a parent work presenter.
+    def parent_work_presenters
+      # no idea why we have to `flatten`, the stack `grouped_presenters` method is
+      # confusing and barely documented.
+      @parent_work_presenters ||= grouped_presenters(filtered_by: "generic_work").values.flatten
+    end
+
+    # similar to parent_work_presenters, but for collections. Yes, this is all confusing.
+    def in_collection_presenters
+      @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
+    end
+
+    def catalog_bib_numbers
+      @catalog_big_numbers ||= solr_document.identifier.
+        find_all { |id| id.start_with?("bib-") }.
+        collect { |id| id.gsub(/\Abib-/, '').downcase }.
+        # sometimes have an extra digit, should never have more than b+7
+        # https://github.com/chemheritage/chf-sufia/issues/862
+        collect { |id| id.slice(0, 8) }
+    end
+
+    def urls_to_catalog
+      @urls_to_catalog ||= catalog_bib_numbers.collect do |bib_num|
+        "http://othmerlib.chemheritage.org/record=#{CGI.escape bib_num}"
+      end
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end
@@ -99,5 +133,59 @@ module CurationConcerns
     def representative_width
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
     end
+
+    # handy for use with field_value below
+    def has_values_for?(field_name)
+      solr_document[field_name].present?
+    end
+
+    # Copied from Blacklight presenter, so we can use the same logic we use in 'index'
+    # presenters here.
+    #
+    # https://github.com/projectblacklight/blacklight/blob/v6.11.2/app/presenters/blacklight/index_presenter.rb#L54-L57
+    #
+    # Render the index field label for a document
+    #
+    # Allow an extention point where information in the document
+    # may drive the value of the field
+    # @param [String] field
+    # @param [Hash] options
+    # @option options [String] :value
+    def field_value field, options = {}
+      field_config = field_config(field)
+      field_values(field_config, options)
+    end
+
+    private
+
+      # Copied from Blacklight presenter, so we can use the same logic we use in 'index'
+      # presenters here.
+      #
+      # https://github.com/projectblacklight/blacklight/blob/v6.11.2/app/presenters/blacklight/index_presenter.rb#L96
+      #
+      #
+      # Get the value for a document's field, and prepare to render it.
+      # - highlight_field
+      # - accessor
+      # - solr field
+      #
+      # Rendering:
+      #   - helper_method
+      #   - link_to_search
+      # @param [Blacklight::Configuration::Field] field_config solr field configuration
+      # @param [Hash] options additional options to pass to the rendering helpers
+      def field_values(field_config, options={})
+        Blacklight::FieldPresenter.new(view_context, solr_document, field_config, options).render
+      end
+
+      # Copied from Blacklight presenter, so we can use the same logic we use in 'index'
+      # presenters here. BUT take configuration from CatalogController
+      #
+      # https://github.com/projectblacklight/blacklight/blob/v6.11.2/app/presenters/blacklight/index_presenter.rb#L100
+      def field_config(field)
+        ::CatalogController.blacklight_config.index_fields.fetch(field) { Blacklight::Configuration::NullField.new(field) }
+      end
+
+
   end
 end

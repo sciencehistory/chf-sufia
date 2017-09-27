@@ -3,8 +3,15 @@
 
   .work-show-admin {
     text-align: right;
+    margin-bottom: $line-height-computed;
   }
 
+
+  $column-gutter: 20px;
+  $max-image-column: 545px;
+  // this is the point the image column is 'naturally' 525px, any bigger it's 'naturally' bigger
+  $max-image-column-breakpoint: 1150px;
+  $thumb-horizontal-margin: 4px;
 
   @media (min-width: $screen-sm-min) {
     .work-show-representative, .work-show-metadata, .work-show-title {
@@ -15,6 +22,7 @@
     .work-show-representative {
       float: left;
       padding-left: 0;
+      padding-right: $column-gutter;
     }
 
     .work-show-metadata, .work-show-title {
@@ -23,43 +31,89 @@
     }
   }
 
-  // main one should have btn-primary colors.
-  .work-show-representative .show-page-image .show-page-image-bar .btn-primary:not(:hover):not(:active):not(:focus) {
-    background: transparentize($btn-primary-bg, .3);
-    border-color: darken($btn-primary-border, .3);
+  @media (min-width: $max-image-column-breakpoint) {
+    // some crazy CSS calc arithmatic to keep the main image and the thumbs under it
+    // at $max-image-column, with still column break centered.
+    .work-show-representative {
+      width: $max-image-column;
+    }
+    .work-show-title, .work-show-metadata {
+      width: calc(50% + (50% - #{$max-image-column}));
+    }
+
+
+    & { // work-show
+      width: calc(100% - (50% - #{$max-image-column}));
+      position: relative;
+      left: calc(50% - #{$max-image-column} - #{$column-gutter}) ;
+    }
+
+    .show-page-image-wrapper.thumb {
+      width: ($max-image-column / 3 - ($thumb-horizontal-margin * 3)) !important;
+    }
   }
-  // and be big big
-  .work-show-representative .show-page-image .show-page-image-bar .btn {
-    font-size: 125%;
+
+  .work-show-genre {
+    @extend %special-label;
+    margin-bottom: 5px;
+  }
+
+  .work-show-permission-badge {
+    font-size: 16px;
+    margin-bottom: 15px;
+    .label {
+      font-size: $font-size-base - 2px;
+    }
+  }
+
+  .work-show-title {
+    margin-bottom: $font-size-base;
   }
 
   header h1 {
+    @extend .h2;
+    @extend .brand-alt-h2;
     margin-top: 0;
+    margin-bottom: 0;
   }
 
-  .additional-titles {
-    h2 {
-      @extend h4;
+  .additional-titles, .parent-works {
+    margin-bottom: 0;
+    &, h2 {
+      font-family: $brand-alt-header-font;
+      font-weight: normal;
+      @extend h3;
+      margin-bottom: 0;
+      margin-top: $font-size-base;
     }
+  }
+
+  .work-show-date {
+    ul {
+      @extend .list-unstyled;
+      margin-bottom: 0;
+    }
+    margin-top: $font-size-base;
   }
 
   .rights-and-social {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
     padding: 15px 0;
 
+
     .rights-statement.large, .social-media {
-      flex: 1;
-      flex-basis: 170px;
       padding: 0;
-      margin: 0;
+      margin-bottom: $line-height-computed / 2;
     }
+
+    .rights-statement.large {
+      margin-right: $line-height-computed;
+    }
+
     .social-media {
-      @media (min-width: $screen-lg-min) {
-        text-align: right;
-       }
+      padding-top: 12px;
     }
   }
 
@@ -69,18 +123,67 @@
     @include clearfix;
 
     .rights-statement-logo {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       float: left;
       margin-right: 0.5em;
+      margin-top: 4px;
     }
     .rights-statement-label {
+      display: inline-block;
       font-size: 18px;
-      line-height: 1;
+      line-height: 1.2;
       text-transform: uppercase;
-      font-weight: bold;
-      line-height: 1
+      letter-spacing: 0.03em;
+      font-weight: $semi-bold-weight;
     }
+  }
+
+  .work_description p {
+    max-width: 565px; // more readable length for text at this font/size
+  }
+
+
+
+  $attribute-cell-padding: 0.66em;
+  .chf-attributes {
+    @extend .table;
+    @extend .table-condensed;
+    width: 100%;
+    table-layout: fixed;
+    overflow: hidden;
+
+    & > tbody > tr:first-child  {
+      td, th {
+        border-top: 3px solid $table-border-color;
+      }
+    }
+
+    td, th {
+      vertical-align: baseline;
+      padding-top: $attribute-cell-padding;
+      padding-bottom: $attribute-cell-padding;
+    }
+    th {
+      font-weight: normal;
+      width: 33%;
+      padding-right: $attribute-cell-padding;
+    }
+    td {
+      width: 67%;
+    }
+    td ul {
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .attribute-sub-head {
+    @extend .brand-alt-h3;
+    @extend .h3;
+    margin-top: $line-height-computed * 1.5;
+    margin-bottom: 0;
+    padding: $table-condensed-cell-padding;
   }
 
   // An image with overlaid action buttons and metadata, used for
@@ -88,7 +191,7 @@
   // elements are absolutely positioned within it.
   .show-page-image {
     position: relative;
-    cursor: pointer;
+    cursor: zoom-in;
 
     .show-page-image-image {
       // not sure why inline-block seems now neccesary to get JS aspectratio setting to work
@@ -104,7 +207,7 @@
     .show-page-member-title {
       position: absolute;
       padding: 7px;
-      top: 0;
+      bottom: 0;
       left: 0;
       right: 0;
       background: transparentize($brand-inverse, .3);
@@ -124,56 +227,68 @@
         border-bottom-right-radius: 0;
       }
     }
+  }
 
-    .show-page-image-bar {
-      position: absolute;
-      display: flex;
+  .show-page-image-wrapper.thumb {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 160px;
+    margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
+
+    img.show-page-image-image {
       width: 100%;
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      .btn-group {
-        width: 100%;
-        .btn { width: 100%; }
-        .dropdown-menu {
-          left: 5px;
-        }
+      &.lazyload, &.lazyloading {
+        background: #AAA asset-url('static-progress.svg') no-repeat;
+        background-position: center center;
+        background-size: 50%;
       }
-      & > button, & > .btn, & > .btn-group > button {
-        flex: 1;
-        border-radius: 0;
-      }
-      .btn-primary:not(:hover):not(:active):not(:focus) {
-        background: transparentize($brand-inverse, .3);
-        border-color: darken($brand-inverse, 5%);
-      }
+      vertical-align: bottom;
+      min-height: 100px; // just so it's something!
     }
 
-    &.thumb {
-      display: inline-block;
-      width: 160px;
-      margin: 4px 4px 0 0;
+    .btn {
+      @extend .btn-sm;
+      border-radius: 0;
+    }
 
-      img.show-page-image-image {
+    @media (min-width: $screen-sm-min) {
+      // 2 wide
+      width: calc( ((50% - #{$column_gutter}) / 2) - (#{$thumb-horizontal-margin} * 1));
+    }
+    @media (min-width: 1000px) {
+      // 3 wide
+      width: calc( ((50% - #{$column_gutter}) / 3) - (#{$thumb-horizontal-margin} * 2) + 3px ); // no idea why that extra +2px, but it lines up right
+    }
+  }
+
+  .show-page-image-bar {
+    margin-top: 4px;
+    display: flex;
+    width: 100%;
+
+    .btn-group {
+      width: 100%;
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
+      min-width: 0;
+
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
+
+      .btn {
         width: 100%;
-        &.lazyload, &.lazyloading {
-          background: #AAA asset-url('static-progress.svg') no-repeat;
-          background-position: center center;
-          background-size: 50%;
-        }
-        vertical-align: bottom;
-        min-height: 100px; // just so it's something!
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-
-      @media (min-width: $screen-sm-min) {
-        // 2 wide
-        width: calc(50% / 2 - 12px);
+      .dropdown-menu {
+        left: 5px;
       }
-      @media (min-width: $screen-lg-min) {
-        // 3 wide
-        width: calc(50% / 3 - 10px);
-      }
+    }
+    & > button, & > .btn, & > .btn-group > button {
+      flex: 1;
+      border-radius: 0;
     }
   }
 }
@@ -182,6 +297,9 @@
 // div, so has to be out here. Sorry that it's in this .scss file, work
 // in progress.
 .rights-statement-inline {
+  .rights-statement-label {
+    vertical-align: middle;
+  }
   // turn br into space
   .rights-statement-label br {
     content: " ";
@@ -191,6 +309,7 @@
   }
   .rights-statement-logo {
     width: 1em;
+    height: 1em;
     vertical-align: middle;
   }
 }

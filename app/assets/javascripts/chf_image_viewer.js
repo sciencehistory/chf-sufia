@@ -501,18 +501,6 @@ jQuery(document).ready(function($) {
       }
     });
 
-    // keyboard-tab and clicks on the overlay controls within thumb should
-    // not propagate to click on thumb itself!  Keyboard-tav return/space
-    // should trigger what the buttons do though.
-    $(document).on("keydown keypress click", ".show-page-image-bar button, .show-page-image-bar a", function(event) {
-      if (event.type == "click") {
-        event.stopPropagation();
-      } else if (event.which == 13 || event.which == 32) { // space or return
-        event.stopPropagation();
-        $(this).trigger("click");
-      }
-    });
-
     $(document).on("click", "*[data-trigger='chf_image_viewer_close']", function(event) {
       event.preventDefault();
       chf_image_viewer().hide();

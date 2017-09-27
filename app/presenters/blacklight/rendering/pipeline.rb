@@ -14,12 +14,12 @@ module Blacklight
     #       join_type: :sentence (default), :separator (just commas usually), or :list (a <ul>)
     #       search_type: TO BE DONE, NOT YET. facet or straight search.
     #
-
+    # 3) Use our custom ChfLinkToFacet instead of LinkToFacet step, which fixes it's own issues.
     class Pipeline
       class_attribute :operations
 
       # The ordered list of pipeline operations
-      self.operations = [HelperMethod, LinkToFacet, Microdata, Join]
+      self.operations = [HelperMethod, ChfLinkToFacet, Microdata, Join]
 
       def initialize(values, config, document, context, options)
         @values = values
@@ -28,7 +28,7 @@ module Blacklight
         @context = context
         @options = options
 
-        self.operations = [HelperMethod, LinkToFacet, Microdata]
+        self.operations = [HelperMethod, ChfLinkToFacet, Microdata]
         self.operations << case options[:join_type]
           when :sentence, nil
             Join
@@ -67,7 +67,7 @@ module Blacklight
           return "" unless values.present?
 
           separator = options[:separator] || I18n.t("support.array.words_connector") || ", "
-          separated_values = values.zip([separator] * (values.size - 1))
+          separated_values = values.zip([separator] * (values.size - 1)).flatten
           next_step(
             safe_join(separated_values)
           )

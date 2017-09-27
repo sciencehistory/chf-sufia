@@ -1,6 +1,6 @@
 <% provide :page_title, @presenter.page_title %>
 
-<div class="work-show" itemscope itemtype="http://schema.org/CreativeWork" class="row">
+<div class="work-show" itemscope <%= @presenter.microdata_type_to_html %> class="row">
 
   <% if current_ability.current_user.staff? %>
     <div class="work-show-admin">
@@ -11,7 +11,18 @@
 
   <div class="work-show-title">
     <header>
-      <%= @presenter.permission_badge %>
+      <% if @presenter.needs_permission_badge? %>
+        <div class="work-show-permission-badge">
+          <%= @presenter.permission_badge %>
+        </div>
+      <% end %>
+
+      <% if @presenter.has_values_for?(Solrizer.solr_name("genre_string", :stored_searchable)) %>
+        <div class="work-show-genre">
+          <%= @presenter.field_value(Solrizer.solr_name("genre_string", :stored_searchable), join_type: :separator) %>
+        </div>
+      <% end %>
+
       <h1><%= @presenter.title.first %></h1>
 
       <% if @presenter.additional_title.present? %>
@@ -21,6 +32,21 @@
           <% end %>
         </ul>
       <% end %>
+
+      <% if @presenter.parent_work_presenters.present? %>
+        <ul class="parent-works list-unstyled">
+          <% @presenter.parent_work_presenters.each do |parent| %>
+            <li>Part of <%= link_to Array(parent.title).first, [main_app, parent] %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <% if @presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
+        <div class="work-show-date">
+          <%= @presenter.field_value(Solrizer.solr_name("date_of_work", :stored_searchable), join_type: :list) %>
+        </div>
+      <% end %>
+
     </header>
   </div>
 
@@ -32,6 +58,10 @@
               <%= image_tag(@presenter.rights_icon, class: "rights-statement-logo")  %>
               <span class="rights-statement-label"><%= @presenter.rights_icon_label %></span>
             <% end %>
+        <% else %>
+          <%# hacky spacer to keep flexbox intact and social-media on the right even
+              if there's no rights %>
+          <div class="rights-placeholder"></div>
         <% end %>
         <%= render 'social_media' %>
       </div>
@@ -40,11 +70,96 @@
 
   <div class="work-show-metadata">
     <%= render 'work_description', presenter: @presenter %>
-    <%= render 'relationships', presenter: @presenter %>
-    <%= render 'metadata', presenter: @presenter %>
+
+    <table class="<%= dom_class(@presenter) %> chf-attributes">
+        <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:author, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:addressee, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:creator_of_work, render_as: :faceted, search_field: 'maker_facet' ) %>
+        <%= @presenter.attribute_to_html(:engraver, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:interviewee, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:interviewer, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:manufacturer, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:photographer, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:contributor, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:after, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:printer, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:printer_of_plates, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:publisher, render_as: :faceted, search_field: 'maker_facet') %>
+        <%= @presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
+        <%= @presenter.attribute_to_html(:place_of_creation, render_as: :faceted, search_field: 'place_facet') %>
+        <%= @presenter.attribute_to_html(:place_of_interview, render_as: :faceted, search_field: 'place_facet') %>
+        <%= @presenter.attribute_to_html(:place_of_manufacture, render_as: :faceted, search_field: 'place_facet') %>
+        <%= @presenter.attribute_to_html(:place_of_publication, render_as: :faceted, search_field: 'place_facet') %>
+        <%= @presenter.attribute_to_html(:resource_type, render_as: :faceted, label: "Format" ) %>
+        <%= @presenter.attribute_to_html(:genre_string, render_as: :faceted) %>
+        <%= @presenter.attribute_to_html(:medium, render_as: :faceted) %>
+        <%= @presenter.attribute_to_html(:extent) %>
+        <%= @presenter.attribute_to_html(:language, render_as: :faceted ) %>
+        <%= @presenter.attribute_to_html(:inscription) %>
+        <%= @presenter.attribute_to_html(:subject, render_as: :faceted ) %>
+
+        <%= @presenter.attribute_to_html(:rights, render_as: :rights) %>
+        <%= @presenter.attribute_to_html(:rights_holder) %>
+        <%= @presenter.attribute_to_html(:related_url, render_as: :chf_related_url) %>
+        <%= @presenter.attribute_to_html(:credit_line) %>
+        <%= @presenter.attribute_to_html(:additional_credit) %>
+    </table>
+
+
+    <h2 class="attribute-sub-head">Physical location</h2>
+    <table class="<%= dom_class(@presenter) %> chf-attributes">
+        <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
+        <%= @presenter.attribute_to_html(:exhibition) %>
+
+        <% if @presenter.in_collection_presenters.present? %>
+          <tr>
+            <th>Collection</th>
+            <td>
+              <ul class="tabular">
+                <% @presenter.in_collection_presenters.each do |parent| %>
+                  <li><%= link_to Array(parent.title).first, [main_app, parent] %></li>
+                <% end %>
+              </ul>
+            </td>
+        <% end %>
+
+        <%= @presenter.attribute_to_html(:series_arrangement) %>
+        <%= @presenter.attribute_to_html(:physical_container) %>
+
+        <% if @presenter.urls_to_catalog.present? %>
+          <tr>
+            <td colspan=2 class="catalog-links">
+            <% @presenter.urls_to_catalog.each do |url| %>
+              <%= content_tag "a", "View in library catalog", href: url %>
+            <% end %>
+            </td>
+          </tr>
+        <% end %>
+    </table>
+
+    <%# TODO get rid of _attribute_rows entirely, no longer using? %>
+
     <% if current_ability.current_user.staff? %>
-      <%= t('.last_modified', value: @presenter.date_modified) %>
+      <h2 class="attribute-sub-head">Staff-only information</h2>
+
+      <table class="<%= dom_class(@presenter) %> chf-attributes">
+        <tr>
+          <th>Last modified</th>
+          <td><%= @presenter.date_modified %></td>
+        </tr>
+
+        <%= @presenter.attribute_to_html(:identifier, render_as: :identifier) %>
+        <%= @presenter.attribute_to_html(:file_creator) %>
+        <%= @presenter.attribute_to_html(:admin_note) %>
+        <%= @presenter.attribute_to_html(:embargo_release_date, render_as: :date) %>
+        <%= @presenter.attribute_to_html(:lease_expiration_date, render_as: :date) %>
+        <%# CHF edit: remove rights; we put it higher up in the metadata list. %>
+      </table>
     <% end %>
+
+
+    <hr class="brand">
     <%= render 'citations', presenter: @presenter %>
   </div>
 
