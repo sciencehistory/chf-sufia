@@ -10,10 +10,11 @@
 
 %>
 <%= content_tag("div",
-      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes]),
-      data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)
+      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes])
     ) do %>
-  <%= content_tag("div", class: "show-page-image") do %>
+  <%= content_tag("div",
+                  class: "show-page-image",
+                  data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)) do %>
 
       <%= member_image_tag(parent_id: @presenter.id, member: member,
                            size_key: local_assigns[:size],

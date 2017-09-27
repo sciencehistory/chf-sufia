@@ -35,6 +35,9 @@ ol.catalog {
     border-color: $pagination-border;
     color: $text-color;
   }
+  &.chf-pagination > li > a, &.chf-pagination > li > span {
+    border: none;
+  }
 }
 // eyeballed for when to switch from full to compact pagination
 @media (max-width: 1010px) {

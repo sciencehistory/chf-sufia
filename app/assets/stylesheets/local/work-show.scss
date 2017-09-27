@@ -16,6 +16,14 @@
   $max-image-column-breakpoint: 1150px;
   $thumb-horizontal-margin: 4px;
 
+
+  .work-show-representative {
+    max-width: $max-image-column; // even when collapsed to no columns
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
   @media (min-width: $screen-sm-min) {
     .show-representative, .show-metadata, .show-title {
       width: 50%;

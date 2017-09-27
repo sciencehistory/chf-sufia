@@ -25,9 +25,6 @@ en:
       defaults:
         files: '' # no file hint for now
   views:
-    pagination:
-      next: "Next"
-      previous: "Previous"
     pagination_compact:
       next: "Next" # get rid of ugly unicode carets
       previous: "Previous" # get rid of ugly unicode carets

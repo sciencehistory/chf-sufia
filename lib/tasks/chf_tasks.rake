@@ -59,13 +59,20 @@ namespace :chf do
     end
   end
 
-  desc 'Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`'
+  desc 'Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"'
   task create_derivatives: :environment do
     require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
 
-    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
-    Sufia.primary_work_type.all.find_each do |work|
+    condition = if ENV['WORK_IDS'].present?
+      { id: ENV['WORK_IDS'].split(",") }
+    else
+      {}
+    end
+
+    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+
+    Sufia.primary_work_type.find_each(condition) do |work|
       work.file_sets.each do |fs|
         fs.files.each do |file|
           filename = CurationConcerns::WorkingDirectory.find_or_retrieve(file.id, fs.id)
@@ -258,18 +265,32 @@ namespace :chf do
     end
 
 
-    # To lazy-create, call as `rake chf:dzi:push_all[lazy]`
+    # To lazy-create, call as `rake chf:dzi:push_all[lazy]`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"
     desc "create and push all dzi to s3"
     task :push_all, [:option_list] => :environment do |t, args|
       lazy = args.to_a.include?("lazy")
       backtrace = args.to_a.include?("backtrace")
 
-      errors = []
-      total = FileSet.count
-      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e", :smoothing => 0.5)
 
+      condition = if ENV['WORK_IDS'].blank? && ENV['FILE_SET_IDS'].blank?
+        []
+      else
+        { id: [] }.tap do |h|
+          if ENV['WORK_IDS'].present?
+            h[:id].concat GenericWork.where(id: ENV['WORK_IDS'].split(",")).collect(&:file_set_ids).flatten
+          end
+          if ENV['FILE_SET_IDS'].present?
+            h[:id].concat ENV['FILE_SET_IDS'].split(",")
+          end
+        end
+      end
+
+      errors = []
+      total = FileSet.where(condition).count
+      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e", :smoothing => 0.5)
+      $stderr.puts "Creating dzi for #{total} filesets"
       # Get this from Solr instead would be faster, but it's a pain
-      FileSet.find_each do |fs|
+      FileSet.find_each(condition) do |fs|
         begin
           # A bit expensive to get all the id and checksums, is there a faster way? Not sure.
           file = fs.original_file

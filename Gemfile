@@ -21,9 +21,9 @@ gem 'oauth2', '1.2.0'
 # used in some rake tasks, some of which we may want ot run on production.
 gem 'ruby-progressbar', '~> 1.0'
 
-gem 'html_aware_truncation', '~> 1.0'
+gem 'tty-command'
 
-gem "bootstrap-kaminari-views"
+gem 'html_aware_truncation', '~> 1.0'
 
 # extras
 gem 'hydra-role-management'
@@ -54,7 +54,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
-
 
 gem 'honeybadger', '~> 3.1'
 
