@@ -30,12 +30,8 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
       </header>
     </div>
 
-    <div class="show-representative">
-      <%= render 'collections/media_display', presenter: @presenter %>
-    </div>
-
     <div class="show-metadata">
-      <p class="show-item-count"><%= pluralize(@presenter.total_items, "item") %></p>
+      <p class="show-item-count"><%= number_with_delimiter(@presenter.total_items) + ' item'.pluralize(@presenter.total_items) %></p>
 
       <%= render 'collection_description', presenter: @presenter %>
 
@@ -57,7 +53,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
   </div>
 
   <% if @presenter.total_items > blacklight_config.default_per_page %>
-    <div class="row chf-collection-search">
+    <div class="chf-collection-search">
       <h2 class="chf-collection-search-title">
             Search within the <%= @presenter.title.first %>
       </h2>
