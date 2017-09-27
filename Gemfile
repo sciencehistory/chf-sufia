@@ -25,8 +25,6 @@ gem 'tty-command'
 
 gem 'html_aware_truncation', '~> 1.0'
 
-gem "bootstrap-kaminari-views"
-
 # extras
 gem 'hydra-role-management'
 gem 'highline'
