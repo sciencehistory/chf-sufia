@@ -152,7 +152,7 @@
   }
 
   .work_description p {
-    max-width: 565px; // more readable length for text at this font/size
+    max-width: $max-readable-width;
   }
 
 

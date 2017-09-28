@@ -3,6 +3,9 @@
 
 .collection-show {
   padding: 0 15px;
+  max-width: $screen-md-min - 1;
+  margin-left: auto;
+  margin-right: auto;
 
   .actions-controls-collections {
     margin: 0 0 $line-height-computed 0;
@@ -33,9 +36,14 @@
     }
   }
 
+  .collection_description {
+    max-width: $max-readable-width;
+  }
+
 
   .chf-attributes {
     margin-left: -5px; // make the cell text line up with paragraphs above, hacky
+    max-width: ($max-readable-width / 0.66);
   }
 
   .chf-collection-search {
@@ -58,5 +66,11 @@
 
   .chf-attributes>tbody>tr:first-child td, .chf-attributes>tbody>tr:first-child th {
     border-top: 0; // nope, not here.
+  }
+
+  .collection-items {
+    .chf-results-list-item-description, .chf-results-list-values {
+      max-width: $long-max-readable-width;
+    }
   }
 }

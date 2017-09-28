@@ -112,7 +112,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
         <%# this part we override to render our own thing instead of sufia's thing for individual
              results. Used to be:  `render partial: 'show_document_list', locals:{documents: documents}`, which
              would be: https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_show_document_list.html.erb %>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled collection-items">
           <%# this assumes all members are GenericWorks suitable for rendering by this partial. Couldn't figure
               out how to use Blacklight core stuff to choose the item-specific partial correctly. Sorry, fragile, yes.
 
