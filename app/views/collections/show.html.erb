@@ -9,6 +9,8 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
 %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
+<% provide :suppress_layout_constraints, true %>
+
 <div itemscope itemtype="http://schema.org/CollectionPage" class="collection-show">
 
   <div class="show-admin">

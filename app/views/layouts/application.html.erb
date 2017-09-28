@@ -26,6 +26,13 @@
     <%# CHF hard-code 'controls' here instead of relying on it being supplied as content_for(:navbar) %>
     <%= render '/controls' %>
 
+    <%# chf put constraints up here right under the search bar always %>
+    <% unless content_for(:suppress_layout_constraints) %>
+      <div class="chf-constraints-wrapper">
+        <%= render 'catalog/constraints' %>
+      </div>
+    <% end %>
+
     <%= render partial: '/flash_msg' %>
     <%= content_for(:precontainer_content) %>
     <div id="content-wrapper" class="<%= content_for?(:container_class) ? yield(:container_class) : 'chf-container-fluid' %>" role="main">
