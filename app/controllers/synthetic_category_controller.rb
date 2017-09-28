@@ -6,8 +6,12 @@ class SyntheticCategoryController < ApplicationController
     # include Blacklight::AccessControls::Catalog
     include Blacklight::Base
 
-    # ??
     copy_blacklight_config_from(::CatalogController)
+
+    # Override to use the sort_widget from catalog, not the sufia override. What are we missing
+    # from the sufia override? Not sure! But it didn't CSS style correctly.
+    view_type_action = blacklight_config.index.collection_actions["view_type_group"]
+    view_type_action.partial = "catalog/view_type_group" if view_type_action
 
     def show
       unless synthetic_category
@@ -22,7 +26,7 @@ class SyntheticCategoryController < ApplicationController
     # Get controller to find templates in CollectionController too,
     # so we can re-use more of the sufia stuff for collection. Messy messy.
     def self.local_prefixes
-      @local_prefixes ||= super.push('collections')
+      @local_prefixes ||= super.concat ['collections', 'catalog']
     end
 
     def synthetic_category
@@ -43,6 +47,12 @@ class SyntheticCategoryController < ApplicationController
       @results ||= @response.documents
     end
     helper_method :results
+
+    def total_count
+      # improvement, cache somewhere?
+      @total_count ||= repository.search( search_builder.with(params.merge(rows: 0)).query).total
+    end
+    helper_method :total_count
 
 
     # Override helper method to insist on :list type, that's all we

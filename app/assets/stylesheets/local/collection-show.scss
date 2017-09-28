@@ -12,6 +12,7 @@
     .collection-desc {
       flex-grow: 1;
       flex-shrink: 1;
+      padding-bottom: $line-height-computed;
     }
     .collection-thumb {
       width: 266px;
@@ -20,6 +21,9 @@
       margin-bottom: $line-height-computed;
       @media (max-width: $grid-float-breakpoint-max) {
         display: none;
+      }
+      img {
+        max-width: 100%;
       }
     }
   }
@@ -60,6 +64,7 @@
 
   .chf-attributes {
     margin-left: -5px; // make the cell text line up with paragraphs above, hacky
+    margin-bottom: 0;
     max-width: ($max-readable-width / 0.67);
 
     // since our first row is a colspan=2, we need to turn off table-layout fixed,
