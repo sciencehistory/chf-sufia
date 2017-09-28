@@ -25,7 +25,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
             </div>
           <% end %>
 
-          <div class="show-genre">Collection</div>
+          <div class="show-genre"><%= link_to "Collections", collections_path %></div>
           <h1><%= @presenter.title.first %></h1>
         </header>
       </div>
