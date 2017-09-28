@@ -76,6 +76,7 @@
     margin-bottom: $line-height-computed;
     padding: ($line-height-computed / 2);
     background-color: $bg-lightly-shaded;
+    display: inline-block;
 
     .chf-collection-search-title {
       @extend .h4, .brand-alt-h4;
