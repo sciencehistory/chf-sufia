@@ -12,5 +12,19 @@ module CHF
     def thumbnail_src(default: 'default_collection.svg')
       self.class.thumbnail_src(self.solr_document, default: default)
     end
+
+    def needs_permission_badge?
+      solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    end
+
+    def urls_to_catalog
+      return [] unless @solr_document.related_url.present?
+      @urls_to_catalog ||= @solr_document.related_url.find_all do |url|
+        url.start_with? "http://othmerlib.chemheritage.org/record="
+      end
+    end
+
+
+
   end
 end

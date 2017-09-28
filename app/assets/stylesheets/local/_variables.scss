@@ -11,6 +11,10 @@ $brand-alt-header-weight: 700;
 $special-label-muted-color: #888;
 $brand-highlight-color: #f15c2b; // an orange used on Distillations website, perhaps use as an alterante highlight sitewide
 
+// Maximum line length we judge to be readable at standard base font size.
+// Used to constrain some block text areas on large screens.
+$max-readable-width: 565px;
+$long-max-readable-width:  725px; // unclear how readable it really is, but we do it sometimes anyway
 
 // open sans has a convenient medium/semi-bold weight
 $semi-bold-weight: 600;

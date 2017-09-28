@@ -1,0 +1,42 @@
+$attribute-cell-padding: 0.66em;
+
+.chf-attributes {
+  @extend .table;
+  @extend .table-condensed;
+  width: 100%;
+  table-layout: fixed;
+  overflow: hidden;
+
+  & > tbody > tr:first-child  {
+    td, th {
+      border-top: 3px solid $table-border-color;
+    }
+  }
+
+  td, th {
+    vertical-align: baseline;
+    padding-top: $attribute-cell-padding;
+    padding-bottom: $attribute-cell-padding;
+  }
+  th { // horizontal label
+    font-weight: normal;
+    width: 33%;
+    max-width: 185px;
+    padding-right: $attribute-cell-padding;
+  }
+  td {
+    width: 67%;
+  }
+  td ul {
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+}
+
+.attribute-sub-head {
+  @extend .brand-alt-h3;
+  @extend .h3;
+  margin-top: $line-height-computed * 1.5;
+  margin-bottom: 0;
+  padding: $table-condensed-cell-padding;
+}

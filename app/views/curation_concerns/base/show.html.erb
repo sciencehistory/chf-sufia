@@ -3,22 +3,22 @@
 <div class="work-show" itemscope <%= @presenter.microdata_type_to_html %> class="row">
 
   <% if current_ability.current_user.staff? %>
-    <div class="work-show-admin">
+    <div class="show-admin">
       <%= render "show_actions", presenter: @presenter %>
       <%= render 'workflow_actions_widget', presenter: @presenter %>
     </div>
   <% end %>
 
-  <div class="work-show-title">
+  <div class="show-title">
     <header>
       <% if @presenter.needs_permission_badge? %>
-        <div class="work-show-permission-badge">
+        <div class="show-permission-badge">
           <%= @presenter.permission_badge %>
         </div>
       <% end %>
 
       <% if @presenter.has_values_for?(Solrizer.solr_name("genre_string", :stored_searchable)) %>
-        <div class="work-show-genre">
+        <div class="show-genre">
           <%= @presenter.field_value(Solrizer.solr_name("genre_string", :stored_searchable), join_type: :separator) %>
         </div>
       <% end %>
@@ -42,7 +42,7 @@
       <% end %>
 
       <% if @presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
-        <div class="work-show-date">
+        <div class="show-date">
           <%= @presenter.field_value(Solrizer.solr_name("date_of_work", :stored_searchable), join_type: :list) %>
         </div>
       <% end %>
@@ -50,7 +50,7 @@
     </header>
   </div>
 
-  <div class="work-show-representative">
+  <div class="show-representative">
       <%= show_page_representative_media(@presenter) %>
       <div class="rights-and-social">
         <% if @presenter.has_rights_statement? %>
@@ -68,7 +68,7 @@
   </div>
 
 
-  <div class="work-show-metadata">
+  <div class="show-metadata">
     <%= render 'work_description', presenter: @presenter %>
 
     <table class="<%= dom_class(@presenter) %> chf-attributes">

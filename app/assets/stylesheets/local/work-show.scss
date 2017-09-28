@@ -1,7 +1,10 @@
+// Has some non-DRY things shared with collection-show.scss that could/should
+// be abstracted out into mixins or shared classes.
+
 .work-show {
   padding: 0 15px;
 
-  .work-show-admin {
+  .show-admin {
     text-align: right;
     margin-bottom: $line-height-computed;
   }
@@ -22,18 +25,18 @@
 
 
   @media (min-width: $screen-sm-min) {
-    .work-show-representative, .work-show-metadata, .work-show-title {
+    .show-representative, .show-metadata, .show-title {
       width: 50%;
       padding: 0 15px;
       display: inline-block;
     }
-    .work-show-representative {
+    .show-representative {
       float: left;
       padding-left: 0;
       padding-right: $column-gutter;
     }
 
-    .work-show-metadata, .work-show-title {
+    .show-metadata, .show-title {
       float: right;
       padding-right: 0;
     }
@@ -42,10 +45,10 @@
   @media (min-width: $max-image-column-breakpoint) {
     // some crazy CSS calc arithmatic to keep the main image and the thumbs under it
     // at $max-image-column, with still column break centered.
-    .work-show-representative {
+    .show-representative {
       width: $max-image-column;
     }
-    .work-show-title, .work-show-metadata {
+    .show-title, .show-metadata {
       width: calc(50% + (50% - #{$max-image-column}));
     }
 
@@ -61,12 +64,13 @@
     }
   }
 
-  .work-show-genre {
+  .show-genre {
     @extend %special-label;
+    color: #888;
     margin-bottom: 5px;
   }
 
-  .work-show-permission-badge {
+  .show-permission-badge {
     font-size: 16px;
     margin-bottom: 15px;
     .label {
@@ -74,7 +78,7 @@
     }
   }
 
-  .work-show-title {
+  .show-title {
     margin-bottom: $font-size-base;
   }
 
@@ -96,7 +100,7 @@
     }
   }
 
-  .work-show-date {
+  .show-date {
     ul {
       @extend .list-unstyled;
       margin-bottom: 0;
@@ -148,51 +152,9 @@
   }
 
   .work_description p {
-    max-width: 565px; // more readable length for text at this font/size
+    max-width: $max-readable-width;
   }
 
-
-
-  $attribute-cell-padding: 0.66em;
-  .chf-attributes {
-    @extend .table;
-    @extend .table-condensed;
-    width: 100%;
-    table-layout: fixed;
-    overflow: hidden;
-
-    & > tbody > tr:first-child  {
-      td, th {
-        border-top: 3px solid $table-border-color;
-      }
-    }
-
-    td, th {
-      vertical-align: baseline;
-      padding-top: $attribute-cell-padding;
-      padding-bottom: $attribute-cell-padding;
-    }
-    th {
-      font-weight: normal;
-      width: 33%;
-      padding-right: $attribute-cell-padding;
-    }
-    td {
-      width: 67%;
-    }
-    td ul {
-      padding-left: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  .attribute-sub-head {
-    @extend .brand-alt-h3;
-    @extend .h3;
-    margin-top: $line-height-computed * 1.5;
-    margin-bottom: 0;
-    padding: $table-condensed-cell-padding;
-  }
 
   // An image with overlaid action buttons and metadata, used for
   // representative image and thumbs on show page. Internal overlay

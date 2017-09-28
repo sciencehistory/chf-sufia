@@ -1,0 +1,100 @@
+// Has some non-DRY things shared with work-show.scss that could/should
+// be abstracted out into mixins or shared classes.
+
+.collection-show {
+  padding: 0 15px;
+  max-width: $screen-md-min - 1;
+  margin-left: auto;
+  margin-right: auto;
+
+  .collection-top {
+    display: flex;
+    .collection-desc {
+      flex-grow: 1;
+      flex-shrink: 1;
+      padding-bottom: $line-height-computed;
+    }
+    .collection-thumb {
+      width: 266px;
+      flex-shrink: 0;
+      margin-left: 50px;
+      margin-bottom: $line-height-computed;
+      @media (max-width: $grid-float-breakpoint-max) {
+        display: none;
+      }
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .actions-controls-collections {
+    margin: 0 0 $line-height-computed 0;
+  }
+
+  .show-genre {
+    @extend %special-label;
+    color: #888;
+    margin-bottom: 5px;
+  }
+
+  .show-permission-badge {
+    font-size: 16px;
+    margin-bottom: 15px;
+    .label {
+      font-size: $font-size-base - 2px;
+    }
+  }
+
+  .show-title {
+    margin-bottom: ($line-height-computed / 2);
+
+    h1 {
+      @extend .h2;
+      @extend .brand-alt-h2;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .collection_description {
+    max-width: $max-readable-width;
+  }
+
+
+  .chf-attributes {
+    margin-left: -5px; // make the cell text line up with paragraphs above, hacky
+    margin-bottom: 0;
+    max-width: ($max-readable-width / 0.67);
+
+    // since our first row is a colspan=2, we need to turn off table-layout fixed,
+    // hacky, sorry.
+    table-layout: auto;
+  }
+
+  .chf-collection-search {
+    margin-bottom: $line-height-computed;
+    padding: ($line-height-computed / 2);
+    background-color: $bg-lightly-shaded;
+
+    .chf-collection-search-title {
+      @extend .h4, .brand-alt-h4;
+      margin: 0;
+    }
+
+    .input-group {
+      max-width: 470px;
+    }
+  }
+
+
+  .chf-attributes>tbody>tr:first-child td, .chf-attributes>tbody>tr:first-child th {
+    border-top: 0; // nope, not here.
+  }
+
+  .collection-items {
+    .chf-results-list-item-description, .chf-results-list-values {
+      max-width: $long-max-readable-width;
+    }
+  }
+}
