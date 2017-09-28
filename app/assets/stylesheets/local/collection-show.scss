@@ -7,6 +7,23 @@
   margin-left: auto;
   margin-right: auto;
 
+  .collection-top {
+    display: flex;
+    .collection-desc {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+    .collection-thumb {
+      width: 266px;
+      flex-shrink: 0;
+      margin-left: 50px;
+      margin-bottom: $line-height-computed;
+      @media (max-width: $grid-float-breakpoint-max) {
+        display: none;
+      }
+    }
+  }
+
   .actions-controls-collections {
     margin: 0 0 $line-height-computed 0;
   }
