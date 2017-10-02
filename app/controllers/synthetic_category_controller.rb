@@ -6,6 +6,8 @@ class SyntheticCategoryController < ApplicationController
     # include Blacklight::AccessControls::Catalog
     include Blacklight::Base
 
+    layout 'chf'
+
     copy_blacklight_config_from(::CatalogController)
 
     # Override to use the sort_widget from catalog, not the sufia override. What are we missing

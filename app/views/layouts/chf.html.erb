@@ -3,13 +3,17 @@
 
     But we have want to localize, to put breadcrumbs in a different place,
     result constraints in a differnet place, and stop using bootstrap column
-    layout (we use our own flexbox instead). (some of these are WIP)
+    layout (we use our own flexbox instead).
 
-    For the beginning, we are using this only on search results page, by
-    explicitly calling it as `layout` in our local CatalogController
+    We call this 'chf' and explicitly call it in public-user-facing
+    controllers we have redesigned to use it.
 
-    Trying this as `application` layout, but we can change it to a special
-    one just for catalog if we need to later.
+    Default sufia controllers, including admin controllers, are still
+    using default sufia layouts, whatever those are. Customizing header/footer
+    for those may have to be done differently than customizing for controllers
+    using these, sorry! Ideally we'd have them all using the same layout, but
+    couldn't get there. I think most admin pages end up using a `sufia` layout, sometimes
+    called by a `1_column` layout. It may not be consistent in the stack.
 %>
 
 <!DOCTYPE html>

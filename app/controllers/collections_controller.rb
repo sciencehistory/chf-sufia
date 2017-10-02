@@ -4,6 +4,8 @@ class CollectionsController < ApplicationController
 
   self.presenter_class = CHF::CollectionShowPresenter
 
+  layout 'chf'
+
   # Override to use the sort_widget from catalog, not the sufia override. What are we missing
   # from the sufia override? Not sure! But it didn't CSS style correctly.
   view_type_action = blacklight_config.index.collection_actions["view_type_group"]
