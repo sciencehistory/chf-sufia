@@ -20,6 +20,10 @@ module CHF
         return original_file_id
       else
         Rails.logger.error "ERROR: Could not find FileSet #{id} original_file_id in Solr. You may need to reindex."
+        # NO IDEA how solr_document is sometimes nil, but it is sometimes, and when it is
+        # this causes an exception unless we guard.
+        # https://app.honeybadger.io/projects/53196/faults/34889976
+        return nil unless solr_document
         return FileSet.find(id).original_file.id
       end
     end
