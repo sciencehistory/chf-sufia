@@ -144,6 +144,12 @@
       letter-spacing: 0.03em;
       color: $dark-navy;
     }
+
+    // get 'limit' button all on one line by making inputs more compact
+    .range_begin, .range_end {
+      width: 52px;
+      padding: 6px;
+    }
   }
 
   @media (max-width: 768px) {
