@@ -10,6 +10,9 @@ module CurationConcerns
     self.curation_concern_type = GenericWork
     self.show_presenter = CurationConcerns::GenericWorkShowPresenter
 
+    # our custom local layout intended for public show page, but does
+    # not seem to mess up admin pages also in this controller.
+    layout "chf"
 
     protected
 

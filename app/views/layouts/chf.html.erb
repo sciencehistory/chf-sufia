@@ -14,6 +14,9 @@
     using these, sorry! Ideally we'd have them all using the same layout, but
     couldn't get there. I think most admin pages end up using a `sufia` layout, sometimes
     called by a `1_column` layout. It may not be consistent in the stack.
+
+    This layout has class `localized-layout` on body, so if you want to scope
+    rules ohly to views we've customized to use this layout, that's one way to do it.
 %>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@
     <%= content_for(:head) %>
   </head>
 
-  <body>
+  <body class="localized-layout">
     <a href="#skip_to_content" class="sr-only">Skip to Content</a>
     <%= render partial: '/masthead' %>
     <%= content_for(:navbar) %>
