@@ -7,9 +7,9 @@ module ImageServiceHelper
 
   def member_src_attributes(member:, size_key:)
     if member.representative_file_id.nil?
-      # if there's no image, show the default thumbnail (it gets indexed)
+      # if there's no image, show the default thumbnail if we have one (it gets indexed for some types of obj)
       {
-        src:  member.thumbnail_path
+        src:  member.try(:thumbnail_path)
       }
     elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
       {
