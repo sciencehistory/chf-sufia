@@ -132,7 +132,7 @@ module GenericMetadata
     end
 
     property :exhibition, predicate: ::RDF::URI.new("http://opaquenamespace.org/ns/exhibit") do |index|
-      index.as :stored_searchable
+      index.as :stored_searchable, :facetable
     end
 
     property :file_creator, predicate: ::RDF::Vocab::EBUCore.hasCreator, multiple: false do |index|
