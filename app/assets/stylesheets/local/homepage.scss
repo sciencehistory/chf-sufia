@@ -27,6 +27,20 @@
     }
   }
 
+  .digital-description {
+
+    .pre-heading {
+      @extend %special-label;
+      color: #888;
+      margin-bottom: 5px;
+      margin-top: $line-height-computed;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+
   .chf-callout-button {
     width: 100%;
   }
