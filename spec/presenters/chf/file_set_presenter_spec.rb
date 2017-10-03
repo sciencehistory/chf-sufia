@@ -14,10 +14,14 @@ RSpec.describe CHF::FileSetPresenter do
 
     context "when it doesn't find the value in solr" do
       let(:solr_document) { SolrDocument.new(file_set.to_solr.tap { |solr_doc| solr_doc.delete('original_file_id_tesim') } ) }
-      it "takes it from fedora" do
+      it "returns nil" do
         expect(Rails.logger).to receive(:error)
-        expect(presenter.representative_file_id).to eq file_set.original_file.id
+        expect(presenter.representative_file_id).to eq nil
       end
+      # it "takes it from fedora" do
+      #   expect(Rails.logger).to receive(:error)
+      #   expect(presenter.representative_file_id).to eq file_set.original_file.id
+      # end
     end
   end
 end
