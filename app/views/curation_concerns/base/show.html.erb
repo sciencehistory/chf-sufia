@@ -110,7 +110,7 @@
     <h2 class="attribute-sub-head">Physical location</h2>
     <table class="<%= dom_class(@presenter) %> chf-attributes">
         <%= @presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
-        <%= @presenter.attribute_to_html(:exhibition) %>
+        <%= @presenter.attribute_to_html(:exhibition, render_as: :faceted) %>
 
         <% if @presenter.in_collection_presenters.present? %>
           <tr>
