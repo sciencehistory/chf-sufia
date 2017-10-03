@@ -55,7 +55,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
 
-gem 'honeybadger', '~> 3.1'
+# temporarily disable entirely
+#gem 'honeybadger', '~> 3.1'
 
 # for our derivatives on s3
 gem 'aws-sdk-s3', '~> 1.0'
