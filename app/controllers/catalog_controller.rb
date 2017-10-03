@@ -115,8 +115,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
-    # After reindex, remove "show: false" from end...
-    config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5, show: false
+    config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
