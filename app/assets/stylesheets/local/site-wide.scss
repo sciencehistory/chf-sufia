@@ -1,60 +1,62 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:extrabold,bold,semibold,regular,light,');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&amp;subset=latin-ext');
 
-/* font defaults */
-html {
-  /* to override it has to be in body */
-  body {
-    font-family: "Open Sans";
-    font-size: 16px;
-  }
+// hover and other unusual states just like btn-primary, but our light blue brand
+// color on standard state.
+.btn-brand-alt-2 {
+  // color, bg, border
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  color: $text-color;
+  background-color: $brand-btn-alt-bg;
+  border-color: #ccc;
 }
 
-/* Overrides a bootstrap style */
-.navbar-inverse {
-  background-color: $brand-inverse;
+// a light grey button matching light grey bg
+.btn-brand-alt {
+  // color, bg, border
+  @include button-variant($text-color, $bg-lightly-shaded, $navbar-default-border);
 }
 
-/* staff navbar has an effective margin of 15
-   slightly wider than masthead navbar */
-.staff-navbar {
-  /* ensure dropdowns show above other navbars */
-  /* (masthead coded upstream at 1001) */
-  z-index: 1002;
-  /* offset left margin of first button */
-  margin-left: -15px;
-}
 
-/* masthead navbar has an effective margin of 20 */
-.masthead {
-  min-height: 90px;
-  padding: 20px 5px 20px 20px;
-  text-transform: uppercase;
-  .navbar-nav > li > a,
-  .navbar-nav > li > a:hover,
-  .navbar-nav > li > a:focus,
-  .navbar-header > a,
-  .navbar-header > a:hover,
-  .navbar-header > a:focus {
-    color: $brand-primary;
-    text-decoration: none;
-    font-style: light;
-    font-stretch: expanded;
-  }
+.chf-container-fluid {
+  $sidebar-width: 235px;
+  $sidebar-space-right: ($line-height-computed * 2) - 15px;;
+  $sidebar-space-left: 15px;
 
-  .navbar-brand {
-    padding: 0;
-  }
+  @extend .container-fluid;
+  max-width: $chf-fluid-max-width;
 
-  #masthead-logo-image {
-    height: 40px;
-    margin: 0;
-  }
-  #masthead-application-name {
-    margin-left: 130px;
-    .beta {
-      font-size: 65%;
+  // in our fluid container, sidebar should be fixed-width with good right margin
+  // emulated by padding, until the screen is too small for a sidebar column.
+  #sidebar {
+    width: $sidebar-width + $sidebar-space-left + $sidebar-space-right;
+    padding-left: $sidebar-space-left;
+    padding-right: $sidebar-space-right;
+    @media(max-width: $grid-float-breakpoint-max) {
+      width: auto;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
+  #content {
+    width: calc(100% - (#{$sidebar-width} + #{$sidebar-space-left} + #{$sidebar-space-right}));
+    float: left;
+    @media(max-width: $grid-float-breakpoint-max) {
+      width: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+// We set more-rounded corners, but only for buttons not input elements,
+// make sure buttons in input groups match original less rounded.
+.input-group .btn {
+  border-radius: $border-radius-base;
+}
+
+a {
+  transition: color 0.25s ease;
 }
 
 /* informational dls, as on faq, policy page */
@@ -65,4 +67,60 @@ dl.info {
   dd {
     margin-top: .25em;
   }
+}
+
+form label {
+  font-weight: $semi-bold-weight;
+}
+
+// chemheritage.org uses these as default/standard h1-h6, but we're not
+// ready to there yet, keep them in classes.
+.brand-alt-h1, .brand-alt-h2, .brand-alt-h3, .brand-alt-h4, .brand-alt-h5, .brand-alt-h6 {
+  font-family: $brand-alt-header-font;
+  font-weight: $brand-alt-header-weight;
+}
+
+hr.brand {
+  width: 65px;
+  height: 3px;
+  background-color: $brand-primary;
+  border: none;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+
+// meant to be on a font-awesome icon
+.social-media-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  margin: 0;
+  margin-top: 4px; // i dunno, lines up with rights now
+
+  font-size: 26px;
+  line-height: 0;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+
+  // &.facebook {
+  //   background-color: #3b5998;
+  // }
+  // &.twitter {
+  //   background-color: #1da1f2;
+  // }
+  // &.google-plus {
+  //   background-color: #dd4b39;
+  // }
+  // &.tumblr {
+  //   background-color: #35465c;
+  // }
+
 }

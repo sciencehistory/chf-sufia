@@ -137,6 +137,10 @@ module CHF
       @instance
     end
 
+    def self.staging?
+      ["stage", "staging"].include?(lookup(:service_level))
+    end
+
     ######
     #
     #  Define keys here
@@ -161,7 +165,7 @@ module CHF
     define_key :dzi_s3_bucket, default: -> {
       if Rails.env.development?
         "chf-dzi-dev"
-      elsif lookup(:service_level) == "stage"
+      elsif staging?
         "chf-dzi-staging"
       end
       # production just configure it in env please

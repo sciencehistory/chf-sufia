@@ -10,6 +10,9 @@ module CurationConcerns
     self.curation_concern_type = GenericWork
     self.show_presenter = CurationConcerns::GenericWorkShowPresenter
 
+    # our custom local layout intended for public show page, but does
+    # not seem to mess up admin pages also in this controller.
+    layout "chf"
 
     protected
 
@@ -38,6 +41,13 @@ module CurationConcerns
     # overrides https://github.com/samvera/sufia/blob/v7.3.1/app/controllers/concerns/sufia/works_controller_behavior.rb#L93
     def add_breadcrumb_for_controller
       super if current_ability.current_user.logged_in?
+    end
+
+    # overriding presenter to pass in view_context
+    def presenter(*args)
+      super.tap do |pres|
+        pres.view_context = view_context if pres.respond_to?(:view_context=)
+      end
     end
 
   end

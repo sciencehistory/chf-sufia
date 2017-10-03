@@ -1,10 +1,19 @@
 <%# overrides https://github.com/projecthydra/sufia/blob/v7.3.0/app/views/_controls.html.erb %>
 <nav id="searchbar" class="navbar navbar-default navbar-static-top">
-  <div class="container-fluid">
+  <div class="chf-container-fluid">
     <div class="row">
+
+      <%# custom CHF breadcrumbs up here instead of nav elements %>
+      <div class="breadcrumbs-navbar-wrapper navbar-left col-sm-5 col-md-6">
+        <%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+      </div>
+
       <div class="searchbar-right navbar-right col-sm-7 col-md-6">
         <%= render partial: 'catalog/search_form' %>
       </div>
     </div>
   </div>
+
+
 </nav><!-- /.navbar -->
+

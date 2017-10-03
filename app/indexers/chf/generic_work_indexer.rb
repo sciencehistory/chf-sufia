@@ -29,6 +29,7 @@ module CHF
           license_service.authority.find(id).fetch('term', nil)
         end.compact
 
+        # Index representative image to use as thumb on search results etc
         representative = ultimate_representative(object)
         if representative
           # need to index these for when it's a child work on a parent's show page

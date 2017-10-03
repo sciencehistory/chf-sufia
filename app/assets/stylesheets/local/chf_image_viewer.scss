@@ -97,8 +97,9 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
       padding: 0;
       margin: 0 15px;
 
+      font-family: $brand-alt-header-font;
       font-size: $font-size-h3;
-
+      line-height: normal;
       overflow: hidden;
 
       a {
@@ -252,6 +253,8 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
           margin-bottom: 0;
         }
         .dropdown-menu {
+          font-size: 14px;
+
           left: auto;
           right: 5px;
 
@@ -268,7 +271,6 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
   }
 
 
-  $thumbSelectedColor: #f15c2b; // used on Distillations website, perhaps use as an alterante highlight sitewide
 
   // single row with horizontal scrolling
   .viewer-thumbs {
@@ -290,7 +292,7 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
       padding: 1px;
 
       &.viewer-thumb-selected {
-        border: 2px solid $thumbSelectedColor;
+        border: 2px solid $brand-highlight-color;
       }
 
       &.lazyload, &.lazyloading, &.lazyload {

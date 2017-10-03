@@ -7,7 +7,7 @@ module DescriptionFormatterHelper
 
     # truncate, may contain HTML
     if truncate
-      text = HtmlAwareTruncation.truncate_html(text, length: 400, separator: /\s/)
+      text = HtmlAwareTruncation.truncate_html(text, length: 220, separator: /\s/)
     end
 
     # And convert line breaks to paragraphs
