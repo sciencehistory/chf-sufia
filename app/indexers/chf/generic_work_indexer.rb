@@ -41,6 +41,10 @@ module CHF
           doc[ActiveFedora.index_field_mapper.solr_name('representative_file_set_id')] = representative.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_checksum')] = representative.original_file.checksum.value if representative.original_file
         end
+
+        # Taken from hyrax, so we can facet on visibility settings
+        # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18
+        doc['visibility_ssi'] = object.visibility
       end
     end
 
