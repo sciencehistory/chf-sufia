@@ -14,11 +14,20 @@ module CHF
   # A custom fedora-to-solr indexer that uses code submitted to ActiveFedora
   # but not yet released.
   class Indexer
-    def reindex_everything(batch_size: 50, softCommit: true, progress_bar: false, final_commit: false)
+    def reindex_everything(batch_size: 50,
+                           softCommit: true,
+                           progress_bar: false,
+                           final_commit: false,
+                           delete_previous: false)
       s_time = Time.now.localtime
       $stderr.puts "fetching all URIs from fedora at #{s_time}, might take 20+ minutes?..."
       descendants = descendant_uris(ActiveFedora.fedora.base_uri)
       $stderr.puts "fetched all URIs from fedora at #{Time.now.localtime} in: #{(Time.mktime(0)+(Time.now.localtime - s_time)).strftime("%H:%M:%S")}"
+
+      if delete_previous
+        latest_previous_record = ActiveFedora::SolrService.query("*:*", rows: 1, sort: "timestamp desc").first
+        latest_previous_timestamp = latest_previous_record && latest_previous_record["timestamp"].presence
+      end
 
 
       batch = []
@@ -49,6 +58,13 @@ module CHF
       end
 
       progress_bar_controller.finish
+
+      if delete_previous && latest_previous_timestamp
+        Rails.logger.debug "Deleting everything last updated before #{latest_previous_timestamp}..."
+        ActiveFedora::SolrService.instance.conn.delete_by_query("timestamp:[* TO #{latest_previous_timestamp}]")
+        Rails.logger.debug "   ...done deleting"
+      end
+
 
       if final_commit
         $stderr.puts "Solr hard commit at #{Time.now.localtime}..."
