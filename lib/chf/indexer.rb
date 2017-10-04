@@ -1,28 +1,37 @@
 module CHF
 
-  # This code in ActiveFedora master but not yet released, we shouldn't need
-  # a custom indexing routine once it is, can just use ActiveFedora::Base.reindex_everything
+  # A custom fedora-to-solr indexer for us.
   #
-  # https://github.com/projecthydra/active_fedora/pull/1219
-  # https://github.com/projecthydra/active_fedora/pull/1218
-  if Gem.loaded_specs["active-fedora"].version >= Gem::Version.new('11.2')
-     msg = "\n\nPlease check and make sure this patch is still needed at #{__FILE__}:#{__LINE__}\n\n"
-     $stderr.puts msg
-     Rails.logger.warn msg
-  end
-
-  # A custom fedora-to-solr indexer that uses code submitted to ActiveFedora
-  # but not yet released.
+  # Originally this was same as default but included enhancmeents that had been PR'd to
+  # AF, but not yet released.
+  #   https://github.com/projecthydra/active_fedora/pull/1219
+  #   https://github.com/projecthydra/active_fedora/pull/1218
+  #
+  # However, we've since customized more, to improve things are meet our needs, including
+  # some changes to API (pass options in initializer not reindex method), a delete_preivous option,
+  # etc. so we have no plan to go back to mainline released indexer, this one is better (for us at least).
+  # Sorry, them's the breaks.
   class Indexer
-    def reindex_everything(batch_size: 50,
-                           softCommit: true,
-                           progress_bar: false,
-                           final_commit: false,
-                           delete_previous: false)
+
+    attr_reader :batch_size, :softCommit, :use_progress_bar, :progress_bar, :final_commit, :delete_previous
+
+    def initialize(batch_size: 50,
+                  softCommit: true,
+                  progress_bar: false,
+                  final_commit: false,
+                  delete_previous: false)
+      @batch_size = batch_size
+      @softCommit = softCommit
+      @use_progress_bar = progress_bar
+      @final_commit = final_commit
+      @delete_previous = delete_previous
+    end
+
+    def reindex_everything
       s_time = Time.now.localtime
-      $stderr.puts "fetching all URIs from fedora at #{s_time}, might take 20+ minutes?..."
+      log "fetching all URIs from fedora at #{s_time}, might take 20+ minutes?..."
       descendants = descendant_uris(ActiveFedora.fedora.base_uri)
-      $stderr.puts "fetched all URIs from fedora at #{Time.now.localtime} in: #{(Time.mktime(0)+(Time.now.localtime - s_time)).strftime("%H:%M:%S")}"
+      log "fetched all URIs from fedora at #{Time.now.localtime} in: #{(Time.mktime(0)+(Time.now.localtime - s_time)).strftime("%H:%M:%S")}"
 
       if delete_previous
         latest_previous_record = ActiveFedora::SolrService.query("*:*", rows: 1, sort: "timestamp desc").first
@@ -32,24 +41,24 @@ module CHF
 
       batch = []
 
-      progress_bar_controller = ProgressBar.create(total: descendants.count, format: "%t: |%B| %p%% %e") if progress_bar
+      @progress_bar = ProgressBar.create(total: descendants.count, format: "%t: |%B| %p%% %e") if use_progress_bar
 
       descendants.each do |uri|
         # skip root url
         next if uri == ActiveFedora.fedora.base_uri
 
         begin
-          Rails.logger.debug "Re-index everything ... #{uri}"
+          log("Re-index everything ... #{uri}", level: :debug)
           batch << ActiveFedora::Base.find(ActiveFedora::Base.uri_to_id(uri)).to_solr
           if (batch.count % batch_size).zero?
             ActiveFedora::SolrService.add(batch, softCommit: softCommit)
             batch.clear
           end
         rescue Ldp::Gone
-          Rails.logger.warn "Re-index everything hit Ldp::Gone with uri #{uri}"
+          log("Re-index everything hit Ldp::Gone with uri #{uri}")
         end
 
-        progress_bar_controller.increment if progress_bar_controller
+        @progress_bar.increment if @progress_bar
       end
 
       if batch.present?
@@ -57,24 +66,38 @@ module CHF
         batch.clear
       end
 
-      progress_bar_controller.finish
+      @progress_bar.finish if @progress_bar
 
       if delete_previous && latest_previous_timestamp
-        Rails.logger.debug "Deleting everything last updated before #{latest_previous_timestamp}..."
+        log("Deleting everything last updated before #{latest_previous_timestamp}...")
         ActiveFedora::SolrService.instance.conn.delete_by_query("timestamp:[* TO #{latest_previous_timestamp}]")
-        Rails.logger.debug "   ...done deleting"
+        log("   ...done deleting at #{Time.now.localtime}")
       end
 
 
       if final_commit
-        $stderr.puts "Solr hard commit at #{Time.now.localtime}..."
+        log("Solr hard commit at #{Time.now.localtime}...")
         ActiveFedora::SolrService.commit
       end
-      $stderr.puts "chf:index complete at #{Time.now.localtime}"
+      finish_t = Time.now.localtime
+      log "index complete at #{finish_t}, total time #{(Time.mktime(0) + (finish_t - s_time)).strftime("%H:%M:%S")}"
     end
 
     def descendant_uris(uri)
       DescendantFetcher.new(uri).descendant_and_self_uris
+    end
+
+    def log(msg, level: :info)
+      if level.to_s != "debug"
+        if use_progress_bar && progress_bar
+          progress_bar.log(msg)
+        elsif use_progress_bar # interactive but no controller currently
+          $stderr.puts msg
+        end
+      end
+
+      # log to log regardless
+      Rails.logger.send(level, "#{self.class.name}: #{msg}")
     end
   end
 end

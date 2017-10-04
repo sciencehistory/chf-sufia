@@ -92,7 +92,7 @@ namespace :chf do
 
   desc 'Reindex everything. `RAILS_ENV=production bundle exec rake chf:reindex`. DELETE_PREVIOUS=true will delete any records created before reindex and not reindexed -- ie, deleted records'
   task reindex: :environment do
-    CHF::Indexer.new.reindex_everything(progress_bar: true, final_commit: true, delete_previous: ENV['DELETE_PREVIOUS'] == "true")
+    CHF::Indexer.new(progress_bar: true, final_commit: true, delete_previous: ENV['DELETE_PREVIOUS'] == "true").reindex_everything
   end
 
   desc 'report translated titles'
