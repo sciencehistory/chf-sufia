@@ -251,7 +251,7 @@ namespace :chf do
             "Effect":"Allow",
             "Principal": "*",
             "Action":["s3:GetObject"],
-            "Resource":["arn:aws:s3:::" + CHF::CreateDziService.bucket_name + "/*"]
+            "Resource":["arn:aws:s3:::#{CHF::CreateDziService.bucket_name}/*"]
           }
         ]    
       } 
