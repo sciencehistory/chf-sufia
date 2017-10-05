@@ -240,10 +240,22 @@ namespace :chf do
         }
       )
 
-      client.put_bucket_acl(
-        acl: CHF::CreateDziService.acl,
+
+      client.put_bucket_policy(
         bucket: CHF::CreateDziService.bucket_name,
-      )
+        policy: {
+          "Version":"2012-10-17",
+          "Statement":[
+          {
+            "Sid":"AddPerm",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":["arn:aws:s3:::" + CHF::CreateDziService.bucket_name + "/*"]
+          }
+        ]    
+      } 
+    )
     end
 
     desc "ensure s3 acl set properly on all objects"
