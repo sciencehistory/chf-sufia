@@ -2,11 +2,18 @@ en:
   blacklight:
     application_name: 'Chemical Heritage Foundation Digital Collections'
     search:
+      filters:
+        title: You searched for # remove colon from default
       fields:
         show:
           resource_type: Format
           division: Department
           creator_of_work: Creator
           contributor: Contributor
+          genre_string: Genre
+          related_url: Related URL
+      index:
+          list:
+              label: "%{label}"
     range_limit:
       submit_limit: Apply

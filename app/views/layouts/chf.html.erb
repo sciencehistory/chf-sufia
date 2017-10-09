@@ -1,0 +1,78 @@
+<%# We have designed our local application layout BASED on the sufia layout
+    https://github.com/samvera/sufia/blob/v7.3.0/app/views/layouts/sufia.html.erb
+
+    But we have want to localize, to put breadcrumbs in a different place,
+    result constraints in a differnet place, and stop using bootstrap column
+    layout (we use our own flexbox instead).
+
+    We call this 'chf' and explicitly call it in public-user-facing
+    controllers we have redesigned to use it.
+
+    Default sufia controllers, including admin controllers, are still
+    using default sufia layouts, whatever those are. Customizing header/footer
+    for those may have to be done differently than customizing for controllers
+    using these, sorry! Ideally we'd have them all using the same layout, but
+    couldn't get there. I think most admin pages end up using a `sufia` layout, sometimes
+    called by a `1_column` layout. It may not be consistent in the stack.
+
+    This layout has class `localized-layout` on body, so if you want to scope
+    rules ohly to views we've customized to use this layout, that's one way to do it.
+%>
+
+<!DOCTYPE html>
+<html lang="<%= t("sufia.document_language", default: '') %>" prefix="og:http://ogp.me/ns#">
+  <head>
+    <%= render partial: 'layouts/head_tag_content' %>
+    <%= content_for(:head) %>
+  </head>
+
+  <body class="localized-layout">
+    <a href="#skip_to_content" class="sr-only">Skip to Content</a>
+    <%= render partial: '/masthead' %>
+    <%= content_for(:navbar) %>
+    <%# CHF hard-code 'controls' here instead of relying on it being supplied as content_for(:navbar) %>
+    <%= render '/controls' %>
+
+    <%# chf put constraints up here right under the search bar always %>
+    <% unless content_for(:suppress_layout_constraints) %>
+      <div class="chf-constraints-wrapper">
+        <%= render 'catalog/constraints' %>
+      </div>
+    <% end %>
+
+    <%= render partial: '/flash_msg' %>
+    <%= content_for(:precontainer_content) %>
+    <div id="content-wrapper" class="<%= content_for?(:container_class) ? yield(:container_class) : 'chf-container-fluid' %>" role="main">
+      <a name="skip_to_content"></a>
+
+      <% if content_for?(:sidebar) %>
+        <div class="main-content">
+          <% if content_for?(:page_header) %>
+            <div class="row">
+              <div class="col-xs-12 main-header">
+                <%= yield(:page_header) %>
+              </div>
+            </div>
+          <% end %>
+
+          <%= content_for?(:content) ? yield(:content) : yield %>
+        </div>
+        <div id="sidebar" class="sidebar"><%= yield :sidebar %></div>
+      <% else %>
+        <div class="main-content">
+          <% if content_for?(:page_header) %>
+            <div class="row">
+              <div class="col-xs-12 main-header">
+                <%= yield(:page_header) %>
+              </div>
+            </div>
+          <% end %>
+
+          <%= content_for?(:content) ? yield(:content) : yield %>
+        </div>
+      <% end %>
+    </div><!-- /#content-wrapper -->
+    <%= render 'shared/footer' %>
+    <%= render 'shared/ajax_modal' %>
+  </body>
+</html>

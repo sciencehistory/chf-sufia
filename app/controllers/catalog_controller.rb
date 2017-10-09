@@ -4,6 +4,11 @@ class CatalogController < ApplicationController
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
 
+  # use the standard local 'application' layout, which we've actually
+  # customized based on sufia layout. Ordinarily it would go through
+  # the stack to choose a layout in a somewhat confusing way.
+  layout 'chf'
+
   # These before_filters apply the hydra access controls
   before_filter :enforce_show_permissions, only: :show
 
@@ -82,10 +87,12 @@ class CatalogController < ApplicationController
     config.view.gallery.partials = [:index_header, :index]
     config.view.slideshow.partials = [:index]
 
+    config.default_per_page = 25
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
-      rows: 10,
+      rows: 25,
       qf: "#{chf_search_fields.join(" ")} file_format_tesim all_text_timv",
     }
 
@@ -107,7 +114,9 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
-    # collection facet goes here
+    config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5
+    # temporarily disable until reindex
+    config.add_facet_field "visibility_ssi", label: "Visibility (Staff-only)", show: false #show: :current_user
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -117,25 +126,30 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'name', if: :present?
-    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index
-    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date'
-    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'after', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'about', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'addressee', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator_of_work', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("engraver", :stored_searchable), label: "Engraver", itemprop: 'engraver', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("interviewee", :stored_searchable), label: "Interviewee", itemprop: 'interviewee', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("interviewer", :stored_searchable), label: "Interviewer", itemprop: 'interviewer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'subject', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("engraver", :stored_searchable), label: "Engraver", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("interviewee", :stored_searchable), label: "Interviewee", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("interviewer", :stored_searchable), label: "Interviewer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("manufacturer", :stored_searchable), label: "Manufacturer", itemprop: 'manufacturer', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'photographer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'printer_of_plates', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'printer', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
-    config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable)
+    # These are marked false so they don't show up in the automatic list, but we
+    # still use them to manually place on our search results screen
+    config.add_index_field solr_name('date_of_work', :stored_searchable), label: "Date", itemprop: 'date_created', if: false
+    config.add_index_field solr_name("genre_string", :stored_searchable), label: "Genre", itemprop: 'genre', link_to_search: solr_name("genre_string", :facetable), if: false
+    config.add_index_field solr_name("description", :stored_searchable), label: "Description", itemprop: 'description', helper_method: :format_description_for_index, if: false
+    config.add_index_field solr_name("additional_title", :stored_searchable), label: "Additional Title", itemprop: 'alternateName', if: false # if: :present?,
+
+
+
 
 
     # "fielded" search configuration. Used by pulldown among other places.
@@ -177,6 +191,15 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    # We don't want per-page choosing widget, nobody uses it
+    config.index.collection_actions.delete(:per_page_widget)
+
+    # We only want two search result view types. We'll call them
+    # list and gallery, although we're gonna override gallery too.
+    config.view.delete(:masonry)
+    config.view.delete(:slideshow)
+    # config.view[:gallery][:partials] = ["custom"]
   end
 
   # disable the bookmark control from displaying in gallery view

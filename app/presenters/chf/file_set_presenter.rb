@@ -10,13 +10,22 @@ module CHF
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    def representative_file_set_id
+      id
+    end
+
     def representative_file_id
-      # if it's not in solr, get it from fedora
+      # if it's not in solr, try to get it from fedora
       if original_file_id
         return original_file_id
       else
         Rails.logger.error "ERROR: Could not find FileSet #{id} original_file_id in Solr. You may need to reindex."
-        return FileSet.find(id).original_file.id
+
+        # it's really too slow to fetch from fedora, give up if we can't get it in solr.
+        return nil
+
+        #original_file_set = FileSet.find(id) if id
+        #return original_file_set && original_file_set.original_file && original_file_set.original_file.id
       end
     end
 

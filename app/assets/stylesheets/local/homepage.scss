@@ -1,10 +1,9 @@
 .homepage-content-wrapper {
-  margin-top: -20px; /* overcome the bottom margin on navbar */
+  margin-top: (-1 * $navbar-margin-bottom); /* overcome the bottom margin on navbar */
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0 !important; /* overcome id-based css */
 
-  .search-container,
   .featured-collection-callouts {
     padding-bottom: 30px;
   }
@@ -28,6 +27,20 @@
     }
   }
 
+  .digital-description {
+
+    .pre-heading {
+      @extend %special-label;
+      color: #888;
+      margin-bottom: 5px;
+      margin-top: $line-height-computed;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+
   .chf-callout-button {
     width: 100%;
   }
@@ -35,6 +48,10 @@
   .search-container {
     padding-left: 5px;
     padding-right: 5px;
+    @media (max-width: $screen-md-min - 1) {
+      padding-bottom: 30px;
+    }
+
     @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max) {
       margin-top: 30px;
     }
@@ -42,6 +59,9 @@
       margin: 30px 20px 0;
     }
     @media (min-width: $screen-md-min) {
+      margin: 10% 15% 0 8%;
+    }
+    @media (min-width: $screen-lg-min) {
       margin: 20% 15% 0 8%;
     }
   }
@@ -112,7 +132,7 @@
   }
   @media (min-width: $screen-sm-min) {
     .featured-collection-container {
-      background-color: $bg-grey;
+      background-color: $bg-lightly-shaded;
       display: flex;
       align-items: center;
       .featured-collection-callouts {

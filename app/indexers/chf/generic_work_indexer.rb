@@ -29,6 +29,7 @@ module CHF
           license_service.authority.find(id).fetch('term', nil)
         end.compact
 
+        # Index representative image to use as thumb on search results etc
         representative = ultimate_representative(object)
         if representative
           # need to index these for when it's a child work on a parent's show page
@@ -37,8 +38,13 @@ module CHF
           doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
           doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
           doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_file_set_id')] = representative.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_checksum')] = representative.original_file.checksum.value if representative.original_file
         end
+
+        # Taken from hyrax, so we can facet on visibility settings
+        # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18
+        doc['visibility_ssi'] = object.visibility
       end
     end
 

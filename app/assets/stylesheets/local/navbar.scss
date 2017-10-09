@@ -1,0 +1,52 @@
+/* Overrides a bootstrap style */
+.navbar-inverse {
+  background-color: $brand-inverse;
+}
+
+/* staff navbar has an effective margin of 15
+   slightly wider than masthead navbar */
+.staff-navbar {
+  /* ensure dropdowns show above other navbars */
+  /* (masthead coded upstream at 1001) */
+  z-index: 1002;
+  /* offset left margin of first button */
+  margin-left: -15px;
+
+  &.navbar-inverse .navbar-nav > li > a:not(:hover):not(:focus) {
+    color: lighten($gray-light, 15%);
+  }
+}
+
+/* masthead navbar has an effective margin of 20 */
+.masthead {
+  min-height: 90px;
+  padding: 20px 5px 20px 20px;
+  text-transform: uppercase;
+
+  .navbar-brand {
+    padding: 0;
+  }
+
+  #masthead-logo-image {
+    height: 40px;
+    margin: 0;
+  }
+  #masthead-application-name {
+    margin-left: 130px;
+    font-size: 18px;
+    .beta {
+      font-size: 65%;
+    }
+  }
+}
+
+.breadcrumbs-navbar-wrapper {
+  margin-top: 0.5em;
+  ul.breadcrumb {
+    margin-bottom: 0;
+  }
+}
+
+#searchbar label[for="filter_public_domain"] {
+  font-weight: normal;
+}

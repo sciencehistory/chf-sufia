@@ -162,6 +162,10 @@ module CHF
       fq_elements.join(" OR ")
     end
 
+    def thumb_asset_path
+      "synthetic_categories/#{category_key}_2x.jpg"
+    end
+
     protected
 
     def definition
