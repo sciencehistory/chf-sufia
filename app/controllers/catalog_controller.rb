@@ -107,7 +107,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name("maker_facet", :facetable), label: "Creator", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
     config.add_facet_field solr_name("resource_type", :facetable), label: "Format", limit: 5
-    config.add_facet_field solr_name("medium", :facetable), label: "Medium", limit: 5, show: :current_user
+    config.add_facet_field solr_name("medium", :facetable), label: "Medium (Staff-only)", limit: 5, show: :current_user
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     # only show medium facet if we have a current_user -- show takes a controller method symbol
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
@@ -115,8 +115,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
     config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5
-    # temporarily disable until reindex
-    config.add_facet_field "visibility_ssi", label: "Visibility (Staff-only)", show: false #show: :current_user
+    config.add_facet_field "visibility_ssi", label: "Visibility (Staff-only)", show: :current_user
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request

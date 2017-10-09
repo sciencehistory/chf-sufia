@@ -55,7 +55,7 @@ module CHF
             batch.clear
           end
         rescue Ldp::Gone
-          log("Re-index everything hit Ldp::Gone with uri #{uri}", progress_bar_controller)
+          log("Re-index everything hit Ldp::Gone with uri #{uri}")
         end
 
         @progress_bar.increment if @progress_bar
