@@ -27,7 +27,7 @@ module MemberHelper
           link_to(parent.rights_url,
                     target: "_blank",
                     class: 'rights-statement-inline') do
-            safe_join([image_tag(parent.rights_icon, class: "rights-statement-logo"),
+            safe_join([image_tag(parent.rights_icon || "", class: "rights-statement-logo"),
                        " ",
                        content_tag("span", parent.rights_icon_label, class: "rights-statement-label")])
           end
