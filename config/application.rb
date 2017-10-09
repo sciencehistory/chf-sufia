@@ -21,11 +21,17 @@ module Chufia
       secrets.secret_key_base ||= "test_dummy"
     end
 
-    config.autoload_paths << "#{Rails.root}/app/forms/concerns"
-    # Load files from lib/
+    #config.autoload_paths << "#{Rails.root}/app/forms/concerns"
+
+    # Autoload files from lib/. This was probably not a great idea, things
+    # should just be in app/ if you want them autoloaded.
     config.autoload_paths << Rails.root.join('lib')
+    config.eager_load_paths << Rails.root.join('lib')
+
     # Load all subdirs of './patches'
     config.autoload_paths.concat Dir.glob(Rails.root.join("patches/*"))
+    config.eager_load_paths.concat Dir.glob(Rails.root.join("patches/*"))
+
     # load overrides
     config.to_prepare do
       Dir.glob(Rails.root.join("app/**/*_override*.rb")) do |c|
