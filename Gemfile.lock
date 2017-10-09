@@ -1273,7 +1273,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
-  rails (~> 5.0)
+  rails (~> 5.0.0)
   rails-assets-lazysizes!
   resque-pool
   rest-client
