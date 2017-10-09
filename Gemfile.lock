@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/projecthydra/hydra-editor.git
+  remote: https://github.com/projecthydra/hydra-editor
   revision: c1e9d298c823567ea68cd6aa200848e47f1b25f0
   ref: c1e9d298
   specs:

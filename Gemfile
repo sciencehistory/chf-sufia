@@ -17,7 +17,7 @@ gem 'curation_concerns', '~>1.7.7'
 # pull in fix to "add another" label
 # Once we have a release including this commit, we can stop using this github sha:
 # https://github.com/projecthydra/hydra-editor/pull/126
-gem 'hydra-editor', github: 'projecthydra/hydra-editor', ref: 'c1e9d298'
+gem 'hydra-editor', git: 'https://github.com/projecthydra/hydra-editor', ref: 'c1e9d298'
 
 # 1.3 broke OpacRecordService; lock for now
 gem 'oauth2', '1.2.0'
