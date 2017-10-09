@@ -29,7 +29,10 @@ describe BatchEditsController do
 
     describe "when updating visibility" do
       it "updates contained file visibility, also" do
-        put :update, update_type: "update", visibility: "authenticated"
+        put :update, params: {
+          update_type: "update",
+          visibility: "authenticated"
+        }
         expect(response).to be_redirect
         expect(one.reload.members.first.visibility).to eq "authenticated"
         expect(two.reload.members.first.visibility).to eq "authenticated"

@@ -22,7 +22,10 @@ RSpec.describe OpacDataController do
     end
 
     it 'sends json data when passed a valid bib num' do
-      get :load_bib, rec_num: 'B10691054', format: 'json'
+      get :load_bib, params: {
+        rec_num: 'B10691054',
+        format: 'json'
+      }
       expect(response).to be_successful
       parsed = JSON.parse(response.body)
       expect(parsed['id']).to eq '1069105'
@@ -30,7 +33,10 @@ RSpec.describe OpacDataController do
     end
 
     it 'generates a 404 for invalid or missing bib number' do
-      get :load_bib, rec_num: '54', format: 'json'
+      get :load_bib, params: {
+        rec_num: '54',
+        format: 'json'
+      }
       expect(response.status).to eq(404)
     end
 
