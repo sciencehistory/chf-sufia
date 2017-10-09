@@ -81,7 +81,7 @@ GEM
     almond-rails (0.0.3)
       rails (>= 4.2, < 6)
     arel (7.1.4)
-    autoprefixer-rails (6.5.3)
+    autoprefixer-rails (7.1.5)
       execjs
     awesome_nested_set (3.1.1)
       activerecord (>= 4.0.0, < 5.1)
