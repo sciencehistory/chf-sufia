@@ -17,6 +17,8 @@ gem 'curation_concerns', '~>1.7.7'
 # pull in fix to "add another" label
 # Once we have a release including this commit, we can stop using this github sha:
 # https://github.com/projecthydra/hydra-editor/pull/126
+# Requires hydra-editor >= 3.2.0, but that reqiures almond-rails >= 0.1, and
+# sufia insists on almond-rails 0.1.x. :(
 gem 'hydra-editor', git: 'https://github.com/projecthydra/hydra-editor', ref: 'c1e9d298'
 
 # 1.3 broke OpacRecordService; lock for now
