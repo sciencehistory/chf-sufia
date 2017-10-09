@@ -225,6 +225,18 @@ namespace :chf do
     desc "set bucket configuration"
     task :configure_bucket => :environment do
       client = CHF::CreateDziService.s3_client!
+      dzi_policy = {
+          "Version":"2012-10-17",
+          "Statement":[
+          {
+            "Sid":"AddPerm",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":["arn:aws:s3:::#{CHF::CreateDziService.bucket_name}/*"]
+          }
+        ]
+      }.to_json
 
       client.put_bucket_cors(
         bucket: CHF::CreateDziService.bucket_name,
@@ -240,10 +252,11 @@ namespace :chf do
         }
       )
 
-      client.put_bucket_acl(
-        acl: CHF::CreateDziService.acl,
+
+      client.put_bucket_policy(
         bucket: CHF::CreateDziService.bucket_name,
-      )
+        policy: dzi_policy 
+    )
     end
 
     desc "ensure s3 acl set properly on all objects"
