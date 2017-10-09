@@ -43,7 +43,7 @@ module CHF
     NoValueProvided = Object.new
     private_constant :NoValueProvided
 
-    BOOLEAN_TRANSFORM = lambda { |v| v.in?(ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES) }
+    BOOLEAN_TRANSFORM = lambda { |v| ! v.in?(ActiveModel::Type::Boolean::FALSE_VALUES) }
 
     def initialize
       @key_definitions = {}
