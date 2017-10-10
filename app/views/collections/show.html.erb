@@ -58,15 +58,13 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
     </div>
   </div>
 
-  <% if @presenter.total_items > blacklight_config.default_per_page %>
-    <div class="chf-collection-search">
-      <h2 class="chf-collection-search-title">
-            Search within the <%= @presenter.title.first %>
-      </h2>
-      <div class="chf-collection-search-form"><%= render 'search_form', presenter: @presenter %></div>
-    </div>
-  <% end %>
 
+  <div class="chf-collection-search">
+    <h2 class="chf-collection-search-title">
+          Search within the <%= @presenter.title.first %>
+    </h2>
+    <div class="chf-collection-search-form"><%= render 'search_form', presenter: @presenter %></div>
+  </div>
 
   <%# built in sufia collections/sort_and_per_page overrides to some years old Blacklight. We want
       the normal one we're actually using. %>
