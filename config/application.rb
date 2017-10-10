@@ -21,11 +21,17 @@ module Chufia
       secrets.secret_key_base ||= "test_dummy"
     end
 
-    config.autoload_paths << "#{Rails.root}/app/forms/concerns"
-    # Load files from lib/
+    #config.autoload_paths << "#{Rails.root}/app/forms/concerns"
+
+    # Autoload files from lib/. This was probably not a great idea, things
+    # should just be in app/ if you want them autoloaded.
     config.autoload_paths << Rails.root.join('lib')
+    config.eager_load_paths << Rails.root.join('lib')
+
     # Load all subdirs of './patches'
     config.autoload_paths.concat Dir.glob(Rails.root.join("patches/*"))
+    config.eager_load_paths.concat Dir.glob(Rails.root.join("patches/*"))
+
     # load overrides
     config.to_prepare do
       Dir.glob(Rails.root.join("app/**/*_override*.rb")) do |c|
@@ -189,9 +195,6 @@ module Chufia
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
 
     # Active job should use resque
     config.active_job.queue_adapter = :resque

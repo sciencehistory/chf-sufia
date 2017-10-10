@@ -71,7 +71,7 @@ module ImageServiceHelper
       args.merge!(src_args)
     end
 
-    image_tag(args.delete(:src), args)
+    image_tag(args.delete(:src) || "", args)
   end
 
   def tile_source_url(member_presenter)
