@@ -106,7 +106,7 @@ module MemberHelper
       list_items << dropdown_menuitem(
         link_to 'Delete', polymorphic_path([main_app, file_set]),
                  method: :delete, title: "Delete #{file_set}",
-                 data: {confirm: "Deleting #{file_set} from #{application_name} is permanent. Click OK to delete this from #{application_name}, or Cancel to cancel this operation"}
+                 data: {confirm: "Deleting #{file_set} is permanent. Click OK to delete this, or Cancel to cancel this operation"}
       )
     end
 
