@@ -102,10 +102,8 @@ module CHF
           # custom CHF image derivatives
 
           IMAGE_TYPES.each_pair do |key, defn|
-            if defn.style == :thumb
-              futures << create_jpg_thumbnail(width: defn.width, filename: key.to_s)
-            else
-              futures << create_jpg_download(width: defn.width, filename: key.to_s)
+            if defn.style == :thumb || defn.style == :download
+              futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
             end
           end
 
@@ -160,50 +158,17 @@ module CHF
       file_set.parent.thumbnail_id == file_set.id
     end
 
-    # thumbnail creation and push to s3.
-    #  * uses aggressive parameters for file size for web presentation
-    #     * see http://www.imagemagick.org/Usage/thumbnails/
-    #     * see https://developers.google.com/speed/docs/insights/OptimizeImages
-    #     * see http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
-    #  * creates multiple resolutions for srcset delivery
-    #  * may in the future limit aspect ratios with clipping for extreme original aspect ratios
-    #
-    # width nil means original size.
-    #
-    # returns false (if nothing to do, in lazy) or a Future
-    def create_jpg_thumbnail(width:, filename:)
-      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
-      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
-
-      if lazy && s3_obj.exists?
-        return nil
-      end
-
-      args = [  "gm", "convert",
-                "#{working_original_path}[0]", # insist on only layer 0, some of our input has another layer with a little thumb, we don't want that
-                "-sampling-factor", "4:2:0",
-                "-quality",     "85",
-                "-interlace",   "Line", # means progressive JPEG
-                "-colorspace",  "rgb", # GM doesn't support 'sRGB', but claims this is basically the same https://sourceforge.net/p/graphicsmagick/bugs/331/
-                "-format",      "jpg",
-                "-strip"]
-      args.concat(["-thumbnail",   "#{width}x"]) if width
-      args.concat([
-        output_path
-      ])
-
-      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        TTY::Command.new(printer: :null).run(*args)
-        #s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
-      end
-    end
-
     # create and push to s3.
-    # less aggressive conversion parameters than thumbnail, leave color profiles in
-    # place, etc.
     #
     # returns nil (if nothing to do, in lazy) or a Future
-    def create_jpg_download(width:, filename:)
+    #
+    # For thumbnails, we use more aggressive image conversion parameters, as opposed
+    # to downloads. Later, thumbs might also apply some cropping to enforce maximum
+    # aspect ratios. For thumbnail aggressive conversion parameters, see:
+    #     * http://www.imagemagick.org/Usage/thumbnails/
+    #     * https://developers.google.com/speed/docs/insights/OptimizeImages
+    #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
+    def create_jpg_derivative(width:, filename:, style:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
       s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
 
@@ -215,14 +180,33 @@ module CHF
         "gm", "convert",
         "#{working_original_path}[0]", # insist on only layer 0, some of our input has another layer with a little thumb, we don't want that
         "-quality",   "85",
-        "-interlace", "Line"
+        "-interlace", "Line" # Means progressive JPEG
       ]
-      if width
+
+      if style == :thumb
         args.concat([
-          "-sample", "#{width * 4}x", # should speed resize up a bit without much quality loss, we think?
-          "-resize", "#{width}x"
+          "-sampling-factor", "4:2:0",
+          "-colorspace",  "rgb", # GM doesn't support 'sRGB', but claims this is basically the same https://sourceforge.net/p/graphicsmagick/bugs/331/
         ])
       end
+
+      if width
+        if style == :thumb
+          args.concat(["-thumbnail",   "#{width}x"])
+        else
+          args.concat([
+            "-sample", "#{width * 4}x", # should speed resize up a bit without much quality loss, we think?
+            "-resize", "#{width}x"
+          ])
+        end
+      end
+
+      if style == :thumb
+        args.concat([
+          "-strip"
+        ])
+      end
+
       args.concat([
         "-format", "jpg",
         output_path
