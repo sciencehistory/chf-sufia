@@ -24,6 +24,9 @@ module CHF
   #
   # We use GraphicsMagick rather than ImageMagick, becuase experimentation reveals it's 50% faster
   # or more. and prob has less RAM use too.
+  #
+  # We use some multi-threaded concurrency to create each derivative in parallel, inside
+  # this class.
   class CreateDerivativesOnS3Service
     WORKING_DIR_PARENT = CHF::Env.lookup(:derivative_job_tmp_dir)
     begin
@@ -70,7 +73,7 @@ module CHF
       ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
-    attr_reader :file_set, :file_id, :lazy
+    attr_reader :file_set, :file_id, :lazy, :thread_pool
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
@@ -88,6 +91,8 @@ module CHF
       # themselves just be smart enough to do this guard?
       return if file_set.video? && !CurationConcerns.config.enable_ffmpeg
 
+      futures = []
+
       # mktmpdir will clean up tmp dir and all it's contents for us
       Dir.mktmpdir("fileset_#{file_set.id}_", WORKING_DIR_PARENT) do |temp_dir|
         @working_dir = temp_dir
@@ -96,14 +101,11 @@ module CHF
         if file_set.image?
           # custom CHF image derivatives
 
-          # We could do this multi-threaded, but it's prob not worth it, often there
-          # will be a whole bunch of diff images at once having derivatives created,
-          # they can be multi-threaded between themselves via ActiveJob.
           IMAGE_TYPES.each_pair do |key, defn|
             if defn.style == :thumb
-              path = create_jpg_thumbnail(width: defn.width, filename: key.to_s)
+              futures << create_jpg_thumbnail(width: defn.width, filename: key.to_s)
             else
-              path = create_jpg_download(width: defn.width, filename: key.to_s)
+              futures << create_jpg_download(width: defn.width, filename: key.to_s)
             end
           end
 
@@ -111,6 +113,8 @@ module CHF
             # compressed TIFF
           end
 
+          futures.compact.each(&:value!)
+          futures.clear
 
           # TODO nope, get rid of this, for just our own derivatives here.
           #file_set.create_derivatives(working_original_path)
@@ -126,11 +130,11 @@ module CHF
         # Not sure if this is really required, copied from CC original.
         # Reload from Fedora and reindex for thumbnail and extracted text
         # TODO investigate.
-        file_set.reload
-        file_set.update_index
+        #file_set.reload
+        #file_set.update_index
 
         # TODO not sure if needed, see below
-        file_set.parent.update_index if parent_needs_reindex?(file_set)
+        #file_set.parent.update_index if parent_needs_reindex?(file_set)
       end
     ensure
       @working_dir = nil
@@ -165,12 +169,14 @@ module CHF
     #  * may in the future limit aspect ratios with clipping for extreme original aspect ratios
     #
     # width nil means original size.
+    #
+    # returns false (if nothing to do, in lazy) or a Future
     def create_jpg_thumbnail(width:, filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
       s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
 
       if lazy && s3_obj.exists?
-        return
+        return nil
       end
 
       args = [  "gm", "convert",
@@ -186,22 +192,23 @@ module CHF
         output_path
       ])
 
-      TTY::Command.new(printer: :null).run(*args)
-
-      s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
-
-      return output_path
+      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
+        TTY::Command.new(printer: :null).run(*args)
+        #s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+      end
     end
 
     # create and push to s3.
     # less aggressive conversion parameters than thumbnail, leave color profiles in
     # place, etc.
+    #
+    # returns nil (if nothing to do, in lazy) or a Future
     def create_jpg_download(width:, filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
       s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
 
       if lazy && s3_obj.exists?
-        return
+        return nil
       end
 
       args = [
@@ -221,11 +228,10 @@ module CHF
         output_path
       ])
 
-      TTY::Command.new(printer: :null).run(*args)
-
-      s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
-
-      return output_path
+      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
+        TTY::Command.new(printer: :null).run(*args)
+        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+      end
     end
   end
 end
