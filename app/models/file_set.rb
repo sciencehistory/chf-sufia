@@ -6,6 +6,8 @@ class FileSet < ActiveFedora::Base
   self.indexer = CHF::FileSetIndexer
 
   def create_derivatives(filename)
+    # TODO delete this override all of this.
+
     # use layer 0 to create our derivatives
     if self.class.image_mime_types.include? mime_type
       begin

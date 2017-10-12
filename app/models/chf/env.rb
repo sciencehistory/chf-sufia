@@ -173,6 +173,7 @@ module CHF
     define_key :dzi_s3_bucket_region, default: "us-east-1"
     define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
     define_key :dzi_auto_create, default: Rails.env.production?, system_env_transform: BOOLEAN_TRANSFORM
+    define_key :derivative_job_tmp_dir, default: Rails.root.join("tmp", "derivative-tmp-working").to_s
 
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
@@ -187,7 +188,7 @@ module CHF
         "*"
       elsif lookup(:app_role) == "jobs"
         # jobs server
-        "dzi"
+        "dzi, jobs-server"
       else
         # production-type app server, handling the rest currently
         "default, ingest, mailers, event"

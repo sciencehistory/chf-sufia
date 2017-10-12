@@ -1,6 +1,6 @@
 module ImageServiceHelper
   BASE_WIDTHS = {
-    large: 526,
+    large: 525,
     standard: 208
   }.freeze
 
