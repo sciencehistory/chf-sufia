@@ -5,7 +5,7 @@ module CHF
   # We completely reimplement ourselves. the existing implementation was not
   # super useful, although we copy and paste some parts. We want to:
   # 1) Assume runnning on a server NOT the app server, get file from fedora
-  # 2) push to S3
+  # 2) push to S3 (under key "file_set_id/derivative_file_name"). That file_set_ids are equally distributed hex makes this a good S3 key.
   # 3) Make sure to clean up temp file(s)
   # 4) Use optimal settings for a small sized thumbnail
   #
@@ -55,13 +55,26 @@ module CHF
       full_size_dl: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze
     }.freeze
 
-    attr_reader :file_set, :file_id
+    class_attribute :acl
+    self.acl = 'public-read'
+
+    # Using Aws::S3 directly appeared to give us a lot faster bulk upload
+    # than via fog.
+    def self.s3_bucket!
+      Aws::S3::Resource.new(
+        credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
+        region: CHF::Env.lookup!('derivative_s3_bucket_region')
+      ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
+    end
+
+    attr_reader :file_set, :file_id, :lazy
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
-    def initialize(file_set, file_id)
+    def initialize(file_set, file_id, lazy: false)
       @file_set = file_set
       @file_id = file_id
+      @lazy = !!lazy
     end
 
     # We set working dir state for duration of this method so we don't need to pass
@@ -85,9 +98,9 @@ module CHF
           # they can be multi-threaded between themselves via ActiveJob.
           IMAGE_TYPES.each_pair do |key, defn|
             if defn.style == :thumb
-              path = create_jpg_thumbnail(width: defn.width, output_filename: key.to_s)
+              path = create_jpg_thumbnail(width: defn.width, filename: key.to_s)
             else
-              path = create_jpg_download(width: defn.width, output_filename: key.to_s)
+              path = create_jpg_download(width: defn.width, filename: key.to_s)
             end
           end
 
@@ -97,7 +110,7 @@ module CHF
 
 
           # TODO nope, get rid of this, for just our own derivatives here.
-          file_set.create_derivatives(working_original_path)
+          #file_set.create_derivatives(working_original_path)
         else
           # We still try do this default behavior calling #create_derivatives on
           # fileset, to get any superclass stack derivatives from sufia, say PDF
@@ -140,7 +153,7 @@ module CHF
       file_set.parent.thumbnail_id == file_set.id
     end
 
-    # thumbnail creation:
+    # thumbnail creation and push to s3.
     #  * uses aggressive parameters for file size for web presentation
     #     * see http://www.imagemagick.org/Usage/thumbnails/
     #     * see https://developers.google.com/speed/docs/insights/OptimizeImages
@@ -149,8 +162,8 @@ module CHF
     #  * may in the future limit aspect ratios with clipping for extreme original aspect ratios
     #
     # width nil means original size.
-    def create_jpg_thumbnail(width:, output_filename:)
-      output_path = Pathname.new(working_dir).join(output_filename).sub_ext(".jpg").to_s
+    def create_jpg_thumbnail(width:, filename:)
+      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
 
       args = [  "gm", "convert",
                 "#{working_original_path}[0]", # insist on only layer 0, some of our input has another layer with a little thumb, we don't want that
@@ -167,13 +180,17 @@ module CHF
 
       TTY::Command.new(printer: :null).run(*args)
 
+      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+      s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+
       return output_path
     end
 
+    # create and push to s3.
     # less aggressive conversion parameters than thumbnail, leave color profiles in
     # place, etc.
-    def create_jpg_download(width:, output_filename:)
-      output_path = Pathname.new(working_dir).join(output_filename).sub_ext(".jpg").to_s
+    def create_jpg_download(width:, filename:)
+      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
 
       args = [
         "gm", "convert",
@@ -192,7 +209,11 @@ module CHF
         output_path
       ])
 
-      TTY::Command.new().run(*args)
+      TTY::Command.new(printer: :null).run(*args)
+
+      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+      s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+
       return output_path
     end
   end
