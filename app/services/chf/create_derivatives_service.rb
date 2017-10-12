@@ -52,7 +52,7 @@ module CHF
       large_dl: OpenStruct.new(width: 1200, label: "Large JPG", style: :download).freeze,
       medium_dl: OpenStruct.new(width: 800, label: "Medium JPG", style: :download).freeze,
       small_dl: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
-      original_size_jpg: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze
+      full_size_dl: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze
     }.freeze
 
     attr_reader :file_set, :file_id
