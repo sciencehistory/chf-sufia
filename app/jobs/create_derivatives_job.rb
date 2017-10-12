@@ -21,6 +21,6 @@ class CreateDerivativesJob < ActiveJob::Base
   # @param [String] file_id identifier for a Hydra::PCDM::File
   # @param [String, NilClass] filepath the cached file within the CurationConcerns.config.working_path
   def perform(file_set, file_id, _filepath = nil)
-    CHF::CreateDerivativesService.new(file_set, file_id).call
+    CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call
   end
 end

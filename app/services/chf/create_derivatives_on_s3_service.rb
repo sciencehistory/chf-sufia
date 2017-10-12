@@ -9,6 +9,9 @@ module CHF
   # 3) Make sure to clean up temp file(s)
   # 4) Use optimal settings for a small sized thumbnail
   #
+  # This service itself has info on what image derivatives to create, it's no longer
+  # going through the hydra derivatives architecture.
+  #
   # This has to be called AFTER the file is really added to fedora, _should_ be
   # because of how it's called by sufia 7 stack.
   # See https://bibwild.wordpress.com/2017/07/11/on-hooking-into-sufiahyrax-after-file-has-been-uploaded/
@@ -21,7 +24,7 @@ module CHF
   #
   # We use GraphicsMagick rather than ImageMagick, becuase experimentation reveals it's 50% faster
   # or more. and prob has less RAM use too.
-  class CreateDerivativesService
+  class CreateDerivativesOnS3Service
     WORKING_DIR_PARENT = CHF::Env.lookup(:derivative_job_tmp_dir)
     begin
       FileUtils.mkdir_p WORKING_DIR_PARENT
@@ -67,14 +70,13 @@ module CHF
       ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
-    attr_reader :file_set, :file_id, :lazy
+    attr_reader :file_set, :file_id
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
-    def initialize(file_set, file_id, lazy: false)
+    def initialize(file_set, file_id)
       @file_set = file_set
       @file_id = file_id
-      @lazy = !!lazy
     end
 
     # We set working dir state for duration of this method so we don't need to pass
