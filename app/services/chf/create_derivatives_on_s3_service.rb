@@ -70,13 +70,14 @@ module CHF
       ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
-    attr_reader :file_set, :file_id
+    attr_reader :file_set, :file_id, :lazy
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
-    def initialize(file_set, file_id)
+    def initialize(file_set, file_id, lazy: false)
       @file_set = file_set
       @file_id = file_id
+      @lazy = !!lazy
     end
 
     # We set working dir state for duration of this method so we don't need to pass
@@ -166,6 +167,11 @@ module CHF
     # width nil means original size.
     def create_jpg_thumbnail(width:, filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
+      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+
+      if lazy && s3_obj.exists?
+        return
+      end
 
       args = [  "gm", "convert",
                 "#{working_original_path}[0]", # insist on only layer 0, some of our input has another layer with a little thumb, we don't want that
@@ -182,7 +188,6 @@ module CHF
 
       TTY::Command.new(printer: :null).run(*args)
 
-      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
       s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
 
       return output_path
@@ -193,6 +198,11 @@ module CHF
     # place, etc.
     def create_jpg_download(width:, filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
+      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+
+      if lazy && s3_obj.exists?
+        return
+      end
 
       args = [
         "gm", "convert",
@@ -213,7 +223,6 @@ module CHF
 
       TTY::Command.new(printer: :null).run(*args)
 
-      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
       s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
 
       return output_path
