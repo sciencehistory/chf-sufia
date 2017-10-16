@@ -5,7 +5,9 @@ module CHF
   # We completely reimplement ourselves. the existing implementation was not
   # super useful, although we copy and paste some parts. We want to:
   # 1) Assume runnning on a server NOT the app server, get file from fedora
-  # 2) push to S3 (under key "file_set_id/derivative_file_name"). That file_set_ids are equally distributed hex makes this a good S3 key.
+  # 2) push to S3 (under key "#{file_set_id}_checksum#_{file_checksum}/derivative_file_name"). That file_set_ids are equally distributed hex makes this a good S3 key.
+  #     checksum is used to make cached values self-busting if file changes. If caller already has
+  #     the checksum, pass it in to avoid an expensive lookup.
   # 3) Make sure to clean up temp file(s)
   # 4) Use optimal settings for a small sized thumbnail
   #
@@ -75,18 +77,24 @@ module CHF
       ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
-    def self.s3_path(file_set_id:, filename_key:, suffix:)
-      "#{file_set.id}/#{Pathname.new(filename_key).sub_ext(suffix)}"
+    def self.s3_path(file_set_id:, file_checksum:, filename_key:, suffix:)
+      "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
     end
 
     attr_reader :file_set, :file_id, :lazy, :thread_pool
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
-    def initialize(file_set, file_id, lazy: false)
+    def initialize(file_set, file_id, file_checksum: nil, lazy: false)
       @file_set = file_set
       @file_id = file_id
+      @file_checksum = file_checksum
       @lazy = !!lazy
+    end
+
+    # If not already set, we have to fetch from fedora, which is kinda slow with AF on wells.
+    def file_checksum
+      @file_checksum ||= Hydra::PCDM::File.find(file_id).checksum.value
     end
 
     # We set working dir state for duration of this method so we don't need to pass
@@ -174,7 +182,7 @@ module CHF
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     def create_jpg_derivative(width:, filename:, style:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(fileset_id: file_set.id, filename: filename, suffix: ".jpg"))
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".jpg"))
 
       if lazy && s3_obj.exists?
         return nil
@@ -225,7 +233,7 @@ module CHF
 
     def create_compressed_tiff(filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(fileset_id: file_set.id, filename: filename, suffix: ".tif"))
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".tif"))
 
       if lazy && s3_obj.exists?
         return nil
