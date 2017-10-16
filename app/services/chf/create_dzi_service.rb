@@ -175,7 +175,7 @@ module CHF
     # If not already set, we have to fetch from fedora, which is kinda slow with AF.
     # TODO, we can make this one fetch, not two.
     def checksum
-      @checksum || Hydra::PCDM::File.find(file_id).checksum.value
+      @checksum ||= Hydra::PCDM::File.find(file_id).checksum.value
     end
 
     def dzi_file_name
