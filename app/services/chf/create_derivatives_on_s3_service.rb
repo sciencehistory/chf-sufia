@@ -58,7 +58,9 @@ module CHF
       large_dl: OpenStruct.new(width: 1200, label: "Large JPG", style: :download).freeze,
       medium_dl: OpenStruct.new(width: 800, label: "Medium JPG", style: :download).freeze,
       small_dl: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
-      full_size_dl: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze
+      full_size_dl: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
+
+      compressed_tiff:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
     }.freeze
 
     class_attribute :acl
@@ -104,11 +106,9 @@ module CHF
           IMAGE_TYPES.each_pair do |key, defn|
             if defn.style == :thumb || defn.style == :download
               futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
+            elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
+              futures << create_compressed_tiff(filename: key.to_s)
             end
-          end
-
-          if file_set.mime_type == "image/tiff"
-            # compressed TIFF
           end
 
           futures.compact.each(&:value!)
@@ -217,5 +217,26 @@ module CHF
         s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
       end
     end
+
+
+    def create_compressed_tiff(filename:)
+      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
+      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+
+      if lazy && s3_obj.exists?
+        return nil
+      end
+
+      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
+        TTY::Command.new(printer: :null).run(
+          "gm", "convert",
+          "#{working_original_path}[0]",
+          "-compress", "zip",
+          output_path
+        )
+        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+      end
+    end
+
   end
 end
