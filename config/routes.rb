@@ -60,7 +60,8 @@ Rails.application.routes.draw do
     # URL lead to ordinary show page, so JS can pick it up and launch viewer.
     get '/concern/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show', as: :viewer
     get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
-
+    # our viewer json route
+    get '/concern/generic_works/:id/viewer_images_info' => 'curation_concerns/generic_works#viewer_images_info', defaults: {format: "json"}, format: false, as: :viewer_images_info
 
     resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
       concerns :exportable

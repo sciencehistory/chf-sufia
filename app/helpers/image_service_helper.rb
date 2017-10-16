@@ -89,6 +89,29 @@ module ImageServiceHelper
     end
   end
 
+  # returns config for the viewer, an array of JSON-able hashes, one for each image
+  # included in this work to be viewed.
+  def viewer_images_info(work_presenter)
+    work_presenter.viewable_member_presenters.to_a.collect.with_index do |member_presenter, i|
+      {
+        thumb_height: member_proportional_height(member_presenter),
+        index: i + 1,
+        member_should_show_info: member_presenter.model_name.to_s != "FileSet",
+        member_id: member_presenter.representative_id,
+        member_show_url: contextual_path(member_presenter, work_presenter),
+        tile_source: tile_source_url(member_presenter),
+        fallback_tile_source: main_app.download_path(member_presenter.representative_id, file: "jpeg"),
+        thumb_src: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field),
+
+        # downloads for this image only, key is actual displayable link, value is url
+        downloads: {
+          "Original" => main_app.download_path(member_presenter.representative_id),
+          "Full-Size JPG" => full_res_jpg_url(member_presenter)
+        }.compact # strip out null unavailable values
+      } if member_presenter.representative_file_id # don't show it in the viewer if there's no image
+    end
+  end
+
   private
 
   # Returns nil if no image service available. Otherwise an image
