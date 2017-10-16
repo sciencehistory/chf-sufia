@@ -75,6 +75,10 @@ module CHF
       ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
+    def self.s3_path(file_set_id:, filename_key:, suffix:)
+      "#{file_set.id}/#{Pathname.new(filename_key).sub_ext(suffix)}"
+    end
+
     attr_reader :file_set, :file_id, :lazy, :thread_pool
 
     # @param [FileSet] file_set
@@ -170,7 +174,7 @@ module CHF
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     def create_jpg_derivative(width:, filename:, style:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
-      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(fileset_id: file_set.id, filename: filename, suffix: ".jpg"))
 
       if lazy && s3_obj.exists?
         return nil
@@ -221,7 +225,7 @@ module CHF
 
     def create_compressed_tiff(filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
-      s3_obj = self.class.s3_bucket!.object("#{file_set.id}/#{Pathname.new(filename).sub_ext(".jpg")}")
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(fileset_id: file_set.id, filename: filename, suffix: ".tif"))
 
       if lazy && s3_obj.exists?
         return nil
