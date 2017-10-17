@@ -182,9 +182,9 @@ module CHF
     define_key :derivative_job_tmp_dir, default: Rails.root.join("tmp", "derivative-tmp-working").to_s
     define_key :derivative_s3_bucket, default: -> {
       if Rails.env.development?
-        "chf-dev-derivatives"
+        "chf-derivatives-dev"
       elsif staging?
-        "chf-staging-derivatives"
+        "chf-derivatives-staging"
       end
       # production just configure it in env please
     }
