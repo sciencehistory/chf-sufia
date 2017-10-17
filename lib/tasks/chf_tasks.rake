@@ -85,6 +85,9 @@ namespace :chf do
   end
 
   # WIP s3 reworked version of create derivatives
+  # WORK_IDS
+  # ONLY_STYLES=thumb
+  # ONLY_TYPES=large_dl,medium_dl
   namespace :create_derivatives do
     task :s3, [:lazy] => :environment do |t, args|
       condition = if ENV['WORK_IDS'].present?
@@ -93,11 +96,18 @@ namespace :chf do
         {}
       end
 
+      only_types  = ENV['ONLY_TYPES'].split(",") if ENV['ONLY_TYPES']
+      only_styles = ENV['ONLY_STYLES'].split(',') if ENV['ONLY_STYLES']
+
       progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
       Sufia.primary_work_type.find_each(condition) do |work|
         work.file_sets.each do |fs|
           fs.files.each do |file|
-            CHF::CreateDerivativesOnS3Service.new(fs, file.id, file_checksum: file.checksum.value, lazy: args[:lazy] == "lazy").call
+            CHF::CreateDerivativesOnS3Service.new(fs, file.id,
+                                                  file_checksum: file.checksum.value,
+                                                  only_styles: only_styles,
+                                                  only_types: only_types,
+                                                  lazy: args[:lazy] == "lazy").call
           end
         end
         progress_bar.increment

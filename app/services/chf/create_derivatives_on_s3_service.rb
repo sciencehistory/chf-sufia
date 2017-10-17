@@ -22,7 +22,13 @@ module CHF
   # Also provides some class methods for file name calculation.
   #
   # By default it will create and write the derivatives whether they exist or not,
-  #     call(lazy: true) to only write if not already present on S3 under expected file name.
+  # initialize with `.new(lazy: true)` to only write if not already present on S3 under expected file name.
+  #
+  # If you only want to create SOME derivatives, you can pass one or more
+  # "styles:" and/or "typse:" to _initializer_. Can be combined with lazy.
+  #
+  #     CreateDerivativesOnS3Service.new(file_set, file_id, only_styles: "thumb").call
+  #     CreateDerivativesOnS3Service.new(file_set, file_id, only_types: ["large_dl", "medium_dl"]).call
   #
   # We use GraphicsMagick rather than ImageMagick, becuase experimentation reveals it's 50% faster
   # or more. and prob has less RAM use too.
@@ -81,15 +87,17 @@ module CHF
       "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
     end
 
-    attr_reader :file_set, :file_id, :lazy, :thread_pool
+    attr_reader :file_set, :file_id, :lazy, :thread_pool, :only_styles, :only_types
 
     # @param [FileSet] file_set
     # @param [String] file_id identifier for a Hydra::PCDM::File
-    def initialize(file_set, file_id, file_checksum: nil, lazy: false)
+    def initialize(file_set, file_id, file_checksum: nil, lazy: false, only_styles: nil, only_types: nil)
       @file_set = file_set
       @file_id = file_id
       @file_checksum = file_checksum
       @lazy = !!lazy
+      @only_styles = Array(only_styles).collect(&:to_s) if only_styles
+      @only_types = Array(only_types).collect(&:to_s) if only_types
     end
 
     # If not already set, we have to fetch from fedora, which is kinda slow with AF on wells.
@@ -116,6 +124,9 @@ module CHF
           # custom CHF image derivatives
 
           IMAGE_TYPES.each_pair do |key, defn|
+            next if only_styles && only_styles.include?(defn.style.to_s)
+            next if only_types && only_types.include?(key.to_s)
+
             if defn.style == :thumb || defn.style == :download
               futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
             elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
