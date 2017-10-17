@@ -126,7 +126,8 @@ module MemberHelper
     original_height = member_presenter.representative_height.try(:to_i)
 
     if original_width && original_width > 0 && original_height && original_height > 0
-      target_width * original_height / original_width
+      # make sure it's at least target_width / 4, stretch if needed.
+      [(target_width * original_height / original_width), (target_width / 4)].max
     end
   end
 

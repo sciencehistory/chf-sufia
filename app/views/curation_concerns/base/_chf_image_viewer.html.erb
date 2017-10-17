@@ -5,7 +5,9 @@
     local args:
       * work
  %>
-<div id="chf-image-viewer-modal" class="modal" tabindex="-1" role="dialog">
+<div id="chf-image-viewer-modal" class="modal" tabindex="-1" role="dialog"
+     data-images-info-path="<%= main_app.viewer_images_info_path(work) %>"
+     data-work-id="<%= work.id %>">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -26,8 +28,6 @@
           </div>
 
           <div class="viewer-content">
-
-
             <div class="viewer-image-and-navbar" data-alert-container>
               <div class="viewer-image" id="openseadragon-container">
                 <button href="#" id="viewer-left" class="viewer-image-prev" data-trigger="viewer-prev" tabindex="0"><i class="fa fa-chevron-left" title="Previous"></i></button>
@@ -37,29 +37,8 @@
               <%= render "chf_image_viewer_navbar", work: work %>
             </div>
 
-            <%= content_tag "div", id:"viewer-thumbs", class: "viewer-thumbs", data: { total_count: work.viewable_member_presenters.count } do %>
-              <% work.viewable_member_presenters.each_with_index do |member_presenter, i| -%>
-                <%= tag "img",
-                    class: "lazyload viewer-thumb-img",
-                    height: member_proportional_height(member_presenter),
-                    alt: "",
-                    tabindex: "0",
-                    role: "button",
-                    data: {
-                      trigger: 'change-viewer-source',
-                      index: i + 1,
-                      title: member_presenter.link_name,
-                      member_should_show_info: member_presenter.model_name.to_s != "FileSet",
-                      member_id: member_presenter.representative_id,
-                      member_show_url: contextual_path(member_presenter, work),
-                      member_dl_original_url: main_app.download_path(member_presenter.representative_id),
-                      member_dl_jpeg_url: full_res_jpg_url(member_presenter),
-                      tile_source: tile_source_url(member_presenter),
-                      src: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field)
-                    } if member_presenter.representative_file_id # don't show it in the viewer if there's no image
-                -%>
-              <%- end -%>
-            <% end %>
+            <%# will be filled by JS, from json endpoint data %>
+            <%= content_tag "div", "", id:"viewer-thumbs", class: "viewer-thumbs", data: { total_count: work.viewable_member_presenters.count } %>
           </div>
         </div>
       </div>
