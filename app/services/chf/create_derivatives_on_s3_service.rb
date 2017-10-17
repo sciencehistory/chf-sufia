@@ -226,7 +226,7 @@ module CHF
 
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
         TTY::Command.new(printer: :null).run(*args)
-        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg", content_disposition: ("attachment" if style != :thumb))
       end
     end
 
@@ -246,7 +246,7 @@ module CHF
           "-compress", "zip",
           output_path
         )
-        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg")
+        s3_obj.upload_file(output_path, acl: acl, content_type: "image/tiff", content_disposition: "attachment")
       end
     end
 
