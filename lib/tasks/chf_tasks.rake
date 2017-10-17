@@ -84,6 +84,27 @@ namespace :chf do
     MiniMagick::Tool.quiet_arg = false
   end
 
+  # WIP s3 reworked version of create derivatives
+  namespace :create_derivatives do
+    task :s3, [:lazy] => :environment do |t, args|
+      condition = if ENV['WORK_IDS'].present?
+        { id: ENV['WORK_IDS'].split(",") }
+      else
+        {}
+      end
+
+      progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+      Sufia.primary_work_type.find_each(condition) do |work|
+        work.file_sets.each do |fs|
+          fs.files.each do |file|
+            CHF::CreateDerivativesOnS3Service.new(fs, file.id, file_checksum: file.checksum.value, lazy: args[:lazy] == "lazy").call
+          end
+        end
+        progress_bar.increment
+      end
+    end
+  end
+
   desc 'Migrate titles and merge descriptions'
   task single_value_migration: :environment do
     CHF::Metadata::SingleValueMigration.run
@@ -255,7 +276,7 @@ namespace :chf do
 
       client.put_bucket_policy(
         bucket: CHF::CreateDziService.bucket_name,
-        policy: dzi_policy 
+        policy: dzi_policy
     )
     end
 
