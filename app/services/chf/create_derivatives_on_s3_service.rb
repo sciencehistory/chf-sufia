@@ -67,8 +67,9 @@ module CHF
       dl_small: OpenStruct.new(width: 800, label: "Small JPG", style: :download).freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
 
-      # compressed TIFF currently disabled, when trying to do it with IM/GM it takes
-      # infeasible amounts of RAM. With vips, it doesn't actually commpress much.
+      # compressed TIFF disabled for now, needs testing to make sure
+      # our staging server can handle it, and decision if we really want
+      # to take the S3 space.
       # https://github.com/jcupitt/libvips/issues/777
       #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
     }.freeze
@@ -246,8 +247,8 @@ module CHF
 
 
     # IM/GM crash our system using unholy amounts of RAM trying to operate on
-    # very big TIFFs for anything at all. vips works great for thumbs, but
-    # somehow isn't compressing nearly as much for adding compression. :(
+    # very big TIFFs for anything at all. VIPS with correct compression args
+    # (predictor=horizontal as below) needs to be tested to make sure it won't.
     def create_compressed_tiff(filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".tif"))
@@ -258,9 +259,8 @@ module CHF
 
       Concurrent::Future.execute(executor: :immediate) do
         TTY::Command.new(printer: :null).run(
-          "vips", "tiffsave",
-          "--compression", "deflate",
-          "#{working_original_path}",
+          "vips", "copy",
+          "#{working_original_path}[predictor=horizontal,compression=deflate]",
           output_path
         )
         s3_obj.upload_file(output_path, acl: acl, content_type: "image/tiff", content_disposition: "attachment")
