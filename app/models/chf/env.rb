@@ -176,10 +176,24 @@ module CHF
       # production just configure it in env please
     }
     define_key :dzi_s3_bucket_region, default: "us-east-1"
-    define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+    define_key :dzi_job_tmp_dir, default: -> {
+      if Rails.env.development?
+        Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+      else
+        # default is only called once, so mkdir_p should be fine
+        FileUtils.mkdir_p("/tmp/chf-sufia/dzi-working").first
+      end
+    }
     define_key :dzi_auto_create, default: Rails.env.production?, system_env_transform: BOOLEAN_TRANSFORM
 
-    define_key :derivative_job_tmp_dir, default: Rails.root.join("tmp", "derivative-tmp-working").to_s
+    define_key :derivative_job_tmp_dir, default: -> {
+      if Rails.env.development?
+        Rails.root.join("tmp", "derivative-tmp-working").to_s
+      else
+        # default is only called once, so mkdir_p should be fine
+        FileUtils.mkdir_p("/tmp/chf-sufia/derivatives-working").first
+      end
+    }
     define_key :derivative_s3_bucket, default: -> {
       if Rails.env.development?
         "chf-derivatives-dev"

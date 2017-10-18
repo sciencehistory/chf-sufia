@@ -37,12 +37,6 @@ module CHF
   # this class.
   class CreateDerivativesOnS3Service
     WORKING_DIR_PARENT = CHF::Env.lookup(:derivative_job_tmp_dir)
-    begin
-      FileUtils.mkdir_p WORKING_DIR_PARENT
-    rescue StandardError => e
-      Rails.logger.error "Could not create working dir for #{self.name} at #{WORKING_DIR_PARENT}, #{e}"
-    end
-
 
     IMAGE_TYPES = {
       # Thumb-type widths in pixels are based on our CSS, the sizes we'll need
