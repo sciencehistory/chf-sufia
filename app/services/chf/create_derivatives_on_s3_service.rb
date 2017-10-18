@@ -62,9 +62,9 @@ module CHF
 
       # downloadable ones at sizes we just picked
 
-      dl_large: OpenStruct.new(width: 1200, label: "Large JPG", style: :download).freeze,
-      dl_medium: OpenStruct.new(width: 800, label: "Medium JPG", style: :download).freeze,
-      dl_small: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
+      dl_large: OpenStruct.new(width: 2880, label: "Large JPG", style: :download).freeze,
+      dl_medium: OpenStruct.new(width: 1200, label: "Medium JPG", style: :download).freeze,
+      dl_small: OpenStruct.new(width: 800, label: "Small JPG", style: :download).freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
 
       # compressed TIFF currently disabled, when trying to do it with IM/GM it takes
