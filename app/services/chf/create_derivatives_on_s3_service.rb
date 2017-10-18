@@ -3,13 +3,15 @@ module CHF
   # https://github.com/samvera/curation_concerns/blob/v1.7.8/app/jobs/create_derivatives_job.rb
 
   # We completely reimplement ourselves. the existing implementation was not
-  # super useful, although we copy and paste some parts. We want to:
-  # 1) Assume runnning on a server NOT the app server, get file from fedora
+  # super useful, although we copy and paste some parts. We:
+  #
+  # 1) Assume runnning on a server NOT the app server, get file from fedora, and
+  #    make sure to clean up temporary working copy.
   # 2) push to S3 (under key "#{file_set_id}_checksum#_{file_checksum}/derivative_file_name"). That file_set_ids are equally distributed hex makes this a good S3 key.
   #     checksum is used to make cached values self-busting if file changes. If caller already has
   #     the checksum, pass it in to avoid an expensive lookup.
-  # 3) Make sure to clean up temp file(s)
-  # 4) Use optimal settings for a small sized thumbnail
+  # 3) Use optimal settings for a small sized thumbnail, currently use vips
+  #    instead of im/gm, it's much faster and uses less RAM.
   #
   # This service itself has info on what image derivatives to create, it's no longer
   # going through the hydra derivatives architecture.
@@ -29,9 +31,6 @@ module CHF
   #
   #     CreateDerivativesOnS3Service.new(file_set, file_id, only_styles: "thumb").call
   #     CreateDerivativesOnS3Service.new(file_set, file_id, only_types: ["large_dl", "medium_dl"]).call
-  #
-  # We use GraphicsMagick rather than ImageMagick, becuase experimentation reveals it's 50% faster
-  # or more. and prob has less RAM use too.
   #
   # We use some multi-threaded concurrency to create each derivative in parallel, inside
   # this class.
@@ -68,7 +67,10 @@ module CHF
       dl_small: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
 
-      tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
+      # compressed TIFF currently disabled, when trying to do it with IM/GM it takes
+      # infeasible amounts of RAM. With vips, it doesn't actually commpress much.
+      # https://github.com/jcupitt/libvips/issues/777
+      #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
     }.freeze
 
     class_attribute :acl
@@ -187,53 +189,54 @@ module CHF
     #
     # For thumbnails, we use more aggressive image conversion parameters, as opposed
     # to downloads. Later, thumbs might also apply some cropping to enforce maximum
-    # aspect ratios. For thumbnail aggressive conversion parameters, see:
+    # aspect ratios. For thumbnail aggressive conversion parameters, some background:
     #     * http://www.imagemagick.org/Usage/thumbnails/
     #     * https://developers.google.com/speed/docs/insights/OptimizeImages
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
+    #     * https://github.com/jcupitt/libvips/issues/775
     def create_jpg_derivative(width:, filename:, style:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".jpg"))
+
+      sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
 
       if lazy && s3_obj.exists?
         return nil
       end
 
-      args = [
-        "gm", "convert",
-        "#{working_original_path}[0]", # insist on only layer 0, some of our input has another layer with a little thumb, we don't want that
-        "-quality",   "85",
-        "-interlace", "Line" # Means progressive JPEG
-      ]
-
-      if style == :thumb
-        args.concat([
-          "-sampling-factor", "4:2:0",
-          "-colorspace",  "rgb", # GM doesn't support 'sRGB', but claims this is basically the same https://sourceforge.net/p/graphicsmagick/bugs/331/
-        ])
+      vips_jpg_params = if style.to_s == "thumb"
+        "[Q=85,interlace,optimize_coding,strip]"
+      else
+        # could be higher Q for downloads if we want, but we don't right now
+        # We do avoid striping metadata, no 'strip' directive.
+        "[Q=85,interlace,optimize_coding]"
       end
 
-      if width
-        if style == :thumb
-          args.concat(["-thumbnail",   "#{width}x"])
-        else
-          args.concat([
-            "-sample", "#{width * 4}x", # should speed resize up a bit without much quality loss, we think?
-            "-resize", "#{width}x"
-          ])
-        end
+      extra_args = if style.to_s == "thumb"
+        # for thumbs, ensure convert to sRGB and strip embedded profile,
+        # as browsers assume sRGB.
+        ["--eprofile", sRGB_profile_path, "--delete"]
+      else
+        []
       end
 
-      if style == :thumb
-        args.concat([
-          "-strip"
-        ])
+      # if we're not resizing, way more convenient to use a different
+      # vips command line.
+      args = if width
+        [
+          "vipsthumbnail",
+          working_original_path,
+          *extra_args,
+          "--size", "#{width}x",
+          "-o", "#{output_path}#{vips_jpg_params}"
+        ]
+      else
+        [ "vips", "copy",
+          working_original_path,
+          *extra_args,
+          "#{output_path}#{vips_jpg_params}"
+        ]
       end
-
-      args.concat([
-        "-format", "jpg",
-        output_path
-      ])
 
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
         TTY::Command.new(printer: :null).run(*args)
@@ -242,6 +245,9 @@ module CHF
     end
 
 
+    # IM/GM crash our system using unholy amounts of RAM trying to operate on
+    # very big TIFFs for anything at all. vips works great for thumbs, but
+    # somehow isn't compressing nearly as much for adding compression. :(
     def create_compressed_tiff(filename:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".tif"))
@@ -252,9 +258,9 @@ module CHF
 
       Concurrent::Future.execute(executor: :immediate) do
         TTY::Command.new(printer: :null).run(
-          "gm", "convert",
-          "#{working_original_path}[0]",
-          "-compress", "zip",
+          "vips", "tiffsave",
+          "--compression", "deflate",
+          "#{working_original_path}",
           output_path
         )
         s3_obj.upload_file(output_path, acl: acl, content_type: "image/tiff", content_disposition: "attachment")
