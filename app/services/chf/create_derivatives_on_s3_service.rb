@@ -12,6 +12,7 @@ module CHF
   #     the checksum, pass it in to avoid an expensive lookup.
   # 3) Use optimal settings for a small sized thumbnail, currently use vips
   #    instead of im/gm, it's much faster and uses less RAM.
+  # 4) For "thumb" type derivatives, create a 2x width version for use in srcset
   #
   # This service itself has info on what image derivatives to create, it's no longer
   # going through the hydra derivatives architecture.
@@ -132,6 +133,11 @@ module CHF
 
             if defn.style == :thumb || defn.style == :download
               futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
+
+              # 2x for srcset on thumbs
+              if defn.style == :thumb && defn.width
+                futures << create_jpg_derivative(width: defn.width * 2, filename: "#{key.to_s}_2X", style: defn.style)
+              end
             elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
               futures << create_compressed_tiff(filename: key.to_s)
             end
