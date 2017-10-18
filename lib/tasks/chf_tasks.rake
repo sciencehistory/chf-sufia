@@ -99,7 +99,13 @@ namespace :chf do
       only_types  = ENV['ONLY_TYPES'].split(",") if ENV['ONLY_TYPES']
       only_styles = ENV['ONLY_STYLES'].split(',') if ENV['ONLY_STYLES']
 
-      progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+      fs_count = if ENV['WORK_IDS'].blank?
+        FileSet.count
+      else
+        ActiveFedora::SolrService.get("{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})", rows: 0)["response"]["numFound"]
+      end
+
+      progress_bar = ProgressBar.create(:total => fs_count, format: "%t: |%B| %p%% %e")
       Sufia.primary_work_type.find_each(condition) do |work|
         work.file_sets.each do |fs|
           fs.files.each do |file|
@@ -109,8 +115,8 @@ namespace :chf do
                                                   only_types: only_types,
                                                   lazy: args[:lazy] == "lazy").call
           end
+          progress_bar.increment
         end
-        progress_bar.increment
       end
     end
   end

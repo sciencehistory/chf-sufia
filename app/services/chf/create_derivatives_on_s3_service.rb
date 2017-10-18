@@ -250,7 +250,7 @@ module CHF
         return nil
       end
 
-      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
+      Concurrent::Future.execute(executor: :immediate) do
         TTY::Command.new(printer: :null).run(
           "gm", "convert",
           "#{working_original_path}[0]",
