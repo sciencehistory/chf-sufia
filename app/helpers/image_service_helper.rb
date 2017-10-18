@@ -101,7 +101,7 @@ module ImageServiceHelper
         memberId: member_presenter.representative_id,
         memberShowUrl: contextual_path(member_presenter, work_presenter),
         tileSource: tile_source_url(member_presenter),
-        fallbackTileSource: {type: "image", url: main_app.download_path(member_presenter.representative_id, file: "jpeg")},
+        fallbackTileSource: {type: "image", url: main_app.download_path(member_presenter.representative_file_set_id , file: "jpeg")},
         thumbSrc: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field),
 
         # downloads for this image only, key is actual displayable link, value is url
@@ -109,7 +109,7 @@ module ImageServiceHelper
           {
             key: "download_tiff",
             label: "Original",
-            url: main_app.download_path(member_presenter.representative_id)
+            url: main_app.download_path(member_presenter.representative_file_set_id )
           },
           {
             key: "download_jpg_fullsize",
