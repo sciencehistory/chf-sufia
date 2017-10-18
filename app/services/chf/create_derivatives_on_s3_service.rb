@@ -52,23 +52,23 @@ module CHF
       # small thumb for multiple images on show page. These are tricky cause they
       # are really different sizes responsively, but we just pick one to resize to
       # as standard for now.
-      standard_thumb: OpenStruct.new(width: 170, style: :thumb).freeze,
+      thumb_standard: OpenStruct.new(width: 170, style: :thumb).freeze,
 
       # giant thumb for big hero image on show page
-      hero_thumb: OpenStruct.new(width: 525, style: :thumb).freeze,
+      thumb_hero: OpenStruct.new(width: 525, style: :thumb).freeze,
 
       # thumbs on viewer list
-      mini_thumb: OpenStruct.new(width: 54, style: :thumb).freeze,
+      thumb_mini: OpenStruct.new(width: 54, style: :thumb).freeze,
 
 
       # downloadable ones at sizes we just picked
 
-      large_dl: OpenStruct.new(width: 1200, label: "Large JPG", style: :download).freeze,
-      medium_dl: OpenStruct.new(width: 800, label: "Medium JPG", style: :download).freeze,
-      small_dl: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
-      full_size_dl: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
+      dl_large: OpenStruct.new(width: 1200, label: "Large JPG", style: :download).freeze,
+      dl_medium: OpenStruct.new(width: 800, label: "Medium JPG", style: :download).freeze,
+      dl_small: OpenStruct.new(width: 400, label: "Small JPG", style: :download).freeze,
+      dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
 
-      compressed_tiff:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
+      tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
     }.freeze
 
     class_attribute :acl
