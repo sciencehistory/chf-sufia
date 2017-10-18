@@ -102,7 +102,7 @@ namespace :chf do
       fs_count = if ENV['WORK_IDS'].blank?
         FileSet.count
       else
-        ActiveFedora::SolrService.get("{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})", rows: 0)["response"]["numFound"]
+        ActiveFedora::Base.where(["{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})"]).count
       end
 
       progress_bar = ProgressBar.create(:total => fs_count, format: "%t: |%B| %p%% %e")
