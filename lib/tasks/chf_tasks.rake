@@ -105,7 +105,7 @@ namespace :chf do
         ActiveFedora::Base.where(["{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})"]).count
       end
 
-      progress_bar = ProgressBar.create(:total => fs_count, format: "%t: |%B| %p%% %e")
+      progress_bar = ProgressBar.create(:total => fs_count, format: "%a %t: |%B| %c/%u %p%%%e")
       Sufia.primary_work_type.find_each(condition) do |work|
         work.file_sets.each do |fs|
           fs.files.each do |file|
