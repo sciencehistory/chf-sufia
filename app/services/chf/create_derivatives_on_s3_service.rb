@@ -72,6 +72,9 @@ module CHF
     class_attribute :acl
     self.acl = 'public-read'
 
+    class_attribute :cache_control
+    self.cache_control = "max-age=31536000" # one year in seconds.
+
     # Using Aws::S3 directly appeared to give us a lot faster bulk upload
     # than via fog.
     def self.s3_bucket!
@@ -241,7 +244,11 @@ module CHF
 
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
         TTY::Command.new(printer: :null).run(*args)
-        s3_obj.upload_file(output_path, acl: acl, content_type: "image/jpeg", content_disposition: ("attachment" if style != :thumb))
+        s3_obj.upload_file(output_path,
+                           acl: acl,
+                           content_type: "image/jpeg",
+                           content_disposition: ("attachment" if style != :thumb),
+                           cache_control: cache_control)
       end
     end
 
@@ -263,7 +270,11 @@ module CHF
           "#{working_original_path}[predictor=horizontal,compression=deflate]",
           output_path
         )
-        s3_obj.upload_file(output_path, acl: acl, content_type: "image/tiff", content_disposition: "attachment")
+        s3_obj.upload_file(output_path,
+                           acl: acl,
+                           content_type: "image/tiff",
+                           content_disposition: "attachment",
+                           cache_control: cache_control)
       end
     end
 
