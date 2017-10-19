@@ -35,6 +35,9 @@ module CHF
   #
   # We use some multi-threaded concurrency to create each derivative in parallel, inside
   # this class.
+  #
+  # POSSIBLE IMPRVOVEMENT: Switch to ruby-vips instead of shell out to vips command line.
+  #  See: https://github.com/jcupitt/libvips/issues/777#issuecomment-337831511
   class CreateDerivativesOnS3Service
     WORKING_DIR_PARENT = CHF::Env.lookup(:derivative_job_tmp_dir)
 
