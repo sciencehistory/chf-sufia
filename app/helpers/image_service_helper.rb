@@ -19,6 +19,8 @@ module ImageServiceHelper
 
 
   def member_src_attributes(member:, size_key:)
+    raise ArgumentError.new("Unrecognized size key: #{size_key}") unless THUMB_BASE_WIDTHS.keys.include?(size_key.to_sym)
+
     if member.representative_file_id.nil?
       # if there's no image, default
       {
