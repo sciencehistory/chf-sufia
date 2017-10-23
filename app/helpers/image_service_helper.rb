@@ -1,5 +1,6 @@
 module ImageServiceHelper
   BASE_WIDTHS = {
+    mini: 54,
     large: 525,
     standard: 208
   }.freeze
@@ -11,7 +12,7 @@ module ImageServiceHelper
       {
         src:  member.try(:thumbnail_path)
       }
-    elsif service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_show_page), member)
+    elsif service = _image_url_service(CHF::Env.lookup(:image_server_for_thumbnails), member)
       {
         src:    service.thumb_url(size: size_key),
         srcset: service.thumb_srcset_pixel_density(size: size_key)
@@ -75,7 +76,7 @@ module ImageServiceHelper
   end
 
   def tile_source_url(member_presenter)
-    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
+    if service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
       service.tile_source_url
     else
       {"type" => "image", "url" => main_app.download_path(member_presenter.representative_id, file: "jpeg")}.to_json
@@ -84,7 +85,7 @@ module ImageServiceHelper
 
   # Returns nil if none available
   def full_res_jpg_url(member_presenter)
-    if service = _representative_image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
+    if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
       service.full_res_jpg_url
     end
   end
@@ -125,9 +126,9 @@ module ImageServiceHelper
 
   # Returns nil if no image service available. Otherwise an image
   # service that has tile_source_url, thumb_url, etc., methods.
-  def _representative_image_url_service(service_type, member)
+  def _image_url_service(service_type, member)
     if service_type == "iiif"
-      CHF::IiifUrlService.new(file_set_id: membrer.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
+      CHF::IiifUrlService.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     elsif service_type == "dzi_s3"
       CHF::DziS3UrlService.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     elsif (!service_type) || service_type == "false"

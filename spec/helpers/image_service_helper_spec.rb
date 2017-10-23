@@ -6,6 +6,7 @@ describe ImageServiceHelper do
   let(:mock_member_presenter) {
       mock_model('MockMemberPresenter',
         representative_file_id: file_id,
+        representative_file_set_id: "something",
         representative_id: "maybe_a_work",
         representative_width: "100",
         representative_height: "100",
@@ -54,7 +55,7 @@ describe ImageServiceHelper do
     describe "with base url with path" do
       before do
         allow(CHF::Env).to receive(:lookup).with(:iiif_public_url).and_return('http://localhost:3000/image-service')
-        allow(CHF::Env).to receive(:lookup).with(:image_server_on_show_page).and_return("iiif")
+        allow(CHF::Env).to receive(:lookup).with(:image_server_for_thumbnails).and_return("iiif")
       end
 
       let(:html) { Nokogiri::HTML.fragment(helper.member_image_tag(member: mock_member_presenter, parent_id: parent_id)) }

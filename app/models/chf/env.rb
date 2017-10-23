@@ -159,8 +159,9 @@ module CHF
     define_key :service_level
 
     # should be a recognized image service type, or nil/false for only using hydra-derivatives thumbs
-    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_representative_image_url_service
-    define_key :image_server_on_show_page
+    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_image_url_service
+    # "iiif", "dzi_s3", or nil for legacy
+    define_key :image_server_for_thumbnails
     define_key :image_server_on_viewer
     define_key :image_server_downloads
 

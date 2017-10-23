@@ -91,6 +91,10 @@ module CHF
       "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
     end
 
+    def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:)
+      s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix)).public_url
+    end
+
     attr_reader :file_set, :file_id, :lazy, :thread_pool, :only_styles, :only_types
 
     # @param [FileSet] file_set
@@ -130,7 +134,6 @@ module CHF
           IMAGE_TYPES.each_pair do |key, defn|
             next if only_styles && only_styles.include?(defn.style.to_s)
             next if only_types && only_types.include?(key.to_s)
-
             if defn.style == :thumb || defn.style == :download
               futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
 
