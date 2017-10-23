@@ -11,12 +11,18 @@ module ImageServiceHelper
     small: 800
   }.freeze
 
+  def default_image(member:)
+    # image supplied by curation concerns or something, we should
+    # prob find a better one.
+    asset_path("nope.png")
+  end
+
 
   def member_src_attributes(member:, size_key:)
     if member.representative_file_id.nil?
-      # if there's no image, show the default thumbnail if we have one (it gets indexed for some types of obj)
+      # if there's no image, default
       {
-        src:  member.try(:thumbnail_path)
+        src:  default_image(member: member)
       }
     elsif service = _image_url_service(CHF::Env.lookup(:image_server_for_thumbnails), member)
       {
