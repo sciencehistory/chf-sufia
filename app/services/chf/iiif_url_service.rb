@@ -4,9 +4,9 @@ module CHF
   # type in image_service_helper.  Make a shared spec for expected API?
   class IiifUrlService
     attr_reader :file_id, :checksum
-    def initialize(file_id, checksum: nil)
+    def initialize(file_set_id:, file_id:, checksum: nil)
       @file_id = file_id
-      # We ignore checksum at present, don't use it in URLs
+      # We ignore file_set_id and checksum at present, don't use it in URLs
     end
 
     def thumb_url(size:)

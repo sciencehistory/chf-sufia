@@ -127,9 +127,9 @@ module ImageServiceHelper
   # service that has tile_source_url, thumb_url, etc., methods.
   def _representative_image_url_service(service_type, member)
     if service_type == "iiif"
-      CHF::IiifUrlService.new(member.representative_file_id, checksum: member.representative_checksum)
+      CHF::IiifUrlService.new(file_set_id: membrer.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     elsif service_type == "dzi_s3"
-      CHF::DziS3UrlService.new(member.representative_file_id, checksum: member.representative_checksum)
+      CHF::DziS3UrlService.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     elsif (!service_type) || service_type == "false"
       nil
     else
