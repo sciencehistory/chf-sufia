@@ -102,16 +102,15 @@ module MemberHelper
   end
 
 
-  VIEWER_THUMB_WIDTH = 60
   # Calculate height matching width for a aspect ratio of member_presenter.
   # default target_width should match CSS, in chf_image_viewer.scss, .viewer-thumb-img `width`
-  def member_proportional_height(member_presenter, target_width: VIEWER_THUMB_WIDTH)
+  def member_proportional_height(member_presenter, target_width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini])
     original_width = member_presenter.representative_width.try(:to_i)
     original_height = member_presenter.representative_height.try(:to_i)
 
     if original_width && original_width > 0 && original_height && original_height > 0
       # make sure it's at least target_width / 4, stretch if needed.
-      [(target_width * original_height / original_width), (target_width / 4)].max
+      [(target_width.to_d * original_height / original_width).round(2), (target_width.to_d / 4).round(2)].max
     end
   end
 
