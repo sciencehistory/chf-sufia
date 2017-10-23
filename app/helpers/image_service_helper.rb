@@ -113,6 +113,7 @@ module ImageServiceHelper
   # included in this work to be viewed.
   def viewer_images_info(work_presenter)
     work_presenter.viewable_member_presenters.to_a.collect.with_index do |member_presenter, i|
+      member_src_attributes_mini = member_src_attributes(member: member_presenter, size_key: :mini)
       {
         thumbHeight: member_proportional_height(member_presenter),
         index: i + 1,
@@ -122,7 +123,8 @@ module ImageServiceHelper
         memberShowUrl: contextual_path(member_presenter, work_presenter),
         tileSource: tile_source_url(member_presenter),
         fallbackTileSource: {type: "image", url: main_app.download_path(member_presenter.representative_file_set_id , file: "jpeg")},
-        thumbSrc: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field),
+        thumbSrc: member_src_attributes_mini[:src],
+        thumbSrcset: member_src_attributes_mini[:srcset],
 
         # downloads for this image only
         downloads: download_options(member_presenter)

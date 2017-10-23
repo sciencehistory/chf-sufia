@@ -395,6 +395,7 @@ ChfImageViewer.prototype.makeThumbnails = function(json) {
             ' data-member-id="' + config.memberId + '"' +
             ' data-trigger="change-viewer-source"' +
             ' data-src="' + config.thumbSrc + '"' +
+            ' data-srcset="' +  (config.thumbSrcset || '') + '"' +
             ' data-index="' + index + '"' +
       '>'
     );
