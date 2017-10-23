@@ -1,8 +1,14 @@
 module ImageServiceHelper
-  BASE_WIDTHS = {
+  THUMB_BASE_WIDTHS = {
     mini: 54,
     large: 525,
     standard: 208
+  }.freeze
+
+  DOWNLOAD_WIDTHS = {
+    large: 2880,
+    medium: 1200,
+    small: 800
   }.freeze
 
 
@@ -50,8 +56,8 @@ module ImageServiceHelper
   def member_image_tag(parent_id:, member:, size_key: nil, lazy: false)
     size_key = :standard if size_key.blank?
 
-    unless BASE_WIDTHS.keys.include?(size_key)
-      raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{BASE_WIDTHS.keys}")
+    unless THUMB_BASE_WIDTHS.keys.include?(size_key)
+      raise ArgumentError.new("Unrecognized size_key '#{size_key}'. Allowable: #{THUMB_BASE_WIDTHS.keys}")
     end
 
     args = {
@@ -83,12 +89,25 @@ module ImageServiceHelper
     end
   end
 
-  # Returns nil if none available
-  def full_res_jpg_url(member_presenter)
+  def download_options(member_presenter)
+    direct_original = {
+      option_key: "original",
+      label: "Original TIFF",
+      analytics_action: "download_original",
+      url: main_app.download_path(member_presenter.representative_file_set_id)
+    }
+
     if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
-      service.full_res_jpg_url
+      service.download_options.tap do |list|
+        unless list.any? {|h| h[:option_key] == "original" }
+          list << direct_original
+        end
+      end
+    else
+      [direct_original]
     end
   end
+
 
   # returns config for the viewer, an array of JSON-able hashes, one for each image
   # included in this work to be viewed.
@@ -105,19 +124,8 @@ module ImageServiceHelper
         fallbackTileSource: {type: "image", url: main_app.download_path(member_presenter.representative_file_set_id , file: "jpeg")},
         thumbSrc: member_presenter.first(blacklight_config.view_config(document_index_view_type).thumbnail_field),
 
-        # downloads for this image only, key is actual displayable link, value is url
-        downloads: [
-          {
-            key: "download_tiff",
-            label: "Original",
-            url: main_app.download_path(member_presenter.representative_file_set_id )
-          },
-          {
-            key: "download_jpg_fullsize",
-            label: "Full-size JPG",
-            url: full_res_jpg_url(member_presenter)
-          }
-        ].delete_if { |h| h[:url].blank? } # strip out null unavailable values
+        # downloads for this image only
+        downloads: download_options(member_presenter)
       } if member_presenter.representative_file_id # don't show it in the viewer if there's no image
     end
   end

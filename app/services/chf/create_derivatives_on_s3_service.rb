@@ -60,9 +60,9 @@ module CHF
 
       # downloadable ones at sizes we just picked
 
-      dl_large: OpenStruct.new(width: 2880, label: "Large JPG", style: :download).freeze,
-      dl_medium: OpenStruct.new(width: 1200, label: "Medium JPG", style: :download).freeze,
-      dl_small: OpenStruct.new(width: 800, label: "Small JPG", style: :download).freeze,
+      dl_large: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:large], label: "Large JPG", style: :download).freeze,
+      dl_medium: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium], label: "Medium JPG", style: :download).freeze,
+      dl_small: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small], label: "Small JPG", style: :download).freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
 
       # compressed TIFF disabled for now, needs testing to make sure

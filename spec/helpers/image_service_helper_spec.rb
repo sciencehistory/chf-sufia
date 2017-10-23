@@ -62,7 +62,7 @@ describe ImageServiceHelper do
       let(:img) { html.at_css("img") }
 
       it "joins properly" do
-        expect(img['src']).to eq("http://localhost:3000/image-service/#{escaped_file_id}/full/#{ImageServiceHelper::BASE_WIDTHS[:standard]},/0/default.jpg")
+        expect(img['src']).to eq("http://localhost:3000/image-service/#{escaped_file_id}/full/#{ImageServiceHelper::THUMB_BASE_WIDTHS[:standard]},/0/default.jpg")
       end
     end
   end

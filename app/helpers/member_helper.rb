@@ -10,10 +10,7 @@ module MemberHelper
   # dropdown-toggle, representing download options for the member passed in.
   # also includes a rights statement from parent.
   #
-  # first arg member is normally required, but can be passed as nil for
-  # creating a blank template for JS filling, as in viewer.
-  #
-  # used in show_page_image and image_viewer.
+  # used in show_page_image. image_viewer now does it's own JS version.
   #
   # Originally was a partial instead of a helper, and probably more readable
   # that way, but performance impact of partial was too much, on work pages
@@ -35,32 +32,19 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    #list_elements << '<li class="dropdown-header">Download this image</li>'.html_safe
-
-    list_elements << dropdown_menuitem(
-                      link_to("Download Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
-                        target: "_new",
-                        id: "file_download",
-                        data: {
-                          content_hook: "dl-original-link",
-                          analytics_category: "Work",
-                          analytics_action: "download-tiff",
-                          analytics_label: parent.id
-                        })
-                      )
-
-    if member && full_res_jpg_url = full_res_jpg_url(member)
-      list_elements << dropdown_menuitem(
-                        link_to("Download Full-size JPEG",
-                          full_res_jpg_url,
-                          target: "_new",
-                          data: {
-                            content_hook: "dl-jpeg-link",
-                            analytics_category: "Work",
-                            analytics_action: "download-jpg",
-                            analytics_label: parent.id
-                          })
-                        )
+    if member
+      download_options(member).each do |option_config|
+        list_elements << dropdown_menuitem(
+          link_to(option_config[:label], option_config[:url]),
+          target: "_new",
+          data: {
+            content_hook: "dl-original-link",
+            analytics_category: "Work",
+            analytics_action: option_config[:analytics_action],
+            analytics_label: parent.id
+          }
+        )
+      end
     end
 
     content_tag("ul",

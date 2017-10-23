@@ -10,7 +10,7 @@ module CHF
     end
 
     def thumb_url(size:)
-      iiif_image_url(format: "jpg", size: "#{ImageServiceHelper::BASE_WIDTHS[size]},")
+      iiif_image_url(format: "jpg", size: "#{ImageServiceHelper::THUMB_BASE_WIDTHS[size]},")
     end
 
     # On show page, we just use pixel density source set, passing in the LARGEST width needed for
@@ -18,7 +18,7 @@ module CHF
     # sizes, but way simpler to implement; keep from asking riiiif for even more varying resizes;
     # prob good enough.
     def thumb_srcset_pixel_density(size:)
-      base_width = ImageServiceHelper::BASE_WIDTHS[size]
+      base_width = ImageServiceHelper::THUMB_BASE_WIDTHS[size]
       [1, BigDecimal.new('1.5'), 2, 3, 4].collect do |multiplier|
         iiif_image_url(format: "jpg", size: "#{base_width * multiplier},") + " #{multiplier}x"
       end.join(", ")
@@ -28,8 +28,33 @@ module CHF
       iiif_info_url
     end
 
-    def full_res_jpg_url
-      iiif_image_url(format: "jpg", size: "full")
+    def download_options
+      [
+        {
+          option_key: "small",
+          label: "Small JPG",
+          analytics_action: "download_jpg_small",
+          url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:small]}")
+        },
+        {
+          option_key: "medium",
+          label: "Medium JPG",
+          analytics_action: "download_jpg_medium",
+          url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:medium]}")
+        },
+        {
+          option_key: "large",
+          label: "Large JPG",
+          analytics_action: "download_jpg_large",
+          url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:large]}")
+        },
+        {
+          option_key: "full",
+          label: "Full-size JPG",
+          analytics_action: "download_jpg_fullsize",
+          url: iiif_image_url(format: "jpg", size: "full")
+        }
+      ]
     end
 
     protected # Might make these public? But they aren't part of our polymorphic API.

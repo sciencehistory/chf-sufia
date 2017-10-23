@@ -16,7 +16,7 @@ module CHF
     end
 
     def thumb_url(size:, density_descriptor: nil)
-      CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: size_to_filename_key(size: size, density_descriptor: density_descriptor), suffix: ".jpg")
+      CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: size_to_thumbnail_filename_key(size: size, density_descriptor: density_descriptor), suffix: ".jpg")
     end
 
     # We have 1x and 2x statically generated.
@@ -24,9 +24,38 @@ module CHF
       "#{thumb_url(size: size)} 1x, #{thumb_url(size: size, density_descriptor: '2X')} 2x"
     end
 
+    def download_options
+      [
+        {
+          option_key: "small",
+          label: "Small JPG",
+          analytics_action: "download_jpg_small",
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_small", suffix: ".jpg")
+        },
+        {
+          option_key: "medium",
+          label: "Medium JPG",
+          analytics_action: "download_jpg_medium",
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_medium", suffix: ".jpg")
+        },
+        {
+          option_key: "large",
+          label: "Large JPG",
+          analytics_action: "download_jpg_large",
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_large", suffix: ".jpg")
+        },
+        {
+          option_key: "full",
+          label: "Full-size JPG",
+          analytics_action: "download_jpg_fullsize",
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_full_size", suffix: ".jpg")
+        }
+      ]
+    end
+
     protected
 
-    def size_to_filename_key(size: size, density_descriptor: nil)
+    def size_to_thumbnail_filename_key(size: size, density_descriptor: nil)
       # gah we used two different vocabularies sorry
       filename_key = case size.to_s
         when "mini"
