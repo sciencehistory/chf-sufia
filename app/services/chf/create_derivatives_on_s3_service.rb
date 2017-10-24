@@ -49,13 +49,13 @@ module CHF
       # small thumb for multiple images on show page. These are tricky cause they
       # are really different sizes responsively, but we just pick one to resize to
       # as standard for now.
-      thumb_standard: OpenStruct.new(width: 170, style: :thumb).freeze,
+      thumb_standard: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:standard], style: :thumb).freeze,
 
       # giant thumb for big hero image on show page
-      thumb_hero: OpenStruct.new(width: 525, style: :thumb).freeze,
+      thumb_hero: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:large], style: :thumb).freeze,
 
       # thumbs on viewer list
-      thumb_mini: OpenStruct.new(width: 54, style: :thumb).freeze,
+      thumb_mini: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini], style: :thumb).freeze,
 
 
       # downloadable ones at sizes we just picked
