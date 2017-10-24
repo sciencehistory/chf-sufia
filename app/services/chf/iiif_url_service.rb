@@ -32,26 +32,18 @@ module CHF
       [
         {
           option_key: "small",
-          label: "Small JPG",
-          analytics_action: "download_jpg_small",
           url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:small]}")
         },
         {
           option_key: "medium",
-          label: "Medium JPG",
-          analytics_action: "download_jpg_medium",
           url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:medium]}")
         },
         {
           option_key: "large",
-          label: "Large JPG",
-          analytics_action: "download_jpg_large",
           url: iiif_image_url(format: "jpg", size: "#{ImageServerHelper::DOWNLOAD_WIDTHS[:large]}")
         },
         {
           option_key: "full",
-          label: "Full-size JPG",
-          analytics_action: "download_jpg_fullsize",
           url: iiif_image_url(format: "jpg", size: "full")
         }
       ]

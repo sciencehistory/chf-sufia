@@ -403,16 +403,20 @@ ChfImageViewer.prototype.makeThumbnails = function(json) {
 };
 
 ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
-  return $.map(thumbData.downloads, function(downloadElement) {
-    return '<li tabindex="-1" role="menuitem">' +
-              '<a target="_new" data-analytics-category="Work"' +
-              ' data-analytics-action="' + (downloadElement.key || "download") + "'" +
-              ' data-analytics-label="' + this.workId + '"' +
-              ' href="' + downloadElement.url + '">' +
-                downloadElement.label +
-              '</a>' +
-            '</li>';
-  });
+  var _self = this;
+  return ['<li class="dropdown-header">Download selected image</li>'].concat(
+    $.map(thumbData.downloads, function(downloadElement) {
+      return '<li tabindex="-1" role="menuitem">' +
+                '<a target="_new" data-analytics-category="Work"' +
+                ' data-analytics-action="' + (downloadElement.analyticsAction || "download") + '"' +
+                ' data-analytics-label="' + _self.workId + '"' +
+                ' href="' + downloadElement.url + '">' +
+                  downloadElement.label +
+                ' <small>' + (downloadElement.subhead || '') + '</small>' +
+                '</a>' +
+              '</li>';
+    })
+  );
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {

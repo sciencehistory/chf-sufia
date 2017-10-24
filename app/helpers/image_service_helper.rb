@@ -98,18 +98,26 @@ module ImageServiceHelper
   end
 
   def download_options(member_presenter)
+    orig_width = member_presenter.representative_width
+    orig_height = member_presenter.representative_height
+
+
     direct_original = {
       option_key: "original",
       label: "Original TIFF",
-      analytics_action: "download_original",
+      subhead: ("#{number_with_delimiter orig_width} x #{number_with_delimiter orig_height}px" if orig_width && orig_height),
+      analyticsAction: "download_original",
       url: main_app.download_path(member_presenter.representative_file_set_id)
     }
 
     if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
+
       service.download_options.tap do |list|
         unless list.any? {|h| h[:option_key] == "original" }
           list << direct_original
         end
+      end.collect do |option|
+        _fill_out_download_option(member_presenter, option)
       end
     else
       [direct_original]
@@ -154,6 +162,45 @@ module ImageServiceHelper
     else
       raise ArgumentError.new("Unrecognized image service type: #{service_type}")
     end
+  end
+
+  def _fill_out_download_option(member_presenter, option)
+    orig_width = member_presenter.representative_width
+    orig_height = member_presenter.representative_height
+
+    values_for_keys = {
+      small: {
+        label: "Small JPG",
+        analyticsAction: "download_jpg_small",
+        width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small],
+      },
+      medium: {
+        label: "Medium JPG",
+        analyticsAction: "download_jpg_medium",
+        width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium]
+      },
+      large: {
+        label: "Large JPG",
+        analyticsAction: "download_jpg_large",
+        width: ImageServiceHelper::DOWNLOAD_WIDTHS[:large]
+      },
+      full: {
+        label: "Original-size JPG",
+        analyticsAction: "download_jpg_full",
+        width: orig_width
+      }
+    }
+
+    defaults = values_for_keys[option[:option_key].to_sym]
+    option.reverse_merge!(defaults) if defaults
+
+    width = option[:width]
+    if width && orig_width
+      height =  ((orig_height.to_d / orig_width) * width).round
+      option[:subhead] ||= "#{number_with_delimiter width} x #{number_with_delimiter height}px"
+    end
+
+    return option
   end
 
 end

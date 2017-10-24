@@ -28,26 +28,18 @@ module CHF
       [
         {
           option_key: "small",
-          label: "Small JPG",
-          analytics_action: "download_jpg_small",
           url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_small", suffix: ".jpg")
         },
         {
           option_key: "medium",
-          label: "Medium JPG",
-          analytics_action: "download_jpg_medium",
           url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_medium", suffix: ".jpg")
         },
         {
           option_key: "large",
-          label: "Large JPG",
-          analytics_action: "download_jpg_large",
           url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_large", suffix: ".jpg")
         },
         {
           option_key: "full",
-          label: "Full-size JPG",
-          analytics_action: "download_jpg_fullsize",
           url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_full_size", suffix: ".jpg")
         }
       ]

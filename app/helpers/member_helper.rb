@@ -20,6 +20,8 @@ module MemberHelper
     list_elements = []
 
     if parent.has_rights_statement?
+      list_elements << content_tag("li", "Rights", class: "dropdown-header")
+
       list_elements << dropdown_menuitem(
           link_to(parent.rights_url,
                     target: "_blank",
@@ -32,24 +34,31 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    if member
-      download_options(member).each do |option_config|
+    if member && (download_options = download_options(member)).count > 0
+      list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
+
+      download_options.each do |option_config|
         list_elements << dropdown_menuitem(
-          link_to(option_config[:label], option_config[:url]),
+          link_to(option_config[:url],
+            data: {
+              content_hook: "dl-original-link",
+              analytics_category: "Work",
+              analytics_action: option_config[:analyticsAction],
+              analytics_label: parent.id
+            }) do
+            safe_join([
+              option_config[:label],
+              content_tag("small", " #{option_config[:subhead]}")
+            ])
+          end,
           target: "_new",
-          data: {
-            content_hook: "dl-original-link",
-            analytics_category: "Work",
-            analytics_action: option_config[:analytics_action],
-            analytics_label: parent.id
-          }
         )
       end
     end
 
     content_tag("ul",
                 safe_join(list_elements),
-                class: "dropdown-menu",
+                class: "dropdown-menu download-menu",
                 role: "menu",
                 :'aria-labelledby' => labelled_by)
   end
