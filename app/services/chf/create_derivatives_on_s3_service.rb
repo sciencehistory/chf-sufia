@@ -233,11 +233,15 @@ module CHF
       # if we're not resizing, way more convenient to use a different
       # vips command line.
       args = if width
+        # Due to bug in vips, we need to provide a height constraint, we make
+        # really huge one million pixels so it should not come into play, and
+        # we're constraining proportionally by width.
+        # https://github.com/jcupitt/libvips/issues/781
         [
           "vipsthumbnail",
           working_original_path,
           *extra_args,
-          "--size", "#{width}x",
+          "--size", "#{width}x1000000",
           "-o", "#{output_path}#{vips_jpg_params}"
         ]
       else
