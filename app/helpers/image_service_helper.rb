@@ -105,8 +105,8 @@ module ImageServiceHelper
 
     direct_original = {
       option_key: "original",
-      label: "Original TIFF",
-      subhead: ("#{number_with_delimiter orig_width} x #{number_with_delimiter orig_height}px" if orig_width && orig_height),
+      label: "Original file",
+      subhead: ("TIFF — #{orig_width} x #{orig_height}px" if orig_width && orig_height),
       analyticsAction: "download_original",
       url: main_app.download_path(member_presenter.representative_file_set_id)
     }
@@ -186,7 +186,7 @@ module ImageServiceHelper
         width: ImageServiceHelper::DOWNLOAD_WIDTHS[:large]
       },
       full: {
-        label: "Original-size JPG",
+        label: "Full-sized JPG",
         analyticsAction: "download_jpg_full",
         width: orig_width
       }
@@ -198,7 +198,7 @@ module ImageServiceHelper
     width = option[:width]
     if width && orig_width
       height =  ((orig_height.to_d / orig_width) * width).round
-      option[:subhead] ||= "#{number_with_delimiter width} x #{number_with_delimiter height}px"
+      option[:subhead] ||= "#{width} x #{height}px"
     end
 
     return option
