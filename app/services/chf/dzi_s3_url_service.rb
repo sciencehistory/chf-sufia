@@ -24,23 +24,29 @@ module CHF
       "#{thumb_url(size: size)} 1x, #{thumb_url(size: size, density_descriptor: '2X')} 2x"
     end
 
-    def download_options
+    # filename_base, if provided, is used to make more human-readable
+    # 'save as' download file names.
+    def download_options(filename_base: nil)
       [
         {
           option_key: "small",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_small", suffix: ".jpg")
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id,
+                                                   file_checksum: checksum,
+                                                   filename_key: "dl_small",
+                                                   suffix: ".jpg",
+                                                   filename_base: filename_base)
         },
         {
           option_key: "medium",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_medium", suffix: ".jpg")
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_medium", suffix: ".jpg", filename_base: filename_base)
         },
         {
           option_key: "large",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_large", suffix: ".jpg")
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_large", suffix: ".jpg", filename_base: filename_base)
         },
         {
           option_key: "full",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_full_size", suffix: ".jpg")
+          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_full_size", suffix: ".jpg", filename_base: filename_base)
         }
       ]
     end

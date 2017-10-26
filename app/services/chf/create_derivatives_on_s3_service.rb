@@ -91,8 +91,21 @@ module CHF
       "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
     end
 
-    def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:)
-      s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix)).public_url
+    # filename_base, if provided, is used to make more human-readable
+    # 'save as' download file names, and triggers content-disposition: attachment.
+    def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:, filename_base: nil)
+      obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix))
+
+      if filename_base
+        # secure URL supplies kind of security, assuming the app won't generate
+        # this link unless you have access. But we haven't really ensured that
+        # universally or made secure links everywhere, so this is not yet security.
+        obj.presigned_url(:get,
+                          expires_in: 3.days.to_i, # no hurry
+                          response_content_disposition: "attachment; filename=\"#{filename_base}_#{filename_key}.#{suffix.sub(/^\./, '')}\"")
+      else
+        obj.public_url
+      end
     end
 
     attr_reader :file_set, :file_id, :lazy, :thread_pool, :only_styles, :only_types

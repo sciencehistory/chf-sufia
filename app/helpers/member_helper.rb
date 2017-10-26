@@ -10,13 +10,16 @@ module MemberHelper
   # dropdown-toggle, representing download options for the member passed in.
   # also includes a rights statement from parent.
   #
+  #  filename_base, if provided, is used to make more human-readable
+  # 'save as' download file names.
+  #
   # used in show_page_image. image_viewer now does it's own JS version.
   #
   # Originally was a partial instead of a helper, and probably more readable
   # that way, but performance impact of partial was too much, on work pages
   # that wanted to display many members and call these many times. Not entirely
   # sure why partial so much slower than helper, even in production config.
-  def member_download_menu(member, parent:, labelled_by: nil)
+  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil)
     list_elements = []
 
     if parent.has_rights_statement?
@@ -34,7 +37,7 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    if member && (download_options = download_options(member)).count > 0
+    if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
       list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
 
       download_options.each do |option_config|
@@ -122,6 +125,4 @@ module MemberHelper
       [(target_width.to_d * original_height / original_width).round(2), (target_width.to_d / 4).round(2)].max
     end
   end
-
-
 end

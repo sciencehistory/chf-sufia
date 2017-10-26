@@ -28,7 +28,9 @@ module CHF
       iiif_info_url
     end
 
-    def download_options
+    def download_options(filename_base: nil)
+      # filename_base is ignored for this adapter at present, not really supported
+      # by IIIF.
       [
         {
           option_key: "small",

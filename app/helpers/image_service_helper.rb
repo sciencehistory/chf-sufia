@@ -97,10 +97,11 @@ module ImageServiceHelper
     end
   end
 
-  def download_options(member_presenter)
+  # filename_base, if provided, is used to make more human-readable
+  # 'save as' download file names.
+  def download_options(member_presenter, filename_base: nil)
     orig_width = member_presenter.representative_width
     orig_height = member_presenter.representative_height
-
 
     direct_original = {
       option_key: "original",
@@ -112,7 +113,7 @@ module ImageServiceHelper
 
     if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
 
-      service.download_options.tap do |list|
+      service.download_options(filename_base: filename_base).tap do |list|
         unless list.any? {|h| h[:option_key] == "original" }
           list << direct_original
         end
@@ -143,7 +144,7 @@ module ImageServiceHelper
         thumbSrcset: member_src_attributes_mini[:srcset],
 
         # downloads for this image only
-        downloads: download_options(member_presenter)
+        downloads: download_options(member_presenter, filename_base: _download_name_base(work_presenter, item_id: member_presenter.id))
       } if member_presenter.representative_file_id # don't show it in the viewer if there's no image
     end
   end
@@ -201,6 +202,18 @@ module ImageServiceHelper
     end
 
     return option
+  end
+
+  # Used for constructing download filenames when we can.
+  # truncated first three words, plus id.
+  #
+  # Wanted to include the 'index number' for better sortability when
+  # downloading multiple pages, but got too hard to actually keep track of/calculate
+  # depending on access path.
+  def _download_name_base(work, item_id:)
+    three_words = Array(work.title).first.gsub(/[']/, '').gsub(/([[:space:]]|[[:punct:]])+/, ' ').split.slice(0..2).join('_').downcase[0..25]
+
+    "#{three_words}_#{work.id}_#{item_id}"
   end
 
 end

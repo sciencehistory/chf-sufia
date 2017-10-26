@@ -40,7 +40,7 @@
           <%# less space for admin, just use icon %>
           <i class='fa fa-download'></i> Download
         </button>
-        <%= member_download_menu(member, parent: @presenter, labelled_by: "dropdownMenu_downloads_#{member.id}") %>
+        <%= member_download_menu(member, parent: @presenter, labelled_by: "dropdownMenu_downloads_#{member.id}", filename_base: _download_name_base(@presenter, item_id: member.id)) %>
       </div>
     <% end %>
 
@@ -52,13 +52,12 @@
       </div>
     <% end %>
 
-
     <% if (member.model_name.singular.to_sym == :file_set) && current_ability.current_user.staff? %>
       <div class="btn-group dropup">
         <button class="btn btn-brand-alt dropdown-toggle" data-toggle="dropdown" type="button" id="dropdownMenu_actions_<%= member.id %>" aria-haspopup="true">
           <i class='fa fa-cog'></i>  Admin
         </button>
-        <%= file_set_actions_menu(member, parent: @presenter, labelled_by: "dropdownMenu_actions_#{member.id}" ) %>
+        <%= file_set_actions_menu(member, parent: @presenter, labelled_by: "dropdownMenu_actions_#{member.id}") %>
       </div>
     <% elsif member.model_name.singular.to_sym != :file_set %>
       <%= link_to  contextual_path(member, @presenter), class: "btn btn-brand-alt show-page-image-info" do %>
