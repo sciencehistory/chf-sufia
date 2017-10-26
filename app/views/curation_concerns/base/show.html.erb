@@ -51,7 +51,7 @@
   </div>
 
   <div class="show-representative">
-      <%= show_page_representative_media(@presenter) %>
+      <%= render 'show_page_image', member: @presenter.representative_presenter, size: :large %>
       <div class="rights-and-social">
         <% if @presenter.has_rights_statement? %>
             <%= link_to @presenter.rights_url, target: "_blank", class: 'rights-statement large' do %>
