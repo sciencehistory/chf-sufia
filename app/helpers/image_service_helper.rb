@@ -45,6 +45,8 @@ module ImageServiceHelper
 
   # can only be used on a page that has the viewer listening
   def viewer_trigger_data_attributes(parent_id:, member:)
+    return {} unless member
+
     {
       trigger: "chf_image_viewer",
       member_id: member.representative_id,
@@ -62,6 +64,8 @@ module ImageServiceHelper
   # if use_image_server is false, size_key is ignored and no srcsets are generated,
   # we just use the stock hydra-derivative created image labelled 'jpeg'
   def member_image_tag(parent_id:, member:, size_key: nil, lazy: false)
+    return default_image(member: nil) if member.nil?
+
     size_key = :standard if size_key.blank?
 
     unless THUMB_BASE_WIDTHS.keys.include?(size_key)
@@ -73,7 +77,8 @@ module ImageServiceHelper
       alt: "",
       tabindex: 0,
       data: {
-        aspectratio: "#{member.representative_width}/#{member.representative_height}" # used for lazysizes-aspectratio
+        # used for lazysizes-aspectratio
+        aspectratio: ("#{member.representative_width}/#{member.representative_height}" if member)
       }
     }
 
