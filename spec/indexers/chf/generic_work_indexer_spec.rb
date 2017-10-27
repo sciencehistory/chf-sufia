@@ -64,6 +64,7 @@ RSpec.describe CHF::GenericWorkIndexer do
         FactoryGirl.create(:work, :real_public_image) do |work|
           work.representative.original_file.width = [width]
           work.representative.original_file.height = [height]
+          work.representative.original_file.save
         end
       end
       it "indexes representative fields" do
