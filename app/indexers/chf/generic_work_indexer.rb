@@ -59,12 +59,19 @@ module CHF
       # recursively, until you get a terminal node, presumably fileset.
       # Return nil if there is no terminal representative.
       def ultimate_representative(work)
-        return nil unless work.representative_id && work.representative
+        return nil if work.representative_id.nil?
 
-        candidate = work.representative
-        return nil if candidate.equal?(work) # recursive self-pointing representative, bah
+        # Can't just use work.representative, does not work on empty index
+        # But this does.
+        candidate = begin
+          ActiveFedora::Base.find(work.representative_id)
+        rescue ActiveFedora::ObjectNotFoundError
+          nil
+        end
 
-        if candidate.respond_to?(:representative)
+        return nil if candidate.nil?
+
+        if candidate.respond_to?(:representative_id) && candidate.representative_id != candidate.id
           ultimate_representative(candidate)
         else
           candidate
