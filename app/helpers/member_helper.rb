@@ -25,15 +25,7 @@ module MemberHelper
     if parent.has_rights_statement?
       list_elements << content_tag("li", "Rights", class: "dropdown-header")
 
-      list_elements << dropdown_menuitem(
-          link_to(parent.rights_url,
-                    target: "_blank",
-                    class: 'rights-statement-inline') do
-            safe_join([image_tag(parent.rights_icon || "", class: "rights-statement-logo"),
-                       " ",
-                       content_tag("span", parent.rights_icon_label, class: "rights-statement-label")])
-          end
-      )
+      list_elements << dropdown_menuitem(render_rights_statement(parent))
       list_elements << "<li class='divider'></li>".html_safe
     end
 
@@ -64,6 +56,18 @@ module MemberHelper
                 class: "dropdown-menu download-menu",
                 role: "menu",
                 :'aria-labelledby' => labelled_by)
+  end
+
+  def render_rights_statement(presenter)
+    return nil unless presenter
+
+    link_to(presenter.rights_url,
+              target: "_blank",
+              class: 'rights-statement-inline') do
+      safe_join([image_tag(presenter.rights_icon || "", class: "rights-statement-logo"),
+                 " ",
+                 content_tag("span", presenter.rights_icon_label, class: "rights-statement-label")])
+      end
   end
 
   # Used for controls (edit etc) on a 'file_set', normally only showed

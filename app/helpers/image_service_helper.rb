@@ -1,3 +1,6 @@
+# This helper module has gotten expansive, unfortunate Rails architecture
+# of a bunch of global helper methods. Would be good to refactor into some
+# more OO helper object, but hard to do in Rails and good enough for now.
 module ImageServiceHelper
   THUMB_BASE_WIDTHS = {
     mini: 54,

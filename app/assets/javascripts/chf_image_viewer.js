@@ -365,6 +365,11 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
 
   this.workId = modalElement.getAttribute("data-work-id");
 
+  var rightsElement = modalElement.querySelector('.parent-rights-inline');
+  if (rightsElement) {
+    this.rightsInlineHtml = rightsElement.innerHTML;
+  }
+
   var _self = this;
   var imageInfoUrl = modalElement.getAttribute("data-images-info-path");
   // This promise should be used in #show to make sure we don't until this
@@ -404,7 +409,19 @@ ChfImageViewer.prototype.makeThumbnails = function(json) {
 
 ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
   var _self = this;
-  return ['<li class="dropdown-header">Download selected image</li>'].concat(
+
+  var htmlElements = []
+
+  if (_self.rightsInlineHtml) {
+    htmlElements.push('<li class="dropdown-header">Rights</li>');
+    htmlElements.push('<li tabindex="-1" role="menuItem">' + _self.rightsInlineHtml + '</li>');
+    htmlElements.push('<li role="separator" class="divider"></li>');
+  }
+
+
+  htmlElements.push('<li class="dropdown-header">Download selected image</li>');
+
+  htmlElements = htmlElements.concat(
     $.map(thumbData.downloads, function(downloadElement) {
       return '<li tabindex="-1" role="menuitem">' +
                 '<a target="_new" data-analytics-category="Work"' +
@@ -417,6 +434,8 @@ ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
               '</li>';
     })
   );
+
+  return htmlElements;
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {
