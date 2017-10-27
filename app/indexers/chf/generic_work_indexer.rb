@@ -40,7 +40,24 @@ module CHF
           doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_file_set_id')] = representative.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_checksum')] = representative.original_file.checksum.value if representative.original_file
+
+          # Our app tries not to use this field at all anymore, but just in case
+          # set it to proper thumb URL as expected by stack, which is actually
+          # fixed based on fileset id, although the thumb might not actually exist,
+          # if it does this is it's URL.
+          if representative.original_file
+            if klass = ImageServiceHelper.image_url_service_class(CHF::Env.lookup('image_server_for_thumbnails'))
+              doc['thumbnail_path_ss'] = klass.new(file_set_id: representative.id,
+                                          file_id: representative.original_file.id,
+                                          checksum: representative.original_file.checksum.value).thumb_url(size: :standard)
+            else
+              # ought to be using rails routing, but it's all just too much.
+              doc['thumbnail_path_ss'] = "/downloads/#{representative.id}?file=thumbnail"
+            end
+          end
+
         end
+
 
         # Taken from hyrax, so we can facet on visibility settings
         # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18

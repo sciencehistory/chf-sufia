@@ -172,15 +172,6 @@ module CHF
           # want to just explicitly call what we want here instead.
           file_set.create_derivatives(working_original_path)
         end
-
-        # Not sure if this is really required, copied from CC original.
-        # Reload from Fedora and reindex for thumbnail and extracted text
-        # TODO investigate.
-        #file_set.reload
-        #file_set.update_index
-
-        # TODO not sure if needed, see below
-        #file_set.parent.update_index if parent_needs_reindex?(file_set)
       end
     ensure
       @working_dir = nil
@@ -195,15 +186,6 @@ module CHF
 
     def working_original_path
       @working_original_path || (raise TypeError.new("Unexpected nil @working_original_path"))
-    end
-
-    # If this file_set is the thumbnail for the parent work,
-    # then the parent also needs to be reindexed.
-    # TODO may not need this, our custom update_index itself already takes care of it.
-    # Should add test to be sure.
-    def parent_needs_reindex?(file_set)
-      return false unless file_set.parent
-      file_set.parent.thumbnail_id == file_set.id
     end
 
     # create and push to s3.

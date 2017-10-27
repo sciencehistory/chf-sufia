@@ -157,19 +157,27 @@ module ImageServiceHelper
     end
   end
 
-  private
-
   # Returns nil if no image service available. Otherwise an image
   # service that has tile_source_url, thumb_url, etc., methods.
-  def _image_url_service(service_type, member)
+  def self.image_url_service_class(service_type)
     if service_type == "iiif"
-      CHF::IiifUrlService.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
+      CHF::IiifUrlService
     elsif service_type == "dzi_s3"
-      CHF::DziS3UrlService.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
+      CHF::DziS3UrlService
     elsif (!service_type) || service_type == "false"
       nil
     else
       raise ArgumentError.new("Unrecognized image service type: #{service_type}")
+    end
+  end
+
+
+  private
+
+  def _image_url_service(service_type, member)
+    klass = ImageServiceHelper::image_url_service_class(service_type)
+    if klass
+      return klass.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     end
   end
 
