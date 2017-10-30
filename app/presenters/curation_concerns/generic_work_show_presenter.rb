@@ -97,9 +97,7 @@ module CurationConcerns
     # Memoized -- building member_presenters can be expensive and we
     # call multiple times in our views, important to cache.
     def viewable_member_presenters
-      @viewable_member_presenters ||= member_presenters.find_all do |presenter|
-        current_ability.can?(:read, presenter.id)
-      end
+      @viewable_member_presenters ||= member_presenter_factory.permitted_member_presenters(action: :read)
     end
 
     # viewable_member_presenters, but if our representative image is the FIRST image,
