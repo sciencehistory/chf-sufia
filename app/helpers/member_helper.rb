@@ -61,12 +61,14 @@ module MemberHelper
   def render_rights_statement(presenter)
     return nil unless presenter
 
-    link_to(presenter.rights_url,
+    # content_tag is quicker than link_to for static url
+    content_tag("a",
+              href: presenter.rights_url,
               target: "_blank",
               class: 'rights-statement-inline') do
-      safe_join([image_tag(presenter.rights_icon || "", class: "rights-statement-logo"),
-                 " ",
-                 content_tag("span", presenter.rights_icon_label, class: "rights-statement-label")])
+        image_tag(presenter.rights_icon || "", class: "rights-statement-logo") +
+         " ".html_safe +
+         content_tag("span", presenter.rights_icon_label, class: "rights-statement-label")
       end
   end
 
