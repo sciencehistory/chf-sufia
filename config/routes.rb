@@ -63,6 +63,9 @@ Rails.application.routes.draw do
     # our viewer json route
     get '/concern/generic_works/:id/viewer_images_info' => 'curation_concerns/generic_works#viewer_images_info', defaults: {format: "json"}, format: false, as: :viewer_images_info
 
+    # redirect to signed s3
+    get '/download_redirect/:id/:filename_key' => "downloads#s3_download_redirect", as: :s3_download_redirect
+
     resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
       concerns :exportable
     end

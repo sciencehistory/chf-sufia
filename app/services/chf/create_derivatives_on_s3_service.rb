@@ -93,6 +93,9 @@ module CHF
 
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names, and triggers content-disposition: attachment.
+    #
+    # These can be slow to create, if you are doing hundreds on a page beware. Slow
+    # due to speed of instantiating a Aws::S3::Resource as well as creating a signed url.
     def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:, filename_base: nil)
       obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix))
 

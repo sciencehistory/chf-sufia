@@ -30,23 +30,19 @@ module CHF
       [
         {
           option_key: "small",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id,
-                                                   file_checksum: checksum,
-                                                   filename_key: "dl_small",
-                                                   suffix: ".jpg",
-                                                   filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_small", filename_base: filename_base)
         },
         {
           option_key: "medium",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_medium", suffix: ".jpg", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_medium", filename_base: filename_base)
         },
         {
           option_key: "large",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_large", suffix: ".jpg", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_large", filename_base: filename_base)
         },
         {
           option_key: "full",
-          url: CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: "dl_full_size", suffix: ".jpg", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_full_size", filename_base: filename_base)
         }
       ]
     end
