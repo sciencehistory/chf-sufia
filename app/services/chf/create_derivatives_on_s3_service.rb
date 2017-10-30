@@ -81,10 +81,7 @@ module CHF
     # Using Aws::S3 directly appeared to give us a lot faster bulk upload
     # than via fog.
     def self.s3_bucket!
-      Aws::S3::Resource.new(
-        credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
-        region: CHF::Env.lookup!('derivative_s3_bucket_region')
-      ).bucket(CHF::Env.lookup!('derivative_s3_bucket'))
+      s3_resource.bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
     def self.s3_path(file_set_id:, file_checksum:, filename_key:, suffix:)
@@ -94,8 +91,7 @@ module CHF
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names, and triggers content-disposition: attachment.
     #
-    # These can be slow to create, if you are doing hundreds on a page beware. Slow
-    # due to speed of instantiating a Aws::S3::Resource as well as creating a signed url.
+    # These can be slow-ish to create due to creating a signed url.
     def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:, filename_base: nil)
       obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix))
 
@@ -110,6 +106,16 @@ module CHF
         obj.public_url
       end
     end
+
+    # Creating a new Aws::S3::Resource is surprisingly costly, create a global
+    # one and cache it.
+    def self.s3_resource
+      @s3_resource ||= Aws::S3::Resource.new(
+        credentials: Aws::Credentials.new(CHF::Env.lookup('aws_access_key_id'), CHF::Env.lookup('aws_secret_access_key')),
+        region: CHF::Env.lookup!('derivative_s3_bucket_region')
+      )
+    end
+    self.s3_resource
 
     attr_reader :file_set, :file_id, :lazy, :thread_pool, :only_styles, :only_types
 
