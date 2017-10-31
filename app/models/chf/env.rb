@@ -225,7 +225,7 @@ module CHF
         "*"
       elsif lookup(:app_role) == "jobs"
         # jobs server
-        "dzi, jobs-server"
+        "dzi, jobs_server"
       else
         # production-type app server, handling the rest currently
         "default, ingest, mailers, event"
