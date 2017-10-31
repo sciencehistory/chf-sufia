@@ -125,8 +125,15 @@ unless ENV['RAILS_ENV'] == "production"
       desc "clear temporary and derivative files"
       task :derivatives => :environment do
         raise "For safety can't do this on production" if Rails.env.production?
+        # legacy derivatives location, probably empty since we aren't using
+        # anymore.
         FileUtils.rm_rf(Sufia.config.derivatives_path)
         FileUtils.mkdir_p(Sufia.config.derivatives_path)
+
+        # S3 derivatives
+        if CHF::Env.lookup('derivative_s3_bucket') && CHF::Env.lookup('aws_access_key_id') && CHF::Env.lookup('aws_secret_access_key')
+          CHF::CreateDerivativesOnS3Service.s3_bucket!.clear!
+        end
       end
 
       desc "clear redis"
