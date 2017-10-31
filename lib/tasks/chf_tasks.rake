@@ -471,11 +471,10 @@ namespace :chf do
 
           # then any associated tiles
           bucket.objects(prefix: s3_obj.key.sub(/\.dzi$/, '_files/')).each do |tile_obj|
-            progress.increment
             tile_obj.delete
           end
         end
-        progress.increment
+        progress.increment if progress.progress < progress.total
         progress.title = "#{i} scanned, #{deleted.count} deleted"
       end
       progress.finish
