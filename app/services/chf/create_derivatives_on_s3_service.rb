@@ -184,12 +184,12 @@ module CHF
           # TODO nope, get rid of this, for just our own derivatives here.
           #file_set.create_derivatives(working_original_path)
         else
-          # We still try do this default behavior calling #create_derivatives on
+          # We COULD still try do this default behavior calling #create_derivatives on
           # fileset, to get any superclass stack derivatives from sufia, say PDF
-          # related and such. We don't really use/test with anything but images,
-          # so not entirely sure this works. But a clue for the future. We may
-          # want to just explicitly call what we want here instead.
-          file_set.create_derivatives(working_original_path)
+          # related and such. But we're not for now, we don't use em, don't do it,
+          # if we want em, we should copy the kinds of derivativds we want here, and
+          # do em right.
+          # file_set.create_derivatives(working_original_path)
         end
       end
     ensure
