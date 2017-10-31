@@ -288,7 +288,7 @@ module CHF
         return nil
       end
 
-      Concurrent::Future.execute(executor: :immediate) do
+      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
         TTY::Command.new(printer: :null).run(
           "vips", "copy",
           "#{working_original_path}[predictor=horizontal,compression=deflate]",
