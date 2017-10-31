@@ -37,8 +37,13 @@ module ImageServiceHelper
     elsif member.representative_file_set_id || member.representative_id
       # representative_file_set_id is the RIGHT one, but being defensive in case
       # only the other is in index, it will be the same thing MOST of the time.
+      file_arg = if size_key == "mini"
+        "thumbnail"
+      else
+        "jpeg"
+      end
       {
-        src: main_app.download_path(member.representative_file_set_id || member.representative_id, file: "jpeg")
+        src: main_app.download_path(member.representative_file_set_id || member.representative_id, file: file_arg)
       }
     else
       # no can do
