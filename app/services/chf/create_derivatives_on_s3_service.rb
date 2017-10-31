@@ -88,6 +88,16 @@ module CHF
       "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
     end
 
+    def self.valid_s3_keys
+      @valid_s3_keys ||= IMAGE_TYPES.collect do |key, config|
+        if config.style == :thumb
+          [key.to_s, "#{key}_2X"]
+        else
+          key.to_s
+        end
+      end.flatten.freeze
+    end
+
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names, and triggers content-disposition: attachment.
     #

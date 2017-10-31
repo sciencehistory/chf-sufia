@@ -59,64 +59,127 @@ namespace :chf do
     end
   end
 
-  desc 'Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"'
-  task create_derivatives: :environment do
-    require Rails.root.join('lib','minimagick_patch')
-    MiniMagick::Tool.quiet_arg = true
+  namespace :derivatives do
 
-    condition = if ENV['WORK_IDS'].present?
-      { id: ENV['WORK_IDS'].split(",") }
-    else
-      {}
+    desc "create derivatives according to ENV :create_derivatives_mode"
+    task :create, [:lazy] => :environment do |t, args|
+      if CHF::Env.lookup(:create_derivatives_mode) == "dzi_s3"
+        $stderr.puts "chf:derivatives:s3:create..."
+        Rake::Task["chf:derivatives:s3:create"].invoke(*args)
+      elsif CHF::Env.lookup(:create_derivatives_mode) == "legacy"
+        $stderr.puts "chf:derivatives:legacy:create..."
+        Rake::Task["chf:derivatives:legacy:create"].invoke(*args)
+      else
+        raise ArgumentError.new("Unrecognized create_derivatives_mode: #{CHF::Env.lookup(:create_derivatives_mode)}")
+      end
     end
 
-    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+    namespace :s3 do
+      # WIP s3 reworked version of create derivatives
+      # WORK_IDS
+      # ONLY_STYLES=thumb
+      # ONLY_TYPES=large_dl,medium_dl
+      task :create, [:lazy] => :environment do |t, args|
+        condition = if ENV['WORK_IDS'].present?
+          { id: ENV['WORK_IDS'].split(",") }
+        else
+          {}
+        end
 
-    Sufia.primary_work_type.find_each(condition) do |work|
-      work.file_sets.each do |fs|
-        fs.files.each do |file|
-          filename = CurationConcerns::WorkingDirectory.find_or_retrieve(file.id, fs.id)
-          fs.create_derivatives(filename)
+        only_types  = ENV['ONLY_TYPES'].split(",") if ENV['ONLY_TYPES']
+        only_styles = ENV['ONLY_STYLES'].split(',') if ENV['ONLY_STYLES']
+
+        fs_count = if ENV['WORK_IDS'].blank?
+          FileSet.count
+        else
+          ActiveFedora::SolrService.count("{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})", fq: "has_model_ssim:FileSet")
+        end
+
+        progress_bar = ProgressBar.create(:total => fs_count, format: "%a %t: |%B| %c/%u %p%%%e")
+        Sufia.primary_work_type.find_each(condition) do |work|
+          work.file_sets.each do |fs|
+            fs.files.each do |file|
+              CHF::CreateDerivativesOnS3Service.new(fs, file.id,
+                                                    file_checksum: file.checksum.value,
+                                                    only_styles: only_styles,
+                                                    only_types: only_types,
+                                                    lazy: args[:lazy] == "lazy").call
+            end
+            progress_bar.increment
+          end
         end
       end
-      progress_bar.increment
+
+      task :clean_orphaned => :environment do
+        bucket = CHF::Env.lookup(:derivative_s3_bucket)
+        client = CHF::CreateDerivativesOnS3Service.s3_resource.client
+        s3_response_set = client.list_objects_v2(bucket: bucket, max_keys: 1000)
+
+        $stderr.puts "Cleaning orphaned derivatives on S3 bucket: #{bucket}"
+        progress = ProgressBar.create(:total => FileSet.count, format: "%t %a: |%B| %c/%u %p%%%e")
+
+        deleted = []
+        current_file_set_id = nil
+        current_file_set = nil
+
+        s3_response_set.each do |response|
+          response.contents.each do |obj|
+            matches = obj.key.match(%r{\A(?<file_set_id>[^_]+)_checksum(?<checksum>[^/]+)/(?<image_key>[^.]+)\.(?<suffix>.+)\Z})
+
+            if current_file_set_id.nil? || current_file_set_id != matches[:file_set_id]
+              current_file_set_id = matches[:file_set_id]
+              current_file_set = begin
+                FileSet.find(matches[:file_set_id])
+              rescue ActiveFedora::ObjectNotFoundError, Ldp::Gone
+                nil
+              end
+              progress.increment if progress.progress < progress.total
+            end
+
+            if current_file_set.nil? || current_file_set.try(:original_file).try(:checksum).try(:value) != matches[:checksum] || CHF::CreateDerivativesOnS3Service.valid_s3_keys.exclude?(matches[:image_key])
+              client.delete_object(
+                bucket: bucket,
+                key: obj.key
+              )
+              deleted << obj.key
+            end
+          end
+        end
+        complete_msg = "rake chf:deriatives:s3:clean_orphaned: Deleted #{deleted.count} keys from S3 bucket #{bucket}"
+        Rails.logger.info complete_msg
+        $stderr.puts complete_msg
+      end
     end
-    MiniMagick::Tool.quiet_arg = false
-  end
 
-  # WIP s3 reworked version of create derivatives
-  # WORK_IDS
-  # ONLY_STYLES=thumb
-  # ONLY_TYPES=large_dl,medium_dl
-  namespace :create_derivatives do
-    task :s3, [:lazy] => :environment do |t, args|
-      condition = if ENV['WORK_IDS'].present?
-        { id: ENV['WORK_IDS'].split(",") }
-      else
-        {}
-      end
+    namespace :legacy do
+      # Creates derivivatives using ordinary legacy Sufia 7.x logic,
+      # stored in local file system, we don't do this anymore.
+      desc 'LEGACY Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"'
+      task create: :environment do
+        require Rails.root.join('lib','minimagick_patch')
+        MiniMagick::Tool.quiet_arg = true
 
-      only_types  = ENV['ONLY_TYPES'].split(",") if ENV['ONLY_TYPES']
-      only_styles = ENV['ONLY_STYLES'].split(',') if ENV['ONLY_STYLES']
+        condition = if ENV['WORK_IDS'].present?
+          { id: ENV['WORK_IDS'].split(",") }
+        else
+          {}
+        end
 
-      fs_count = if ENV['WORK_IDS'].blank?
-        FileSet.count
-      else
-        ActiveFedora::SolrService.count("{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})", fq: "has_model_ssim:FileSet")
-      end
+        progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
 
-      progress_bar = ProgressBar.create(:total => fs_count, format: "%a %t: |%B| %c/%u %p%%%e")
-      Sufia.primary_work_type.find_each(condition) do |work|
-        work.file_sets.each do |fs|
-          fs.files.each do |file|
-            CHF::CreateDerivativesOnS3Service.new(fs, file.id,
-                                                  file_checksum: file.checksum.value,
-                                                  only_styles: only_styles,
-                                                  only_types: only_types,
-                                                  lazy: args[:lazy] == "lazy").call
+        Sufia.primary_work_type.find_each(condition) do |work|
+          work.file_sets.each do |fs|
+            fs.files.each do |file|
+              # legacy only has the Job itself, no helper class. We can call with perform_now.
+              # It is trying to clean up after itself now.
+              CreateDerivativesJob.new(fs, file.id).tap do |job|
+                job.create_derivatives_mode = "legacy"
+              end.perform_now
+            end
           end
           progress_bar.increment
         end
+        MiniMagick::Tool.quiet_arg = false
       end
     end
   end
@@ -427,7 +490,7 @@ namespace :chf do
       client = CHF::CreateDziService.s3_client!
       marker = nil
       begin
-        s3_response = client.list_objects(bucket: CHF::CreateDziService.bucket_name, marker: marker, delimiter: '/')
+        s3_response = client.list_objects_v2(bucket: CHF::CreateDziService.bucket_name, marker: marker, delimiter: '/')
         marker = s3_response.next_marker
         s3_response.common_prefixes.collect(&:prefix).each do |prefix|
           i += 1
