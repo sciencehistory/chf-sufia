@@ -16,7 +16,6 @@
 # Also provides some class methods for file name calculation.
 
 module CreateDerivativesJobOverride
-
   def create_derivatives_mode=(v)
     @create_derivatives_mode = v
   end
@@ -33,12 +32,18 @@ module CreateDerivativesJobOverride
       # Doesn't use filepath, it's gonna fetch from fedora, and clean up after itself
       CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call
     elsif create_derivatives_mode == "legacy"
-      super
-      # WARNING not currently cleaning up files
-
-      # but now try to clean up the tmp file, not totally sure we're not cleaning it
-      # up before someone else wants it, legacy is hacky.
-
+      begin
+        super
+      ensure
+        # Very hacky way to TRY to clean up temporary working files, which the stack does not.
+        # May be incomplete or even accidentally clean up something that someone else
+        # still wants, not planning on using in production.
+        filename = Hydra::PCDM::File.find(file_id).try(:original_name)
+        if filename
+          working_copy_path = CurationConcerns::WorkingDirectory.send(:full_filename, file_id, filename)
+          FileUtils.rm_f(working_copy_path) if working_copy_path && working_copy_path.start_with?(CurationConcerns.config.working_path)
+        end
+      end
     end
   end
 end
