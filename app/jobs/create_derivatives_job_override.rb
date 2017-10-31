@@ -14,13 +14,40 @@
 #     https://github.com/samvera/curation_concerns/blob/1d5246ebb8bccae0a385280eda10a7dbdc1d517d/app/jobs/characterize_job.rb#L22
 #
 # Also provides some class methods for file name calculation.
-class CreateDerivativesJob < ActiveJob::Base
-  queue_as "jobs_server" # queue so we know we can run it on separate non-app server
+
+module CreateDerivativesJobOverride
+
+  def create_derivatives_mode=(v)
+    @create_derivatives_mode = v
+  end
+
+  def create_derivatives_mode
+    @create_derivatives_mode ||= CHF::Env.lookup!(:create_derivatives_mode)
+  end
 
   # @param [FileSet] file_set
   # @param [String] file_id identifier for a Hydra::PCDM::File
   # @param [String, NilClass] filepath the cached file within the CurationConcerns.config.working_path
-  def perform(file_set, file_id, _filepath = nil)
-    CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call
+  def perform(file_set, file_id, filepath = nil)
+    if create_derivatives_mode == "dzi_s3"
+      # Doesn't use filepath, it's gonna fetch from fedora, and clean up after itself
+      CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call
+    elsif create_derivatives_mode == "legacy"
+      super
+      # WARNING not currently cleaning up files
+
+      # but now try to clean up the tmp file, not totally sure we're not cleaning it
+      # up before someone else wants it, legacy is hacky.
+
+    end
   end
+end
+
+
+
+
+CreateDerivativesJob.class_eval do
+  queue_as "jobs_server" # queue so we know we can run it on separate non-app server
+
+  prepend CreateDerivativesJobOverride
 end

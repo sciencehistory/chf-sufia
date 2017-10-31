@@ -165,6 +165,13 @@ module CHF
     define_key :image_server_on_viewer
     define_key :image_server_downloads
 
+
+    # dzi_s3 or legacy, you can't do both at present. dzi_s3 is our new custom one,
+    # legacy may have issues, but good enough for easy development env. Normally
+    # should match image_server_for_thumbnails and image_server_downloads, except
+    # for migrations or other unusual circumstances.
+    define_key :create_derivatives_mode, default: -> { CHF::Env.lookup(:image_server_for_thumbnails) || "legacy" }
+
     define_key :aws_access_key_id
     define_key :aws_secret_access_key
 
