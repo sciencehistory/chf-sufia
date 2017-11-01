@@ -26,4 +26,22 @@ CurationConcerns::MemberPresenterFactory.class_eval do
                      end
   end
 
+  # liked ordered_docs copied from princeton, but applying permission filters.
+  # super hacky implementation fighting with the stack.
+  def permitted_ordered_docs(action: :read)
+    @permitted_ordered_docs ||= ActiveFedora::SolrService.
+      query("{!join from=ordered_targets_ssim to=id}proxy_in_ssi:#{id}",
+            rows: 100_000,
+            fq: SearchBuilder.new(self).send(:gated_discovery_filters, [action]).join(" AND ")).
+      map { |x| SolrDocument.new(x) }.sort_by { |x| ordered_ids.index(x.id) }
+  end
+
+  # just wrapping a presenter around permitted_ordered_docs. I see no need to specify
+  # ids as an arg, like member_presenters legacy API allows.
+  def permitted_member_presenters(presenter_class: composite_presenter_class, action: :read)
+    @permitted_member_presenters ||= permitted_ordered_docs(action: action).map do |doc|
+      presenter_class.new(doc, *presenter_factory_arguments)
+    end
+  end
+
 end

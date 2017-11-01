@@ -57,7 +57,7 @@ describe 'curation_concerns/base/show.html.erb' do
 
   # ability uses a non-persisted user as a null object, e.g. guest user
   let(:user) { FactoryGirl.build(:user) }
-  let(:ability) { double }
+  let(:ability) { Ability.new(user) }
   let(:presenter) do
     CurationConcerns::GenericWorkShowPresenter.new(solr_document, ability).tap do |presenter|
       # our presenter needs a view_context now, custom CHF, so it can run BL presenters too.
@@ -89,7 +89,6 @@ describe 'curation_concerns/base/show.html.erb' do
   before do
     allow(view).to receive(:search_state).and_return( Blacklight::SearchState.new({}, CatalogController.blacklight_config)  )
     allow(view).to receive(:current_ability).and_return(ability)
-    allow(ability).to receive(:current_user).and_return(user)
     stub_template 'curation_concerns/base/_relationships.html.erb' => ''
     stub_template 'curation_concerns/base/_show_actions.html.erb' => ''
     stub_template 'curation_concerns/base/_representative_media.html.erb' => ''
