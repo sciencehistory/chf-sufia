@@ -48,8 +48,15 @@ namespace :chf do
 
   desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives. `RAILS_ENV=production bundle exec rake chf:recharacterize`'
   task recharacterize: :environment do
-    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
-    Sufia.primary_work_type.all.find_each do |work|
+    condition = if ENV['WORK_IDS'].present?
+      { id: ENV['WORK_IDS'].split(",") }
+    else
+      {}
+    end
+
+    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+
+    Sufia.primary_work_type.all.find_each(condition) do |work|
       work.file_sets.each do |fs|
         fs.files.each do |file|
           RecharacterizeJob.perform_now(fs, file.id)
