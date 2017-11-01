@@ -46,10 +46,16 @@ namespace :chf do
     end
   end
 
-  desc 'Re-characterize all files. Cleans up temp files as it goes. Does not generate derivatives. `RAILS_ENV=production bundle exec rake chf:recharacterize`'
+  desc 'Re-characterize all or some files. Cleans up temp files as it goes. Does not generate derivatives. `[WORK_IDS=zg64tk92g,xd07gs68j] bundle exec rake chf:recharacterize`'
   task recharacterize: :environment do
-    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.count, format: "%t: |%B| %p%% %e")
-    Sufia.primary_work_type.all.find_each do |work|
+    condition = if ENV['WORK_IDS'].present?
+      { id: ENV['WORK_IDS'].split(",") }
+    else
+      {}
+    end
+
+    progress_bar = ProgressBar.create(:total => Sufia.primary_work_type.where(condition).count, format: "%t: |%B| %p%% %e")
+    Sufia.primary_work_type.all.find_each(condition) do |work|
       work.file_sets.each do |fs|
         fs.files.each do |file|
           RecharacterizeJob.perform_now(fs, file.id)
@@ -59,7 +65,7 @@ namespace :chf do
     end
   end
 
-  desc 'Re-generate all derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"'
+  desc 'Re-generate derivatives. WARNING: make sure you have enough space in your temp directories before running! `RAILS_ENV=production bundle exec rake chf:create_derivatives`, or also with WORK_IDS="xd07gs68,zg64tk92g,etc"'
   task create_derivatives: :environment do
     require Rails.root.join('lib','minimagick_patch')
     MiniMagick::Tool.quiet_arg = true
@@ -255,7 +261,7 @@ namespace :chf do
 
       client.put_bucket_policy(
         bucket: CHF::CreateDziService.bucket_name,
-        policy: dzi_policy 
+        policy: dzi_policy
     )
     end
 
