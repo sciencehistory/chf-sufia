@@ -25,9 +25,7 @@ class RecharacterizeJob < ActiveJob::Base
       file_set.update_index
       file_set.parent.in_collections.each(&:update_index) if file_set.parent
     end
-
-    # WorkingDirectory always finds or retrieves files from '/tmp'
-    #   delete once we're done to keep the drive from exploding
+  ensure
     File.delete(filename)
 
     dir = File.split(filename).first
