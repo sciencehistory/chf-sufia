@@ -278,7 +278,6 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
     overflow-x: auto;
     background-color: $brand-inverse;
     padding: 7px;
-    max-height: 100%; // IE 11 needs this, although others don't, i dunno.
 
     .viewer-thumb-img {
       display: inline-block; // makes FF respect width on unloaded image, not sure why needed
@@ -310,10 +309,6 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
     // sorry the selectors get crazy unpredictable to ensure specificity
     // for override. needs refactor.
 
-    .viewer-thumbs {
-      padding-top: 0;
-    }
-
     .viewer-content {
       flex-direction: row;
       // don't totally understand this, but it gets our flex-in-flex layout
@@ -323,11 +318,15 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
     }
 
     .viewer-thumbs {
+      padding-top: 0;
+      max-height: 100%; // IE 11 needs this, although others don't, i dunno.
+
       white-space: normal;
       overflow-y: auto;
       overflow-x: hidden;
-      // need to leave enough room for scroll-bar on browsers that count that inside
-      width: calc(#{$chf_image_viewer_thumb_width} * 2 + 7px * 3 + 1em);
+      // 20px, need to leave enough room for scroll-bar on browsers that count that inside
+      width: calc(#{$chf_image_viewer_thumb_width} * 2 + 7px * 3 + 22px);
+      text-align: center;
       flex-shrink: 0;
 
       .viewer-thumb-img {
