@@ -350,10 +350,10 @@
     destination field is to use the dynamic field syntax.
     copyField also supports a maxChars to copy setting.  -->
 
-   <!-- <copyField source="*_tesim" dest="all_text_timv" maxChars="3000"/> -->
-   <!-- for suggestions -->
-   <copyField source="*_tesim" dest="suggest"/>
-   <copyField source="*_ssim" dest="suggest"/>
+   <!-- sufia wanted us to do this, but we don't use suggest feature,
+        and it turns out to really slow down indexing.  -->
+   <!--    <copyField source="*_tesim" dest="suggest"/>
+           <copyField source="*_ssim" dest="suggest"/> -->
 
  <!-- Similarity is the scoring routine for each document vs. a query.
       A custom similarity may be specified here, but the default is fine
