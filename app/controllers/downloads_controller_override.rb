@@ -11,7 +11,12 @@ DownloadsController.class_eval do
 
     file_set_id = params[asset_param_key] # params[:id]
 
-    authorize! :downloads, file_set_id
+    # I thought there was a 'download' or 'downloads' action that is right here,
+    # but it's not letting non-logged-in users in, even on public stuff.
+    # This works and might match CurationConcerns normal #download auth.
+    # If you don't have access you get a weird default icon 'downloaded', but
+    # that matches sufia/CC default weirdly.
+    authorize! :show, file_set_id
 
     file_set = FileSet.find(file_set_id)
     file_checksum = file_set.original_file.checksum.value
