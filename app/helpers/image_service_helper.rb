@@ -14,11 +14,9 @@ module ImageServiceHelper
     small: 800
   }.freeze
 
-  PLACEHOLDER_IMAGE_PATH = "nope.png"
+  PLACEHOLDER_IMAGE_PATH = "placeholderbox.svg"
 
   def default_image(member:)
-    # image supplied by curation concerns or something, we should
-    # prob find a better one.
     asset_path(PLACEHOLDER_IMAGE_PATH)
   end
 
