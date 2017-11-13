@@ -14,10 +14,12 @@ module ImageServiceHelper
     small: 800
   }.freeze
 
+  PLACEHOLDER_IMAGE_PATH = "nope.png"
+
   def default_image(member:)
     # image supplied by curation concerns or something, we should
     # prob find a better one.
-    asset_path("nope.png")
+    asset_path(PLACEHOLDER_IMAGE_PATH)
   end
 
 
