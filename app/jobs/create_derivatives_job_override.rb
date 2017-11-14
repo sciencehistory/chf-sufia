@@ -21,7 +21,7 @@ module CreateDerivativesJobOverride
   end
 
   def create_derivatives_mode
-    @create_derivatives_mode ||= CHF::Env.lookup!(:create_derivatives_mode)
+    @create_derivatives_mode ||= CHF::Env.lookup(:create_derivatives_mode) || "legacy"
   end
 
   # @param [FileSet] file_set
@@ -52,7 +52,7 @@ end
 
 
 CreateDerivativesJob.class_eval do
-  if CHF::Env.lookup!(:create_derivatives_mode) == "dzi_s3"
+  if CHF::Env.lookup(:create_derivatives_mode) == "dzi_s3"
     queue_as "jobs_server" # queue so we know we can run it on separate non-app server
   end
 
