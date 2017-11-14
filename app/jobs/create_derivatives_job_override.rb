@@ -52,7 +52,9 @@ end
 
 
 CreateDerivativesJob.class_eval do
-  queue_as "jobs_server" # queue so we know we can run it on separate non-app server
+  if CHF::Env.lookup!(:create_derivatives_mode) == "dzi_s3"
+    queue_as "jobs_server" # queue so we know we can run it on separate non-app server
+  end
 
   prepend CreateDerivativesJobOverride
 end
