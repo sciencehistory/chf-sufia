@@ -12,7 +12,6 @@ module CHF
   #     the checksum, pass it in to avoid an expensive lookup.
   # 3) Use optimal settings for a small sized thumbnail, currently use vips
   #    instead of im/gm, it's much faster and uses less RAM.
-  # 4) For "thumb" type derivatives, create a 2x width version for use in srcset
   #
   # This service itself has info on what image derivatives to create, it's no longer
   # going through the hydra derivatives architecture.
@@ -49,27 +48,30 @@ module CHF
       # small thumb for multiple images on show page. These are tricky cause they
       # are really different sizes responsively, but we just pick one to resize to
       # as standard for now.
-      thumb_standard: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:standard], style: :thumb).freeze,
+      thumb_standard: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:standard], style: :thumb, suffix: '.jpg').freeze,
+      thumb_standard_2X: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:standard] * 2, style: :thumb, suffix: '.jpg').freeze,
 
       # giant thumb for big hero image on show page
-      thumb_hero: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:large], style: :thumb).freeze,
+      thumb_hero: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:large], style: :thumb, suffix: '.jpg').freeze,
+      thumb_hero_2X: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:large] * 2, style: :thumb, suffix: '.jpg').freeze,
 
       # thumbs on viewer list
-      thumb_mini: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini], style: :thumb).freeze,
+      thumb_mini: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini], style: :thumb, suffix: '.jpg').freeze,
+      thumb_mini_2X: OpenStruct.new(width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini] * 2, style: :thumb, suffix: '.jpg').freeze,
 
 
       # downloadable ones at sizes we just picked
 
-      dl_large: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:large], label: "Large JPG", style: :download).freeze,
-      dl_medium: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium], label: "Medium JPG", style: :download).freeze,
-      dl_small: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small], label: "Small JPG", style: :download).freeze,
-      dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download).freeze,
+      dl_large: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:large], label: "Large JPG", style: :download, suffix: '.jpg').freeze,
+      dl_medium: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium], label: "Medium JPG", style: :download, suffix: '.jpg').freeze,
+      dl_small: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small], label: "Small JPG", style: :download, suffix: '.jpg').freeze,
+      dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download, suffix: '.jpg').freeze,
 
       # compressed TIFF disabled for now, needs testing to make sure
       # our staging server can handle it, and decision if we really want
       # to take the S3 space.
       # https://github.com/jcupitt/libvips/issues/777
-      #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff).freeze
+      #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff, suffix: '.tif').freeze
     }.freeze
 
     class_attribute :acl
@@ -84,34 +86,30 @@ module CHF
       s3_resource.bucket(CHF::Env.lookup!('derivative_s3_bucket'))
     end
 
-    def self.s3_path(file_set_id:, file_checksum:, filename_key:, suffix:)
-      "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(filename_key).sub_ext(suffix)}"
+    def self.s3_path(file_set_id:, file_checksum:, type_key:)
+      defn = get_type_defn(type_key)
+      "#{file_set_id}_checksum#{file_checksum}/#{Pathname.new(type_key.to_s).sub_ext(defn.suffix)}"
     end
 
     def self.valid_s3_keys
-      @valid_s3_keys ||= IMAGE_TYPES.collect do |key, config|
-        if config.style == :thumb
-          [key.to_s, "#{key}_2X"]
-        else
-          key.to_s
-        end
-      end.flatten.freeze
+      @valid_s3_keys ||= IMAGE_TYPES.collect(&:to_s).flatten.freeze
     end
 
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names, and triggers content-disposition: attachment.
     #
     # These can be slow-ish to create due to creating a signed url.
-    def self.s3_url(file_set_id:, file_checksum:, filename_key:, suffix:, filename_base: nil)
-      obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, filename_key: filename_key, suffix: suffix))
+    def self.s3_url(file_set_id:, file_checksum:, type_key:, filename_base: nil)
+      obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, type_key: type_key))
 
       if filename_base
+        defn = get_type_defn(type_key)
         # secure URL supplies kind of security, assuming the app won't generate
         # this link unless you have access. But we haven't really ensured that
         # universally or made secure links everywhere, so this is not yet security.
         obj.presigned_url(:get,
                           expires_in: 3.days.to_i, # no hurry
-                          response_content_disposition: "attachment; filename=\"#{filename_base}_#{filename_key}.#{suffix.sub(/^\./, '')}\"")
+                          response_content_disposition: "attachment; filename=\"#{filename_base}_#{type_key.to_s}.#{defn.suffix.sub(/^\./, '')}\"")
       else
         obj.public_url
       end
@@ -157,24 +155,29 @@ module CHF
 
       # mktmpdir will clean up tmp dir and all it's contents for us
       Dir.mktmpdir("fileset_#{file_set.id}_", WORKING_DIR_PARENT) do |temp_dir|
+        desired_types = IMAGE_TYPES.collect do |type, defn|
+          [type, defn] if ((only_styles.nil? || only_styles.include?(defn.style.to_s)) &&
+                           (only_types.nil? || only_types.include?(key.to_s)))
+        end.compact.to_h
+
+        if lazy
+          desired_types = desired_types.collect do |type, defn|
+            s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type))
+            [type, defn] unless s3_obj.exists?
+          end.compact.to_h
+        end
+
+        return if desired_types.empty? # avoid fetch on lazy with nothing to update
+
         @working_dir = temp_dir
         @working_original_path = CHF::GetFedoraBytestreamService.new(file_id, local_path: File.join(@working_dir, "original")).get
 
         if file_set.image?
-          # custom CHF image derivatives
-
-          IMAGE_TYPES.each_pair do |key, defn|
-            next if only_styles && only_styles.include?(defn.style.to_s)
-            next if only_types && only_types.include?(key.to_s)
+          desired_types.each_pair do |key, defn|
             if defn.style == :thumb || defn.style == :download
-              futures << create_jpg_derivative(width: defn.width, filename: key.to_s, style: defn.style)
-
-              # 2x for srcset on thumbs
-              if defn.style == :thumb && defn.width
-                futures << create_jpg_derivative(width: defn.width * 2, filename: "#{key.to_s}_2X", style: defn.style)
-              end
+              futures << create_jpg_derivative(width: defn.width, type_key: key)
             elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
-              futures << create_compressed_tiff(filename: key.to_s)
+              futures << create_compressed_tiff(type_key: key)
             end
           end
 
@@ -199,6 +202,13 @@ module CHF
 
     protected
 
+    def self.get_type_defn(type_key)
+      IMAGE_TYPES[type_key.to_sym] or raise ArgumentError.new("No image type definition found for #{type_key}")
+    end
+    def get_type_defn(type_key)
+      self.class.get_type_defn(type_key)
+    end
+
     def working_dir
       @working_dir || (raise TypeError.new("unexpected nil @working_dir"))
     end
@@ -209,7 +219,7 @@ module CHF
 
     # create and push to s3.
     #
-    # returns nil (if nothing to do, in lazy) or a Future
+    # returns a Future
     #
     # For thumbnails, we use more aggressive image conversion parameters, as opposed
     # to downloads. Later, thumbs might also apply some cropping to enforce maximum
@@ -218,15 +228,13 @@ module CHF
     #     * https://developers.google.com/speed/docs/insights/OptimizeImages
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     #     * https://github.com/jcupitt/libvips/issues/775
-    def create_jpg_derivative(width:, filename:, style:)
-      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".jpg").to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".jpg"))
+    def create_jpg_derivative(width:, type_key:)
+      defn = get_type_defn(type_key)
+      style = defn.style
+      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
 
       sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
-
-      if lazy && s3_obj.exists?
-        return nil
-      end
 
       vips_jpg_params = if style.to_s == "thumb"
         "[Q=85,interlace,optimize_coding,strip]"
@@ -280,9 +288,9 @@ module CHF
     # IM/GM crash our system using unholy amounts of RAM trying to operate on
     # very big TIFFs for anything at all. VIPS with correct compression args
     # (predictor=horizontal as below) needs to be tested to make sure it won't.
-    def create_compressed_tiff(filename:)
+    def create_compressed_tiff(type_key:)
       output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, filename_key: filename, suffix: ".tif"))
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
 
       if lazy && s3_obj.exists?
         return nil

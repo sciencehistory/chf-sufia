@@ -26,8 +26,7 @@ DownloadsController.class_eval do
     s3_url = CHF::CreateDerivativesOnS3Service.s3_url(
       file_set_id: file_set_id,
       file_checksum: file_checksum,
-      filename_key: params[:filename_key],
-      suffix: ".jpg",
+      type_key: params[:filename_key],
       filename_base: filename_base
     )
 

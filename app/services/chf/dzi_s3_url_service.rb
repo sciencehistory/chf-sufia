@@ -16,7 +16,7 @@ module CHF
     end
 
     def thumb_url(size:, density_descriptor: nil)
-      CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, filename_key: size_to_thumbnail_filename_key(size: size, density_descriptor: density_descriptor), suffix: ".jpg")
+      CreateDerivativesOnS3Service.s3_url(file_set_id: file_set_id, file_checksum: checksum, type_key: size_to_thumbnail_filename_key(size: size, density_descriptor: density_descriptor))
     end
 
     # We have 1x and 2x statically generated.
