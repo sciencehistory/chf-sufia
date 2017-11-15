@@ -159,7 +159,7 @@ module ImageServiceHelper
         # downloads for this image only
         downloads: download_options(member_presenter, filename_base: _download_name_base(work_presenter, item_id: member_presenter.id))
       } if member_presenter.representative_file_id # don't show it in the viewer if there's no image
-    end
+    end.compact
   end
 
   # Returns nil if no image service available. Otherwise an image

@@ -393,6 +393,9 @@ ChfImageViewer.prototype.makeThumbnails = function(json) {
   this.thumbnailData = json;
   var container = $(this.modal).find("#viewer-thumbs");
   $.each(json, function(index, config) {
+    if (! config) {
+      return;
+    }
     container.append(
       '<img class="lazyload viewer-thumb-img"' +
             ' height="' + config.thumbHeight + '"' +
