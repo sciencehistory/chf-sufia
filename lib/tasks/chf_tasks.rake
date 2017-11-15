@@ -82,8 +82,8 @@ namespace :chf do
     end
 
     namespace :s3 do
-      # WIP s3 reworked version of create derivatives
-      # WORK_IDS
+      # s3 reworked version of create derivatives
+      # WORK_IDS=x,y,z
       # ONLY_STYLES=thumb
       # ONLY_TYPES=large_dl,medium_dl
       task :create, [:lazy] => :environment do |t, args|
@@ -102,7 +102,7 @@ namespace :chf do
           ActiveFedora::SolrService.count("{!join from=member_ids_ssim to=id} id:(#{ENV['WORK_IDS'].split(',').join(' OR ')})", fq: "has_model_ssim:FileSet")
         end
 
-        progress_bar = ProgressBar.create(:total => fs_count, format: "%a %t: |%B| %c/%u %p%%%e")
+        progress_bar = ProgressBar.create(:total => fs_count, format: "%a %t: |%B| %R/s %c/%u %p%%%e", smoothing: 0.5)
         Sufia.primary_work_type.find_each(condition) do |work|
           work.file_sets.each do |fs|
             fs.files.each do |file|
