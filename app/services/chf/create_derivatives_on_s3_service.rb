@@ -161,10 +161,14 @@ module CHF
         end.compact.to_h
 
         if lazy
+          # limit to just ones that don't already exist, see if we need to do any.
+          # Use concurrency for even faster.
           desired_types = desired_types.collect do |type, defn|
-            s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type))
-            [type, defn] unless s3_obj.exists?
-          end.compact.to_h
+            Concurrent::Future.execute do
+              s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type))
+              [type, defn] unless s3_obj.exists?
+            end
+          end.collect(&:value!).compact.to_h
         end
 
         return if desired_types.empty? # avoid fetch on lazy with nothing to update
