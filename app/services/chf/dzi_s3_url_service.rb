@@ -49,7 +49,7 @@ module CHF
 
     protected
 
-    def size_to_thumbnail_filename_key(size: size, density_descriptor: nil)
+    def size_to_thumbnail_filename_key(size:, density_descriptor: nil)
       # gah we used two different vocabularies sorry
       filename_key = case size.to_s
         when "mini"
