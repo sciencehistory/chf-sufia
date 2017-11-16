@@ -182,10 +182,10 @@ class CatalogController < ApplicationController
     # except in the relevancy case).
     # label is key, solr field is value
     config.add_sort_field "score desc, #{uploaded_field} desc", label: "best match"
-    config.add_sort_field "latest_year desc", label: "date (newest)"
-    config.add_sort_field "earliest_year asc", label: "date (oldest)"
-    config.add_sort_field "#{uploaded_field} desc", label: "date uploaded \u25BC"
-    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2", if: ->(controller, field) { controller.current_ability.current_user.staff? }
+    config.add_sort_field "latest_year desc", label: "newest date"
+    config.add_sort_field "earliest_year asc", label: "oldest date"
+    config.add_sort_field "#{uploaded_field} desc", label: "recently added"
+    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2", non_query_default: true, if: ->(controller, field) { controller.current_ability.current_user.staff? }
     config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC", if: ->(controller, field) { controller.current_ability.current_user.staff? }
     config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2", if: ->(controller, field) { controller.current_ability.current_user.staff? }
 
