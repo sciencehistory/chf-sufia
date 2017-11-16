@@ -181,13 +181,13 @@ class CatalogController < ApplicationController
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
-    config.add_sort_field "score desc, #{uploaded_field} desc", label: "relevance"
+    config.add_sort_field "score desc, #{uploaded_field} desc", label: "best match"
     config.add_sort_field "latest_year desc", label: "date (newest)"
     config.add_sort_field "earliest_year asc", label: "date (oldest)"
     config.add_sort_field "#{uploaded_field} desc", label: "date uploaded \u25BC"
-    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2"
-    config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC"
-    config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2"
+    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2", if: ->(controller, field) { controller.current_ability.current_user.staff? }
+    config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC", if: ->(controller, field) { controller.current_ability.current_user.staff? }
+    config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2", if: ->(controller, field) { controller.current_ability.current_user.staff? }
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
