@@ -21,4 +21,18 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+
+  # Cheesy way to override Blaclight helper method with call to super possible
+  module SortHelperOverrides
+    def active_sort_fields
+      if params[:q].present?
+        super
+      else
+        # with no query, relevance doesn't make a lot of sense
+        super.delete_if { |k| k.start_with?("score") }
+      end
+    end
+  end
+  helper SortHelperOverrides
 end
