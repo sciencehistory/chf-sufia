@@ -26,10 +26,6 @@ Rails.application.config.to_prepare do
     klass.send(:include, SearchBuilder::PublicDomainFilter)
   end
 
-  unless klass.ancestors.include? SearchBuilder::PublicDomainFilter
-    klass.send(:include, SearchBuilder::PublicDomainFilter)
-  end
-
   unless klass.ancestors.include? SearchBuilder::CustomSortLogic
     klass.send(:include, SearchBuilder::CustomSortLogic)
   end
