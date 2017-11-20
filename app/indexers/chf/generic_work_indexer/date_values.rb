@@ -9,7 +9,15 @@ module CHF
     end
 
     def expanded_years
-      work.date_of_work.collect { |date_of_work| years_for_date_of_work(date_of_work) }.flatten
+      @expanded_years ||= work.date_of_work.collect { |date_of_work| years_for_date_of_work(date_of_work) }.flatten
+    end
+
+    def min_year
+      @minimum_year ||= expanded_years.min
+    end
+
+    def max_year
+      @maximum_year ||= expanded_years.max
     end
 
     def years_for_date_of_work(repo_d)

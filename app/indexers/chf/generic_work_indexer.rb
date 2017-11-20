@@ -20,7 +20,13 @@ module CHF
         place_facet = places.map { |field| object.send(field).to_a }.flatten.uniq
         doc[ActiveFedora.index_field_mapper.solr_name('place_facet', :facetable)] = place_facet
 
-        doc[ActiveFedora.index_field_mapper.solr_name('year_facet', type: :integer)] = DateValues.new(object).expanded_years
+        date_values = DateValues.new(object)
+
+        # used for facetting and histogram facet display
+        doc[ActiveFedora.index_field_mapper.solr_name('year_facet', type: :integer)] = date_values.expanded_years
+        # used for sorting, need just one date for a sort.
+        doc["earliest_year"] = date_values.min_year
+        doc["latest_year"] = date_values.max_year
 
         # rights as label, not just URI identifier
         license_service = CurationConcerns::LicenseService.new
