@@ -17,6 +17,10 @@
 // does, or the presence of AMD in a non-AMD aware build tool confuses aspectratio.
 //= require 'lazysizes/plugins/aspectratio/ls.aspectratio.js'
 
+// fetch and promise polyfills for older browsers, used in our custom viewer
+//= require promise-polyfill
+//= require fetch
+
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 // Required by Blacklight

@@ -16,15 +16,6 @@ ChfImageViewer.prototype.show = function(id) {
     this.initOpenSeadragon();
   }
 
-  this.totalCount = parseInt(document.querySelector(".viewer-thumbs[data-total-count]").getAttribute("data-total-count"));
-  if (this.totalCount == 1) {
-    // hide multi-item-relevant controls
-    this.hideUiElement(document.querySelector("#viewer-pagination"));
-    this.hideUiElement(document.querySelector("#viewer-right"));
-    this.hideUiElement(document.querySelector("#viewer-left"));
-    this.hideUiElement(document.querySelector("#viewer-thumbs"));
-  }
-
   if (! OpenSeadragon.supportsFullScreen) {
     this.hideUiElement(document.querySelector("#viewer-fullscreen"));
   }
@@ -33,25 +24,36 @@ ChfImageViewer.prototype.show = function(id) {
     this.hideUiElement(document.querySelector("#viewer-rotate-right"));
   }
 
-  var selectedThumb;
-  // find the thumb
-  if (id) {
-    selectedThumb = document.querySelector(".viewer-thumb-img[data-member-id='" + id + "']");
-  }
-  if (! selectedThumb) {
-    // just use the first one
-    selectedThumb = document.querySelector(".viewer-thumb-img");
-  }
-  this.selectThumb(selectedThumb);
-
-  // show the viewer
-  $(this.modal).modal("show");
-  this.scrollSelectedIntoView();
-
-  // Catch keyboard controls
   var _self = this;
-  $("body").on("keydown.chf_image_viewer", function(event) {
-    _self.onKeyDown(event);
+  // Make sure we don't try to do this before thumbs are loaded
+  this.thumbsLoadedGuard.then(function() {
+    if (_self.totalCount == 1) {
+      // hide multi-item-relevant controls
+      _self.hideUiElement(document.querySelector("#viewer-pagination"));
+      _self.hideUiElement(document.querySelector("#viewer-right"));
+      _self.hideUiElement(document.querySelector("#viewer-left"));
+      _self.hideUiElement(document.querySelector("#viewer-thumbs"));
+    }
+
+    var selectedThumb;
+    // find the thumb
+    if (id) {
+      selectedThumb = document.querySelector(".viewer-thumb-img[data-member-id='" + id + "']");
+    }
+    if (! selectedThumb) {
+      // just use the first one
+      selectedThumb = document.querySelector(".viewer-thumb-img");
+    }
+    _self.selectThumb(selectedThumb);
+
+    // show the viewer
+    $(_self.modal).modal("show");
+    _self.scrollSelectedIntoView();
+
+    // Catch keyboard controls
+    $("body").on("keydown.chf_image_viewer", function(event) {
+      _self.onKeyDown(event);
+    });
   });
 };
 
@@ -126,18 +128,19 @@ ChfImageViewer.prototype.removeLoading =  function() {
 ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   this.selectedThumb = thumbElement;
 
-  // toggle classes, sorry some jQuery
+  var index = parseInt(thumbElement.getAttribute("data-index"));
+  var humanIndex = index + 1;
+  this.selectedThumbData = this.thumbnailData[index];
+
+  // toggle classes
   $('.viewer-thumbs .viewer-thumb-selected').removeClass('viewer-thumb-selected')
   thumbElement.classList.add('viewer-thumb-selected');
 
-  var id = thumbElement.getAttribute('data-member-id');
-  var index = thumbElement.getAttribute('data-index');
-  var shouldShowInfo = thumbElement.getAttribute('data-member-should-show-info') == "true";
-  var title = thumbElement.getAttribute('data-title');
-  var linkUrl = thumbElement.getAttribute('data-member-show-url');
-  var downloadOriginalUrl = thumbElement.getAttribute('data-member-dl-original-url');
-  var downloadJpegUrl = thumbElement.getAttribute('data-member-dl-jpeg-url');
-  var tileSource = thumbElement.getAttribute('data-tile-source');
+  var id = this.selectedThumbData.memberId;
+  var shouldShowInfo = this.selectedThumbData.memberShouldShowInfo;
+  var title = this.selectedThumbData.title;
+  var linkUrl = this.selectedThumbData.memberShowUrl;
+  var tileSource = this.selectedThumbData.tileSource;
 
   // hide any currently visible alerts, they only apply to
   // previously current image.
@@ -151,12 +154,9 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
 
   document.querySelector('*[data-hook="viewer-navbar-title-label"]').textContent = title;
   document.querySelector('*[data-hook="viewer-navbar-info-link"]').href = linkUrl;
-  document.getElementsByClassName('viewer-pagination-numerator').item(0).textContent = index;
+  document.getElementsByClassName('viewer-pagination-numerator').item(0).textContent = humanIndex;
 
-  var originalLink = document.querySelector('#chf-image-viewer *[data-content-hook=dl-original-link]');
-  if (originalLink) { originalLink.setAttribute('href', downloadOriginalUrl); }
-  var jpegLink = document.querySelector('#chf-image-viewer *[data-content-hook=dl-jpeg-link]');
-  if (jpegLink) { jpegLink.setAttribute('href', downloadJpegUrl); }
+  $(this.modal).find("#viewer-download .dropdown-menu").html(this.downloadMenuItems(this.selectedThumbData));
 
   if (shouldShowInfo) {
     // spacer shows up when info doesn't.
@@ -168,13 +168,13 @@ ChfImageViewer.prototype.selectThumb = function(thumbElement) {
   }
 
   // show/hide next/prev as appropriate
-  if (index <= 1) {
+  if (humanIndex <= 1) {
     this.hideUiElement(document.querySelector("#viewer-left"));
   } else if ( this.totalCount != 1 ) {
     this.showUiElement(document.querySelector("#viewer-left"));
   }
 
-  if (index >= this.totalCount) {
+  if (humanIndex >= this.totalCount) {
     this.hideUiElement(document.querySelector("#viewer-right"));
   } else if ( this.totalCount != 1 ) {
     this.showUiElement(document.querySelector("#viewer-right"));
@@ -199,17 +199,9 @@ ChfImageViewer.prototype.prev = function() {
   }
 };
 
-// If open fails, try this one?
-ChfImageViewer.prototype.fallbackOsdOpenArg = function(fileId) {
-  return {
-    type: "image",
-    url: ("/downloads/" + encodeURIComponent(fileId) + "?file=jpeg")
-  };
-};
-
 ChfImageViewer.prototype.setLocationUrl = function() {
   var currentPath = location.pathname;
-  var selectedID = this.selectedThumb.getAttribute('data-member-id');
+  var selectedID = this.selectedThumbData.memberId;
 
   var newPath;
 
@@ -370,6 +362,83 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     show: false,
     keyboard: false
   });
+
+  this.workId = modalElement.getAttribute("data-work-id");
+
+  var rightsElement = modalElement.querySelector('.parent-rights-inline');
+  if (rightsElement) {
+    this.rightsInlineHtml = rightsElement.innerHTML;
+  }
+
+  var _self = this;
+  var imageInfoUrl = modalElement.getAttribute("data-images-info-path");
+  // This promise should be used in #show to make sure we don't until this
+  this.thumbsLoadedGuard = fetch(imageInfoUrl, {
+    credentials: 'include'
+  }).then(function(response) {
+    if(response.ok) {
+      return response.json();
+    }
+    // non-200, something is bad.
+    throw new Error(response.status + ': ImageViewer could not fetch image info from: ' + imageInfoUrl);
+
+  }).then(function(json) {
+    _self.totalCount = json.length;
+    _self.makeThumbnails(json);
+  });
+};
+
+// From json data describing our images, make the thumbnail sidebar
+ChfImageViewer.prototype.makeThumbnails = function(json) {
+  this.thumbnailData = json;
+  var container = $(this.modal).find("#viewer-thumbs");
+  $.each(json, function(index, config) {
+    if (! config) {
+      return;
+    }
+    container.append(
+      '<img class="lazyload viewer-thumb-img"' +
+            ' height="' + config.thumbHeight + '"' +
+            ' alt="" tabindex="0" role="button"' +
+            ' data-member-id="' + config.memberId + '"' +
+            ' data-trigger="change-viewer-source"' +
+            ' data-src="' + config.thumbSrc + '"' +
+            ' data-srcset="' +  (config.thumbSrcset || '') + '"' +
+            ' data-index="' + index + '"' +
+      '>'
+    );
+  });
+};
+
+ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
+  var _self = this;
+
+  var htmlElements = []
+
+  if (_self.rightsInlineHtml) {
+    htmlElements.push('<li class="dropdown-header">Rights</li>');
+    htmlElements.push('<li tabindex="-1" role="menuItem">' + _self.rightsInlineHtml + '</li>');
+    htmlElements.push('<li role="separator" class="divider"></li>');
+  }
+
+
+  htmlElements.push('<li class="dropdown-header">Download selected image</li>');
+
+  htmlElements = htmlElements.concat(
+    $.map(thumbData.downloads, function(downloadElement) {
+      return '<li tabindex="-1" role="menuitem">' +
+                '<a target="_new" data-analytics-category="Work"' +
+                ' data-analytics-action="' + (downloadElement.analyticsAction || "download") + '"' +
+                ' data-analytics-label="' + _self.workId + '"' +
+                ' href="' + downloadElement.url + '">' +
+                  downloadElement.label +
+                ' <small>' + (downloadElement.subhead || '') + '</small>' +
+                '</a>' +
+              '</li>';
+    })
+  );
+
+  return htmlElements;
 };
 
 ChfImageViewer.prototype.initOpenSeadragon = function() {
@@ -417,8 +486,8 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
   } );
   this.viewer.addHandler("open-failed", function(event) {
     // Try fallback URL if available
-    var fileId = _self.selectedThumb.getAttribute('data-member-id');
-    var fallbackOsdOpenArg = _self.fallbackOsdOpenArg(fileId)
+    var fileId = _self.selectedThumbData.memberId;
+    var fallbackOsdOpenArg = _self.selectedThumbData.fallbackTileSource;
     if (fallbackOsdOpenArg && fallbackOsdOpenArg !==  event.source) {
       _self.displayAlert("Sorry, full zooming is not currently available.")
       _self.viewer.open(fallbackOsdOpenArg);

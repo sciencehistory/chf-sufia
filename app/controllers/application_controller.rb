@@ -21,4 +21,50 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+
+
+  module ThumbOverride
+
+    # Override of helper from Blacklight, to try to use our custom S3-stored
+    # thumbnails.
+    #
+    # https://github.com/projectblacklight/blacklight/blob/v6.7.2/app/helpers/blacklight/catalog_helper_behavior.rb#L219-L228
+    #
+    # Our end-user-facing pages don't generally use this method,
+    # but various diverse built-in admin pages do, in various not consistent ways, passing
+    # various presenters or raw solr docs as argument. We somewhat hackily
+    # try to get it to use our own presenters (which aren't so consistent
+    # either), with the logic we've given them for keeping track of representative
+    # ids, and our helper method for looking up thumb URL.
+    def thumbnail_url(document)
+      # sometimes we get something that's already a presenter, sometimes we
+      # get raw solr doc. Turn it into raw solr doc, so we can wrap in presenter
+      # we want.
+      solr_document = document.try(:solr_document) || document
+
+      # We want our existing presenters for their logic on representative
+      # ids. Sadly, we stored things in different fields for fileset vs work,
+      # and need their respective presenters in order to get a common API.
+      # Have to do this kind of hacky specific for listed classes, I'm afraid.
+      presenter = case solr_document.hydra_model.to_s
+        when "GenericWork"
+          CurationConcerns::GenericWorkShowPresenter.new(solr_document, self)
+        when "FileSet"
+          CHF::FileSetPresenter.new(solr_document, self)
+        when "Collection"
+          CHF::CollectionShowPresenter.new(solr_document, self)
+      end
+
+      # If we couldn't get a presenter just call super, although
+      # it probably won't do anything useful since we're not neccesarily indexing
+      # properly and default tries to get from index.
+      if presenter
+        member_src_attributes(member: presenter, size_key: :standard)[:src]
+      else
+        super
+      end
+    end
+  end
+  helper ThumbOverride
 end

@@ -14,6 +14,14 @@ module CurationConcerns
     # not seem to mess up admin pages also in this controller.
     layout "chf"
 
+    # returns JSON for the viewer, an array of hashes, one for each image
+    # included in this work to be viewed.
+    # Note we needed to make this action auth right with a custom line in
+    # in our ability.rb class.
+    def viewer_images_info
+      render json: helpers.viewer_images_info(presenter)
+    end
+
     protected
 
     # Pretty hacky way to override the t() I18n method when called from template:

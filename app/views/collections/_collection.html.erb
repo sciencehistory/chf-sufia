@@ -28,7 +28,7 @@ Didn't bother DRYing the template, just use common CSS classes %>
 
     <div class="chf-results-list-item-thumb">
       <%= link_to collection do %>
-        <% image_tag CHF::CollectionShowPresenter.thumbnail_src(doc_presenter.solr_document) %>
+        <% image_tag CHF::CollectionShowPresenter.thumbnail_src(doc_presenter.solr_document), alt: "" %>
       <% end %>
       <%= doc_presenter.render_num_members %>
     </div>

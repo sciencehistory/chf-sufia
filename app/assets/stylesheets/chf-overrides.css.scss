@@ -39,3 +39,8 @@
 .representative-media {
   display: inline !important;
 }
+
+// make sure our larger thumbs don't overflow
+img.representative-media {
+  max-width: 100%;
+}
