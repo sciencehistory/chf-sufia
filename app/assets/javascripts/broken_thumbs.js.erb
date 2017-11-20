@@ -1,0 +1,14 @@
+// If a thumb image breaks, replace it with our missing image placeholder,
+// and log to console too.
+// restrict to known thumb images right now.
+
+$( document ).ready(function() {
+  // Possible improvement, replace with a data- attribute asking for placeholder replacement?
+  $('img.show-page-image-image, .chf-results-list-item-thumb img, img.file_listing_thumbnail').error(function(){
+    var origSrc = $(this).attr('src');
+    $(this).attr('src', '<%= asset_path(ImageServiceHelper::PLACEHOLDER_IMAGE_PATH) %>');
+    $(this).attr('srcset', '');
+    console.log("broken thumb on '" +  origSrc + "', replacing with placeholder");
+  });
+});
+

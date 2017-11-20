@@ -986,7 +986,9 @@ GEM
       bundler (>= 1.3.0)
       railties (= 5.0.6)
       sprockets-rails (>= 2.0.0)
+    rails-assets-fetch (2.0.3)
     rails-assets-lazysizes (3.0.0)
+    rails-assets-promise-polyfill (6.0.2)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -1296,7 +1298,9 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   rails (~> 5.0.0)
+  rails-assets-fetch!
   rails-assets-lazysizes!
+  rails-assets-promise-polyfill!
   resque-pool
   rest-client
   riiif (~> 1.4)

@@ -20,7 +20,7 @@
     contents and have CSS properties relevant to that too.
 */
 
-$chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUMB_WIDTH
+$chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB_BASE_WIDHTS[:mini]
 
 // Override some bootstrap modal stuff to give us a full-viewport modal
 #chf-image-viewer-modal {
@@ -278,11 +278,11 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
     overflow-x: auto;
     background-color: $brand-inverse;
     padding: 7px;
-    max-height: 100%; // IE 11 needs this, although others don't, i dunno.
 
     .viewer-thumb-img {
       display: inline-block; // makes FF respect width on unloaded image, not sure why needed
       max-height: 80px;
+      box-sizing: content-box;
       width: $chf_image_viewer_thumb_width;
 
       cursor: pointer;
@@ -309,10 +309,6 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
     // sorry the selectors get crazy unpredictable to ensure specificity
     // for override. needs refactor.
 
-    .viewer-thumbs {
-      padding-top: 0;
-    }
-
     .viewer-content {
       flex-direction: row;
       // don't totally understand this, but it gets our flex-in-flex layout
@@ -322,11 +318,15 @@ $chf_image_viewer_thumb_width: 60px; // Needs to match MemberHelper::VIEWER_THUM
     }
 
     .viewer-thumbs {
+      padding-top: 0;
+      max-height: 100%; // IE 11 needs this, although others don't, i dunno.
+
       white-space: normal;
       overflow-y: auto;
       overflow-x: hidden;
-      // need to leave enough room for scroll-bar on browsers that count that inside
-      width: calc(#{$chf_image_viewer_thumb_width} * 2 + 7px * 3 + 1em);
+      // 20px, need to leave enough room for scroll-bar on browsers that count that inside
+      width: calc(#{$chf_image_viewer_thumb_width} * 2 + 7px * 3 + 22px);
+      text-align: center;
       flex-shrink: 0;
 
       .viewer-thumb-img {

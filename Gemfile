@@ -76,6 +76,8 @@ gem 'slackistrano', "~> 3.8"
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-lazysizes'
+  gem 'rails-assets-promise-polyfill' # mainly for use by fetch polyfill
+  gem 'rails-assets-fetch' # fetch polyfill, initially used by our custom viewer
 end
 
 group :production do

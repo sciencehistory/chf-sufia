@@ -8,6 +8,9 @@ class Ability
 
   # Define any customized permissions here.
   def custom_permissions
+    # our custom action to deliver json to viewer, same permissions as show
+    alias_action :viewer_images_info, to: :read
+
     if current_user.admin?
       # Role management
       # don't allow :destroy, :edit, :create

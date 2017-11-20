@@ -90,31 +90,7 @@ module CHF
     # Fetch Hydra::PCDM::File from fedora and save to WORKING_DIR,
     # streaming for efficiency.
     def fetch_from_fedora!
-      response = nil
-      # We hope this is the right way to get the actual uri to fetch cheaply?
-      uri = URI.parse(FileSet.translate_id_to_uri.call(file_id))
-
-      fedora_fetch_benchmark = Benchmark.measure do
-        response = Net::HTTP.start(uri.host, uri.port) do |http|
-          request = Net::HTTP::Get.new uri
-
-          if ActiveFedora.fedora.user || ActiveFedora.fedora.password
-            request.basic_auth(ActiveFedora.fedora.user, ActiveFedora.fedora.password)
-          end
-
-          http.request request do |response|
-            open local_original_file_path, 'wb' do |io|
-              response.read_body do |chunk|
-                io.write chunk
-              end
-            end
-          end
-        end
-      end
-      Rails.logger.debug("#{self.class.name}: fetch_from_fedora: #{fedora_fetch_benchmark}")
-      unless response && response.code == "200"
-        raise StandardError.new("Could not fetch file from fedora: #{uri}")
-      end
+      CHF::GetFedoraBytestreamService.new(file_id, local_path: local_original_file_path).get
     end
 
     def create_dzi!
@@ -199,7 +175,7 @@ module CHF
     # If not already set, we have to fetch from fedora, which is kinda slow with AF.
     # TODO, we can make this one fetch, not two.
     def checksum
-      @checksum || Hydra::PCDM::File.find(file_id).checksum.value
+      @checksum ||= Hydra::PCDM::File.find(file_id).checksum.value
     end
 
     def dzi_file_name

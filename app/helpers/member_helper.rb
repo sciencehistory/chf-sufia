@@ -10,64 +10,66 @@ module MemberHelper
   # dropdown-toggle, representing download options for the member passed in.
   # also includes a rights statement from parent.
   #
-  # first arg member is normally required, but can be passed as nil for
-  # creating a blank template for JS filling, as in viewer.
+  #  filename_base, if provided, is used to make more human-readable
+  # 'save as' download file names.
   #
-  # used in show_page_image and image_viewer.
+  # used in show_page_image. image_viewer now does it's own JS version.
   #
   # Originally was a partial instead of a helper, and probably more readable
   # that way, but performance impact of partial was too much, on work pages
   # that wanted to display many members and call these many times. Not entirely
   # sure why partial so much slower than helper, even in production config.
-  def member_download_menu(member, parent:, labelled_by: nil)
+  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil)
     list_elements = []
 
     if parent.has_rights_statement?
-      list_elements << dropdown_menuitem(
-          link_to(parent.rights_url,
-                    target: "_blank",
-                    class: 'rights-statement-inline') do
-            safe_join([image_tag(parent.rights_icon || "", class: "rights-statement-logo"),
-                       " ",
-                       content_tag("span", parent.rights_icon_label, class: "rights-statement-label")])
-          end
-      )
+      list_elements << content_tag("li", "Rights", class: "dropdown-header")
+
+      list_elements << dropdown_menuitem(render_rights_statement(parent))
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    #list_elements << '<li class="dropdown-header">Download this image</li>'.html_safe
+    if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
+      list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
 
-    list_elements << dropdown_menuitem(
-                      link_to("Download Original Image", ( member ? main_app.download_path(member.representative_id) : "#" ),
-                        target: "_new",
-                        id: "file_download",
-                        data: {
-                          content_hook: "dl-original-link",
-                          analytics_category: "Work",
-                          analytics_action: "download-tiff",
-                          analytics_label: parent.id
-                        })
-                      )
-
-    if member && full_res_jpg_url = full_res_jpg_url(member)
-      list_elements << dropdown_menuitem(
-                        link_to("Download Full-size JPEG",
-                          full_res_jpg_url,
-                          target: "_new",
-                          data: {
-                            content_hook: "dl-jpeg-link",
-                            analytics_category: "Work",
-                            analytics_action: "download-jpg",
-                            analytics_label: parent.id
-                          })
-                        )
+      download_options.each do |option_config|
+        list_elements << dropdown_menuitem(
+          link_to(option_config[:url],
+            data: {
+              content_hook: "dl-original-link",
+              analytics_category: "Work",
+              analytics_action: option_config[:analyticsAction],
+              analytics_label: parent.id
+            }) do
+            safe_join([
+              option_config[:label],
+              content_tag("small", " #{option_config[:subhead]}")
+            ])
+          end,
+          target: "_new",
+        )
+      end
     end
 
     content_tag("ul",
                 safe_join(list_elements),
-                class: "dropdown-menu",
+                class: "dropdown-menu download-menu",
                 role: "menu",
                 :'aria-labelledby' => labelled_by)
+  end
+
+  def render_rights_statement(presenter)
+    return nil unless presenter
+
+    # content_tag is quicker than link_to for static url
+    content_tag("a",
+              href: presenter.rights_url,
+              target: "_blank",
+              class: 'rights-statement-inline') do
+        image_tag(presenter.rights_icon || "", class: "rights-statement-logo") +
+         " ".html_safe +
+         content_tag("span", presenter.rights_icon_label, class: "rights-statement-label")
+      end
   end
 
   # Used for controls (edit etc) on a 'file_set', normally only showed
@@ -118,17 +120,15 @@ module MemberHelper
   end
 
 
-  VIEWER_THUMB_WIDTH = 60
   # Calculate height matching width for a aspect ratio of member_presenter.
   # default target_width should match CSS, in chf_image_viewer.scss, .viewer-thumb-img `width`
-  def member_proportional_height(member_presenter, target_width: VIEWER_THUMB_WIDTH)
+  def member_proportional_height(member_presenter, target_width: ImageServiceHelper::THUMB_BASE_WIDTHS[:mini])
     original_width = member_presenter.representative_width.try(:to_i)
     original_height = member_presenter.representative_height.try(:to_i)
 
     if original_width && original_width > 0 && original_height && original_height > 0
-      target_width * original_height / original_width
+      # make sure it's at least target_width / 4, stretch if needed.
+      [(target_width.to_d * original_height / original_width).round(2), (target_width.to_d / 4).round(2)].max
     end
   end
-
-
 end

@@ -11,4 +11,13 @@ module ApplicationHelper
   def preview_id(presenter)
     (presenter.respond_to?(:thumbnail_id) && presenter.thumbnail_id) ? presenter.thumbnail_id : presenter.id
   end
+
+  def visibility_facet_labels(value)
+    case value
+    when "open" ; "public"
+    when "authenticated" ; "staff-only"
+    when "restricted" ; "private"
+    else ; value
+    end
+  end
 end

@@ -58,6 +58,10 @@ module CHF
       instance.lookup(*args)
     end
 
+    def self.lookup!(*args)
+      instance.lookup!(*args)
+    end
+
     def define_key(name, env_key: nil, default: nil, system_env_transform: nil)
       @key_definitions[name.to_sym] = {
         name: name.to_s,
@@ -155,13 +159,22 @@ module CHF
     define_key :service_level
 
     # should be a recognized image service type, or nil/false for only using hydra-derivatives thumbs
-    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_representative_image_url_service
-    define_key :image_server_on_show_page
+    # For recognized image service types, see [../../helpers/image_service_helper.rb] #_image_url_service
+    # "iiif", "dzi_s3", or nil for legacy
+    define_key :image_server_for_thumbnails
     define_key :image_server_on_viewer
     define_key :image_server_downloads
 
+
+    # dzi_s3 or legacy, you can't do both at present. dzi_s3 is our new custom one,
+    # legacy may have issues, but good enough for easy development env. Normally
+    # should match image_server_for_thumbnails and image_server_downloads, except
+    # for migrations or other unusual circumstances.
+    define_key :create_derivatives_mode, default: -> { CHF::Env.lookup(:image_server_for_thumbnails) || "legacy" }
+
     define_key :aws_access_key_id
     define_key :aws_secret_access_key
+
     define_key :dzi_s3_bucket, default: -> {
       if Rails.env.development?
         "chf-dzi-dev"
@@ -171,8 +184,33 @@ module CHF
       # production just configure it in env please
     }
     define_key :dzi_s3_bucket_region, default: "us-east-1"
-    define_key :dzi_job_tmp_dir, default: Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+    define_key :dzi_job_tmp_dir, default: -> {
+      if Rails.env.development?
+        Rails.root.join("tmp", "dzi-creation-tmp-working").to_s
+      else
+        # default is only called once, so mkdir_p should be fine
+        FileUtils.mkdir_p("/tmp/chf-sufia/dzi-working").first
+      end
+    }
     define_key :dzi_auto_create, default: Rails.env.production?, system_env_transform: BOOLEAN_TRANSFORM
+
+    define_key :derivative_job_tmp_dir, default: -> {
+      if Rails.env.development?
+        Rails.root.join("tmp", "derivative-tmp-working").to_s
+      else
+        # default is only called once, so mkdir_p should be fine
+        FileUtils.mkdir_p("/tmp/chf-sufia/derivatives-working").first
+      end
+    }
+    define_key :derivative_s3_bucket, default: -> {
+      if Rails.env.development?
+        "chf-derivatives-dev"
+      elsif staging?
+        "chf-derivatives-staging"
+      end
+      # production just configure it in env please
+    }
+    define_key :derivative_s3_bucket_region, default: "us-east-1"
 
     define_key :riiif_originals_cache, default: -> {
       Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
@@ -187,7 +225,7 @@ module CHF
         "*"
       elsif lookup(:app_role) == "jobs"
         # jobs server
-        "dzi"
+        "dzi, jobs_server"
       else
         # production-type app server, handling the rest currently
         "default, ingest, mailers, event"

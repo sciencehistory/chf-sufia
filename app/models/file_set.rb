@@ -5,6 +5,9 @@ class FileSet < ActiveFedora::Base
 
   self.indexer = CHF::FileSetIndexer
 
+  # Note this method calls the LEGACY derivative creation, not our new one.
+  # It is not ordinarly used if CHF::Env.lookup(:create_derivatives_mode) == "dzi_s3" as normal in production.
+  # See instead CreateDerivativesOnS3Service class.
   def create_derivatives(filename)
     # use layer 0 to create our derivatives
     if self.class.image_mime_types.include? mime_type
