@@ -23,6 +23,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
 
+  # Cheesy way to override Blaclight helper method with call to super possible
+  module SortHelperOverrides
+    def active_sort_fields
+      if params[:q].present?
+        super
+      else
+        # with no query, relevance doesn't make a lot of sense
+        super.delete_if { |k| k.start_with?("score") }
+      end
+    end
+  end
+  helper SortHelperOverrides
 
   module ThumbOverride
 
