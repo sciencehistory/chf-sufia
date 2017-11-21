@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   end
 
   constraints ->(request) { CHF::Env.lookup(:serve_app_paths) } do
+    # this will fall through to ./views/application/robots.txt.erb, no need for an action method
+    get 'robots.txt', to: "application#robots.txt", format: "text"
+
     # override sufia's about routing to use a static page instead of a content block
     get 'about', controller: 'static', action: 'about', as: 'about'
     # add a policy page

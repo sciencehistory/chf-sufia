@@ -1,0 +1,14 @@
+# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+#
+#
+<% if CHF::Env.production? %>
+# production robots.txt
+User-agent: *
+Crawl-delay: 5
+
+<% else %>
+# non-production robots.txt
+User-agent: *
+Disallow: /
+
+<% end %>
