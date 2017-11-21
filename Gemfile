@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 # sufia stuff!
 gem 'sufia', '7.4.0'
 gem 'blacklight_range_limit', ">= 6.1.2"
-gem 'riiif', '~> 1.4'
 
 # While sufia theoretically allows rsolr 2.x, we have found problems with it:
 # "a bug where submitting a record edit form did not correctly load the redirect back to the

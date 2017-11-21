@@ -516,48 +516,4 @@ namespace :chf do
       progress.finish
     end
   end
-
-  namespace :iiif do
-    desc 'Delete all files in both iiif caches. `RAILS_ENV=production bundle exec rake chf:iiif:clear_caches`'
-    task :clear_caches do
-      # We're not doing an :environment rake dep for speed so need to load
-      # our CHF::Env.
-      require Rails.root.join("app", "models", "chf", "env").to_s
-      Pathname.new(CHF::Env.lookup(:riiif_originals_cache)).children.each { |p| p.rmtree }
-      Pathname.new(CHF::Env.lookup(:riiif_derivatives_cache)).children.each { |p| p.rmtree }
-    end
-
-    # Note this will not work on non-public images
-    desc 'ping iiif server to fetch all originals of publicly-visible images from fedora. `RAILS_ENV=production IIIF_INTERNAL_URL=http://[IP]:8182/iiif/2 bundle exec rake chf:iiif:preload_originals`'
-    task :preload_originals => :environment do
-      total = FileSet.count
-
-      $stderr.puts "Ping'ing iiif server at `#{CHF::Env.lookup(:iiif_internal_url)}` for all #{total} FileSet original files"
-
-      progress = ProgressBar.create(total: total, format: "%t %a: |%B| %p%% %e")
-
-      iiif_base = CHF::Env.lookup(:iiif_internal_url)
-      errors = 0
-
-      # There's probably a faster way to do this, maybe from Solr instead of fedora?
-      # Or getting original_file_id without the extra fetch? Not sure. This is slow.
-      FileSet.find_each do |fs|
-        if original_file_id = fs.original_file.try(:id)
-          preloader = CHF::Utils::IiifOriginalPreloader.new(original_file_id, iiif_base: iiif_base)
-          response = preloader.ping_to_preload
-
-          if response.status != 200
-            errors += 1
-            progress.log "Unexpected #{response.status} response (#{errors} total) at #{iiif_base} #{preloader.ping_path}"
-          end
-
-          progress.increment
-        end
-      end
-      progress.finish
-      if errors > 0
-        $stderr.puts "#{errors} total error responses out of #{total} info requests"
-      end
-    end
-  end
 end
