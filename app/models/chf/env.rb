@@ -157,8 +157,6 @@ module CHF
 
     define_key :iiif_public_url, default: '//localhost:3000/image-service'
     define_key :iiif_internal_url
-    define_key :riiif_convert_command
-    define_key :riiif_identify_command
     define_key :app_role
     define_key :service_level
 
@@ -216,13 +214,6 @@ module CHF
     }
     define_key :derivative_s3_bucket_region, default: "us-east-1"
 
-    define_key :riiif_originals_cache, default: -> {
-      Rails.env.production? ? "/var/sufia/riiif-originals" : Rails.root.join("tmp", "riiif-originals").to_s
-    }
-    define_key :riiif_derivatives_cache, default: -> {
-      Rails.env.production? ? "/var/sufia/riiif-derivatives" : Rails.root.join("tmp", "riiif-derivatives").to_s
-    }
-
     # Only matters on a job server, used in resque-pool.yml
     define_key :job_queues, default: -> {
       if Rails.env.development? || Rails.env.test?
@@ -235,22 +226,6 @@ module CHF
         "default, ingest, mailers, event"
       end
     }
-
-
-    # Ideally these would be in local_env.yml independently,
-    # but for now we calculate based on app_role value, but do it here
-    # so we have one place to change.
-    # Can still override with ENV or local_env.yml locally, nice!
-    define_key :serve_riiif_paths,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> {
-        lookup(:app_role).blank? || lookup(:app_role) == "riiif"
-      }
-    define_key :serve_app_paths,
-      system_env_transform: BOOLEAN_TRANSFORM,
-      default: -> {
-        lookup(:app_role).blank? || lookup(:app_role) == "app"
-      }
 
     define_key :honeybadger_api_key
 
