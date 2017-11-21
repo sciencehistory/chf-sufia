@@ -142,7 +142,11 @@ module CHF
     end
 
     def self.staging?
-      ["stage", "staging"].include?(lookup(:service_level))
+      @staging ||= ["stage", "staging"].include?(lookup(:service_level))
+    end
+
+    def self.production?
+      @production ||= ["prod", "production"].include?(lookup(:service_level))
     end
 
     ######
