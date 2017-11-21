@@ -36,7 +36,7 @@
   <div class="show-page-image-bar">
     <%# this used to check for '&& can?(:read, member.id)', but that was kind of expensive,
         and in our app if you can see it you can download %>
-    <% if member.model_name.singular.to_sym == :file_set %>
+    <% if local_assigns[:size].to_s == "large" || member.model_name.singular.to_sym == :file_set %>
       <div class="btn-group dropup">
         <button type="button" class="btn btn-brand-alt dropdown-toggle" id="dropdownMenu_downloads_<%= member.id %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <%# less space for admin, just use icon %>
