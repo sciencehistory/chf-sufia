@@ -69,20 +69,12 @@ per 1000 .dzi in S3, plus additional time if orphaned files are detected.
 
 ## In Dev
 
-TBD. As of this writing, in default dev environment you do not get
+In default dev environment you do not get
 DZI creation or deep zooming in viewer. You get a viewer with
-limited viewing based on a large jpg derivative. You can of course
-set the Chf::Env variables as above to turn on DZI in dev. Use
-unix ENV or a ./config/local_env.yml to set Chf::Env variables, eg:
+limited viewing based on a large jpg derivative.
 
-~~~yaml
-dzi_auto_create: true
-image_server_on_viewer: dzi_s3
-dzi_s3_bucket: $some_bucket
-aws_access_key_id: $correct_id_that_can_access_bucket
-aws_secret_access_key: $correct_key
-~~~
-
+For more info on how to turn on production-style DZI zooming in
+dev, see [Derivatives in Dev](./derivative_in_dev.md).
 
 ## Auth -- Not Yet
 
