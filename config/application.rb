@@ -169,7 +169,10 @@ module Chufia
 
     config.exhibitions = [
       "Making Modernity",
+      'The Whole of Nature and the Mirror of Art',
       "Transmutations",
+      "Lobby 2017",
+      'ExhibitLab',
       "Things Fall Apart",
       "Second Skin",
       "Science at Play",
