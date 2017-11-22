@@ -51,7 +51,7 @@
   </div>
 
   <div class="show-representative">
-      <% if representative_presenter = @presenter.representative_presenter %>
+      <% if representative_presenter = @presenter.respond_to?(:direct_representative_presenter) ? @presenter.direct_representative_presenter : @presenter.representative_presenter %>
         <%= render 'show_page_image', member: representative_presenter, size: :large %>
       <% else %>
         <%= image_tag default_image(member: @presenter) %>

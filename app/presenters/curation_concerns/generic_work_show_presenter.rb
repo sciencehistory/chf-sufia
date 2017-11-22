@@ -91,6 +91,13 @@ module CurationConcerns
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    # If it's a child work, return the child work, don't go further to fileset. Gives
+    # us better for what we need in current customized app on show page.
+    def direct_representative_presenter
+      return nil if representative_id.blank?
+      @direct_representative_presenter ||= member_presenters([representative_id]).first
+    end
+
     # Like member_presenters without args, but filters to only those current
     # user has permissions to see. Used on our show page and viewer.
     #
