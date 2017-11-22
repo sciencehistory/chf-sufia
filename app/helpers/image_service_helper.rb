@@ -21,6 +21,8 @@ module ImageServiceHelper
   end
 
 
+  # Returns a HASH of attributes, not just a url, becuase sometimes we need a srcset
+  # as well as a src.
   def member_src_attributes(member:, size_key:)
     raise ArgumentError.new("Unrecognized size key: #{size_key}") unless THUMB_BASE_WIDTHS.keys.include?(size_key.to_sym)
 
@@ -102,6 +104,7 @@ module ImageServiceHelper
     image_tag(args.delete(:src) || "", args)
   end
 
+  # For feeding to OpenSeadragon
   def tile_source_url(member_presenter)
     if service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
       service.tile_source_url
@@ -110,6 +113,9 @@ module ImageServiceHelper
     end
   end
 
+  # Configuration hash that both the JS viewer and our normal show pages
+  # use to determine what download options to offer.
+  #
   # filename_base, if provided, is used to make more human-readable
   # 'save as' download file names.
   def download_options(member_presenter, filename_base: nil)
@@ -140,7 +146,8 @@ module ImageServiceHelper
 
 
   # returns config for the viewer, an array of JSON-able hashes, one for each image
-  # included in this work to be viewed.
+  # included in this work to be viewed. Used by our HTTP response providing
+  # config for the JS viewer.
   def viewer_images_info(work_presenter)
     work_presenter.viewable_member_presenters.to_a.collect.with_index do |member_presenter, i|
       member_src_attributes_mini = member_src_attributes(member: member_presenter, size_key: :mini)

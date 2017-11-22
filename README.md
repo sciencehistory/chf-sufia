@@ -81,8 +81,10 @@ You also need a hydra and a fedora server running to run tests. You can:
 
 See [docs](./docs) subdir.
 
-* [DZI Tiles on S3](./docs/dzi_tiles_on_s3.md)
 
+* Using full [Derivatives in Dev](./derivative_in_dev.md).
+* [DZI Tiles on S3](./docs/dzi_tiles_on_s3.md)
+* [Our Custom Derivatives](./docs/our_custom_derivatives.md) architecture
 
 ## Deployment
 bundle exec cap [target machine] deploy
