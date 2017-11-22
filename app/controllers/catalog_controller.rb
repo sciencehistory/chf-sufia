@@ -125,7 +125,6 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'about', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'subject', link_to_search: solr_name("maker_facet", :facetable)
@@ -136,8 +135,9 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("manufacturer", :stored_searchable), label: "Manufacturer", itemprop: 'manufacturer', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("photographer", :stored_searchable), label: "Photographer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("contributor", :stored_searchable), label: "Contributor", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
-    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("after", :stored_searchable), label: "After", itemprop: 'about', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("printer", :stored_searchable), label: "Printer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("printer_of_plates", :stored_searchable), label: "Printer of plates", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("publisher", :stored_searchable), label: "Publisher", itemprop: 'publisher', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("subject", :stored_searchable), label: "Subject", itemprop: 'about', link_to_search: solr_name("subject", :facetable)
     # These are marked false so they don't show up in the automatic list, but we
