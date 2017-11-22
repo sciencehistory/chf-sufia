@@ -144,6 +144,7 @@ module Chufia
       'Implements, utensils, etc.',
       'Lithographs',
       'Manuscripts',
+      'Medical equipment & supplies',
       'Minutes (Records)',
       'Molecular models',
       'Negatives',
