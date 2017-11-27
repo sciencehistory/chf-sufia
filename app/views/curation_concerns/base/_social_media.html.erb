@@ -21,9 +21,9 @@
       <i class="fa fa-twitter"></i>
   <% end %>
 
-  <!-- Sharingbutton Google+ -->
-  <%= link_to "https://plus.google.com/share?#{{url: share_url}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.google') do %>
-    <i class="fa fa-google-plus"></i>
+  <!-- Sharingbutton Pinterest -->
+  <%= link_to "https://pinterest.com/pin/create/button/?url=#{{url: share_url, description: page_title}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.google') do %>
+    <i class="fa fa-pinterest-p"></i>
   <% end %>
 
   <!-- Sharingbutton Tumblr -->
