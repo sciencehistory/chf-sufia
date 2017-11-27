@@ -128,19 +128,19 @@ module ImageServiceHelper
       subhead: ("TIFF — #{orig_width} x #{orig_height}px" if orig_width && orig_height),
       analyticsAction: "download_original",
       url: main_app.download_path(member_presenter.representative_file_set_id)
-    }
+    } if member_presenter.representative_file_set_id
 
     if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
 
       service.download_options(filename_base: filename_base).tap do |list|
         unless list.any? {|h| h[:option_key] == "original" }
-          list << direct_original
+          (list << direct_original) if direct_original
         end
       end.collect do |option|
         _fill_out_download_option(member_presenter, option)
       end
     else
-      [direct_original]
+      [direct_original].compact
     end
   end
 
