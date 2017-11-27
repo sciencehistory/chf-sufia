@@ -1,5 +1,9 @@
 <% provide :page_title, @presenter.page_title %>
 
+<% content_for :head do %>
+  <%= render "chf_meta_tags", presenter: @presenter  %>
+<% end %>
+
 <div class="work-show" itemscope <%= @presenter.microdata_type_to_html %> class="row">
 
   <% if current_ability.current_user.staff? %>

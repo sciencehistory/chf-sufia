@@ -144,6 +144,23 @@ module ImageServiceHelper
     end
   end
 
+  # "medium" at 1200px wide is a good size for social media shares
+  def social_media_share_image_medium(member_presenter)
+    # a better API than generating all download options might be good, but we don't got it, heh
+    options = download_options(member_presenter)
+    option = options.find {|o| o[:option_key] == "medium" } || options.first
+    url = option && option[:url]
+
+    if url
+      # if it's relative, make it absolute
+      parsed = Addressable::URI.parse(url)
+      if parsed.relative?
+        parsed = Addressable::URI.parse(main_app.root_url).join(parsed)
+      end
+      return parsed.to_s
+    end
+  end
+
 
   # returns config for the viewer, an array of JSON-able hashes, one for each image
   # included in this work to be viewed. Used by our HTTP response providing
