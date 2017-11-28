@@ -30,7 +30,8 @@ end %>
 
 <div class="social-media">
   <!-- Sharingbutton Facebook -->
-  <%= link_to "https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
+  <%# window.open is needed so facebook has permission to close window after it's done, for better UI %>
+  <%= link_to "javascript:window.open('https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}')", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
       <i class="fa fa-facebook-f"></i>
   <% end %>
 
