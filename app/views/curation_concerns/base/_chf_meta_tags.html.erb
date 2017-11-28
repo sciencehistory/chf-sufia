@@ -7,14 +7,19 @@
 <%# we use the download medium (1200px wide) size for social media thumb share, seems to be around
     what all the sites want %>
 
-<meta property="og:site_name" content="<%= application_name %>"/>
 <meta property="og:type" content="article"/>
+<meta property="og:rich_attachment" content="true" />
+<meta property="og:site_name" content="<%= application_name %>"/>
+<%# article stuff not currently showing up, I think we need some kind of 'link ownership' from fb %>
+<meta property="article:publisher" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
+<meta property="article:author" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
 <meta property="og:title" content="<%= presenter.try(:title).try(:first) %>"/>
 <meta property="og:description" content="<%= truncate(strip_tags(presenter.try(:description).try(:first)), length: 400, separator: ' ') %>"/>
 <meta property="og:image" content="<%= social_media_share_image_medium(presenter) %>"/>
 <%# we know we're delivering a JPG %>
 <meta property="og:image:type" content="image/jpeg" />
 
+<%# height and width will get facebook to immediately show image on first share %>
 <% if presenter.representative_height && presenter.representative_width %>
   <meta property="og:image:width" content="<%= ImageServiceHelper::DOWNLOAD_WIDTHS[:medium] %>" />
   <%# and can calculate it's height based on aspect ratio since it's just a resize %>
