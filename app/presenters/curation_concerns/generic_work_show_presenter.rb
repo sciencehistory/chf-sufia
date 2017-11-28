@@ -91,6 +91,18 @@ module CurationConcerns
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
+    # used for social media shares
+    def short_plain_description
+      # we want it not escaped but also not marked html_safe, cause we're gonna use it in a URL
+      # but also want it safe for using in a view. Rails truncate helper makes this hard!
+      @short_plain_description ||= "#{view_context.truncate(
+        view_context.strip_tags(description.first),
+        escape: false,
+        length: 400,
+        separator: /\s/
+      )}"
+    end
+
     # If it's a child work, return the child work, don't go further to fileset. Gives
     # us better for what we need in current customized app on show page.
     def direct_representative_presenter

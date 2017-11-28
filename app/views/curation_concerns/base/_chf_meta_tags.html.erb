@@ -14,7 +14,7 @@
 <meta property="article:publisher" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
 <meta property="article:author" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
 <meta property="og:title" content="<%= presenter.try(:title).try(:first) %>"/>
-<meta property="og:description" content="<%= truncate(strip_tags(presenter.try(:description).try(:first)), length: 400, separator: ' ') %>"/>
+<meta property="og:description" content="<%= presenter.short_plain_description %>"/>
 <meta property="og:image" content="<%= social_media_share_image_medium(presenter) %>"/>
 <%# we know we're delivering a JPG %>
 <meta property="og:image:type" content="image/jpeg" />
