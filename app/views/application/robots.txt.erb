@@ -8,6 +8,11 @@ Crawl-delay: 5
 
 <% else %>
 # non-production robots.txt
+
+# let twitter scrape cards metadata for testing
+User-agent: Twitterbot
+Disallow:
+
 User-agent: *
 Disallow: /
 

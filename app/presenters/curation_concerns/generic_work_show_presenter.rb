@@ -1,5 +1,7 @@
 module CurationConcerns
   class GenericWorkShowPresenter < Sufia::WorkShowPresenter
+    include ActionView::Helpers::TextHelper # for truncate
+    include ActionView::Helpers::SanitizeHelper # for strip_tags
     # There's no such thing as self.terms in the presenter anymore.
 
     delegate :genre_string, :medium, :physical_container, :creator_of_work,
@@ -89,6 +91,18 @@ module CurationConcerns
     end
     def needs_permission_badge?
       solr_document.visibility != Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+    end
+
+    # used for social media shares
+    def short_plain_description
+      # we want it not escaped but also not marked html_safe, cause we're gonna use it in a URL
+      # but also want it safe for using in a view. Rails truncate helper makes this hard!
+      @short_plain_description ||= "#{truncate(
+        strip_tags(description.first),
+        escape: false,
+        length: 400,
+        separator: /\s/
+      )}"
     end
 
     # If it's a child work, return the child work, don't go further to fileset. Gives

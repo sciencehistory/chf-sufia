@@ -6,27 +6,49 @@
     ones, and is where CC's were originally generated from I think.
 
     https://github.com/samvera/hyrax/blob/fe1c663410c40628d014926d07bb523b83f8b077/app/views/hyrax/base/_social_media.html.erb
+
+    We added a local variable "presenter" instead of trying to get all information globally.
+    It's optional to ensure backwards compat behavior.
+
 %>
 
-<% page_title ||= content_for?(:page_title) ? content_for(:page_title) : default_page_title %>
-<% share_url ||= request.original_url %>
+<% presenter = local_assigns[:presenter] || @presenter || nil %>
+
+<% page_title ||= begin
+  if presenter
+    presenter.try(:title).try(:first)
+  elsif content_for?(:page_title)
+    content_for(:page_title)
+  else
+    default_page_title
+  end
+end %>
+<% share_url ||= presenter ?  polymorphic_url([main_app, presenter]) : request.original_url %>
+<% share_media ||= presenter ? social_media_share_image_medium(presenter) : nil %>
+<% share_presenter_description ||= presenter.short_plain_description if (presenter && presenter.respond_to?(:short_plain_description)) %>
+<% title_plus_description = share_presenter_description ? "#{page_title}: #{share_presenter_description}" : page_title %>
+
 <div class="social-media">
   <!-- Sharingbutton Facebook -->
-  <%= link_to "https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
+  <%# window.open is needed so facebook has permission to close window after it's done, for better UI %>
+  <%= link_to "javascript:window.open('https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}')", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
       <i class="fa fa-facebook-f"></i>
   <% end %>
 
   <!-- Sharingbutton Twitter -->
-  <%= link_to "https://twitter.com/intent/tweet/?#{{text: page_title, url: share_url}.to_param}", class: 'social-media-link twitter btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.twitter') do %>
+  <%# intentionally no text for twitter, cause title will show up in twitter card due to tags. user can enter own text %>
+  <%= link_to "https://twitter.com/intent/tweet/?#{{url: share_url}.to_param}", class: 'social-media-link twitter btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.twitter') do %>
       <i class="fa fa-twitter"></i>
   <% end %>
 
-  <!-- Sharingbutton Google+ -->
-  <%= link_to "https://plus.google.com/share?#{{url: share_url}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.google') do %>
-    <i class="fa fa-google-plus"></i>
+  <!-- Sharingbutton Pinterest -->
+  <%# see https://developers.pinterest.com/docs/widgets/save/? %>
+  <%= link_to "https://pinterest.com/pin/create/button/?#{{url: share_url, media: share_media, description: title_plus_description}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: 'Pinterest' do %>
+    <i class="fa fa-pinterest-p"></i>
   <% end %>
 
   <!-- Sharingbutton Tumblr -->
+  <%# see https://www.tumblr.com/docs/en/share_button %>
   <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}", class: 'social-media-link tumblr btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.tumblr') do %>
     <i class="fa fa-tumblr"></i>
   <% end %>

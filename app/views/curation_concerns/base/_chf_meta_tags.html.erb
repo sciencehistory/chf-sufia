@@ -1,0 +1,44 @@
+<%# opengraph and other meta-tags for social media and others.
+    Adapted from https://github.com/samvera/hyrax/blob/db29fd44e7be4807a7b94fc4e1f7b3e4b35b6805/app/views/shared/_citations.html.erb
+
+    but customized for our stuff, not using content_for stuff directly (wrap it if you want that),
+    and taking required local 'presenter' %>
+
+<%# we use the download medium (1200px wide) size for social media thumb share, seems to be around
+    what all the sites want %>
+
+<meta property="og:type" content="article"/>
+<meta property="og:rich_attachment" content="true" />
+<meta property="og:site_name" content="<%= application_name %>"/>
+<%# article stuff not currently showing up, I think we need some kind of 'link ownership' from fb %>
+<meta property="article:publisher" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
+<meta property="article:author" content="https://www.facebook.com/<%= Rails.application.config.facebook_acct %>" />
+<meta property="og:title" content="<%= presenter.try(:title).try(:first) %>"/>
+<meta property="og:description" content="<%= presenter.short_plain_description %>"/>
+<meta property="og:image" content="<%= social_media_share_image_medium(presenter) %>"/>
+<%# we know we're delivering a JPG %>
+<meta property="og:image:type" content="image/jpeg" />
+
+<%# height and width will get facebook to immediately show image on first share %>
+<% if presenter.representative_height && presenter.representative_width %>
+  <meta property="og:image:width" content="<%= ImageServiceHelper::DOWNLOAD_WIDTHS[:medium] %>" />
+  <%# and can calculate it's height based on aspect ratio since it's just a resize %>
+  <meta property="og:image:height" content="<%= ImageServiceHelper::DOWNLOAD_WIDTHS[:medium] * presenter.representative_height / presenter.representative_width %>" />
+<% end %>
+
+<meta property="og:url" content="<%= polymorphic_url([main_app, presenter]) %>"/>
+
+
+<%# maybe?
+fb:app_id Facebook ID A Facebook app ID
+fb:pages  Array<Facebook ID>
+fb:profile_id %>
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@<%= Rails.application.config.twitter_acct %>"/>
+
+<meta name="twitter:label1" content="Rights Statement"/>
+<meta name="twitter:data1" content="<%= presenter.try(:rights_statement).try(:first) %>"/>
+
+
+
