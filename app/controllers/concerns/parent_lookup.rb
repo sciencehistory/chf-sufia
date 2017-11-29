@@ -21,7 +21,8 @@ module ParentLookup
     search_builder.send(:apply_gated_discovery, gated_params)
     fq = gated_params[:fq]
 
-    query = children_by_id.keys.collect { |id| "member_ids_ssim:#{id}" }.join(" OR ")
+    # Not collections
+    query = "NOT(has_model_ssim:Collection) AND (#{children_by_id.keys.collect { |id| "member_ids_ssim:#{id}" }.join(" OR ")})"
     parent_results = ActiveFedora::SolrService.query(query, rows: 1000, fq: fq)
     # wrap in SolrDocument for consistency
     parent_results.collect! { |result|  SolrDocument.new(result) }
