@@ -27,29 +27,65 @@ end %>
 <% share_media ||= presenter ? social_media_share_image_medium(presenter) : nil %>
 <% share_presenter_description ||= presenter.short_plain_description if (presenter && presenter.respond_to?(:short_plain_description)) %>
 <% title_plus_description = share_presenter_description ? "#{page_title}: #{share_presenter_description}" : page_title %>
-
+<% id = presenter.try(:id) %>
 <div class="social-media">
   <!-- Sharingbutton Facebook -->
   <%# window.open is needed so facebook has permission to close window after it's done, for better UI %>
-  <%= link_to "javascript:window.open('https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}')", class: 'social-media-link facebook btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.facebook') do %>
+  <%= link_to "javascript:window.open('https://facebook.com/sharer/sharer.php?#{{u: share_url}.to_param}')",
+              class: 'social-media-link facebook btn btn-primary',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              data: {
+                analytics_category: "Work",
+                analytics_action: "share_facebook",
+                analytics_label: id
+              },
+              title: t('curation_concerns.base.social_media.facebook') do %>
       <i class="fa fa-facebook-f"></i>
   <% end %>
 
   <!-- Sharingbutton Twitter -->
   <%# intentionally no text for twitter, cause title will show up in twitter card due to tags. user can enter own text %>
-  <%= link_to "https://twitter.com/intent/tweet/?#{{url: share_url}.to_param}", class: 'social-media-link twitter btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.twitter') do %>
+  <%= link_to "https://twitter.com/intent/tweet/?#{{url: share_url}.to_param}",
+              class: 'social-media-link twitter btn btn-primary',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              data: {
+                analytics_category: "Work",
+                analytics_action: "share_twitter",
+                analytics_label: id
+              },
+              title: t('curation_concerns.base.social_media.twitter') do %>
       <i class="fa fa-twitter"></i>
   <% end %>
 
   <!-- Sharingbutton Pinterest -->
   <%# see https://developers.pinterest.com/docs/widgets/save/? %>
-  <%= link_to "https://pinterest.com/pin/create/button/?#{{url: share_url, media: share_media, description: title_plus_description}.to_param}", class: 'social-media-link google-plus btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: 'Pinterest' do %>
+  <%= link_to "https://pinterest.com/pin/create/button/?#{{url: share_url, media: share_media, description: title_plus_description}.to_param}",
+              class: 'social-media-link google-plus btn btn-primary',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              data: {
+                analytics_category: "Work",
+                analytics_action: "share_pinterest",
+                analytics_label: id
+              },
+              title: 'Pinterest' do %>
     <i class="fa fa-pinterest-p"></i>
   <% end %>
 
   <!-- Sharingbutton Tumblr -->
   <%# see https://www.tumblr.com/docs/en/share_button %>
-  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}", class: 'social-media-link tumblr btn btn-primary', target: '_blank', rel: 'noopener noreferrer', title: t('curation_concerns.base.social_media.tumblr') do %>
+  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}",
+              class: 'social-media-link tumblr btn btn-primary',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              data: {
+                analytics_category: "Work",
+                analytics_action: "share_tumblr",
+                analytics_label: id
+              },
+              title: t('curation_concerns.base.social_media.tumblr') do %>
     <i class="fa fa-tumblr"></i>
   <% end %>
 </div>
