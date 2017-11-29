@@ -27,6 +27,8 @@ module CHF
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names.
     def download_options(filename_base: nil)
+      return [] unless file_set_id
+
       [
         {
           option_key: "small",
