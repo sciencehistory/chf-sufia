@@ -45,6 +45,17 @@
         </div>
       <% end %>
 
+      <% if (parents = @parent_presenter_lookup && @parent_presenter_lookup[doc_presenter.id]).present? %>
+        <ul class="chf-results-list-item-parents list-unstyled chf-results-list-values">
+          <% parents.each do |parent| %>
+            <li>
+              <span class="attribute-label">Part of</span>
+              <%= link_to parent.title_or_label, parent %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+
       <% if doc_presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
         <div class="chf-results-list-item-date">
           <%= doc_presenter.field_value(Solrizer.solr_name("date_of_work", :stored_searchable), join_type: :list) %>
