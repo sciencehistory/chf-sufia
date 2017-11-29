@@ -4,6 +4,8 @@ class CatalogController < ApplicationController
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
 
+  include ParentLookup
+
   # use the standard local 'application' layout, which we've actually
   # customized based on sufia layout. Ordinarily it would go through
   # the stack to choose a layout in a somewhat confusing way.
@@ -210,41 +212,8 @@ class CatalogController < ApplicationController
     false
   end
 
-
-  # We're overriding Blacklight's search_results method, to do a second
-  # Solr query to fetch all parents, and assign them to original results,
-  # so we have access to parents, to display in search results.
-  def search_results(*args)
-    original_return = super
-
-    results = original_return[1]
-    results_by_id = results.collect { |r| [r.id, r]}.to_h
-    if results_by_id.present?
-      # Fetch all the parents, with access controls, this is one hacky fragile way to do it.
-      # hackily get gated access controls out of search builder
-      gated_params = {}
-      search_builder.send(:apply_gated_discovery, gated_params)
-      fq = gated_params[:fq]
-
-      query = results_by_id.keys.collect { |id| "member_ids_ssim:#{id}" }.join(" OR ")
-      parent_results = ActiveFedora::SolrService.query(query, rows: 1000, fq: fq)
-      # wrap in SolrDocument for consistency
-      parent_results.collect! { |result|  SolrDocument.new(result) }
-
-      # We have parents, we don't really know which children they go with, but we know ALL the children
-      # of each parent, just store it for lookup in a hash. Cause we don't have a custom presenter
-      # for child to store it on either, we'll just put it in iVar hash. :(
-      @parent_presenter_lookup = {}
-
-      # Assign parents to relevant children. Not very performant, but here we go.
-      parent_results.each do |parent|
-        parent["member_ids_ssim"].each do |child_id|
-          @parent_presenter_lookup[child_id] ||= []
-          @parent_presenter_lookup[child_id] << parent
-        end
-      end
-    end
-
-    return original_return
+  def index
+    super
+    @parent_presenter_lookup = parent_lookup_hash(@document_list)
   end
 end

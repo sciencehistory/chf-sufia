@@ -2,6 +2,8 @@ class CollectionsController < ApplicationController
   include CurationConcerns::CollectionsControllerBehavior
   include Sufia::CollectionsControllerBehavior
 
+  include ParentLookup
+
   self.presenter_class = CHF::CollectionShowPresenter
 
   layout 'chf'
@@ -21,4 +23,10 @@ class CollectionsController < ApplicationController
       map { |document| presenter_class.new(document, current_ability) }.
       sort! { |x,y| x.title.first <=> y.title.first }
   end
+
+  def show
+    super
+    @parent_presenter_lookup = parent_lookup_hash(@member_docs)
+  end
+
 end
