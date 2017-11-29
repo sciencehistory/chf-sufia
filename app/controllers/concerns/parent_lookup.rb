@@ -9,6 +9,11 @@ module ParentLookup
   #
   # Assumes mixed into a controller with a #search_builder that has an #apply_gated_discovery
   # method, so we an apply access controls to parents in a hacky way.
+  #
+  # This would ideally NOT be a mixin, but a separate object, which actually used a SearchBuilder
+  # instead of accessing it's non-public API. But attempts in that direction seemed to me to be making the code
+  # MORE complicated and hard to understand rather than less, due to SearchBuilder API.
+  # And this is all unlikely to be forwards-compatible past valkyrie no matter what we do, so.
   def parent_lookup_hash(children)
     children_by_id = children.collect { |r| [r.id, r]}.to_h
     if children_by_id.empty?
