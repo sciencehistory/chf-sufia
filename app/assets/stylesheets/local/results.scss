@@ -228,7 +228,7 @@
       margin-bottom: 4px;
     }
 
-    .chf-results-list-item-additional-titles {
+    .chf-results-list-item-additional-titles, .chf-results-list-item-parents {
       ul {
         @extend .list-unstyled;
         font-size: $font-size-h4;

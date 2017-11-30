@@ -4,6 +4,8 @@ class CatalogController < ApplicationController
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
 
+  include ParentLookup
+
   # use the standard local 'application' layout, which we've actually
   # customized based on sufia layout. Ordinarily it would go through
   # the stack to choose a layout in a somewhat confusing way.
@@ -208,5 +210,10 @@ class CatalogController < ApplicationController
   # this method is not called in that context.
   def render_bookmarks_control?
     false
+  end
+
+  def index
+    super
+    @parent_presenter_lookup = parent_lookup_hash(@document_list)
   end
 end
