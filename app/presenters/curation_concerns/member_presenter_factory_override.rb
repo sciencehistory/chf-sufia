@@ -32,7 +32,7 @@ CurationConcerns::MemberPresenterFactory.class_eval do
     @permitted_ordered_docs ||= ActiveFedora::SolrService.
       query("{!join from=ordered_targets_ssim to=id}proxy_in_ssi:#{id}",
             rows: 100_000,
-            fq: SearchBuilder.new(self).send(:gated_discovery_filters, [action]).join(" AND ")).
+            fq: SearchBuilder.new(self).send(:gated_discovery_filters, [action]).join(" OR ")).
       map { |x| SolrDocument.new(x) }.sort_by { |x| ordered_ids.index(x.id) }
   end
 
