@@ -9,10 +9,17 @@ $brand-link-light-blue: #76c3d4;
 $brand-bright-green: #a6e5d8;
 $brand-grey-bg-color: #f9f9f7;
 
+$brand-sans-serif: 'adelle-sans';
+$brand-serif: 'abril-text';
+
+// are we using the condensed version by mistake? Why do we need so much spacing
+// for it to look reasonable?
+$small-caps-letter-spacing: 0.06em;
+
 
 $bg-lightly-shaded: $brand-grey-bg-color;
 $brand-btn-alt-bg: $brand-bright-green;
-$brand-alt-header-font: "Roboto Condensed";
+$brand-alt-header-font: $brand-sans-serif, sans-serif;
 $brand-alt-header-weight: 700;
 // should be lighter than normal muted, cause it's bolded a bit and such
 
@@ -21,7 +28,7 @@ $brand-alt-header-weight: 700;
 $max-readable-width: 565px;
 $long-max-readable-width:  725px; // unclear how readable it really is, but we do it sometimes anyway
 
-// open sans has a convenient medium/semi-bold weight
+// adelle-sans has a 600 semi-bold available. 700 is standard bold. 500 seems to be the same as 400=normal.
 $semi-bold-weight: 600;
 
 // via experimentation, on search results page larger than this the
@@ -33,7 +40,7 @@ $line-height-base: 1.5; // closer to chemheritage.org brand, and more readable t
 $brand-inverse: $brand-dark-blue;
 $brand-primary: $brand-link-light-blue;
 $link-hover-color: $brand-dark-blue;
-$font-family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: $brand-sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-base: 16px;
 $navbar-inverse-link-color: $brand-bright-green;
 
@@ -64,12 +71,19 @@ $transparent-background: rgba(0,0,0,0.25);
 }
 
 %special-label{
+  font-family: $brand-sans-serif;
   font-weight: $semi-bold-weight;
   text-transform: uppercase;
   font-size: $font_size_base - 2px;
   line-height: normal;
-  letter-spacing: 0.03em;
+  letter-spacing: $small-caps-letter-spacing;
   a:not(:focus):not(:hover) {
     color: #888;
   }
+}
+
+%text-font {
+  font-family: $brand-serif;
+  // 16px in abril is really small. maybe bump to 17px?
+  //font-size: 17px;
 }

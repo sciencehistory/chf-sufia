@@ -1,5 +1,6 @@
 Sufia::HomepageController.class_eval do
-  # we don't actually want our local layout, cause it adds the search bar at the top
-  # which we don't want. This is messy, yeah, not sure what this is doing honestly.
-  layout 'sufia'
+  # We want our custom layout here, not entirely sure why we need to repeat it.
+  # We want to disable search bar though, since we show it otherwise, we do that
+  # with a content_for suppress_controls in template.
+  layout 'chf'
 end

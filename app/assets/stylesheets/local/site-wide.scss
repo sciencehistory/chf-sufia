@@ -130,11 +130,17 @@ hr.brand {
   .dropdown-header {
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.03em;
+    letter-spacing: $small-caps-letter-spacing;
   }
   li small {
     color: $text-muted;
     margin-left: 8px;
     font-weight: 100;
   }
+}
+
+// In new branding, we use the serif as body text, but leave the sans serif as default font for all the controls,
+// just explicitly set it where we want it.
+p:not(.collection-title), dd, td, th {
+  @extend %text-font;
 }

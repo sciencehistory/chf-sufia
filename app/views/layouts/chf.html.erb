@@ -24,6 +24,8 @@
   <head>
     <%= render partial: 'layouts/head_tag_content' %>
     <%= content_for(:head) %>
+
+    <link rel="stylesheet" href="https://use.typekit.net/qmh2nkq.css">
   </head>
 
   <body class="localized-layout">
@@ -31,7 +33,9 @@
     <%= render partial: '/masthead' %>
     <%= content_for(:navbar) %>
     <%# CHF hard-code 'controls' here instead of relying on it being supplied as content_for(:navbar) %>
-    <%= render '/controls' %>
+    <% unless content_for(:suppress_controls) %>
+      <%= render '/controls' %>
+    <% end %>
 
     <%# chf put constraints up here right under the search bar always %>
     <% unless content_for(:suppress_layout_constraints) %>

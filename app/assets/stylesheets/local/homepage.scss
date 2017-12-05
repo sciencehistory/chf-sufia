@@ -43,6 +43,7 @@
 
   .chf-callout-button {
     width: 100%;
+    text-transform: uppercase;
   }
 
   .search-container {
@@ -121,7 +122,8 @@
 
         .collection-title {
           text-align: center;
-          font-weight: 700;
+          font-weight: $semi-bold-weight;
+          text-transform: uppercase;
           font-size: 18px;
           padding-top: 5px;
           padding-bottom: 5px;

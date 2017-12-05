@@ -20,16 +20,17 @@
     .next, .prev {
       font-weight: $semi-bold-weight;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: $small-caps-letter-spacing;
     }
   }
 
   // full pagination
   .pagination {
     .first, .prev, .next, .next_page, .last {
+      font-family: $brand-sans-serif;
       text-transform: uppercase;
       font-weight: $semi-bold-weight;
-      letter-spacing: 0.03em;
+      letter-spacing: $small-caps-letter-spacing;
     }
     .active > a, .active > a:hover, .active > a:focus {
       background-color: $bg-lightly-shaded;
@@ -72,7 +73,7 @@
        h3 {
         font-size: $font-size-base;
         color: $brand-inverse;
-        font-weight: $semi-bold-weight;
+        font-weight: normal;
         line-height: 1.4;
        }
      }
@@ -122,7 +123,7 @@
         font-weight: $semi-bold-weight;
         font-size: $font-size-base;
         line-height: 1.4;
-        letter-spacing: 0.03em;
+        letter-spacing: $small-caps-letter-spacing;
        }
     }
 
@@ -141,7 +142,7 @@
       text-transform: uppercase;
       font-weight: $semi-bold-weight;
       font-size: .8em;
-      letter-spacing: 0.03em;
+      letter-spacing: $small-caps-letter-spacing;
       color: $brand-dark-blue;
     }
 
@@ -253,6 +254,7 @@
     }
 
     .chf-results-list-values {
+      @extend %text-font;
       margin-top: ($line-height-computed / 2);
       li {
         // hanging indent, serving to add margin to subsequent lines
