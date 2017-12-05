@@ -19,25 +19,49 @@
 
 /* masthead navbar has an effective margin of 20 */
 .masthead {
+  .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    &:after, &:before  {
+      content: none;
+    }
+  }
+
   min-height: 90px;
-  padding: 20px 5px 20px 20px;
-  text-transform: uppercase;
+  padding: 16px 5px 16px 20px;
+  font-size: 18px;
+  font-weight: 300;
+
+  background-image: asset-url("scihist_top_nav_sym.png");
+  background-repeat: no-repeat;
+  background-position: right top;
 
   .navbar-brand {
+    height: 176px;
     padding: 0;
   }
 
   #masthead-logo-image {
-    height: 40px;
-    margin: 0;
+    //height: 40px;
+    //margin: 0;
   }
-  #masthead-application-name {
-    margin-left: 130px;
-    font-size: 18px;
-    .beta {
-      font-size: 65%;
-    }
-  }
+}
+
+.scihist-navbar-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.masthead-application-name {
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-size: 30px;
+  font-family: $brand-serif;
+  font-weight: normal;
+  line-height: normal;
 }
 
 .breadcrumbs-navbar-wrapper {
