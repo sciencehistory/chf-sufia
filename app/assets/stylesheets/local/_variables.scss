@@ -1,15 +1,20 @@
-$dark-navy: #1f2534;
-$bright-blue: #02BAF4;
-$bg-grey: #f1f3f4;
-$lt-blue: #e4f1fe;
+/* old, reconsider with new palette? */
+$brand-highlight-color: #f15c2b; // an orange used on (old) Distillations website, perhaps use as an alterante highlight sitewide
+$special-label-muted-color: #888;
 
-$bg-lightly-shaded: $bg-grey;
-$brand-btn-alt-bg: $lt-blue;
+
+/* rebrand colors */
+$brand-dark-blue: #050939;
+$brand-link-light-blue: #76c3d4;
+$brand-bright-green: #a6e5d8;
+$brand-grey-bg-color: #f9f9f7;
+
+
+$bg-lightly-shaded: $brand-grey-bg-color;
+$brand-btn-alt-bg: $brand-bright-green;
 $brand-alt-header-font: "Roboto Condensed";
 $brand-alt-header-weight: 700;
 // should be lighter than normal muted, cause it's bolded a bit and such
-$special-label-muted-color: #888;
-$brand-highlight-color: #f15c2b; // an orange used on Distillations website, perhaps use as an alterante highlight sitewide
 
 // Maximum line length we judge to be readable at standard base font size.
 // Used to constrain some block text areas on large screens.
@@ -25,18 +30,19 @@ $chf-fluid-max-width: 1300px;
 
 // Bootstrap 3.x overrides
 $line-height-base: 1.5; // closer to chemheritage.org brand, and more readable than BS default 1.428571429
-$brand-inverse: $dark-navy;
-$brand-primary: $bright-blue;
-$link-hover-color: #205D94;
+$brand-inverse: $brand-dark-blue;
+$brand-primary: $brand-link-light-blue;
+$link-hover-color: $brand-dark-blue;
 $font-family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-base: 16px;
-$navbar-inverse-link-color: $brand-primary;
+$navbar-inverse-link-color: $brand-bright-green;
 
-$well-bg: $bg-lightly-shaded;
-$navbar-default-bg: $bg-lightly-shaded;
-$panel-default-heading-bg: $bg-lightly-shaded;
-$panel-footer-bg: $bg-lightly-shaded;
-$breadcrumb-bg: $bg-lightly-shaded;
+
+$well-bg: $brand-grey-bg-color;
+$navbar-default-bg: $brand-grey-bg-color;
+$panel-default-heading-bg: $brand-grey-bg-color;
+$panel-footer-bg: $brand-grey-bg-color;
+$breadcrumb-bg: $brand-grey-bg-color;
 
 // border radius matching some elements on chemheritage.org, larger than bootstrap default
 $btn-border-radius-base:        9px !default;
