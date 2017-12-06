@@ -84,6 +84,6 @@ $transparent-background: rgba(0,0,0,0.25);
 
 %text-font {
   font-family: $brand-serif;
-  // 16px in abril is really small. maybe bump to 17px?
-  //font-size: 17px;
+  // 16px in abril is really small, 17px looks more like 16px in other fonts.
+  font-size: 17px;
 }
