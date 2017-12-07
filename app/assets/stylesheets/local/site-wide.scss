@@ -137,7 +137,10 @@ hr.brand {
 }
 
 // In new branding, we use the serif as body text, but leave the sans serif as default font for all the controls,
-// just explicitly set it where we want it.
-p:not(.collection-title), dd, td, th {
-  @extend %text-font;
+// just explicitly set it in certain places, restricted to a parent class cause it kind of messes up
+// admin screens.
+.branded-body-font {
+  p:not(.collection-title), dd, td, th {
+    @extend %text-font;
+  }
 }
