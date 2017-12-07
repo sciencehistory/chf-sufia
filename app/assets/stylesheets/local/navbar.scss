@@ -1,3 +1,7 @@
+/* It was really hard to get this the way we wanted, including repsonsive small
+   sizes. Tried abandoning bootstrap here, ended up returning to it and modifying it.
+   Sorry for the really messy CSS! */
+
 /* Overrides a bootstrap style */
 .navbar-inverse {
   background-color: $brand-inverse;
@@ -12,6 +16,8 @@
   /* offset left margin of first button */
   margin-left: -15px;
 
+  border-bottom-color: #444;
+
   &.navbar-inverse .navbar-nav > li > a:not(:hover):not(:focus) {
     color: lighten($gray-light, 15%);
   }
@@ -19,49 +25,75 @@
 
 /* masthead navbar has an effective margin of 20 */
 .masthead {
-  .container-fluid {
-    display: flex;
-    justify-content: space-between;
-    &:after, &:before  {
-      content: none;
-    }
+  .large-masthead-only {
+    @extend .hidden-xs;
+  }
+  .small-masthead-only {
+    @extend .visible-xs;
   }
 
-  min-height: 90px;
-  padding: 16px 5px 16px 20px;
-  font-size: 18px;
-  font-weight: 300;
+  $large-logo-height: 176px;
+  $small-logo-height: 40px;
 
-  background-image: asset-url("scihist_top_nav_sym.png");
+  min-height: $large-logo-height + 16px; // 176px high logo, plus one 16px padding
+  padding: 16px 32px 0 32px;
+  background-image: asset-url('scihist_top_nav_sym.png');
   background-repeat: no-repeat;
   background-position: right top;
 
   .navbar-brand {
-    height: 176px;
     padding: 0;
   }
 
-  #masthead-logo-image {
-    //height: 40px;
-    //margin: 0;
+  .navbar-nav {
+    font-size: 18px;
+    font-weight: 300;
   }
-}
 
-.scihist-navbar-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-}
+  .masthead-title {
+    font-family: $brand-serif;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    color: white;
+    &.small-masthead-only {
+      font-size: 18px;
+      line-height: $small-logo-height + 8px + 8px;
+      text-align: center;
+    }
+  }
 
-.masthead-application-name {
-  margin: 0;
-  padding: 0;
-  color: white;
-  font-size: 30px;
-  font-family: $brand-serif;
-  font-weight: normal;
-  line-height: normal;
+  .masthead-right {
+    height: $large-logo-height;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .masthead-logo-small {
+    height: $small-logo-height;
+    margin: 8px 0 8px 15px;
+  }
+
+  // small navbar
+  @media (max-width: $grid-float-breakpoint-max) {
+    background-image: none;
+    padding: 0;
+    min-height: $small-logo-height + 8px + 8px;
+    .navbar-collapse {
+      float: none !important;
+    }
+    .masthead-right {
+      display: block;
+      height: auto;
+    }
+    .navbar-toggle {
+      margin-top: 12px;
+    }
+  }
+
 }
 
 .breadcrumbs-navbar-wrapper {
