@@ -1,13 +1,16 @@
 /* old, reconsider with new palette? */
-$brand-highlight-color: #f15c2b; // an orange used on (old) Distillations website, perhaps use as an alterante highlight sitewide
+//$brand-highlight-color: #f15c2b; // an orange used on (old) Distillations website, perhaps use as an alterante highlight sitewide
 $special-label-muted-color: #888;
 
 
 /* rebrand colors */
-$brand-dark-blue: #050939;
+$brand-dark-blue: #050939; // does not actually match brand, fix?
 $brand-link-light-blue: #76c3d4;
 $brand-bright-green: #a6e5d8;
-$brand-grey-bg-color: #f9f9f7;
+$brand-grey-bg-color: #f9f9f9; // does not match brand, no suitable color in brand
+$brand-red: #d8262e;
+$brand-yellow: #dbe341;
+$brand-blue: #76c3d4;
 
 $brand-sans-serif: 'adelle-sans';
 $brand-serif: 'abril-text';
@@ -17,6 +20,7 @@ $brand-serif: 'abril-text';
 $small-caps-letter-spacing: 0.06em;
 
 
+$brand-highlight-color: $brand-red;
 $bg-lightly-shaded: $brand-grey-bg-color;
 $brand-btn-alt-bg: $brand-bright-green;
 $brand-alt-header-font: $brand-sans-serif, sans-serif;
@@ -36,7 +40,11 @@ $semi-bold-weight: 600;
 $chf-fluid-max-width: 1300px;
 
 // Bootstrap 3.x overrides
-$line-height-base: 1.5; // closer to chemheritage.org brand, and more readable than BS default 1.428571429
+$brand-success: $brand-bright-green;
+$brand-info: $brand-blue;
+$brand-danger: $brand-red;
+$brand-warning: $brand-yellow;
+$line-height-base: 1.6; // closer to chemheritage.org brand, and more readable than BS default 1.428571429
 $brand-inverse: $brand-dark-blue;
 $brand-primary: $brand-link-light-blue;
 $link-hover-color: $brand-dark-blue;
@@ -87,3 +95,4 @@ $transparent-background: rgba(0,0,0,0.25);
   // 16px in abril is really small, 17px looks more like 16px in other fonts.
   font-size: 17px;
 }
+
