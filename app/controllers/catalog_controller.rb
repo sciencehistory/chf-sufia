@@ -105,6 +105,7 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
+    config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("maker_facet", :facetable), label: "Creator", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
@@ -113,7 +114,6 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     # only show medium facet if we have a current_user -- show takes a controller method symbol
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
-    config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
     config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5
