@@ -15,7 +15,7 @@
         <div class="digital-description col-xs-12 col-sm-6 col-md-12">
           <div class="pre-heading">Science History Institute</div>
           <h2 class="brand-alt-h2">Digital Collections</h2>
-          <p>Search over 4,000 of our digitized items: artifacts, photographs, advertisements, letters, rare books, and more. You can also learn more about the rest of our <a href="https://sciencehistory.org/collections">collections.</a></p>
+          <p>Search <%= number_with_delimiter(public_works_count) %> of our digitized items: artifacts, photographs, advertisements, letters, rare books, and more. You can also learn more about the rest of our <a href="https://sciencehistory.org/collections">collections.</a></p>
         </div>
         <div class="search-callouts col-xs-12 col-sm-6 col-md-12">
           <%= render 'catalog/search_form' %>

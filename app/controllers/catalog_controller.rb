@@ -105,6 +105,7 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
+    config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("subject", :facetable), label: "Subject", limit: 5
     config.add_facet_field solr_name("maker_facet", :facetable), label: "Creator", limit: 5
     config.add_facet_field solr_name("genre_string", :facetable), label: "Genre", limit: 5
@@ -113,7 +114,6 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('place_facet', :facetable), label: "Place", limit: 5
     # only show medium facet if we have a current_user -- show takes a controller method symbol
     config.add_facet_field solr_name("language", :facetable), label: "Language", limit: 5
-    config.add_facet_field solr_name('year_facet', type: :integer), label: "Date", range: true
     config.add_facet_field solr_name("rights", :facetable), helper_method: :license_label, label: "Rights", limit: 5
     config.add_facet_field solr_name("division", :facetable), label: "Department", limit: 5
     config.add_facet_field solr_name("exhibition", :facetable), label: "Exhibition", limit: 5
@@ -198,10 +198,15 @@ class CatalogController < ApplicationController
     # We don't want per-page choosing widget, nobody uses it
     config.index.collection_actions.delete(:per_page_widget)
 
-    # We only want two search result view types. We'll call them
-    # list and gallery, although we're gonna override gallery too.
-    config.view.delete(:masonry)
-    config.view.delete(:slideshow)
+
+    # We aren't currently providing alternate search results view types, we'd
+    # have style others well if we wanted them. By removing all but the default,
+    # the view type selection is automatically removed, and query param is ignored
+    # (ie, forced to the one left)
+    config.view.delete_if { |v| v != :list}
+    # config.view.delete(:masonry)
+    # config.view.delete(:slideshow)
+    # config.view.delete(:gallery)
     # config.view[:gallery][:partials] = ["custom"]
   end
 
