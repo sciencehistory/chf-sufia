@@ -18,7 +18,6 @@
       margin-right: 0.66em;
     }
     .next, .prev {
-      font-weight: $semi-bold-weight;
       text-transform: uppercase;
       letter-spacing: $small-caps-letter-spacing;
     }
@@ -29,7 +28,6 @@
     .first, .prev, .next, .next_page, .last {
       font-family: $brand-sans-serif;
       text-transform: uppercase;
-      font-weight: $semi-bold-weight;
       letter-spacing: $small-caps-letter-spacing;
     }
     .active > a, .active > a:hover, .active > a:focus {
