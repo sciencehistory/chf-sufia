@@ -313,8 +313,9 @@
     }
 
     .constraints-label {
-      font-size: $font-size-base - 2px;
+      font-size: $font-size-base - 2;
       text-transform: uppercase;
+      letter-spacing: $small-caps-letter-spacing;
       font-weight: $semi-bold-weight;
       margin-right: 0.66em;
       color: #888;
@@ -329,8 +330,10 @@
     }
 
     .catalog_startOverLink {
+      @extend .btn-primary;
       text-transform: uppercase;
-      font-weight: $semi-bold-weight;
+      letter-spacing: $small-caps-letter-spacing;
+      //font-weight: $semi-bold-weight;
     }
   }
 
