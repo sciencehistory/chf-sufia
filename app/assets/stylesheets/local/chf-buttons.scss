@@ -1,7 +1,4 @@
 // An especially bright button style using the brand bright breen
 .btn-emphasis {
-  @include button-variant($btn-default-color, $brand-bright-green, darken($brand-bright-green, 5%));
-}
-.input-group-btn .btn-emphasis {
-  border-color: $input-group-addon-border-color;
+  @include button-variant($brand-dark-blue, $brand-bright-green, darken($brand-bright-green, 5%));
 }
