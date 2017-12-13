@@ -94,5 +94,7 @@ $transparent-background: rgba(0,0,0,0.25);
   font-family: $brand-serif;
   // 16px in abril is really small, 17px looks more like 16px in other fonts.
   font-size: 17px;
+  //letter-spacing is weird for body font, but this font is just so darn cramped!
+  letter-spacing: 0.01em;
 }
 
