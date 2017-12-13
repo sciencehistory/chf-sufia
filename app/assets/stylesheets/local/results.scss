@@ -19,6 +19,7 @@
     }
     .next, .prev {
       text-transform: uppercase;
+      font-weight: 600;
       letter-spacing: $small-caps-letter-spacing;
     }
   }
@@ -233,8 +234,11 @@
         @extend .list-unstyled;
         font-size: $font-size-h4;
         font-family: $brand-alt-header-font;
-        line-height: normal;
-        margin-top: ($line-height-computed / 2);
+        line-height: $headings-line-height;
+        margin-top: 0;
+      }
+      li {
+        margin-top: ($line-height-computed / 3);
       }
     }
 
@@ -244,7 +248,8 @@
         margin-top: ($line-height-computed / 2);
       }
       li {
-        margin-top: 4px;
+        @extend %text-font;
+        font-variant-numeric: lining-nums;
       }
     }
 
@@ -253,9 +258,9 @@
     }
 
     .chf-results-list-values {
-      @extend %text-font;
       margin-top: ($line-height-computed / 2);
       li {
+        @extend %text-font;
         // hanging indent, serving to add margin to subsequent lines
         padding-left: 0.66em;
         text-indent: -0.66em;

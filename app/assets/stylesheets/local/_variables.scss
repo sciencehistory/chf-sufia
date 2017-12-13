@@ -16,9 +16,8 @@ $brand-sans-serif: 'adelle-sans';
 $brand-serif: 'abril-text';
 
 // are we using the condensed version by mistake? Why do we need so much spacing
-// for it to look reasonable?
-$small-caps-letter-spacing: 0.06em;
-
+// for it to look reasonable? Good spacing for 14px and weight 600.
+$small-caps-letter-spacing: 0.05em;
 
 $brand-highlight-color: $brand-red;
 $bg-lightly-shaded: $brand-grey-bg-color;
@@ -40,6 +39,8 @@ $semi-bold-weight: 600;
 $chf-fluid-max-width: 1300px;
 
 // Bootstrap 3.x overrides
+$font-size-h4: 22px;
+$text-color: #222; // little bit darker
 $brand-success: $brand-bright-green;
 $brand-info: $brand-blue;
 $brand-danger: $brand-red;
@@ -93,6 +94,8 @@ $transparent-background: rgba(0,0,0,0.25);
   font-family: $brand-serif;
   // 16px in abril is really small, 17px looks more like 16px in other fonts.
   font-size: 17px;
+  // somewhat bigger line-height seems to make abril more readable
+  line-height: 26px;
   //letter-spacing is weird for body font, but this font is just so darn cramped!
   letter-spacing: 0.01em;
 }

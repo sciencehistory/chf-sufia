@@ -148,3 +148,10 @@ hr.brand {
     @extend %text-font;
   }
 }
+
+// bootstrap override
+.label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: $small-caps-letter-spacing;
+}
