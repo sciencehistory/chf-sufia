@@ -40,6 +40,8 @@
   .chf-callout-button {
     width: 100%;
     text-transform: uppercase;
+    border-radius: 0;
+    letter-spacing: 0.04em;
   }
 
   .search-container {
@@ -113,7 +115,8 @@
         left: 0;
         width: 100%;
         height: 56px;
-        background-color: $brand-primary;
+        color: $brand-dark-blue;
+        background-color: $brand-bright-green;
         padding: 10px;
 
         .collection-title {
