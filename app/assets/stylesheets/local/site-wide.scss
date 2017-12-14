@@ -128,7 +128,7 @@ hr.brand {
 // just explicitly set it in certain places, restricted to a parent class cause it kind of messes up
 // admin screens.
 .branded-body-font {
-  p:not(.collection-title), dd, td, th {
+  p:not(.collection-title):not(.sans-serif), dl:not(.sans-serif) dd, table:not(.sans-serif) td, table:not(.sans-serif) th, .serif {
     @extend %text-font;
   }
 }
