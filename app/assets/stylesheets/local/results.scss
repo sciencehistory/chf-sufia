@@ -153,6 +153,15 @@
     }
   }
 
+  .other-searches {
+    .panel-heading {
+      text-transform: uppercase;
+      color: $brand-dark-blue;
+      font-weight: $semi-bold-weight;
+      letter-spacing: $small-caps-letter-spacing;
+    }
+  }
+
   @media (max-width: 768px) {
     #facets .top-panel-heading {
       border-radius: 0;
