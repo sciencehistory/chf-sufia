@@ -10,14 +10,15 @@ $brand-dark-blue: #050939;
 $brand-bright-green: #a6e5d8;
 $brand-red: #d8262e;
 $brand-yellow: #dbe341;
-$brand-blue: #76c3d4;
+//$brand-blue: #76c3d4;
+$brand-blue: #4bb0c7; // zack instructed us to use this slightly darker shade
 $brand-light-grey: #bcbcbc; // not actually very light
 $brand-dark-grey: #646469;
 
 $brand-sans-serif: 'adelle-sans';
 $brand-serif: 'abril-text';
 
-$brand-blue-text: #3595AA; // brand blue is too light for text on white, here's a darker version
+$brand-blue-text: #338EA2; // brand blue is too light for text on white, here's a darker version 3595AA.
 $bg-lightly-shaded: #f9f9f9; // does not match brand, no suitable color in brand
 $special-label-muted-color: #888; // not from brand, lighter than normal muted, cause it's bolded a bit and such
 //$brand-highlight-color: #f15c2b; // an orange used on (old) Distillations website, perhaps use as an alterante highlight sitewide
