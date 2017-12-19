@@ -290,7 +290,7 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
       padding: 1px;
 
       &.viewer-thumb-selected {
-        border: 2px solid $brand-highlight-color;
+        border: 2px solid $brand-bright-green;
       }
 
       &.lazyload, &.lazyloading, &.lazyload {
