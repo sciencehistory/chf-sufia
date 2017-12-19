@@ -104,7 +104,8 @@
   }
 
   .show-date {
-    font-family: $brand-serif;
+    @extend %text-font;
+    font-variant-numeric: lining-nums;
     ul {
       @extend .list-unstyled;
       margin-bottom: 0;
