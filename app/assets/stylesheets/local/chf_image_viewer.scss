@@ -85,7 +85,7 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
 
     display: flex;
     align-items: center;
-    padding: 4px 15px;
+    padding: 4px 15px 4px 0; // icon is meant to butt against edge
 
     .chf-logo {
       width: 40px;
