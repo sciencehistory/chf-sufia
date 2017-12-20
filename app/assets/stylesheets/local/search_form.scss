@@ -23,9 +23,7 @@
 // styles that apply whether in masthead or home page, or just on homepage,
 // some are overridden below in .masthead
 .search-options {
-  color: white;
   h3, label {
-    color: white;
     @extend %special-label;
     display: inline;
     margin: 0 .66em 0 0;
@@ -53,6 +51,14 @@
 
 // styles for slide-out only when in masthead, not when on home page
 .masthead {
+    @media (max-width: $grid-float-breakpoint-max) {
+      .search-options {
+        h3, label {
+          color: white;
+        }
+      }
+    }
+
   .nav-search-form:not(.force-expanded) {
     padding-bottom: 16px - $padding-large-vertical;
 
@@ -69,6 +75,7 @@
 
       h3, label {
         color: $brand-dark-blue;
+
       }
 
       .form-group {
