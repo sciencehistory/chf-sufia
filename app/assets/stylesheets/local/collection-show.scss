@@ -34,7 +34,7 @@
 
   .show-genre {
     @extend %special-label;
-    color: #888;
+    color: $special-label-muted-color;
     margin-bottom: 5px;
   }
 

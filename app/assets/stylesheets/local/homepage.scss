@@ -27,7 +27,7 @@
 
     .pre-heading {
       @extend %special-label;
-      color: #888;
+      color: $special-label-muted-color;
       margin-bottom: 5px;
       margin-top: $line-height-computed;
     }
