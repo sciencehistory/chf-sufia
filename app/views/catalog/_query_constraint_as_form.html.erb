@@ -11,7 +11,7 @@
           <span class="glyphicon glyphicon-search"></span><span class="sr-only">Search</span>
       </span>
       <label class="sr-only" for="constraintsQueryInput">Query</label>
-      <%= text_field_tag "q", local_assigns[:params].try { |h| h[:q] }, placeholder: "Add a query", class: "form-control input-sm", id: "constraintsQueryInput" %>
+      <%= text_field_tag "q", local_assigns[:params].try { |h| h[:q] }, placeholder: "Search within results", class: "form-control input-sm", id: "constraintsQueryInput" %>
       <span class="input-group-btn after">
         <button class="btn btn-sm btn-primary">
           Change
