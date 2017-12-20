@@ -140,9 +140,12 @@ hr.brand {
 }
 
 .text-page {
-  max-width: $max-readable-width;
+  max-width: $long-max-readable-width;
   margin-right: auto;
   margin-left: auto;
+  p {
+    max-width: $long-max-readable-width;
+  }
 }
 
 // bootstrap override
@@ -150,4 +153,9 @@ hr.brand {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: $small-caps-letter-spacing;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6  {
+  margin-bottom: $paragraph-spacer; // make match our wider stance
 }

@@ -37,6 +37,6 @@ $attribute-cell-padding: 0.66em;
   @extend .brand-alt-h3;
   @extend .h3;
   margin-top: $line-height-computed * 1.5;
-  margin-bottom: 0;
+  margin-bottom: 3px;
   padding: $table-condensed-cell-padding;
 }

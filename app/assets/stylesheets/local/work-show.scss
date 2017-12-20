@@ -66,6 +66,7 @@
 
   .show-genre {
     @extend %special-label;
+    letter-spacing: 0.05em;
     color: $special-label-muted-color;
     margin-bottom: 4px;
   }
