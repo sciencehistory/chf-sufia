@@ -139,6 +139,12 @@ hr.brand {
   }
 }
 
+.text-page {
+  max-width: $max-readable-width;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 // bootstrap override
 .label {
   font-weight: 600;
