@@ -247,14 +247,14 @@
         margin-top: 0;
       }
       li {
-        margin-top: ($line-height-computed / 3);
+        margin-top: ($paragraph-spacer / 2);
       }
     }
 
     .chf-results-list-item-date {
       ul {
         @extend .list-unstyled;
-        margin-top: ($line-height-computed / 2);
+        margin-top: $paragraph-spacer;
       }
       li {
         @extend %text-font;
@@ -263,11 +263,11 @@
     }
 
     .chf-results-list-item-description {
-      margin-top: ($line-height-computed / 2);
+      margin-top: $paragraph-spacer;
     }
 
     .chf-results-list-values {
-      margin-top: ($line-height-computed / 2);
+      margin-top: $paragraph-spacer;
       li {
         @extend %text-font;
         // hanging indent, serving to add margin to subsequent lines

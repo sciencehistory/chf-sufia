@@ -63,7 +63,14 @@ $brand-primary: $brand-blue;
 $link-color: $brand-blue-text;
 $link-hover-color: $brand-dark-blue;
 $font-family-sans-serif: $brand-sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+// our serif abril font is awfully small, better at 17px, but we're gonna leave
+// font size base 16 for sans-serif controls, but set line-height-base
+// to create 24 for $font-size-computed, the 'normal' line-height for 17px abril on chrome
 $font-size-base: 16px;
+$line-height-base: 1.5; // 24/16, 24 is 'normal' line-height in chrome for our 17px abril
+$paragraph-spacer: 24px * 0.66; // 24 is $line-height-computed. abril looks better with a bit more paragraph space.
+
 $navbar-inverse-link-color: $brand-bright-green;
 
 $well-bg: $bg-lightly-shaded;
@@ -113,9 +120,6 @@ $btn-border-radius-small:       9px !default;
   font-family: $brand-serif;
   // 16px in abril is really small, 17px looks more like 16px in other fonts.
   font-size: 17px;
-  // somewhat bigger line-height seems to make abril more readable
-  line-height: 26px;
-  //letter-spacing is weird for body font, but this font is just so darn cramped!
-  letter-spacing: 0.01em;
+  line-height: normal;
 }
 

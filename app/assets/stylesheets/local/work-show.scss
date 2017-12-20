@@ -67,7 +67,7 @@
   .show-genre {
     @extend %special-label;
     color: #888;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
   .show-permission-badge {
@@ -122,7 +122,7 @@
 
     .rights-statement.large, .social-media {
       padding: 0;
-      margin-bottom: $line-height-computed / 2;
+      margin-bottom: $paragraph-spacer;
     }
 
     .rights-statement.large {

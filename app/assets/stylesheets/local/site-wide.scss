@@ -131,6 +131,12 @@ hr.brand {
   p:not(.collection-title):not(.sans-serif), dl:not(.sans-serif) dd, table:not(.sans-serif) td, table:not(.sans-serif) th, .serif {
     @extend %text-font;
   }
+  p:not(.collection-title):not(.sans-serif) {
+    // try to keep this readable, abril is particularly hard on long line lengths
+    max-width: $max-readable-width;
+    // and could use some more spacing, normally in bootstrap $line-height-computed / 2
+    margin-bottom: $paragraph-spacer;
+  }
 }
 
 // bootstrap override
