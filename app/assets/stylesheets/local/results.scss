@@ -243,6 +243,7 @@
         @extend .list-unstyled;
         font-size: $font-size-h4;
         font-family: $brand-alt-header-font;
+        font-weight: 300;
         line-height: $headings-line-height;
         margin-top: 0;
       }
