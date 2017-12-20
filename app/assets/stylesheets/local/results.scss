@@ -257,8 +257,7 @@
         margin-top: $paragraph-spacer;
       }
       li {
-        @extend %text-font;
-        font-variant-numeric: lining-nums;
+        @extend %text-font-numerals;
       }
     }
 
