@@ -290,6 +290,30 @@
     @extend .chf-container-fluid;
     @extend .clearfix;
     text-align: left;
+
+    .chf-constraints-query {
+      display: inline;
+      .input-group {
+        margin: 0 0.33em 0 0;
+      }
+
+      .btn {
+        letter-spacing: $small-caps-letter-spacing;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+
+      .btn-search-icon {
+        border-bottom-left-radius: $btn-border-radius-base;
+        border-top-left-radius: $btn-border-radius-base;
+      }
+      .input-group-btn.after {
+        a:last-child, button:last-child {
+          border-top-right-radius: $btn-border-radius-base;
+          border-bottom-right-radius: $btn-border-radius-base;
+        }
+      }
+    }
   }
 
   #appliedParams.constraints-container {
@@ -332,7 +356,7 @@
       letter-spacing: $small-caps-letter-spacing;
       font-weight: $semi-bold-weight;
       margin-right: 0.66em;
-      color: #888;
+      color: $brand-dark-blue;
       vertical-align: middle;
     }
 
