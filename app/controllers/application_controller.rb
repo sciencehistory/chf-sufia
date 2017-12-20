@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
     def render_constraints_query(localized_params = params)
       render "query_constraint_as_form", params: localized_params
     end
+
+    def query_has_constraints?(localized_params = params)
+      super || localized_params[:filter_public_domain] == "1"
+    end
   end
   helper RenderQueryConstraintOverride
 
