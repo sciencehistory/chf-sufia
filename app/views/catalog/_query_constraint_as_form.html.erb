@@ -17,7 +17,7 @@
           Change
         </button>
         <% if params[:q].present? %>
-          <%= link_to(search_state.params_for_search.except(:q, :qt, :page, :utf8),  { class:"btn btn-sm btn-primary", title:"Remove" }) do %>
+          <%= link_to(search_state.params_for_search.except(:q, :qt, :page, :utf8),  { class:"btn btn-sm btn-primary remove", title:"Remove" }) do %>
             <span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove</span>
           <% end %>
         <% end %>
