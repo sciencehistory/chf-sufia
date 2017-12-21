@@ -71,7 +71,6 @@
        margin-bottom: 0;
        h3 {
         font-size: $font-size-base;
-        color: black;
         font-weight: normal;
         line-height: 1.4;
        }
@@ -124,15 +123,9 @@
     .top-panel-heading {
       margin: 0;
       background-color: $brand-dark-blue;
-      color: $bg-lightly-shaded;
-      text-transform: uppercase;
       h2.facets-heading {
         color: white;
         margin: 0;
-        font-weight: $semi-bold-weight;
-        font-size: $font-size-base;
-        line-height: 1.4;
-        letter-spacing: $small-caps-letter-spacing;
        }
     }
 
@@ -171,13 +164,16 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $grid-float-breakpoint-max) {
     #facets .top-panel-heading {
       border-radius: 0;
       margin-bottom: 0;
       h2 {
-        line-height: 2.4;
+        line-height: 2;
       }
+    }
+    .facets-toggle {
+      margin-top: 0;
     }
   }
 
