@@ -19,7 +19,8 @@ $brand-sans-serif: 'adelle-sans';
 $brand-serif: 'abril-text';
 
 $brand-blue-text: #338EA2; // brand blue is too light for text on white, here's a darker version 3595AA.
-$bg-lightly-shaded: #f9f9f9; // does not match brand, no suitable color in brand
+//$bg-lightly-shaded: #f9f9f9; // does not match brand, no suitable color in brand
+$bg-lightly-shaded: $brand-light-grey; // try brand color
 $special-label-muted-color: $brand-dark-grey;
 //$brand-highlight-color: #f15c2b; // an orange used on (old) Distillations website, perhaps use as an alterante highlight sitewide
 
@@ -78,6 +79,7 @@ $well-bg: $bg-lightly-shaded;
 $navbar-default-bg: $bg-lightly-shaded;
 $panel-default-heading-bg: $bg-lightly-shaded;
 $panel-footer-bg: $bg-lightly-shaded;
+$panel-default-border: #ccc; // goes with brand light grey. ish.
 $breadcrumb-bg: $bg-lightly-shaded;
 $input-group-addon-bg: $bg-lightly-shaded;
 
