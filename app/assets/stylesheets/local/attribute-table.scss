@@ -31,6 +31,9 @@ $attribute-cell-padding: 0.66em;
     padding-left: 0;
     margin-bottom: 0;
   }
+  .attribute:not(:last-child) {
+    margin-bottom: $paragraph-spacer / 2;
+  }
 }
 
 .attribute-sub-head {
