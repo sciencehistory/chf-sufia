@@ -65,6 +65,8 @@ $link-color: $brand-blue-text;
 $link-hover-color: $brand-dark-blue;
 $font-family-sans-serif: $brand-sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
 
+$text-muted: $brand-dark-grey;
+
 // our serif abril font is awfully small, better at 17px, but we're gonna leave
 // font size base 16 for sans-serif controls, but set line-height-base
 // to create 24 for $font-size-computed, the 'normal' line-height for 17px abril on chrome
@@ -82,6 +84,8 @@ $panel-footer-bg: $bg-lightly-shaded;
 $panel-default-border: #ccc; // goes with brand light grey. ish.
 $breadcrumb-bg: $bg-lightly-shaded;
 $input-group-addon-bg: $bg-lightly-shaded;
+
+$input-color: $brand-dark-grey;
 
 // border radius matching some elements on chemheritage.org, larger than bootstrap default
 $btn-border-radius-base:        9px !default;

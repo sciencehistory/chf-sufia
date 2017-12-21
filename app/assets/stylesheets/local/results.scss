@@ -80,6 +80,11 @@
        padding-top: 4px;
      }
 
+     // override blacklight
+     .panel-heading.collapse-toggle .panel-title:after {
+        color: $brand-dark-grey;
+     }
+
     .facet_limit {
       border-radius: 0;
       border-top: 0;
@@ -365,6 +370,7 @@
     }
 
     .constraint-value {
+      color: black;
       background-color: $bg-lightly-shaded;
       &:hover, &:focus {
         background-color: $bg-lightly-shaded;
