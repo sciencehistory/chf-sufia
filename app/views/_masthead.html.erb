@@ -23,14 +23,14 @@
         <span class="icon-bar"></span>
       </button>
       <%= render '/logo' %>
-      <h1 class="masthead-title small-masthead-only">Digital Collections</h1>
+      <h1 class="masthead-title small-masthead-only"><%= link_to "Digital Collections", main_app.root_path %></h1>
     </div>
 
 
 
     <div class="collapse navbar-collapse pull-right" id="top-navbar-collapse" role="navigation">
       <div class="masthead-right">
-        <h1 class="masthead-title large-masthead-only">Digital Collections</h1>
+        <h1 class="masthead-title large-masthead-only"><%= link_to "Digital Collections", main_app.root_path %></h1>
 
         <ul class="nav navbar-nav navbar-right">
           <li><%= link_to t(:'sufia.controls.about'), sufia.about_path, :'data-no-turbolink'=>"true" %></li>

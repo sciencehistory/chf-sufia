@@ -55,6 +55,13 @@
     margin: 0;
     padding: 0;
     line-height: normal;
+    &>a {
+      color: white;
+      &:hover, &:active, &:focus {
+        color: $brand-bright-green;
+        text-decoration: none;
+      }
+    }
     color: white;
     &.small-masthead-only {
       font-size: 18px;
