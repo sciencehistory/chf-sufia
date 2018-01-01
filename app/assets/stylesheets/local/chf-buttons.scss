@@ -17,5 +17,5 @@
 
 // An especially bright button style using the brand bright breen
 .btn-emphasis {
-  @include button-variant($brand-dark-blue, $brand-bright-green, mix($brand-bright-green, $brand-dark-blue, 93%)); //
+  @include button-variant(black, $brand-bright-green, mix($brand-bright-green, $brand-dark-blue, 93%)); //
 }
