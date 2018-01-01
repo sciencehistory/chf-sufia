@@ -68,8 +68,9 @@ $font-family-sans-serif: $brand-sans-serif, "Helvetica Neue", Helvetica, Arial, 
 // font size base 16 for sans-serif controls, but set line-height-base
 // to create 24 for $font-size-computed, the 'normal' line-height for 17px abril on chrome
 $font-size-base: 16px;
-$line-height-base: 1.5; // 24/16, 24 is 'normal' line-height in chrome for our 17px abril
-$paragraph-spacer: 24px * 0.66; // 24 is $line-height-computed. abril looks better with a bit more paragraph space.
+
+$paragraph-line-height: 22px; // for abril 17px looks good, coresponds to ~ 1.3 at 17px
+$paragraph-spacer: $paragraph-line-height / 2; // 24 is $line-height-computed. abril looks better with a bit more paragraph space.
 
 $navbar-inverse-link-color: $brand-bright-green;
 
