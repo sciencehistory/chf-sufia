@@ -48,13 +48,17 @@
 
 // styles for slide-out only when in masthead, not when on home page
 .masthead {
-    @media (max-width: $grid-float-breakpoint-max) {
-      .search-options {
-        h3, label {
-          color: white;
-        }
+  @media (max-width: $grid-float-breakpoint-max) {
+    .search-options {
+      h3, label {
+        color: white;
       }
     }
+  }
+
+  .nav-search-form .btn {
+    color: $brand-dark-blue;
+  }
 
   .nav-search-form:not(.force-expanded) {
     padding-bottom: 16px - $padding-large-vertical;
