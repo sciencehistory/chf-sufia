@@ -132,7 +132,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /example.com/
       expect(rendered).to match /rightsstatements\.org/
       expect(rendered).to match /Luigi/
-      expect(rendered).to match /Courtesy of CHF Collections/
+      expect(rendered).to match /Courtesy of Science History Institute/
       expect(rendered).to match /1990-02-09/
       expect(rendered).to match /\(side of cartridge\) "Ravioli"/
       expect(rendered).to match /\(On lock\) "EAGLE LOCK CO \/ TERRYVILLE, CONN \/ U.S.A."/
