@@ -140,11 +140,11 @@ hr.brand {
 }
 
 .text-page {
-  max-width: $long-max-readable-width;
+  max-width: $max-readable-width;
   margin-right: auto;
   margin-left: auto;
   p {
-    max-width: $long-max-readable-width;
+    max-width: $max-readable-width;
   }
 }
 
