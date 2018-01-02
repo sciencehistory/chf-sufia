@@ -14,7 +14,7 @@
       <%= text_field_tag "q", local_assigns[:params].try { |h| h[:q] }, placeholder: "Search within results", class: "form-control input-sm", id: "constraintsQueryInput" %>
       <span class="input-group-btn after">
         <button class="btn btn-sm btn-primary">
-          Change
+          Go
         </button>
         <% if params[:q].present? %>
           <%= link_to(search_state.params_for_search.except(:q, :qt, :page, :utf8),  { class:"btn btn-sm btn-primary remove", title:"Remove" }) do %>
