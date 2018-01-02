@@ -93,7 +93,7 @@
   $categories-box-margin: 59px;
 
   .categories-list {
-    background-color: $brand-light-grey;
+    background-color: $brand-dark-grey;
     padding-top: 34px;
     display: flex;
     flex-direction: row;
@@ -106,8 +106,6 @@
       height: $categories-box-height;
       margin: $categories-box-margin;
 
-      @include all-white-links;
-
       .collection-title-wrapper {
         /* overlay on image */
         position: absolute;
@@ -115,8 +113,8 @@
         left: 0;
         width: 100%;
         height: 56px;
-        color: white;
-        background-color: $brand-dark-blue;
+        color: $brand-dark-blue;
+        background-color: $brand-bright-green;
         padding: 10px;
 
         .collection-title {
