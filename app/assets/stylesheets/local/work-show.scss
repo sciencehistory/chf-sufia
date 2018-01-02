@@ -68,7 +68,7 @@
     @extend %special-label;
     letter-spacing: 0.05em;
     color: $special-label-muted-color;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 
   .show-permission-badge {
@@ -80,7 +80,7 @@
   }
 
   .show-title {
-    margin-bottom: $font-size-base;
+    margin-bottom: $paragraph-spacer;
   }
 
   header h1 {
@@ -110,7 +110,7 @@
       @extend .list-unstyled;
       margin-bottom: 0;
     }
-    margin-top: $font-size-base;
+    margin-top: $paragraph-spacer;
   }
 
   .rights-and-social {

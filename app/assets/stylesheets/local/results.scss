@@ -239,7 +239,7 @@
     .chf-results-list-item-genre {
       @extend %special-label;
       color: $special-label-muted-color;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
     .chf-results-list-item-additional-titles, .chf-results-list-item-parents {
@@ -276,6 +276,7 @@
         // hanging indent, serving to add margin to subsequent lines
         padding-left: 0.66em;
         text-indent: -0.66em;
+        margin-bottom: $paragraph-spacer / 8;
       }
     }
 
