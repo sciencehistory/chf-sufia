@@ -330,7 +330,7 @@ namespace :chf do
 
   desc "modify fedora properties for rebrand"
   task :rebrand => :environment do
-    $stderr.puts "Rebranding properties in fedora: credit_link, related_urls"
+    $stderr.puts "Rebranding properties in fedora GenericWork: credit_link, related_urls"
     progress = ProgressBar.create(total: GenericWork.count, format: "%a %t: |%B| %R/s %c/%u %p%%%e")
 
     skipped = 0
@@ -350,8 +350,18 @@ namespace :chf do
       end
       progress.increment
     end
-
     progress.finish
+
+    $stderr.puts "Rebranding properties in fedora Collection: related_urls"
+    progress = ProgressBar.create(total: Collection.count, format: "%a %t: |%B| %R/s %c/%u %p%%%e")
+    Collection.find_each do |c|
+      c.related_url = c.related_url.collect do |url|
+        url.gsub( %r{\A(https?://[^.]+\.)?chemheritage.org}, "\\1sciencehistory.org")
+      end
+
+      c.save!
+    end
+
     if skipped > 0
       $stderr.puts "\n\nCOULD NOT SAVE ALL RECORDS: skipped #{skipped} records\n\n"
     end
