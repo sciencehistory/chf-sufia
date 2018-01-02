@@ -328,6 +328,23 @@ namespace :chf do
     end
   end
 
+  namespace :rebrand do
+    desc "all rebrand tasks"
+    task :all => [:credit_line]
+
+    desc "alter all credit lines in fedora"
+    task :credit_line => :environment do
+      progress = ProgressBar.create(total: GenericWork.count, format: "%a %t: |%B| %R/s %c/%u %p%%%e")
+      $stderr.puts "Rebranding credit_lines in fedora"
+      GenericWork.find_each do |w|
+        w.credit_line = ["Courtesy of Science History Institute"]
+        w.save!
+        progress.increment
+      end
+      progress.finish
+    end
+  end
+
   namespace :dzi do
     desc "set bucket configuration"
     task :configure_bucket => :environment do
