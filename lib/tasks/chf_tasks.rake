@@ -330,7 +330,7 @@ namespace :chf do
 
   desc "modify fedora properties for rebrand"
   task :rebrand => :environment do
-    $stderr.puts "Rebranding properties in fedora GenericWork: credit_link, related_urls"
+    $stderr.puts "Rebranding properties in fedora GenericWork: credit_link, related_urls, rights_holder"
     progress = ProgressBar.create(total: GenericWork.count, format: "%a %t: |%B| %R/s %c/%u %p%%%e")
 
     skipped = 0
@@ -341,6 +341,10 @@ namespace :chf do
 
         w.related_url = w.related_url.collect do |url|
           url.gsub( %r{\A(https?://[^.]+\.)?chemheritage.org}, "\\1sciencehistory.org")
+        end
+
+        if w.rights_holder
+          w.rights_holder = w.rights_holder.gsub("Chemical Heritage Foundation", "Science History Institute")
         end
 
         w.save!
