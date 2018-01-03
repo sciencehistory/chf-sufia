@@ -10,7 +10,8 @@ RSpec.feature "Search smoke-tests", js: true do
   let!(:record1) { FactoryGirl.create(:full_public_work, title: ["Record One"]) }
   let!(:record2) { FactoryGirl.create(:full_public_work, title: ["Record Two"]) }
 
-  context("as a not-logged in user") do
+  # super cheesy way that works to have a shared example
+  shared_examples "searching" do
     scenario "searching" do
       visit(root_path)
       fill_in 'q', with: 'two'
@@ -38,4 +39,16 @@ RSpec.feature "Search smoke-tests", js: true do
     end
   end
 
+  context("as a not-logged in user") do
+    include_examples "searching"
+  end
+
+  context("as a logged-in user") do
+    before do
+      user = FactoryGirl.create(:user)
+      login_as(user, :scope => :user)
+    end
+
+    include_examples "searching"
+  end
 end
