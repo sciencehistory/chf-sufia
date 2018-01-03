@@ -7,6 +7,12 @@ require 'rails_helper'
 # into each scenario, even though that's often said to be not great test design.
 
 RSpec.feature "Search smoke-tests", js: true do
+  before do
+    # fits may not be installed on travis, and is slow. Try to keep it from happening.
+    # Alternately, if we really want to install fits on travis:
+    # https://github.com/ucsblibrary/alexandria/blob/master/.travis.yml#L24-L27
+    allow_any_instance_of(CharacterizeJob).to receive(:perform).and_return(nil)
+  end
   let!(:record1) { FactoryGirl.create(:full_public_work, title: ["Record One"]) }
   let!(:record2) { FactoryGirl.create(:full_public_work, title: ["Record Two"]) }
 
