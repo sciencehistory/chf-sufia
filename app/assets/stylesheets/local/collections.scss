@@ -9,6 +9,11 @@ $collection-index-box-margin: 17px;
     margin-bottom: 43px;
   }
 
+  .show-item-count {
+    @extend %text-font-numerals;
+    font-variant-numeric: lining-nums;
+  }
+
   .collections-index-list {
     display: flex;
     flex-direction: row;
