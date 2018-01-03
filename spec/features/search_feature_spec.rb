@@ -6,6 +6,8 @@ require 'rails_helper'
 # for us to create records in samvera. So we pack a bunch of stuff
 # into each scenario, even though that's often said to be not great test design.
 
+# This includes not just searching, but results on record show page
+
 RSpec.feature "Search smoke-tests", js: true do
   before do
     # fits may not be installed on travis, and is slow. Try to keep it from happening.
