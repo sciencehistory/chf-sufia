@@ -115,7 +115,8 @@ hr.brand {
   .dropdown-header {
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: $small-caps-letter-spacing;
+    letter-spacing: 0.015em;
+    margin-bottom: $line-height-computed / 4;
   }
   li small {
     color: $text-muted;
