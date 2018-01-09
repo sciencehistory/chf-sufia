@@ -27,7 +27,13 @@ $collection-index-box-margin: 17px;
       height: $collection-index-box-height;
       margin: $collection-index-box-margin;
 
-      @include all-white-links;
+      &:hover, a:focus, a:active {
+        .collection-title-wrapper {
+          background-color: $brand-primary;
+          color: white;
+        }
+      }
+
 
       .collection-title-wrapper {
         /* overlay on image */
@@ -36,7 +42,8 @@ $collection-index-box-margin: 17px;
         left: 0;
         width: 100%;
         height: 75px;
-        background-color: $brand-inverse;
+        background-color: $brand-bright-green;
+        color: black;
         padding: 10px;
 
         .collection-title {
