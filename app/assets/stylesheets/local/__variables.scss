@@ -21,7 +21,9 @@ $brand-sans-serif: 'adelle-sans', "Helvetica Neue", Helvetica, Arial, sans-serif
 // Times New Roman seems to have them, at least on MacOS.
 $brand-serif: 'abril-text', "Times New Roman", Times, serif;
 
-$brand-blue-text: #338EA2; // brand blue is too light for text on white, here's a darker version 3595AA.
+//$brand-blue-text: #338EA2; // brand blue is too light for text on white, here's a darker version 3595AA.
+$brand-blue-text: $brand-blue;
+
 //$bg-lightly-shaded: #f9f9f9; // does not match brand, no suitable color in brand
 $bg-lightly-shaded: $brand-light-grey; // try brand color
 $special-label-muted-color: $brand-dark-grey;
