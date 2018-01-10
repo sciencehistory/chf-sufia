@@ -195,10 +195,6 @@ module Chufia
     # Organizational social media accounts/handles
     config.twitter_acct = "scihistoryorg"
     config.facebook_acct = "SciHistoryOrg"
-    config.vimeo_acct = "chemheritage"
-    config.youtube_channel = "chemheritageorg"
-    config.linked_in_company = "chemical-heritage-foundation"
-    config.pinterest_acct = "chemheritage"
     config.instagram_acct = "scihistoryorg"
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
