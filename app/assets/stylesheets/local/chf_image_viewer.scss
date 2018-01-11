@@ -89,6 +89,8 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
 
     .chf-logo {
       width: 40px;
+      position: relative;
+      top: -4px;
     }
 
     h1 {
