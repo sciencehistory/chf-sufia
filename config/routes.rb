@@ -50,6 +50,9 @@ Rails.application.routes.draw do
   # Redirect from OLD work URLs to the new ones that we will install/override below.
   get '/concern/generic_works/:id', to: redirect('/works/%{id}')
   get '/concern/generic_works/:id/viewer/:filesetid', to:  redirect('/works/%{id}/viewer/%{filesetid}')
+  get '/concern/parent/:parent_id/generic_works/:id', to: redirect('/parent/%{parent_id}/works/%{id}')
+  get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid', to: redirect('/parent/%{parent_id}/works/%{id}/viewer/%{filesetid}')
+
 
   curation_concerns_collections
   curation_concerns_basic_routes
@@ -59,17 +62,27 @@ Rails.application.routes.draw do
   #############
   #
   #  CHF crazy code to remove named route installed by sufia/CC, and install same named route
-  #  with different URL
+  #  with different URL. This is indeed confusing and weird, messing with trying to override
+  #  already defined Rails resourceful routes and named helpers, which rails doesn't really want
+  #  you to do.
   #
   ##############
 
     # Rails private API to _uninstall_ named route, may break in future
     Rails.application.routes.named_routes.send(:routes).delete(:curation_concerns_generic_work)
+    Rails.application.routes.named_routes.send(:routes).delete(:curation_concerns_parent_generic_work)
 
     # Have to recreate the routes, such that they are at /works, not breaking any use of
     # curation_concerns_generic_work_path helper method.
     namespace :curation_concerns, path: '' do
       resources "generic_works", path: '/works', except: [:index]
+
+      # And nested 'parent' links too. Needs to create the same helper method stack expects,
+      # especially for show url, currently `#curation_concerns_parent_generic_work`.
+      # /parent/$parent_id/works/$work_id
+      resources :parent, path: "/parent", only: [] do
+        resources "generic_works", path: "works", except: [:index]
+      end
     end
 
 
@@ -77,7 +90,7 @@ Rails.application.routes.draw do
   # but don't know it, and this is easy enough and works. Make the viewer
   # URL lead to ordinary show page, so JS can pick it up and launch viewer.
   get '/works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show', as: :viewer
-  get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
+  get '/parent/:parent_id/works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
   # our viewer json route
   get '/works/:id/viewer_images_info' => 'curation_concerns/generic_works#viewer_images_info', defaults: {format: "json"}, format: false, as: :viewer_images_info
 
