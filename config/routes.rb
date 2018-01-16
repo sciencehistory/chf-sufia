@@ -45,18 +45,41 @@ Rails.application.routes.draw do
 
   resources :welcome, only: 'index'
   root 'sufia/homepage#index'
+
+
+  # Redirect from OLD work URLs to the new ones that we will install/override below.
+  get '/concern/generic_works/:id', to: redirect('/works/%{id}')
+  get '/concern/generic_works/:id/viewer/:filesetid', to:  redirect('/works/%{id}/viewer/%{filesetid}')
+
   curation_concerns_collections
   curation_concerns_basic_routes
   curation_concerns_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
 
+  #############
+  #
+  #  CHF crazy code to remove named route installed by sufia/CC, and install same named route
+  #  with different URL
+  #
+  ##############
+
+    # Rails private API to _uninstall_ named route, may break in future
+    Rails.application.routes.named_routes.send(:routes).delete(:curation_concerns_generic_work)
+
+    # Have to recreate the routes, such that they are at /works, not breaking any use of
+    # curation_concerns_generic_work_path helper method.
+    namespace :curation_concerns, path: '' do
+      resources "generic_works", path: '/works', except: [:index]
+    end
+
+
   # there might be a way to get curation_concerns routes to this for us,
   # but don't know it, and this is easy enough and works. Make the viewer
   # URL lead to ordinary show page, so JS can pick it up and launch viewer.
-  get '/concern/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show', as: :viewer
+  get '/works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show', as: :viewer
   get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid(.:format)' => 'curation_concerns/generic_works#show'
   # our viewer json route
-  get '/concern/generic_works/:id/viewer_images_info' => 'curation_concerns/generic_works#viewer_images_info', defaults: {format: "json"}, format: false, as: :viewer_images_info
+  get '/works/:id/viewer_images_info' => 'curation_concerns/generic_works#viewer_images_info', defaults: {format: "json"}, format: false, as: :viewer_images_info
 
   # redirect to signed s3
   get '/download_redirect/:id/:filename_key' => "downloads#s3_download_redirect", as: :s3_download_redirect
