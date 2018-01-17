@@ -1124,6 +1124,8 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+    sitemap_generator (6.0.1)
+      builder (~> 3.0)
     skydrive (1.2.0)
       activesupport
       httmultiparty
@@ -1310,6 +1312,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sinatra (~> 2.0)
+  sitemap_generator (~> 6.0)
   slackistrano (~> 3.8)
   solr_wrapper (>= 0.3)
   spring
