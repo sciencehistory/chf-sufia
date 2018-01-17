@@ -48,10 +48,11 @@ Rails.application.routes.draw do
 
 
   # Redirect from OLD work URLs to the new ones that we will install/override below.
+  # Also we are getting rid of the `parent` URLs.
   get '/concern/generic_works/:id', to: redirect('/works/%{id}')
   get '/concern/generic_works/:id/viewer/:filesetid', to:  redirect('/works/%{id}/viewer/%{filesetid}')
-  get '/concern/parent/:parent_id/generic_works/:id', to: redirect('/parent/%{parent_id}/works/%{id}')
-  get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid', to: redirect('/parent/%{parent_id}/works/%{id}/viewer/%{filesetid}')
+  get '/concern/parent/:parent_id/generic_works/:id', to: redirect('/works/%{id}')
+  get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid', to: redirect('/works/%{id}/viewer/%{filesetid}')
 
 
   curation_concerns_collections
@@ -76,14 +77,13 @@ Rails.application.routes.draw do
     # curation_concerns_generic_work_path helper method.
     namespace :curation_concerns, path: '' do
       resources "generic_works", path: '/works', except: [:index]
-
-      # And nested 'parent' links too. Needs to create the same helper method stack expects,
-      # especially for show url, currently `#curation_concerns_parent_generic_work`.
-      # /parent/$parent_id/works/$work_id
-      resources :parent, path: "/parent", only: [] do
-        resources "generic_works", path: "works", except: [:index]
-      end
     end
+
+    # We want to GET RID of the `/concern/parent` urls, and just use standard /work urls.
+    # This is a trick to create the `curation_concerns_parent_generic_work` route helper methods
+    # sufia/CC use, to point to ur new desired /work URL. It depends on us having used private
+    # Rails API to remove the previosu named route above.
+    get "/works/:id", to: "curation_concerns/generic_works#show", params: {parent_id: nil}, as: "curation_concerns_parent_generic_work"
 
 
   # there might be a way to get curation_concerns routes to this for us,

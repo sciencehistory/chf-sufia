@@ -54,15 +54,17 @@ RSpec.describe "item routes", type: :routing do
   end
 
   # I'm not sure why these even exist in sufia, they don't seem to effect breadcrumbs
-  # which is what I'd predict they'd be for. But we need them to work too.
+  # which is what I'd predict they'd be for. We actually interverne to try to get rid
+  # of the separate `/parent/$parent_id/generic_works/$child_id` URL, and have them
+  # all route/link to just `/works/$work_id`.
   describe "child routes" do
     let(:parent)  { FactoryGirl.create(:generic_work, ordered_members: [work]) }
 
     let(:original_url) { "/concern/parent/#{parent.id}/generic_works/#{work.id}" }
     let(:original_viewer_url) { "/concern/parent/#{parent.id}/generic_works/#{work.id}/viewer/#{file_set_id}"}
 
-    let(:desired_url) { "/parent/#{parent.id}/works/#{work.id}"}
-    let(:desired_viewer_url) { "/parent/#{parent.id}/works/#{work.id}/viewer/#{file_set_id}"}
+    let(:desired_url) { "/works/#{work.id}"}
+    let(:desired_viewer_url) { "/works/#{work.id}/viewer/#{file_set_id}"}
 
     describe "polymorphic url" do
       include ActionDispatch::Routing::PolymorphicRoutes
@@ -78,8 +80,7 @@ RSpec.describe "item routes", type: :routing do
         expect(:get => desired_url).to route_to(
           :controller => "curation_concerns/generic_works",
           :action => "show",
-          :id => work.id,
-          :parent_id => parent.id
+          :id => work.id
         )
       end
 
@@ -88,7 +89,6 @@ RSpec.describe "item routes", type: :routing do
           :controller => "curation_concerns/generic_works",
           :action => "show",
           :id => work.id,
-          :parent_id => parent.id,
           :filesetid => file_set_id
         )
       end
