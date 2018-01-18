@@ -107,9 +107,15 @@ module CHF
         # secure URL supplies kind of security, assuming the app won't generate
         # this link unless you have access. But we haven't really ensured that
         # universally or made secure links everywhere, so this is not yet security.
+
+        # Try to do some things to deal with UTF8 filenames.
+        # https://stackoverflow.com/a/37347159/307106
+
+        file_name = "#{filename_base}_#{type_key.to_s}.#{defn.suffix.sub(/^\./, '')}"
+
         obj.presigned_url(:get,
                           expires_in: 3.days.to_i, # no hurry
-                          response_content_disposition: "attachment; filename=\"#{filename_base}_#{type_key.to_s}.#{defn.suffix.sub(/^\./, '')}\"")
+                          response_content_disposition: "attachment; filename=\"#{file_name.encode("US-ASCII", undef: :replace, replace: "_")}\";filename*=UTF-8''#{URI.encode file_name}")
       else
         obj.public_url
       end
