@@ -1002,7 +1002,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.1.0)
+    rake (12.3.0)
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -1325,4 +1325,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.15.4
+   1.16.1

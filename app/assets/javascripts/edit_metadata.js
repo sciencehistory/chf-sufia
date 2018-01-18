@@ -69,6 +69,18 @@ Blacklight.onLoad(function() {
   }
 
   function set_autocomplete($elem, authority) {
+
+    // Our local/forked code is interacting poorly with some other as-of-yet
+    // unidentified part of the stack that is ALSO attaching autocomplete to these
+    // things. I don't really get what's intended or what's going on here, but
+    // we assign the 'authority', which is a URL returning JSON, to the data-autocomplete-url
+    // attribute, so that other part of the stack will get the right one, instead of
+    // whatever is there by default which is apparently not what we want. This whole
+    // thing is a mess.
+    $elem.attr("data-autocomplete-url", authority)
+
+    // And now we do "this file"'s thing, not sure how it interacts with whatever
+    // else is going on.
     $elem.autocomplete( autocomplete_opts( authority ));
   }
 

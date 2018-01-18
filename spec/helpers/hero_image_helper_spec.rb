@@ -19,7 +19,7 @@ describe HeroImageHelper do
       it "gives link to the object" do
         out = helper.hero_link(work.id)
         node = Capybara::Node::Simple.new(out)
-        expect(node).to have_link work.title.first, href: "/concern/generic_works/#{work.id}"
+        expect(node).to have_link work.title.first, href: "/works/#{work.id}"
       end
     end
   end
