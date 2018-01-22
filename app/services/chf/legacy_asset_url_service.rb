@@ -20,19 +20,8 @@ module CHF
       download_path(file_set_id, file: file_arg)
     end
 
-    def member_src_attributes(member:, size_key:)
-      if member.representative_file_set_id || member.representative_id
-        {
-          src: thumb_url(member: member, size: size_key)
-        }
-      else
-        # no can do
-        {}
-      end
-    end
-
-    def tile_source_url(member_presenter)
-      {"type" => "image", "url" => download_path(member_presenter.representative_id, file: "jpeg")}.to_json
+    def tile_source_url
+      {"type" => "image", "url" => download_path(file_set_id, file: "jpeg")}.to_json
     end
 
     # We only have a 1x
