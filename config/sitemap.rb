@@ -15,6 +15,14 @@ SitemapGenerator::Sitemap.create do
 
   read_solr_field = Solrizer.solr_name('read_access_group', :symbol)
 
+  CHF::SyntheticCategory.all.collect(&:slug).each do |slug|
+    add synthetic_category_path(slug), changefreq: 'weekly'
+  end
+
+  Collection.find_each(read_solr_field => 'public') do |c|
+    add collection_path(c), changefreq: 'weekly', lastmod: nil
+  end
+
   GenericWork.find_each(read_solr_field => 'public') do |w|
     presenter = CurationConcerns::GenericWorkShowPresenter.new(w, Ability.new(nil))
 
@@ -28,10 +36,6 @@ SitemapGenerator::Sitemap.create do
         changefreq: 'monthly',
         lastmod: nil,
         images: image_urls.collect { |url| { loc: url } }
-  end
-
-  Collection.find_each(read_solr_field => 'public') do |c|
-    add collection_path(c), changefreq: 'weekly', lastmod: nil
   end
 end
 
