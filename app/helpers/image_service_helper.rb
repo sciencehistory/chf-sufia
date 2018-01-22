@@ -31,25 +31,12 @@ module ImageServiceHelper
       {
         src:  default_image(member: member)
       }
-    elsif service = _image_url_service(CHF::Env.lookup(:image_server_for_thumbnails), member)
+    else
+      service = _image_url_service(CHF::Env.lookup(:image_server_for_thumbnails), member)
       {
         src:    service.thumb_url(size: size_key),
         srcset: service.thumb_srcset_pixel_density(size: size_key)
       }
-    elsif member.representative_file_set_id || member.representative_id
-      # representative_file_set_id is the RIGHT one, but being defensive in case
-      # only the other is in index, it will be the same thing MOST of the time.
-      file_arg = if size_key == "mini"
-        "thumbnail"
-      else
-        "jpeg"
-      end
-      {
-        src: main_app.download_path(member.representative_file_set_id || member.representative_id, file: file_arg)
-      }
-    else
-      # no can do
-      {}
     end
   end
 
@@ -106,11 +93,8 @@ module ImageServiceHelper
 
   # For feeding to OpenSeadragon
   def tile_source_url(member_presenter)
-    if service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
-      service.tile_source_url
-    else
-      {"type" => "image", "url" => main_app.download_path(member_presenter.representative_id, file: "jpeg")}.to_json
-    end
+    service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
+    service.tile_source_url
   end
 
   # Configuration hash that both the JS viewer and our normal show pages
@@ -130,17 +114,14 @@ module ImageServiceHelper
       url: main_app.download_path(member_presenter.representative_file_set_id)
     } if member_presenter.representative_file_set_id
 
-    if service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
+    service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
 
-      service.download_options(filename_base: filename_base).tap do |list|
-        unless list.any? {|h| h[:option_key] == "original" }
-          (list << direct_original) if direct_original
-        end
-      end.collect do |option|
-        _fill_out_download_option(member_presenter, option)
+    service.download_options(filename_base: filename_base).tap do |list|
+      unless list.any? {|h| h[:option_key] == "original" }
+        (list << direct_original) if direct_original
       end
-    else
-      [direct_original].compact
+    end.collect do |option|
+      _fill_out_download_option(member_presenter, option)
     end
   end
 
@@ -186,15 +167,15 @@ module ImageServiceHelper
     end.compact
   end
 
-  # Returns nil if no image service available. Otherwise an image
-  # service that has tile_source_url, thumb_url, etc., methods.
+  # Returns an image  service that has tile_source_url, thumb_url, etc., methods.
+  # Maybe the CHF::LegacyAssetUrlService that has legacy sufia behavior
   def self.image_url_service_class(service_type)
     if service_type == "iiif"
       CHF::IiifUrlService
     elsif service_type == "dzi_s3"
       CHF::DziS3UrlService
     elsif (!service_type) || service_type == "false"
-      nil
+      CHF::LegacyAssetUrlService
     else
       raise ArgumentError.new("Unrecognized image service type: #{service_type}")
     end
@@ -204,7 +185,7 @@ module ImageServiceHelper
   private
 
   def _image_url_service(service_type, member)
-    klass = ImageServiceHelper::image_url_service_class(service_type)
+    klass = ImageServiceHelper.image_url_service_class(service_type)
     if klass
       return klass.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
     end
