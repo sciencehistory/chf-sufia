@@ -1,7 +1,15 @@
 require 'rubygems'
 require 'sitemap_generator'
 
+SitemapGenerator::Sitemap.adapter = SitemapGenerator::AwsSdkAdapter.new(CHF::Env.lookup!("sitemap_s3_bucket"),
+  aws_access_key_id: CHF::Env.lookup!("aws_access_key_id"),
+  aws_secret_access_key: CHF::Env.lookup!("aws_secret_access_key"),
+  aws_region: CHF::Env.lookup!("sitemap_s3_region")
+)
+
 SitemapGenerator::Sitemap.default_host = 'https://digital.sciencehistory.org'
+
+SitemapGenerator::Sitemap.sitemaps_path = 'sitemap/'
 
 SitemapGenerator::Sitemap.create do
   image_service_class = ImageServiceHelper.image_url_service_class(CHF::Env.lookup(:image_server_for_thumbnails))
