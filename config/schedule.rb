@@ -3,6 +3,9 @@
 
 env :PATH, ENV['PATH']
 
+# Make sure honeybadger reports errors in crontab'd rake tasks.
+env :HONEYBADGER_EXCEPTIONS_RESCUE_RAKE, true
+
 every 1.month, roles: [:app] do
   rake "chf:metadata_report"
 end
