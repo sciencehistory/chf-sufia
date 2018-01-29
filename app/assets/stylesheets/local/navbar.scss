@@ -32,6 +32,7 @@
     @extend .visible-xs;
   }
 
+  $large-logo-width: 287px;
   $large-logo-height: 176px;
   $small-logo-height: 40px;
 
@@ -40,6 +41,10 @@
   background-image: asset-url('scihist_top_nav_sym.png');
   background-repeat: no-repeat;
   background-position: right top;
+
+  .masthead-logo-large {
+    width: $large-logo-width;
+  }
 
   .navbar-brand {
     padding: 0;
