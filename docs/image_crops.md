@@ -14,3 +14,7 @@ Copy the resulting image into the code repository at the desired location under 
 If you've added a collection image, once the new image has been deployed a rake task needs to be run to link the image to the collection itself. For documentation of that task, including an example, run `rake -D collection`
 
 For more background see https://github.com/chemheritage/chf-sufia/issues/529
+
+### standard sizes
+
+for collection and "featured topic" thumbs: 700 px square

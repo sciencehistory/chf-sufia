@@ -32,6 +32,24 @@ namespace :chf do
     $stderr.puts "Re-ran checks, after re-run total failed latest checks: #{rel.count}"
   end
 
+  desc "bulk delete by ids newline separated in file"
+  task "bulk_delete", [:filepath] => :environment do |t, args|
+    ids = File.read(args[:filepath]).split(/\r?\n/)
+    progress_bar = ProgressBar.create(total: ids.count, format: "%t: |%B| %p%% %e")
+
+    ids.each do |id|
+      begin
+        w = GenericWork.find(id)
+        w.destroy
+        progress_bar.log "Destroyed #{id}: #{w}"
+      rescue ActiveFedora::ObjectNotFoundError, Ldp::Gone, ActiveFedora::RecordInvalid => e
+        progress_bar.log "Could not destroy: #{id}: #{e.inspect}"
+      ensure
+        progress_bar.increment
+      end
+    end
+    progress_bar.finish
+  end
 
   desc 'Rough count metadata completion'
   task metadata_report: :environment do
