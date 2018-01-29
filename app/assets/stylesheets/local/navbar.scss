@@ -113,19 +113,17 @@
 
 }
 
-.breadcrumbs-navbar-wrapper {
-  margin-top: -1 * $navbar-margin-bottom;
-  margin-bottom: $navbar-margin-bottom;
-
-  @media (min-width: $grid-float-breakpoint) {
-    padding-left: 28px; // try to line up with logo
-  }
-
+.breadcrumbs-navbar-wrapper:not(:empty) {
   ul.breadcrumb {
-    margin-bottom: 0;
+    margin-top: -1 * $navbar-margin-bottom;
+    margin-bottom: $navbar-margin-bottom;
     background: none;
-    padding-left: 0;
+    padding-left: 15px;
     padding-right: 0;
+
+    @media (min-width: $grid-float-breakpoint) {
+      padding-left: 42px; // try to line up with logo
+    }
   }
 }
 
