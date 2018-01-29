@@ -8,7 +8,7 @@ function ChfImageViewer(element) {
 ChfImageViewer.prototype.viewerPathComponentRe = /\/viewer\/(\w+)$/;
 
 ChfImageViewer.prototype.show = function(id) {
-  if (document.activeElement && document.activeElement.getAttribute("data-trigger") == "chf_image_viewer") {
+  if (document.activeElement) {
     this.previousFocus = document.activeElement;
   }
 
