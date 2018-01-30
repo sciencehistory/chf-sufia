@@ -28,6 +28,11 @@ module CurationConcerns
     def additional_response_formats(wants)
       wants.ris do
         @curation_concern = _curation_concern_type.find(params[:id]) unless curation_concern
+
+        # Terrible hack to get download name from our helper
+        download_name = helpers._download_name_base(@curation_concern) + ".ris"
+        headers["Content-Disposition"] = ApplicationHelper.encoding_safe_content_disposition(download_name)
+
         render body: CHF::RisSerializer.new(@curation_concern).serialize
       end
     end
