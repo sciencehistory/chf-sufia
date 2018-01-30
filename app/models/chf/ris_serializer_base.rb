@@ -76,10 +76,10 @@ module CHF
 
     def serialize
       lines = []
-      lines << "TY  - #{get_type.call(model, self) || default_type}"
+      lines << "TY  - #{self.instance_exec(model, &get_type) || default_type}"
 
       serialize_definitions.each do |serialize_defn|
-        lines.concat serialize_defn.lines(model)
+        lines.concat ris_lines_with(serialize_defn)
       end
 
       lines << END_RECORD
@@ -89,6 +89,45 @@ module CHF
 
     protected
 
+    def extract_values_with(defn)
+      values = []
+
+      # first property(ies)
+      if defn.model_property.present?
+        Array(defn.model_property).each do |property|
+          byebug if property.to_s =~ /\:/
+          values.concat Array(model.send(property))
+
+          break if values.present? && !defn.multiple
+        end
+      end
+
+      if (values.empty? || !defn.multiple) && defn.model_predicate.present?
+
+      end
+
+      if (values.empty? || !defn.multiple) && defn.block.present?
+        values.concat Array(self.instance_exec(model, &defn.block))
+      end
+
+      unless defn.multiple
+        values = values.slice!(0, 1)
+      end
+
+      values.collect(&:presence).compact
+
+      if defn.transform
+        values.collect! { |v| self.instance_exec(v, &defn.transform) }
+      end
+
+      return values
+    end
+
+    def ris_lines_with(defn)
+      extract_values_with(defn).collect do |value|
+        "#{defn.ris_tag.to_s.upcase}  - #{value}"
+      end
+    end
 
     class SerializeDefinition < Struct.new(:ris_tag, :model_property, :model_predicate, :multiple, :block, :transform)
       def initialize(args = {})
@@ -96,47 +135,6 @@ module CHF
           send("#{key}=", value)
         end
       end
-
-      def lines(model)
-        extract(model).collect do |value|
-          "#{ris_tag.to_s.upcase}  - #{value}"
-        end
-      end
-
-      def extract(model)
-        values = []
-
-        # first property(ies)
-        if model_property.present?
-          Array(model_property).each do |property|
-            byebug if property.to_s =~ /\:/
-            values.concat Array(model.send(property))
-
-            break if values.present? && !multiple
-          end
-        end
-
-        if (values.empty? || !multiple) && model_predicate.present?
-
-        end
-
-        if (values.empty? || !multiple) && block.present?
-          values.concat Array(block.call(model))
-        end
-
-        unless multiple
-          values = values.slice!(0, 1)
-        end
-
-        values.collect(&:presence).compact
-
-        if transform
-          values.collect! { |v| transform.call(v) }
-        end
-
-        return values
-      end
-
     end
   end
 end

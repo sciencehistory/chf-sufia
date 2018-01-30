@@ -5,7 +5,7 @@ module CHF
     # Limited ability to map to RIS types -- 'manuscript' type seems to get
     # the best functionality for archival fields in most software, so we default to
     # that and use that in many places maybe we COULD have something more specific.
-    self.get_type = lambda do |item, serializer|
+    self.get_type = lambda do |item|
       if item.genre_string.include?('Manuscripts')
         return "MANSCPT"
       elsif (item.genre_string & ['Personal correspondence', 'Business correspondence']).present?
