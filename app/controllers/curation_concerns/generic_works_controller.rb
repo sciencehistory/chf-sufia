@@ -24,6 +24,14 @@ module CurationConcerns
 
     protected
 
+    # override from curation_concerns to add additional response formats to #show
+    def additional_response_formats(wants)
+      wants.ris do
+        @curation_concern = _curation_concern_type.find(params[:id]) unless curation_concern
+        render body: CHF::RisSerializer.new(@curation_concern).serialize
+      end
+    end
+
     # Pretty hacky way to override the t() I18n method when called from template:
     # https://github.com/projecthydra/sufia/blob/8bb451451a492e443687f8c5aff4882cac56a131/app/views/curation_concerns/base/_relationships_parent_row.html.erb
     # ...so  we can catch what would have been "In Generic work" and replace with
