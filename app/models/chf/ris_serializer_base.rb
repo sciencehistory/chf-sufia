@@ -27,7 +27,7 @@ module CHF
 
 
     # class-level 'macro' to define serialization of properties in sub-classes
-    def self.serialize(ris_tag, property: nil, predicate: nil, multiple: nil, &block)
+    def self.serialize(ris_tag, property: nil, predicate: nil, multiple: nil, transform: nil, &block)
       ris_tag = ris_tag.to_s.upcase
       multiple ||= multiple.nil? ? default_multiple.include?(ris_tag) : multiple
 
@@ -40,7 +40,8 @@ module CHF
         model_property: property,
         model_predicate: predicate.to_s,
         multiple: multiple,
-        block: block
+        block: block,
+        transform: transform
       )
     end
 
@@ -89,7 +90,7 @@ module CHF
     protected
 
 
-    class SerializeDefinition < Struct.new(:ris_tag, :model_property, :model_predicate, :multiple, :block)
+    class SerializeDefinition < Struct.new(:ris_tag, :model_property, :model_predicate, :multiple, :block, :transform)
       def initialize(args = {})
         args.each_pair do |key, value|
           send("#{key}=", value)
@@ -128,6 +129,10 @@ module CHF
         end
 
         values.collect(&:presence).compact
+
+        if transform
+          values.collect! { |v| transform.call(v) }
+        end
 
         return values
       end

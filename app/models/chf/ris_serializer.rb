@@ -62,7 +62,7 @@ module CHF
       end
     end
 
-    serialize :ab, property: :description, predicate: [::RDF::Vocab::DC.description, ::RDF::Vocab::DC11.description]
+    serialize :ab, property: :description, predicate: [::RDF::Vocab::DC.description, ::RDF::Vocab::DC11.description], transform: proc { |v| ActionView::Base.full_sanitizer.sanitize(v) }
 
     serialize :cy, property: Rails.application.config.places
 
