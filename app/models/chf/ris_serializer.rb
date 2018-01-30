@@ -13,10 +13,14 @@ module CHF
       elsif  item.division == "Archives"
         # if it's not PCOMM, insist on MANSCPT for archival content
         return "MANSCPT"
-      elsif (item.genre_string & %w{Paintings Drawings}).present?
+      elsif (item.genre_string & %w{Paintings}).present?
         return "ART"
-      elsif item.genre_string.include?("Catalogs")
-        return "CTLG"
+      elsif (item.genre_string & ['Rare books', 'Sample books']).present?
+        return "BOOK"
+      elsif item.genre_string.include?('Slides')
+        return "SLIDE"
+      elsif item.genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
+        return "RPRT"
       elsif item.genre_string.include?('Encyclopedias and dictionaries')
         return "ENCYC"
       else
