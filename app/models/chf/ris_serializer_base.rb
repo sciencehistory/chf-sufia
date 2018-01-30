@@ -1,4 +1,13 @@
 module CHF
+  # This was intended to be the start of a re-usble RIS-export module, but RIS
+  # ends up more complicated than anticiapted, different field names mean different
+  # things depending on TY citation type. Here's how zotero thinks some legacy
+  # software did it at some point: https://github.com/aurimasv/translators/wiki/RIS-Tag-Map-(narrow)
+  # So this API may or may not be powerful enough.
+  #
+  # But you make a sub-class, then in the subclass can configure a `get_type`
+  # lambda, as well as make multiple `serialize` statements to establish mappings.
+  # See our local CHF::RisSerializer sub-class.
   class RisSerializerBase
     LINE_END = "\r\n"
     END_RECORD = "ER -#{LINE_END}"

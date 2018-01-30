@@ -2,12 +2,17 @@ module CHF
   # https://github.com/aurimasv/translators/wiki/RIS-Tag-Map-(narrow)
   class RisSerializer < CHF::RisSerializerBase
 
-    # Limited ability to map to RIS types, the rest are manuscripts
+    # Limited ability to map to RIS types -- 'manuscript' type seems to get
+    # the best functionality for archival fields in most software, so we default to
+    # that and use that in many places maybe we COULD have something more specific.
     self.get_type = lambda do |item, serializer|
       if item.genre_string.include?('Manuscripts')
         return "MANSCPT"
       elsif (item.genre_string & ['Personal correspondence', 'Business correspondence']).present?
         return "PCOMM"
+      elsif  item.division == "Archives"
+        # if it's not PCOMM, insist on MANSCPT for archival content
+        return "MANSCPT"
       elsif (item.genre_string & %w{Paintings Drawings}).present?
         return "ART"
       elsif item.genre_string.include?("Catalogs")
@@ -28,10 +33,10 @@ module CHF
 
     # zotero 'extra'. endnote?
     serialize :m2 do |item|
-      "Courtesy of Science History Institute\n" +
+      "Courtesy of Science History Institute." +
         # rights statement
         if item.rights.present?
-          "Rights: " + item.rights.collect do |id|
+          "  Rights: " + item.rights.collect do |id|
             CurationConcerns::LicenseService.new.label(id)
           end.join(", ") + (item.rights_holder.present? ? ", #{item.rights_holder}" : "")
         else
@@ -61,7 +66,6 @@ module CHF
 
     serialize :cy, property: Rails.application.config.places
 
-
     serialize :kw, property: :subject, predicate: [::RDF::Vocab::DC.subject, ::RDF::Vocab::DC11.subject]
     serialize :la, property: :language, predicate: [::RDF::Vocab::DC.language, ::RDF::Vocab::DC11.language]
 
@@ -82,8 +86,8 @@ module CHF
       end
     end
 
-    # archival location is officially "AV". Endnote uses "VL: volume" for this though.
-    # And Zotero uses "AN accession number!!"
+    # archival location is according to wikipedia "AV". Endnote uses "VL" (volume) for this though.
+    # And Zotero uses "AN" (accession number)!
     serialize :av, &archival_location
     serialize :vl, &archival_location
     serialize :an, &archival_location
