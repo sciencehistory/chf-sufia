@@ -76,8 +76,15 @@
   </div>
 
 
+
   <div class="show-metadata">
     <%= render 'work_description', presenter: @presenter %>
+
+    <div class="show-user-actions">
+      <%= link_to main_app.curation_concerns_generic_work_path(@presenter.id, format: "ris"), class: "btn btn-sm btn-brand-dark" do %>
+        <i class="fa fa-address-card"></i> Export Citation (RIS)
+      <% end %>
+    </div>
 
     <table class="<%= dom_class(@presenter) %> chf-attributes">
         <%= @presenter.attribute_to_html(:artist, render_as: :faceted, search_field: 'maker_facet') %>
