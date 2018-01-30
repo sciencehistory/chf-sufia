@@ -62,6 +62,11 @@ module CHF
       end
     end
 
+    serialize :yr do |item|
+      item.date_of_work.try(:first).try(:start) =~ /\A(\d\d\d\d)/
+      $1
+    end
+
     serialize :ab, property: :description, predicate: [::RDF::Vocab::DC.description, ::RDF::Vocab::DC11.description], transform: proc { |v| ActionView::Base.full_sanitizer.sanitize(v) }
 
     serialize :cy, property: Rails.application.config.places
