@@ -10,17 +10,18 @@ module CHF
         return "MANSCPT"
       elsif (item.genre_string & ['Personal correspondence', 'Business correspondence']).present?
         return "PCOMM"
+      elsif (item.genre_string & ['Rare books', 'Sample books']).present?
+        return "BOOK"
+      elsif item.genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
+        return "RPRT"
       elsif  item.division == "Archives"
-        # if it's not PCOMM, insist on MANSCPT for archival content
+        # if it's not one of above known to use archival metadata, and it's in
+        # Archives, insist on Manuscript.
         return "MANSCPT"
       elsif (item.genre_string & %w{Paintings}).present?
         return "ART"
-      elsif (item.genre_string & ['Rare books', 'Sample books']).present?
-        return "BOOK"
       elsif item.genre_string.include?('Slides')
         return "SLIDE"
-      elsif item.genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
-        return "RPRT"
       elsif item.genre_string.include?('Encyclopedias and dictionaries')
         return "ENCYC"
       else
@@ -28,8 +29,11 @@ module CHF
       end
     end
 
+    # Theoretically "DB" is 'name of database' and "DP" is "database provider"
+    # Different software uses one or the other for "Archive:". We use the plain
+    # institute name for both, in line with rebrand style guide.
     serialize :db do
-      "Science History Institute Digital Collections"
+      "Science History Institute"
     end
     serialize :dp do
       "Science History Institute"
