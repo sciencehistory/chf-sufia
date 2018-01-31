@@ -242,6 +242,7 @@
   .show-page-image-bar {
     display: flex;
     width: 100%;
+    margin-top: 4px;
 
     .btn-group {
       width: 100%;
@@ -249,6 +250,10 @@
       flex-grow: 1;
       flex-shrink: 1;
       min-width: 0;
+
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
 
       .btn {
         width: 100%;
