@@ -226,7 +226,7 @@
 
     .btn {
       @extend .btn-sm;
-      border-radius: 0;
+      border-radius: 2px;
     }
 
     @media (min-width: $screen-sm-min) {
@@ -266,7 +266,7 @@
     }
     & > button, & > .btn, & > .btn-group > button {
       flex: 1;
-      border-radius: 0;
+      border-radius: 2px;
     }
   }
 }
