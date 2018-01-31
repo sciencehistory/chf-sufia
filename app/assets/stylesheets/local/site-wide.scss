@@ -155,3 +155,8 @@ hr.brand {
   text-transform: uppercase;
   letter-spacing: $small-caps-letter-spacing;
 }
+
+.panel-default {
+  border-left-color: $brand-light-grey;
+  border-right-color: $brand-light-grey;
+}
