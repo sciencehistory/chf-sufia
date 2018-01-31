@@ -317,6 +317,9 @@
           border-bottom-right-radius: $btn-border-radius-base;
         }
       }
+      input[type=text] {
+        border-color: $brand-light-grey;
+      }
     }
   }
 
@@ -352,6 +355,7 @@
     a.remove {
       @extend .btn-primary;
       width: 48px;
+      border-left-color: $brand-light-grey;
     }
 
     .constraints-label {

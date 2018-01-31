@@ -226,7 +226,7 @@
 
     .btn {
       @extend .btn-sm;
-      border-radius: 0;
+      border-radius: 2px;
     }
 
     @media (min-width: $screen-sm-min) {
@@ -242,6 +242,7 @@
   .show-page-image-bar {
     display: flex;
     width: 100%;
+    margin-top: 4px;
 
     .btn-group {
       width: 100%;
@@ -249,6 +250,10 @@
       flex-grow: 1;
       flex-shrink: 1;
       min-width: 0;
+
+      &:not(:last-child) {
+        margin-right: 4px;
+      }
 
       .btn {
         width: 100%;
@@ -261,7 +266,7 @@
     }
     & > button, & > .btn, & > .btn-group > button {
       flex: 1;
-      border-radius: 0;
+      border-radius: 2px;
     }
   }
 }
