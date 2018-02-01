@@ -3,6 +3,9 @@
 
 env :PATH, ENV['PATH']
 
+# Make sure honeybadger reports errors in crontab'd rake tasks.
+env :HONEYBADGER_EXCEPTIONS_RESCUE_RAKE, true
+
 every 1.month, roles: [:app] do
   rake "chf:metadata_report"
 end
@@ -16,4 +19,8 @@ end
 
 every 1.day, :at => '2:00 am', roles: [:app] do
   rake "blacklight:delete_old_searches[7]"
+end
+
+every :tuesday, :at => '4:00 am', roles: [:cron] do
+  rake "sitemap:create"
 end

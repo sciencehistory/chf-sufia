@@ -9,6 +9,14 @@ Bundler.require(*Rails.groups)
 module Chufia
   class Application < Rails::Application
 
+    # Due to a bug in honeybadger, the at_exit callback isn't being installed, cause
+    # honeybadger thinks we're sinatra, so error reports can be lost at app shutdown --
+    # and in the special case of rake task, usually will be.
+    # We do this manually. If honeybadger fixes it's thing, this might result
+    # in double callback, which theoretically isn't great.
+    # https://github.com/honeybadger-io/honeybadger-ruby/issues/258
+    Honeybadger.install_at_exit_callback
+
     # The compile method (default in tinymce-rails 4.5.2) doesn't work when also
     # using tinymce-rails-imageupload, so revert to the :copy method
     # https://github.com/spohlenz/tinymce-rails/issues/183

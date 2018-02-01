@@ -6,3 +6,8 @@ require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
 require 'solr_wrapper/rake_task' unless Rails.env.production?
+
+# Make sure we have CHF::Env even if running tasks without :environment dependency.
+# If we didn't have ./lib auto-loading, this could/woudl be just `require`
+require_dependency "chf/env"
+
