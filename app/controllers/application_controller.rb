@@ -26,7 +26,12 @@ class ApplicationController < ActionController::Base
     # Override to turn it into a live search box/form allowing you to change query,
     # instead of just a label
     def render_constraints_query(localized_params = params)
-      render "query_constraint_as_form", params: localized_params
+      # Only on catalog (user-facing), doesn't work for "my_works" admin.
+      if params[:controller] == "catalog"
+        render "query_constraint_as_form", params: localized_params
+      else
+        super
+      end
     end
 
     def query_has_constraints?(localized_params = params)

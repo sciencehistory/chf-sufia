@@ -58,5 +58,20 @@ RSpec.feature "Search smoke-tests", js: true do
     end
 
     include_examples "searching"
+
+    scenario "search my_works" do
+      # Haven't figured out how to create a test record belonging to a particular
+      # user, but at least make sure the search doesn't error.
+
+      visit(root_path)
+      fill_in 'q', with: 'two'
+      click_button 'All'
+      click_link 'My Works'
+
+      click_button 'Search'
+
+      expect(page).to have_current_path("/dashboard/works", only_path: true)
+      expect(page).to have_http_status(200)
+    end
   end
 end
