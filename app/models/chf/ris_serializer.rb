@@ -80,7 +80,11 @@ module CHF
     serialize :cy, property: Rails.application.config.places
 
     serialize :kw, property: :subject, predicate: [::RDF::Vocab::DC.subject, ::RDF::Vocab::DC11.subject]
-    serialize :la, property: :language, predicate: [::RDF::Vocab::DC.language, ::RDF::Vocab::DC11.language]
+
+    # Multiple values in one RIS field please.
+    serialize :la do |item|
+      extract_values_with(SerializeDefinition.new(model_property: :language, model_predicate: [::RDF::Vocab::DC.language, ::RDF::Vocab::DC11.language], multiple: true)).join(", ")
+    end
 
     serialize :m3 do |item|
       (item.genre_string || []).join(", ")
