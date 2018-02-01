@@ -358,7 +358,13 @@ namespace :chf do
         w.credit_line = ["Courtesy of Science History Institute"]
 
         w.related_url = w.related_url.collect do |url|
-          url.gsub( %r{\A(https?://[^.]+\.)?chemheritage.org}, "\\1sciencehistory.org")
+          url.gsub( %r{\A(https?://([^.]+\.)?)?chemheritage.org} ) do
+            host_prefix = $1
+            if host_prefix =~ %r{\A(https?://)hydra\.}
+              host_prefix = "#{$1}digital."
+            end
+            "#{host_prefix}sciencehistory.org"
+          end
         end
 
         if w.rights_holder
