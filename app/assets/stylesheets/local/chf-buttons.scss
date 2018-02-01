@@ -1,0 +1,19 @@
+// buttons generally have no borders, have border color set to same
+// as bg color. we set btn-primary the same in variables.
+
+// a light grey button matching light grey bg
+.btn-brand-alt {
+  // color, bg, border
+  @include button-variant($text-color, $bg-lightly-shaded, $bg-lightly-shaded);
+}
+
+// dark grey button
+.btn-brand-dark {
+  @include button-variant(#FFFFFF, $brand-dark-grey, $brand-dark-grey);
+}
+
+
+// An especially bright button style using the brand bright breen
+.btn-emphasis {
+  @include button-variant(black, $brand-bright-green, $brand-bright-green); //mix($brand-bright-green, $brand-dark-blue, 93%)
+}
