@@ -9,6 +9,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
 %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
+<%# we're going to provide constraints ourselves below #>
 <% provide :suppress_layout_constraints, true %>
 
 <div itemscope itemtype="http://schema.org/CollectionPage" class="collection-show">
@@ -101,6 +102,10 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
         to use the catalog view_type_group partial instead of the overridden sufia one which doesn't have
         the same classes
     %>
+    <div class="chf-constraints-wrapper">
+      <%= render 'catalog/constraints' %>
+    </div>
+
     <% if @member_docs.count != 1 %>
       <%= render 'catalog/search_header' %>
     <% end %>
