@@ -40,6 +40,11 @@ RSpec.feature "Search smoke-tests", js: true do
       # image is there. too hard to check actual src url at present.
       expect(page).to have_css("img.show-page-image-image")
 
+      # RIS citation export
+      click_link "Export citation (RIS)"
+      expect(page.status_code).to eq 200
+      expect(response_headers["Content-Type"]).to eq("application/x-research-info-systems; charset=utf-8")
+
       # download menu opens
       click_button "Download"
       expect(page).to have_css(".dropdown-menu.download-menu")
