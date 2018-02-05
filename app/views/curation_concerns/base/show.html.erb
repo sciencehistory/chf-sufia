@@ -82,10 +82,10 @@
 
     <div class="show-user-actions">
       <div class="btn-group" role="group">
-        <%= link_to main_app.curation_concerns_generic_work_path(@presenter.id, format: "ris"), class: "btn btn-sm btn-brand-dark export-citation" do %>
+        <%= link_to main_app.curation_concerns_generic_work_path(@presenter.id, format: "ris"), class: "btn btn-sm btn-primary export-citation" do %>
           <i class="fa fa-address-card"></i> Export citation (RIS)
         <% end %>
-        <a class="btn btn-default btn-sm" tabindex="0" role="button" data-toggle="popover" data-placement="bottom"
+        <a class="btn btn-brand-dark btn-sm" tabindex="0" role="button" data-toggle="popover" data-placement="bottom"
            data-container="body"
            data-html="true"
            data-trigger="focus"
