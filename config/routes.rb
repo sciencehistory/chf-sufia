@@ -13,7 +13,12 @@ Rails.application.routes.draw do
   # add a faq page
   get 'faq', controller: 'static', action: 'faq', as: 'faq'
   # remove help page, replaced with 'faq'
-  get 'help', to: redirect('/404')
+  get 'help', to: proc { raise ActionController::RoutingError.new('Not Found') }
+
+  # remove weird zotero and mendeley pages with weird message, so it doesn't get
+  # google indexed.
+  get "zotero", to: proc { raise ActionController::RoutingError.new('Not Found') }
+  get "mendeley", to: proc { raise ActionController::RoutingError.new('Not Found') }
 
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   Hydra::BatchEdit.add_routes(self)
