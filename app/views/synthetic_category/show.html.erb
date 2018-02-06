@@ -62,12 +62,8 @@
           to use the catalog view_type_group partial instead of the overridden sufia one which doesn't have
           the same classes
       %>
-      <% if results.count != 1 %>
-        <%= render 'catalog/search_header' %>
-      <% end %>
 
-
-
+      <%= render 'catalog/search_header' %>
 
       <ul class="list-unstyled collection-items">
         <%# Don't entirely understand how this works to get the proper partial, but it does,
@@ -76,10 +72,6 @@
          %>
         <%= render partial: "curation_concerns/generic_works/generic_work", collection: results %>
       </ul>
-
-
-
-
 
     <% if show_pagination? and @response.total_pages > 1 %>
         <%# expanded will be shown by CSS at large screen sizes, else compact %>

@@ -106,9 +106,9 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
         to use the catalog view_type_group partial instead of the overridden sufia one which doesn't have
         the same classes
     %>
-    <% if @member_docs.count != 1 %>
-      <%= render 'catalog/search_header' %>
-    <% end %>
+
+    <%= render 'catalog/search_header' %>
+
 
     <%#  replacing `render_document_index @member_docs` %>
       <%# not sure what some of this is about, but this is extracted from:
