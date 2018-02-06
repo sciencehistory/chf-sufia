@@ -119,7 +119,7 @@ The underlying code in stack is a mess, so this override seems perhaps likely to
       <% @all_checked = false %>
       <% @user = current_user %>
 
-      <% if @member_docs.empty? %>
+      <% if @member_docs.empty? && params[:q].empty? && params[:f].empty? %>
         <div class="alert alert-warning" role="alert"><%= t('sufia.collection.document_list.no_visible_works') %></div>
       <% else %>
         <% @document_list = @member_docs %>
