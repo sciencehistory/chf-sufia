@@ -30,7 +30,7 @@ RSpec.feature "Collections", js: true do
 
     # do a query search too
     within(".chf-collection-search-form") do
-      page.fill_in "cq", with: title
+      page.fill_in "q", with: title
       click_on class: "collection-submit"
     end
     expect(page).to have_current_path(collection_path(collection), only_path: true)
