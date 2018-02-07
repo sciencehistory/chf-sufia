@@ -215,6 +215,71 @@ namespace :chf do
     puts 'migration complete'
   end
 
+  desc "migrate user email addresses to @sciencehistory.org"
+  task :rebrand_email_migrate, [:backwards] => :environment do |t, args|
+    old_domain = "@chemheritage.org"
+    new_domain = "@sciencehistory.org"
+    if args[:backwards]
+      old_domain = "@sciencehistory.org"
+      new_domain = "@chemheritage.org"
+    end
+
+    substitute = lambda do |str|
+      str.sub(/(.*)#{old_domain}\Z/, "\\1#{new_domain}")
+    end
+
+    User.where("email like '%#{old_domain}'").each do |user|
+      user.email = substitute.call(user.email)
+      user.save!
+    end
+
+    total = GenericWork.count + FileSet.count
+    progress_bar = ProgressBar.create(:total => total, format: "%t: |%B| %p%% %e")
+
+    errors = []
+
+    GenericWork.find_each do |work|
+      begin
+        work.depositor = substitute.call(work.depositor)
+
+        %w{edit_users read_users discover_users}.each do |users_method|
+          if work.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
+            new_list = work.send(users_method).collect { |u| substitute.call(u) }
+            work.send("#{users_method}=", new_list)
+          end
+        end
+
+        work.save!
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
+        errors << "#{work.class}:#{work.id}:#{e}"
+        progress_bar.log "Could not migrate: #{errors.last}"
+      ensure
+        progress_bar.increment
+      end
+    end
+    FileSet.find_each do |fs|
+      begin
+        fs.depositor = substitute.call(fs.depositor)
+
+        %w{edit_users read_users discover_users}.each do |users_method|
+          if fs.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
+            new_list = fs.send(users_method).collect { |u| substitute.call(u) }
+            fs.send("#{users_method}=", new_list)
+          end
+        end
+
+        fs.save!
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone, StandardError => e
+        errors << "#{fs.class}:#{fs.id}:#{e}"
+        progress_bar.log "Could not migrate: #{errors.last}"
+      ensure
+        progress_bar.increment
+      end
+    end
+    progress_bar.finish
+    $stderr.puts "Could not fully migrate #{errors.count} objects"
+  end
+
   desc 'Reindex everything. `RAILS_ENV=production bundle exec rake chf:reindex`. DELETE_PREVIOUS=true will delete any records created before reindex and not reindexed -- ie, deleted records'
   task reindex: :environment do
     CHF::Indexer.new(progress_bar: true, final_commit: true, delete_previous: ENV['DELETE_PREVIOUS'] == "true").reindex_everything
