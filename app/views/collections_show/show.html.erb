@@ -59,6 +59,10 @@ The underlying code in stack is a bit of a mess, so this customization seems per
     <div class="chf-collection-search-form"><%= render 'search_form', presenter: presenter %></div>
   </div>
 
+  <div class="chf-constraints-wrapper">
+    <%= render 'catalog/constraints' %>
+  </div>
+
   <%# built in sufia collections/sort_and_per_page overrides to some years old Blacklight. We want
       the normal one we're actually using. %>
     <%# render 'sort_and_per_page', collection: @presenter %>

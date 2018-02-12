@@ -64,6 +64,14 @@ class CollectionsShowController < CatalogController
     end
   end
 
+  # Have to override this helper method from Blacklight to tell it, no, keep the
+  # search HERE in this controller, don't go over to #index action. Ergh.
+  # https://github.com/projectblacklight/blacklight/blob/v6.7.2/app/controllers/concerns/blacklight/controller.rb#L71-L74
+  def search_action_url options = {}
+     url_for(options.except(:controller, :action))
+  end
+  helper_method :search_action_url
+
 end
 
 

@@ -28,6 +28,11 @@
     }
   }
 
+  // sad overrides to make things flush left properly when re-used on this page.
+  #sidebar, #appliedParams.constraints-container, .chf-constraints-wrapper {
+    padding-left: 0 !important;
+  }
+
   .actions-controls-collections {
     margin: 0 0 $line-height-computed 0;
   }
