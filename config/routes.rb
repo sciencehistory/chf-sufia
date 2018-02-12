@@ -57,6 +57,8 @@ Rails.application.routes.draw do
 
   # Override collections/$id to point to our new custom controller
   get "collections/:id" => "collections_show#show"
+  get "collections/:id/range_limit" => "collections_show#range_limit"
+  get "collections/:id/facet" => "collections_show#facet"
 
   curation_concerns_collections
   curation_concerns_basic_routes
