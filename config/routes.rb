@@ -55,10 +55,14 @@ Rails.application.routes.draw do
   get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid', to: redirect('/works/%{id}/viewer/%{filesetid}')
 
 
+  # Override collections/$id to point to our new custom controller
+  get "collections/:id" => "collections_show#show"
+
   curation_concerns_collections
   curation_concerns_basic_routes
   curation_concerns_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
+
 
   #############
   #
@@ -120,4 +124,5 @@ Rails.application.routes.draw do
   # Sufia should be mounted before curation concerns to give priority to its routes
   mount Sufia::Engine => '/'
   mount CurationConcerns::Engine, at: '/'
+
 end
