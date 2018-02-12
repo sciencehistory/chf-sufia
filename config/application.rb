@@ -161,6 +161,7 @@ module Chufia
       'Paintings',
       'Pamphlets',
       'Personal correspondence',
+      'Pesticides',
       'Photographs',
       'Plastics',
       'Portraits',
