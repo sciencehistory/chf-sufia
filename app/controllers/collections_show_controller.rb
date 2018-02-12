@@ -16,6 +16,23 @@ class CollectionsShowController < CatalogController
     @parent_presenter_lookup = parent_lookup_hash(@response.documents) # to look up parents to show, in one query
   end
 
+  # Override from Blacklight catalog.rb to get facet id out of :facet_id,
+  # so :id can continue being our parent collection id.
+  # displays values and pagination links for a single facet field
+  def facet
+    @facet = blacklight_config.facet_fields[params[:facet_id]]
+    @response = get_facet_field_response(@facet.key, params)
+    @display_facet = @response.aggregations[@facet.key]
+    @pagination = facet_paginator(@facet, @display_facet)
+    respond_to do |format|
+      # Draw the facet selector for users who have javascript disabled:
+      format.html
+      format.json
+      # Draw the partial for the "more" facet modal window:
+      format.js { render :layout => false }
+    end
+  end
+
   # catalog controller action method we don't want to expose
   protected :index
 
@@ -71,6 +88,16 @@ class CollectionsShowController < CatalogController
      url_for(options.except(:controller, :action))
   end
   helper_method :search_action_url
+
+  # override to put the facet id in :facet_id instead of :id, so we can keep
+  # :id for our parent collection id.
+  def search_facet_url options = {}
+    if options.has_key?(:id)
+      options[:facet_id] = options.delete(:id)
+    end
+    super(options)
+  end
+
 
 end
 
