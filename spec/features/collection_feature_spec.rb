@@ -22,13 +22,13 @@ RSpec.feature "Collections", js: true do
       click_link(subject)
     end
 
-    # still on page, still see result, with facet limit
+    # # still on page, still see result, with facet limit
     expect(page).to have_current_path(collection_path(collection), only_path: true)
     expect(page).to have_text("1 item")
     expect(page).to have_link(title, href: curation_concerns_generic_work_path(work.id))
     expect(page).to have_css(".constraints-container .constraint-value", text: subject)
 
-    # do a query search too
+    # # do a query search too
     within(".chf-collection-search-form") do
       page.fill_in "q", with: title
       click_on class: "collection-submit"
@@ -39,7 +39,7 @@ RSpec.feature "Collections", js: true do
     within(".constraints-container") do
       expect(page).to have_field("q", with: title)
     end
-    # not NOT keep the facet limit, fresh search
+    # do NOT keep the facet limit, fresh search on main query box
     expect(page).not_to have_css(".constraints-container .constraint-value", text: subject) # facet limit still there
   end
 end
