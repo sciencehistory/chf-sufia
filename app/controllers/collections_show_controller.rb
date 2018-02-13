@@ -8,7 +8,10 @@ class CollectionsShowController < CatalogController
 
   layout 'chf'
 
-  def show
+  # It would make a lot more sense for this action to be 'show', and it is adapted
+  # from CurationConcerns::CollectionControllerBehavior#show, but so many parts of blacklight
+  # search results assume or hard-code action #index, it's a lot easier to just do that. Sorry!
+  def index
     build_breadcrumbs
 
     presenter # load Collection presenter
@@ -34,7 +37,7 @@ class CollectionsShowController < CatalogController
   end
 
   # catalog controller action method we don't want to expose
-  protected :index
+  protected :show
 
   protected
 
@@ -87,14 +90,6 @@ class CollectionsShowController < CatalogController
     end
   end
 
-  # Have to override this helper method from Blacklight to tell it, no, keep the
-  # search HERE in this controller, don't go over to #index action. Ergh.
-  # https://github.com/projectblacklight/blacklight/blob/v6.7.2/app/controllers/concerns/blacklight/controller.rb#L71-L74
-  def search_action_url options = {}
-     url_for(options.except(:controller, :action))
-  end
-  helper_method :search_action_url
-
   # override to put the facet id in :facet_id instead of :id, so we can keep
   # :id for our parent collection id.
   def search_facet_url options = {}
@@ -103,8 +98,6 @@ class CollectionsShowController < CatalogController
     end
     super(options)
   end
-
-
 end
 
 

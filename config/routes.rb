@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
 
   # Override collections/$id to point to our new custom controller
-  get "collections/:id" => "collections_show#show"
+  get "collections/:id" => "collections_show#index"
   get "collections/:id/range_limit" => "collections_show#range_limit"
   get "collections/:id/facet" => "collections_show#facet"
   get "focus/:id/range_limit" => "synthetic_category#range_limit"
@@ -122,7 +122,7 @@ Rails.application.routes.draw do
   get '/opac_data/:rec_num', to: 'opac_data#load_bib'
   mount Hydra::RoleManagement::Engine => '/'
 
-  get '/focus/:id', to: 'synthetic_category#show', as: :synthetic_category
+  get '/focus/:id', to: 'synthetic_category#index', as: :synthetic_category
 
 
   Hydra::BatchEdit.add_routes(self)
