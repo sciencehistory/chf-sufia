@@ -47,7 +47,13 @@ class CollectionsShowController < CatalogController
   # Get controller to find templates in CollecitonsController too,
   # so we can re-use more of the sufia stuff for collection. Messy messy.
   def self.local_prefixes
-    @local_prefixes ||= super.concat ['collections']
+    # make sure this doens't apply to sub-classes, adding 'collections' more
+    # than once in weird places. :( messy, I know.
+    if controller_path == "collections_show"
+      super.concat ['collections']
+    else
+      super
+    end
   end
 
   def member_docs

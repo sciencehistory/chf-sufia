@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     # instead of just a label
     def render_constraints_query(localized_params = params)
       # Only on catalog (user-facing), doesn't work for "my_works" admin.
-      if params[:controller] == "catalog" || params[:controller] == "collections_show"
+      if %w{catalog collections_show synthetic_category}.include?(params[:controller])
         render "query_constraint_as_form", params: localized_params
       else
         super
