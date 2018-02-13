@@ -59,6 +59,9 @@ Rails.application.routes.draw do
   get "collections/:id" => "collections_show#show"
   get "collections/:id/range_limit" => "collections_show#range_limit"
   get "collections/:id/facet" => "collections_show#facet"
+  get "focus/:id/range_limit" => "synthetic_category#range_limit"
+  get "focus/:id/facet" => "synthetic_category#facet"
+
 
   curation_concerns_collections
   curation_concerns_basic_routes

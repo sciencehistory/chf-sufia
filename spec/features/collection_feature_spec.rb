@@ -8,7 +8,7 @@ RSpec.feature "Collections", js: true do
   let(:title) { "test object" }
   let(:subject) { "some subject" }
   let!(:work) { FactoryGirl.create(:work, :with_complete_metadata, title: [title], subject: [subject]) }
-  let!(:collection) { FactoryGirl.create(:collection, :public, members: [work]) }
+  let!(:collection) { FactoryGirl.create(:collection, :public, :with_image, members: [work]) }
 
   scenario "displays collection with item, searches" do
     visit collection_path(collection)
@@ -42,4 +42,11 @@ RSpec.feature "Collections", js: true do
     # do NOT keep the facet limit, fresh search on main query box
     expect(page).not_to have_css(".constraints-container .constraint-value", text: subject) # facet limit still there
   end
+
+  scenario "collection list page" do
+    visit collections_path
+    expect(page).to have_http_status(200)
+    expect(page).to have_text(collection.title.first)
+  end
+
 end
