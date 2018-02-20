@@ -181,6 +181,21 @@ module ImageServiceHelper
     end
   end
 
+  # Used for constructing download filenames when we can.
+  # truncated first three words, plus id.
+  #
+  # Wanted to include the 'index number' for better sortability when
+  # downloading multiple pages, but got too hard to actually keep track of/calculate
+  # depending on access path.
+  def _download_name_base(work, item_id: nil)
+    three_words = Array(work.title).first.gsub(/[']/, '').gsub(/([[:space:]]|[[:punct:]])+/, ' ').split.slice(0..2).join('_').downcase[0..25]
+
+    base = "#{three_words}_#{work.id}"
+    base += "_#{item_id}" if item_id
+
+    base
+  end
+
 
   private
 
@@ -230,16 +245,6 @@ module ImageServiceHelper
     return option
   end
 
-  # Used for constructing download filenames when we can.
-  # truncated first three words, plus id.
-  #
-  # Wanted to include the 'index number' for better sortability when
-  # downloading multiple pages, but got too hard to actually keep track of/calculate
-  # depending on access path.
-  def _download_name_base(work, item_id:)
-    three_words = Array(work.title).first.gsub(/[']/, '').gsub(/([[:space:]]|[[:punct:]])+/, ' ').split.slice(0..2).join('_').downcase[0..25]
 
-    "#{three_words}_#{work.id}_#{item_id}"
-  end
 
 end

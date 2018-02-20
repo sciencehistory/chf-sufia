@@ -149,6 +149,18 @@ hr.brand {
   }
 }
 
+.popover-citation-help {
+  font-weight: 300;
+  color: white;
+  background-color: $brand-dark-grey;
+  .arrow:after {
+    border-bottom-color: $brand-dark-grey !important;
+  }
+  a {
+    color: $brand-bright-green;
+  }
+}
+
 // bootstrap override
 .label {
   font-weight: 600;

@@ -20,4 +20,11 @@ module ApplicationHelper
     else ; value
     end
   end
+
+  # https://stackoverflow.com/a/37347159/307106
+  def encoding_safe_content_disposition(file_name)
+    "attachment; filename=\"#{file_name.encode("US-ASCII", undef: :replace, replace: "_")}\";filename*=UTF-8''#{URI.encode file_name}"
+  end
+  module_function :encoding_safe_content_disposition
+
 end
