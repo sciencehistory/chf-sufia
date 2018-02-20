@@ -41,6 +41,22 @@ class CollectionsShowController < CatalogController
 
   protected
 
+  def public_count
+    unless defined? @public_count
+      # Set up a SearchBuilder like the current one, but insisting on the non-logged-in
+      # user, to get count of public objects. Just include :id param for collection,
+      # no query params.
+      builder = search_builder.with(params.slice(:id)).tap do |builder|
+        builder.force_as_not_logged_in
+        builder.rows = 0
+      end
+
+      @public_count = repository.search(builder).total
+    end
+    @public_count
+  end
+  helper_method :public_count
+
   def search_builder_class
     # limit just to docs in collection. Sufia overrides this so you can no longer set
     # with blacklight_config, gah.
