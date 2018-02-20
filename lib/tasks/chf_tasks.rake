@@ -233,10 +233,30 @@ namespace :chf do
       user.save!
     end
 
-    total = GenericWork.count + FileSet.count
+    total = GenericWork.count + FileSet.count + Collection.count
     progress_bar = ProgressBar.create(:total => total, format: "%t: |%B| %p%% %e")
 
     errors = []
+
+    Collection.find_each do |collection|
+      begin
+        collection.depositor = substitute.call(collection.depositor)
+
+        %w{edit_users read_users discover_users}.each do |users_method|
+          if collection.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
+            new_list = collection.send(users_method).collect { |u| substitute.call(u) }
+            collection.send("#{users_method}=", new_list)
+          end
+        end
+
+        collection.save!
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
+        errors << "#{work.class}:#{work.id}:#{e}"
+        progress_bar.log "Could not migrate: #{errors.last}"
+      ensure
+        progress_bar.increment
+      end
+    end
 
     GenericWork.find_each do |work|
       begin
@@ -370,7 +390,7 @@ namespace :chf do
 
   namespace :admin do
 
-    desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
+    desc 'Grant admin role to existing c. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
     task :grant, [:email] => :environment do |t, args|
       begin
         CHF::Utils::Admin.grant(args[:email])
