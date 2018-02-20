@@ -90,6 +90,17 @@
 
     .input-group {
       max-width: 470px;
+
+      // hacky way to have extra rounded corners on search box, matching
+      // nav bar search box.
+      input[type=search] {
+        border-top-left-radius: 9px;
+        border-bottom-left-radius: 9px;
+      }
+      button:last-child {
+        border-top-right-radius: 9px;
+        border-bottom-right-radius: 9px;
+      }
     }
   }
 
