@@ -9,7 +9,7 @@
 lock '3.9.1'
 
 set :application, 'chf-sufia'
-set :repo_url, 'https://github.com/chemheritage/chf-sufia.git'
+set :repo_url, 'https://github.com/sciencehistory/chf-sufia.git'
 #set :branch, 'master'
 set :deploy_to, '/opt/sufia-project'
 set :log_level, :info
