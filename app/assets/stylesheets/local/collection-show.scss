@@ -3,7 +3,6 @@
 
 .collection-show {
   padding: 0 15px;
-  max-width: $screen-md-min - 1;
   margin-left: auto;
   margin-right: auto;
 
@@ -26,6 +25,11 @@
         max-width: 100%;
       }
     }
+  }
+
+  // sad overrides to make things flush left properly when re-used on this page.
+  #sidebar, #appliedParams.constraints-container, .chf-constraints-wrapper {
+    padding-left: 0 !important;
   }
 
   .actions-controls-collections {
@@ -86,6 +90,17 @@
 
     .input-group {
       max-width: 470px;
+
+      // hacky way to have extra rounded corners on search box, matching
+      // nav bar search box.
+      input[type=search] {
+        border-top-left-radius: 9px;
+        border-bottom-left-radius: 9px;
+      }
+      button:last-child {
+        border-top-right-radius: 9px;
+        border-bottom-right-radius: 9px;
+      }
     }
   }
 

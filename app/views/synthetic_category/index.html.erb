@@ -1,0 +1,97 @@
+<%# meant to look the same as our local collections_show/show, but it was too hard to re-use that
+    view, too many things don't apply, even when we tried to make the SyntheticCateogry class
+    have similar API to collection presenter.  So a non-DRY copy paste and alter, sorry! %>
+
+<% provide :page_title, construct_page_title(@presenter.title) %>
+<% provide :suppress_layout_constraints, true %>
+
+<div itemscope itemtype="http://schema.org/CollectionPage" class="collection-show">
+
+  <div class="collection-top">
+    <div class="collection-desc clearfix">
+      <div class="show-title">
+        <header>
+          <div class="show-genre"><%= link_to "Featured Topics", root_path %></div>
+          <h1><%= presenter.title %></h1>
+        </header>
+      </div>
+
+      <div class="show-metadata">
+        <p class="show-item-count"><%= number_with_delimiter(total_count) + ' item'.pluralize(total_count) %></p>
+
+        <p class="collection_description"><%= presenter.description %></p>
+      </div>
+
+    </div>
+
+    <div class="collection-thumb">
+      <%= image_tag presenter.thumb_asset_path %>
+    </div>
+  </div>
+
+
+  <div class="chf-collection-search">
+    <h2 class="chf-collection-search-title">
+          Search within featured <%= presenter.title %> items
+    </h2>
+    <div class="chf-collection-search-form"><%= render 'search_form', presenter: presenter %></div>
+  </div>
+
+  <div class="chf-constraints-wrapper">
+    <%= render 'catalog/constraints' %>
+  </div>
+
+  <% if member_docs.present? %>
+     <div id="sidebar" class="col-md-3 col-sm-4">
+       <%= render 'facets' %>
+      </div>
+  <% end %>
+
+  <div id="content" class="col-md-9 col-sm-8">
+
+    <%# built in sufia collections/sort_and_per_page overrides to some years old Blacklight. We want
+        the normal one we're actually using. %>
+      <%# render 'sort_and_per_page', collection: @presenter %>
+
+      <%# now we just call out to our own overridden catalog/search_header %>
+      <%= render 'search_header' %>
+
+    <%#  replacing `render_document_index @member_docs` %>
+      <%# not sure what some of this is about, but this is extracted from:
+          https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_document_list.html.erb
+
+          which ends up being called by `render_document_index` %>
+
+
+      <%# this part we override to render our own thing instead of sufia's thing for results on
+          collection page.
+          Used to be:  `render partial: 'show_document_list', locals:{documents: documents}`, which
+          would be: https://github.com/samvera/sufia/blob/v7.3.0/app/views/collections/_show_document_list.html.erb %>
+      <ul class="list-unstyled collection-items">
+        <%# Don't entirely understand how this works to get the proper partial, but it does,
+            and should work for hetereogenous lists too. Basically taken from sufia
+            https://github.com/samvera/sufia/blob/v7.3.0/app/views/catalog/_document_list.html.erb
+         %>
+        <%= render member_docs, as: :document %>
+      </ul>
+
+    <%# end replacing `render_document_index @member_docs/ %>
+
+
+
+    <%# copied from our customized catalog/results_pagination, sorry no DRY, it's beyond me at this point %>
+
+    <% if show_pagination? and @response.total_pages > 1 %>
+        <%# expanded will be shown by CSS at large screen sizes, else compact %>
+
+        <div class="pagination pagination-alt-expanded">
+          <%= paginate @response, :window => 3, :outer_window => 1, :theme => 'local' %>
+        </div>
+
+        <div class="pagination pagination-alt-compact">
+          <%= paginate @response, :page_entries_info => page_entries_info(@response), :theme => 'blacklight_compact' %>
+        </div>
+    <% end %>
+  </div>
+
+</div>

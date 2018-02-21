@@ -60,10 +60,19 @@ Rails.application.routes.draw do
   get '/concern/parent/:parent_id/generic_works/:id/viewer/:filesetid', to: redirect('/works/%{id}/viewer/%{filesetid}')
 
 
+  # Override collections/$id to point to our new custom controller
+  get "collections/:id" => "collections_show#index"
+  get "collections/:id/range_limit" => "collections_show#range_limit"
+  get "collections/:id/facet" => "collections_show#facet"
+  get "focus/:id/range_limit" => "synthetic_category#range_limit"
+  get "focus/:id/facet" => "synthetic_category#facet"
+
+
   curation_concerns_collections
   curation_concerns_basic_routes
   curation_concerns_embargo_management
   concern :exportable, Blacklight::Routes::Exportable.new
+
 
   #############
   #
@@ -118,11 +127,12 @@ Rails.application.routes.draw do
   get '/opac_data/:rec_num', to: 'opac_data#load_bib'
   mount Hydra::RoleManagement::Engine => '/'
 
-  get '/focus/:id', to: 'synthetic_category#show', as: :synthetic_category
+  get '/focus/:id', to: 'synthetic_category#index', as: :synthetic_category
 
 
   Hydra::BatchEdit.add_routes(self)
   # Sufia should be mounted before curation concerns to give priority to its routes
   mount Sufia::Engine => '/'
   mount CurationConcerns::Engine, at: '/'
+
 end

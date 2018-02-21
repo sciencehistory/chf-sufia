@@ -1,67 +1,43 @@
 # Only a 'show' action
 #
-# Based roughly off of Sufia/CurationConcerns CollectionController#show
-# TODO link to CollectionControllerBehavior in both
-class SyntheticCategoryController < ApplicationController
-    # include Blacklight::AccessControls::Catalog
-    include Blacklight::Base
+# Sub-classes our custom CollectionsShowController, but with many
+# overrides for our synthetic yaml-config-based "synthetic collections", ie
+# "featured topics".
+#
+# The overrides get messy, sorry.
+class SyntheticCategoryController < CollectionsShowController
+  # not quite sure what this is trying to do, but it's inapplicable for our
+  # synthetic categories
+  skip_before_action :enforce_show_permissions
 
-    layout 'chf'
+  protected
 
-    copy_blacklight_config_from(::CatalogController)
+  # override to no-op, breadcrumbs don't work here
+  def build_breadcrumbs
+  end
 
-    # Override to use the sort_widget from catalog, not the sufia override. What are we missing
-    # from the sufia override? Not sure! But it didn't CSS style correctly.
-    view_type_action = blacklight_config.index.collection_actions["view_type_group"]
-    view_type_action.partial = "catalog/view_type_group" if view_type_action
-
-    def show
-      unless synthetic_category
+  def presenter
+    @presenter ||= CHF::SyntheticCategory.from_slug(params[:id]).tap do |cat|
+      if cat.nil?
         raise ActionController::RoutingError.new("No SyntheticCategory matches `#{params[:id]}`")
       end
-      set_response # trigger setting of @response, which I think some partials need.
     end
+  end
+  helper_method :presenter
 
 
-    protected
-
-    # Get controller to find templates in CollectionController too,
-    # so we can re-use more of the sufia stuff for collection. Messy messy.
-    def self.local_prefixes
-      @local_prefixes ||= super.concat ['collections', 'catalog']
-    end
-
-    def synthetic_category
-      CHF::SyntheticCategory.from_slug(params[:id])
-    end
-    helper_method :synthetic_category
-
-    def search_builder
-      @search_builder ||= SearchBuilder.new(self).tap { |sb| sb.synthetic_category_force = synthetic_category.category_key }
-    end
-
-    def set_response
-      @response ||= repository.search( search_builder.with(params.merge(q: params[:cq])).query )
-    end
-
-    def results
-      set_response
-      @results ||= @response.documents
-    end
-    helper_method :results
-
-    def total_count
-      # improvement, cache somewhere?
-      @total_count ||= repository.search( search_builder.with(params.merge(rows: 0)).query).total
-    end
-    helper_method :total_count
+  # Override searchbuilder to limit to things in our synthetic category
+  def search_builder
+    @search_builder ||= SearchBuilder.new(self).tap { |sb| sb.synthetic_category_force = presenter.category_key }
+  end
 
 
-    # Override helper method to insist on :list type, that's all we
-    # do here and all we have partials for.
-    def document_index_view_type *args
-      :list
-    end
-    helper_method :document_index_view_type
+  def total_count
+    # improvement, cache somewhere?
+    @total_count ||= repository.search( search_builder.with(params.merge(rows: 0)).query).total
+  end
+  helper_method :total_count
+
+
 
 end
