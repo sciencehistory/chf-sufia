@@ -18,4 +18,17 @@ class SearchBuilder < Blacklight::SearchBuilder
   include SearchBuilder::PublicDomainFilter
 
   include SearchBuilder::CustomSortLogic
+
+  def force_as_not_logged_in
+    @force_as_not_logged_in = true
+  end
+
+  def current_ability
+    if @force_as_not_logged_in
+      Ability.new(nil)
+    else
+      super
+    end
+  end
+
 end

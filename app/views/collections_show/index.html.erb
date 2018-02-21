@@ -29,7 +29,12 @@ The underlying code in stack is a bit of a mess, so this customization seems per
       </div>
 
       <div class="show-metadata">
-        <p class="show-item-count"><%= number_with_delimiter(presenter.total_items) + ' item'.pluralize(presenter.total_items) %></p>
+        <% if current_ability.staff? %>
+        <p class="show-item-count">
+          <%= "#{number_with_delimiter(public_count)} public #{'item'.pluralize(public_count)}, #{number_with_delimiter(presenter.total_items)} total" %>
+        <% else %>
+          <p class="show-item-count"><%= "#{number_with_delimiter(public_count)} #{'item'.pluralize(public_count)}" %></p>
+        <% end %>
 
         <%= render 'collection_description', presenter: presenter %>
 

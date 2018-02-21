@@ -54,4 +54,9 @@ class Ability
       can [:read], User
     end
   end
+
+  def staff?
+    current_user.staff?
+  end
+
 end
