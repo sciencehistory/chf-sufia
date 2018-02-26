@@ -61,7 +61,7 @@ Rails.application.routes.draw do
 
 
   # Override collections/$id to point to our new custom controller
-  get "collections/:id" => "collections_show#index"
+  get "collections/:id" => "collections_show#index", constraints: lambda { |req| req.params[:id] != "new" }
   get "collections/:id/range_limit" => "collections_show#range_limit"
   get "collections/:id/facet" => "collections_show#facet"
   get "focus/:id/range_limit" => "synthetic_category#range_limit"
