@@ -40,6 +40,8 @@ gem 'rest-client'
 gem 'whenever'
 gem 'addressable', '~> 2.5'
 
+gem "citeproc", '~> 1.0'  # we use for data structures for citation models
+
 gem 'rails', '~> 5.0.0'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'

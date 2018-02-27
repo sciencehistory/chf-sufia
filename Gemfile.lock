@@ -598,6 +598,8 @@ GEM
     childprocess (0.7.1)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
+    citeproc (1.0.8)
+      namae (~> 1.0)
     clipboard-rails (1.7.1)
     cliver (0.3.2)
     coderay (1.1.2)
@@ -913,6 +915,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.1)
+    namae (1.0.1)
     nenv (0.3.0)
     nest (2.1.0)
       redic
@@ -1269,6 +1272,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.2)
   capybara (~> 2.4)
   capybara-screenshot
+  citeproc (~> 1.0)
   coffee-rails (~> 4.2)
   concurrent-ruby (~> 1.0)
   curation_concerns (~> 1.7.7)
