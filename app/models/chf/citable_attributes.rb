@@ -20,7 +20,7 @@ module CHF
 
     # Photos of objects we want to cite as an Institute photo, not the object
     def treat_as_local_photograph?
-      @treat_as_local_photograph ||= work.division == "Museum" && ! work.resource_type.include?("Text")
+      @treat_as_local_photograph ||= work.division == "Museum" && work.resource_type.include?("Physical Object") && work.resource_type.count == 1
     end
 
 
