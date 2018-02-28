@@ -106,7 +106,7 @@ describe CHF::CitableAttributes do
       end
       it "joins" do
         # gah, order is indeterminate from fedora. :(
-        expect(citable_attributes.medium.split(", ")).to eq(%w{vellum leather})
+        expect(citable_attributes.medium.split(", ")).to contain_exactly('vellum', 'leather')
       end
     end
 
@@ -213,16 +213,18 @@ describe CHF::CitableAttributes do
           allow(work).to receive(:id).and_return("123456")
         end
         it "exports CSL we expect" do
-          expect(citable_attributes.as_csl_json).to eq({
+          csl_hash = citable_attributes.as_csl_json
+          expect(csl_hash).to include({
             :type=>"manuscript",
             :title=>"pH means Beckman",
             :id=>"scihist123456",
-            :author=>[{"literal"=>"Beckman Instruments"}, {"literal"=>"Charles Bowes Advertising"}],
             :issued => {"date-parts"=>[[1957]]},
             :URL=>"https://digital.sciencehistory.org/123456",
             :archive=>"Science History Institute",
             :'archive-place'=>"Philadelphia",
             :archive_location=>"Box 49, Folder 14"})
+          # fedora is annoyingly order-inconsistent
+          expect(csl_hash[:author]).to contain_exactly({"literal"=>"Beckman Instruments"}, {"literal"=>"Charles Bowes Advertising"})
         end
       end
     end
