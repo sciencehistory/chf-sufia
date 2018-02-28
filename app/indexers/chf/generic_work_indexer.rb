@@ -88,16 +88,14 @@ module CHF
 
       def render_citation(work)
         csl_data = CitableAttributes.new(work).as_csl_json.stringify_keys
+        citation_item = CiteProc::CitationItem.new(id: csl_data["id"] || "id") do |c|
+          c.data = CiteProc::Item.new(csl_data)
+        end
 
-        cp = CiteProc::Processor.new(
-          style: self.class.csl_chicago_style,
-          locale: self.class.csl_en_us_locale,
-          format: 'html'
-        )
+        renderer = CiteProc::Ruby::Renderer.new :format => CiteProc::Ruby::Formats::Html.new,
+          :style => self.class.csl_chicago_style, :locale => self.class.csl_en_us_locale
 
-        cp.import [csl_data]
-        # safe to html_safe, CiteProc::Processor already escapes html in citation, I checked.
-        cp.render(:bibliography, id: csl_data["id"]).first
+        renderer.render citation_item, self.class.csl_chicago_style.bibliography
       end
 
       def remove_duplicates(field)
