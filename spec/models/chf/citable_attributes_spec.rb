@@ -138,7 +138,7 @@ describe CHF::CitableAttributes do
         allow(work).to receive(:date_of_work).and_return(date_of_work)
       end
       describe "one date year-only" do
-        let(:date_of_work) { [DateOfWork.new(start: "1916")] }
+        let(:date_of_work) { [DateOfWork.new(start: "1916", finish: "", start_qualifier: "", finish_qualifier: "", note: "")] }
         it "gets one date with year only" do
           expect(citable_attributes.date).to eq(CiteProc::Date.new([1916]))
         end
