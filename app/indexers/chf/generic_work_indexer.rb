@@ -2,6 +2,7 @@ module CHF
   class GenericWorkIndexer < CurationConcerns::WorkIndexer
 
     def generate_solr_document
+
       super.tap do |doc|
         %w(additional_credit inscription date_of_work).each do |field|
           entries = remove_duplicates(field)
@@ -68,10 +69,37 @@ module CHF
         # Taken from hyrax, so we can facet on visibility settings
         # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18
         doc['visibility_ssi'] = object.visibility
+
+        doc['citation_html_ss'] = render_citation(object)
       end
     end
 
     private
+
+      # reuse this style cause it's expensive to load. Hope it's concurrency safe!
+      def self.csl_chicago_style
+        @csl_chicago_style ||= ::CSL::Style.load("chicago-note-bibliography")
+      end
+
+      # similar to csl_chicago_style
+      def self.csl_en_us_locale
+        @csl_en_us_locale ||= ::CSL::Locale.load("en-US")
+      end
+
+      def render_citation(work)
+        csl_data = CitableAttributes.new(work).as_csl_json.stringify_keys
+
+        cp = CiteProc::Processor.new(
+          style: self.class.csl_chicago_style,
+          locale: self.class.csl_en_us_locale,
+          format: 'html'
+        )
+
+        cp.import [csl_data]
+        # safe to html_safe, CiteProc::Processor already escapes html in citation, I checked.
+        cp.render(:bibliography, id: csl_data["id"]).first
+      end
+
       def remove_duplicates(field)
         entries = object.send(field).to_a
         entries.uniq! {|e| e.id} # can return nil
