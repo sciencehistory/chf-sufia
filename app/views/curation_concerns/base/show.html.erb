@@ -131,10 +131,15 @@
         <%= @presenter.attribute_to_html(:additional_credit) %>
     </table>
 
-    <div class="show-user-actions">
-      <div class="btn-group" role="group">
+    <h2 class="attribute-sub-head">Cite As</h2>
+    <div class="show-sub-head-body">
+      <p>
+        <%= citation_for_work( @presenter ) %>
+      </p>
+
+      <p class="btn-group" role="group">
         <%= link_to main_app.curation_concerns_generic_work_path(@presenter.id, format: "ris"), class: "btn btn-sm btn-primary export-citation" do %>
-          <i class="fa fa-address-card"></i> Export citation (RIS)
+          <i class="fa fa-address-card"></i>&nbsp;&nbsp;Export citation (RIS)
         <% end %>
         <a class="btn btn-brand-dark btn-sm" tabindex="0" role="button" data-toggle="popover" data-placement="bottom"
            data-container="body"
@@ -148,7 +153,9 @@
             and <a href='https://www.refworks.com'>Refworks</a>.">
           <b>?</b>
         </a>
-      </div>
+      </p>
+
+      <p><i>This citation is automatically generated and may contain errors.</i></p>
     </div>
 
 
