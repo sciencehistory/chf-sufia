@@ -74,9 +74,9 @@ describe CHF::CitableAttributes do
     describe "publisher" do
       describe "with inverted form with dates" do
         before do
-          work.publisher = ["Sackett, Israel, 1809-1880", "Smith, John"]
+          work.publisher = ["Sackett, Israel, 1809-1880"]
         end
-        it "sets first in direct form" do
+        it "uses in direct form" do
           expect(citable_attributes.publisher).to eq("Israel Sackett")
         end
       end
