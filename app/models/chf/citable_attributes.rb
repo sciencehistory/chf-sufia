@@ -275,7 +275,8 @@ module CHF
       def date
         # I think this is best way we got to get date of photo
         date_of_photo = work.date_uploaded
-        date_of_photo ? CiteProc::Date.new([date_of_photo.year, date_of_photo.month, date_of_photo.day]) : nil
+        # we only give it the year, we don't really trust the other stuff anyway.
+        date_of_photo ? CiteProc::Date.new([date_of_photo.year]) : nil
       end
 
       def publisher

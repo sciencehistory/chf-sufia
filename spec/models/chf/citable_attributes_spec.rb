@@ -271,7 +271,7 @@ describe CHF::CitableAttributes do
       expect(citable_attributes.publisher_place).to be_nil
     end
     it "uses date_uploaded for date" do
-      expect(citable_attributes.date).to eq(CiteProc::Date.new([date_uploaded.year, date_uploaded.month, date_uploaded.day]))
+      expect(citable_attributes.date).to eq(CiteProc::Date.new([date_uploaded.year]))
     end
   end
 end
