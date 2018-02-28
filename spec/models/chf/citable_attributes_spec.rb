@@ -105,7 +105,8 @@ describe CHF::CitableAttributes do
         work.medium = ["Vellum", "Leather"]
       end
       it "joins" do
-        expect(citable_attributes.medium).to eq("vellum, leather")
+        # gah, order is indeterminate from fedora. :(
+        expect(citable_attributes.medium.split(", ")).to eq(%w{vellum leather})
       end
     end
 
