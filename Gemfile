@@ -40,7 +40,10 @@ gem 'rest-client'
 gem 'whenever'
 gem 'addressable', '~> 2.5'
 
-gem "citeproc", '~> 1.0'  # we use for data structures for citation models
+# we use for data structures for citation models, and for generating citations
+gem "citeproc-ruby", '~> 1.0'
+gem 'csl-styles', '~> 1.0' # Need to load the styles so we can use chicago
+
 
 gem 'rails', '~> 5.0.0'
 gem 'devise'
