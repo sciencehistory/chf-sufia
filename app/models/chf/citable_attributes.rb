@@ -134,11 +134,14 @@ module CHF
       def date
         memoize(:date) do
           if work.date_of_work.present?
-            cite_proc_dates = work.date_of_work.collect { |d| local_date_to_citeproc_date(d) }
+            cite_proc_dates = work.date_of_work.collect { |d| local_date_to_citeproc_date(d) }.compact
+
             min_date_part = cite_proc_dates.collect(&:date_parts).flatten.min
             max_date_part = cite_proc_dates.collect(&:date_parts).flatten.max
 
-            if min_date_part == max_date_part
+            if min_date_part.nil? && max_date_part.nil?
+              nil
+            elsif min_date_part == max_date_part
               ::CiteProc::Date.new(min_date_part.to_a.compact)
             else
               ::CiteProc::Date.new([min_date_part.to_a.compact, max_date_part.to_a.compact])
