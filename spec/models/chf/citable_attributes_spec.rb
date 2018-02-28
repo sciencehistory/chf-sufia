@@ -175,6 +175,13 @@ describe CHF::CitableAttributes do
           expect(citable_attributes.date).to eq(nil)
         end
       end
+
+      describe "undated date" do
+        let(:date_of_work) { [DateOfWork.new(start: "", finish: "", start_qualifier: "Undated", finish_qualifier: "", note: "")] }
+        it "has no date" do
+          expect(citable_attributes.date).to eq(nil)
+        end
+      end
     end
 
     describe :as_csl do
