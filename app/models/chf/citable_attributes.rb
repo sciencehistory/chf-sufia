@@ -23,9 +23,34 @@ module CHF
       @treat_as_local_photograph ||= work.division == "Museum" && ! work.resource_type.include?("Text")
     end
 
+
     delegate :authors, :publisher, :publisher_place, :date,
-      :medium, :archival_location,
+      :medium, :archive_location, :archive, :archive_place, :title, :csl_id, :abstract, :csl_type,
       to:  :implementation
+
+    # A _hash_ (not a serialized json string) representing in the csl-data.json
+    # format. https://github.com/citation-style-language/schema/blob/master/csl-data.json
+    def as_csl_json
+      {
+        type: csl_type,
+        title: title,
+        id: csl_id,
+        abstract: abstract,
+        author: authors.collect(&:to_citeproc),
+        issued: date.to_citeproc,
+        publisher: publisher,
+        "publisher-place": publisher_place,
+        medium: medium,
+        "URL": "https://digital.sciencehistory.org/#{work.id}",
+        archive: archive,
+        'archive-place': archive_place,
+        archive_location: archive_location,
+      }.compact
+    end
+
+    def to_csl_json
+      JSON.dump(as_csl_json)
+    end
 
     protected
 
@@ -37,6 +62,43 @@ module CHF
       attr_reader :work
       def initialize(work)
         @work = work
+      end
+
+      def title
+        work.title && work.title.first
+      end
+
+      def csl_id
+        "scihist#{work.id}"
+      end
+
+      # Map to valid csl type in schema https://github.com/citation-style-language/schema/blob/master/csl-data.json
+      # When in doubt we tend to default to 'manuscript', cause that usually ends up getting cited correctly
+      # for archival material.
+      def csl_type
+        if work.genre_string.include?('Manuscripts')
+          return "manuscript"
+        elsif (work.genre_string & ['Rare books', 'Sample books']).present?
+          return "book"
+        elsif work.genre_string.include?('Documents') && work.title.any? { |v| v=~ /report/i }
+          return "report"
+        elsif  work.division == "Archives"
+          # if it's not one of above known to use archival metadata, and it's in
+          # Archives, insist on Manuscript.
+          return "manuscript"
+        elsif (work.genre_string & %w{Paintings}).present?
+          return "graphic"
+        elsif work.genre_string.include?('Slides')
+          return "graphic"
+        elsif work.genre_string.include?('Encyclopedias and dictionaries')
+          return "book"
+        else
+          return "manuscript"
+        end
+      end
+
+      def abstract
+        work.description.present? ? ActionView::Base.full_sanitizer.sanitize(work.description.join(" ")) : nil
       end
 
       # an array of CiteProc::Name objects, suitable for using as cited creator(s)
@@ -92,8 +154,8 @@ module CHF
       end
 
       # We decided NOT to include series/subseries in citation, just collection and physical lcoation
-      def archival_location
-        memoize(:archival_location) do
+      def archive_location
+        memoize(:archive_location) do
           if work.division == "Archives"
             parts = []
 
@@ -103,6 +165,18 @@ module CHF
             parts << CHF::Utils::ParseFields.display_physical_container(work.physical_container) if work.physical_container.present?
             parts.collect(&:presence).compact.join(', ')
           end
+        end
+      end
+
+      def archive_place
+        if work.division == "Archives" || work.division == "Museum"
+          "Philadelphia"
+        end
+      end
+
+      def archive
+        if work.division == "Archives" || work.division == "Museum"
+          "Science History Institute"
         end
       end
 
@@ -161,7 +235,7 @@ module CHF
       # If it's corporate... comma may just be part of name. We're going to get it wrong, I guarantee.
       def parse_name(str)
         str = str.dup
-        date_suffix = /, \d\d\d\d-(\d\d\d\d)?|-\d\d\d\d\Z/
+        date_suffix = /, (active )?\d\d\d\d-(\d\d\d\d)?|-\d\d\d\d\Z/
 
         # remove 'inc'
         str.sub!(/, inc\. */, '')
@@ -181,6 +255,10 @@ module CHF
     end
 
     class TreatAsLocalPhotograph < StandardTreatment
+      def csl_type
+        "graphic"
+      end
+
       def authors
         memoize(:authors) do
           [CiteProc::Name.new(literal: "Science History Institute")]
@@ -205,7 +283,7 @@ module CHF
         nil
       end
 
-      def archival_location
+      def archive_location
         nil
       end
     end

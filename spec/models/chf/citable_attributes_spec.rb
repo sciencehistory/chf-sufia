@@ -117,7 +117,7 @@ describe CHF::CitableAttributes do
           work.physical_container = "v8|p2|g100"
         end
         it "ignores" do
-          expect(citable_attributes.archival_location).to be_nil
+          expect(citable_attributes.archive_location).to be_nil
         end
       end
       describe "Archives" do
@@ -128,7 +128,7 @@ describe CHF::CitableAttributes do
           allow(work).to receive("in_collections").and_return([FactoryGirl.build(:collection, title: ["Collection Name"])])
         end
         it "includes collection box and folder but not series" do
-          expect(citable_attributes.archival_location).to eq("Collection Name, Box 56, Folder 47")
+          expect(citable_attributes.archive_location).to eq("Collection Name, Box 56, Folder 47")
         end
       end
     end
@@ -170,6 +170,40 @@ describe CHF::CitableAttributes do
       end
     end
 
+    describe :as_csl do
+      describe "archival" do
+        let(:work) {
+          # based on https://digital.sciencehistory.org/works/2r36tx526
+          FactoryGirl.build(:generic_work,
+            title: ["pH means Beckman"],
+            creator_of_work: ["Beckman Instruments, inc.", "Charles Bowes Advertising, inc."],
+            resource_type: ["Image", "Text"],
+            genre_string: ["Advertisements"],
+            extent: ["8.5 in. W x 11 in. L"],
+            language: ["English"],
+            subject: ["Beckman Instruments, inc.", "Scientific apparatus and instruments", "Hydrogen-ion concentration--Measurement--Instruments"],
+            division: "Archives",
+            series_arrangement: ["Sub-series 2. Advertisements", "Series VIII. Clippings and Advertisements"],
+            physical_container: "b49|f14")
+        }
+        before do
+          allow(work).to receive(:date_of_work).and_return([DateOfWork.new(start: "1957")])
+          allow(work).to receive(:id).and_return("123456")
+        end
+        it "exports CSL we expect" do
+          expect(citable_attributes.as_csl_json).to eq({
+            :type=>"manuscript",
+            :title=>"pH means Beckman",
+            :id=>"scihist123456",
+            :author=>[{"literal"=>"Beckman Instruments"}, {"literal"=>"Charles Bowes Advertising"}],
+            :issued => {"date-parts"=>[[1957]]},
+            :URL=>"https://digital.sciencehistory.org/123456",
+            :archive=>"Science History Institute",
+            :'archive-place'=>"Philadelphia",
+            :archive_location=>"Box 49, Folder 14"})
+        end
+      end
+    end
   end
 
   describe "Special case museum photo" do
