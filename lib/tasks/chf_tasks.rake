@@ -233,10 +233,10 @@ namespace :chf do
       user.save!
     end
 
-    total = GenericWork.count + FileSet.count + Collection.count
-    progress_bar = ProgressBar.create(:total => total, format: "%t: |%B| %p%% %e")
 
     errors = []
+
+    collection_progress = ProgressBar.create(:title => "Collections", :total => Collection.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
 
     Collection.find_each do |collection|
       begin
@@ -252,12 +252,14 @@ namespace :chf do
         collection.save!
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
-        progress_bar.log "Could not migrate: #{errors.last}"
+        collection_progress.log "Could not migrate: #{errors.last}"
       ensure
-        progress_bar.increment
+        collection_progress.increment
       end
     end
+    collection_progress.finish
 
+    other_progress = ProgressBar.create(:title => "GenericWorks+FileSets", :total => GenericWork.count + FileSet.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
     GenericWork.find_each do |work|
       begin
         work.depositor = substitute.call(work.depositor)
@@ -272,9 +274,9 @@ namespace :chf do
         work.save!
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
-        progress_bar.log "Could not migrate: #{errors.last}"
+        other_progress.log "Could not migrate: #{errors.last}"
       ensure
-        progress_bar.increment
+        other_progress.increment
       end
     end
     FileSet.find_each do |fs|
@@ -291,12 +293,12 @@ namespace :chf do
         fs.save!
       rescue ActiveFedora::RecordInvalid, Ldp::Gone, StandardError => e
         errors << "#{fs.class}:#{fs.id}:#{e}"
-        progress_bar.log "Could not migrate: #{errors.last}"
+        other_progress.log "Could not migrate: #{errors.last}"
       ensure
-        progress_bar.increment
+        other_progress.increment
       end
     end
-    progress_bar.finish
+    other_progress.finish
     $stderr.puts "Could not fully migrate #{errors.count} objects"
   end
 
