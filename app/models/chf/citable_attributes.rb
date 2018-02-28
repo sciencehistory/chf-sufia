@@ -37,7 +37,7 @@ module CHF
         id: csl_id,
         abstract: abstract,
         author: authors.collect(&:to_citeproc),
-        issued: date.to_citeproc,
+        issued: date ? date.to_citeproc : nil,
         publisher: publisher,
         "publisher-place": publisher_place,
         medium: medium,
@@ -139,9 +139,9 @@ module CHF
             max_date_part = cite_proc_dates.collect(&:date_parts).flatten.max
 
             if min_date_part == max_date_part
-              CiteProc::Date.new(min_date_part.to_a.compact)
+              ::CiteProc::Date.new(min_date_part.to_a.compact)
             else
-              CiteProc::Date.new([min_date_part.to_a.compact, max_date_part.to_a.compact])
+              ::CiteProc::Date.new([min_date_part.to_a.compact, max_date_part.to_a.compact])
             end
           end
         end
@@ -243,13 +243,13 @@ module CHF
         if str =~ date_suffix
           # looks like a personal name with birth/death dates, remove em and parse
           str.sub!(date_suffix, '')
-          CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
+          ::CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
         elsif str =~ /[A-Z].*, *[A-Z]/
           # looks like a personal name in inverted form
-          CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
+          ::CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
         else
           # probably a corporate name
-          CiteProc::Name.new(literal: str)
+          ::CiteProc::Name.new(literal: str)
         end
       end
     end
