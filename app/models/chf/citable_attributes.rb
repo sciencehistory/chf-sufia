@@ -224,7 +224,7 @@ module CHF
       # Can't quite do it, (State)
       def normalize_place(str)
         if str =~ /--/
-          str.split("--").reverse.join(", ")
+          str.split("--").reverse.join(", ").sub(" (State)", '')
         else
           str
         end
