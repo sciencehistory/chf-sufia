@@ -45,6 +45,15 @@ describe CHF::CitableAttributes do
         end
       end
 
+      describe "corporate name that looks kinda like a personal name" do
+        before do
+          work.creator_of_work = ["Simpkin, Mashall, and Co."]
+        end
+        it "parses as literal" do
+          expect(citable_attributes.authors).to include(CiteProc::Name.new(literal: "Simpkin, Mashall, and Co."))
+        end
+      end
+
       describe "creators preferred over other makers" do
         before do
           work.creator_of_work = ["Creator, John", "Creator, Sue"]
