@@ -93,10 +93,10 @@ describe CHF::CitableAttributes do
 
     describe "publisher place" do
       before do
-        work.place_of_publication = ["Maryland--Baltimore", "Does not use"]
+        work.place_of_publication = ["New York (State)--New York"]
       end
-      it "uses direct corporate name" do
-        expect(citable_attributes.publisher_place).to eq("Baltimore, Maryland")
+      it "uses directly ordered name" do
+        expect(citable_attributes.publisher_place).to eq("New York, New York")
       end
     end
 
