@@ -196,8 +196,8 @@ module CHF
       # _single_ local date object to a citeproc date
       def local_date_to_citeproc_date(date)
         # year, month, date
-        start_part = date.start && date.start.scan(/\d+/).slice(0..2)
-        finish_part = date.finish && date.finish.scan(/\d+/).slice(0..2)
+        start_part = date.start.presence && date.start.scan(/\d+/).slice(0..2)
+        finish_part = date.finish.presence && date.finish.scan(/\d+/).slice(0..2)
 
         args = []
         args << start_part if start_part
