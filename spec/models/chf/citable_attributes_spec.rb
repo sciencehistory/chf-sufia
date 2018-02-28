@@ -168,9 +168,23 @@ describe CHF::CitableAttributes do
           expect(citable_attributes.date).to eq(CiteProc::Date.new([[1910], [1960]]))
         end
       end
+
+      describe "no dates" do
+        let(:date_of_work) { [] }
+        it "has no date" do
+          expect(citable_attributes.date).to eq(nil)
+        end
+      end
     end
 
     describe :as_csl do
+      describe "barely metadata" do
+        let(:work) { FactoryGirl.build(:work, title: ["something"], dates_of_work: []) }
+        it "still creates something" do
+          expect(citable_attributes.as_csl_json).to be_kind_of(Hash)
+        end
+      end
+
       describe "archival" do
         let(:work) {
           # based on https://digital.sciencehistory.org/works/2r36tx526
