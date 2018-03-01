@@ -299,3 +299,7 @@
   padding: $table-condensed-cell-padding;
 }
 
+.citation {
+  line-height: 1.5 !important; // ah, !important, the sign of CSS out of control
+}
+
