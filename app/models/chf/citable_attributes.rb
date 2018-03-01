@@ -238,7 +238,7 @@ module CHF
       # If it's corporate... comma may just be part of name. We're going to get it wrong, I guarantee.
       def parse_name(str)
         str = str.dup
-        date_suffix = /, (active )?\d\d\d\d-(\d\d\d\d)?|-\d\d\d\d\Z/
+        date_suffix = /, (active )?\d\d\d\d\??-(\d\d\d\d\??)?|-\d\d\d\d\??\Z/
 
         # remove 'inc'
         str.sub!(/, inc\. */, '')
