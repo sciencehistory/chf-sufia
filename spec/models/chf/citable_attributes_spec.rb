@@ -78,6 +78,16 @@ describe CHF::CitableAttributes do
           expect(citable_attributes.authors).to include(CiteProc::Name.new(family: "Author", given: "Jane"))
         end
       end
+
+      describe "this one" do
+        before do
+          work.creator_of_work = ["Chemists' Club (New York, N.Y.)"]
+        end
+        it "parses" do
+          expect(citable_attributes.authors).to include(CiteProc::Name.new(literal: "Chemists' Club (New York, N.Y.)"))
+        end
+      end
+
     end
 
     describe "publisher" do
