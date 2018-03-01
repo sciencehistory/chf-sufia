@@ -51,6 +51,17 @@ body {
     justify-content: space-between;
     width: 100%;
     margin: auto;
+    font-weight: 300;
+
+    a:hover, a:focus {
+      color: white;
+    }
+
+    // dunno, ask communications
+    .fa-map-marker {
+      color: $brand-bright-green;
+      font-size: 22px;
+    }
 
     div {
       margin: 20px;
