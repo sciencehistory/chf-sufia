@@ -121,8 +121,8 @@ group :development, :test, :profile do
   gem 'equivalent-xml'
   ## debugging
   #gem 'httplog'
-  gem 'ruby-prof'
 end
+gem 'ruby-prof'
 
 group :test do
   gem 'capybara', '~> 2.4'
