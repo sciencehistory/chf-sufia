@@ -249,16 +249,26 @@ module CHF
         # remove 'inc'
         str.sub!(/, inc\. */, '')
 
+        parsed_name = nil
+
         if str =~ date_suffix
           # looks like a personal name with birth/death dates, remove em and parse
           str.sub!(date_suffix, '')
-          ::CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
-        elsif str =~ /\A *[A-Z][^,()]*(, *[A-Z][^,()]*)+ *\Z/
+          parsed_name = Namae::Name.parse(str)
+          parsed_name = nil if parsed_name.empty?
+        end
+
+        if parsed_name.nil? && str =~ /\A *[A-Z][^,()]*(, *[A-Z][^,()]*)+ *\Z/
           # looks like a personal name in inverted form
-          ::CiteProc::Name.new(Namae::Name.parse(str))
+          parsed_name = Namae::Name.parse(str)
+          parsed_name = nil if parsed_name.empty?
+        end
+
+        if parsed_name
+          CiteProc::Name.new(parsed_name)
         else
-          # probably a corporate name
-          ::CiteProc::Name.new(literal: str)
+          # a corporate name, or something we didn't succesfully parse
+          CiteProc::Name.new(literal: str)
         end
       end
     end
