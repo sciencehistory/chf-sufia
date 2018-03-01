@@ -247,7 +247,7 @@ module CHF
           # looks like a personal name with birth/death dates, remove em and parse
           str.sub!(date_suffix, '')
           ::CiteProc::Name.new(Namae::Name.parse(str)) || CiteProc::Name.new(literal: str)
-        elsif str =~ /\A *[A-Z][^,]*(, *[A-Z][^,]*)+ *\Z/
+        elsif str =~ /\A *[A-Z][^,()]*(, *[A-Z][^,()]*)+ *\Z/
           # looks like a personal name in inverted form
           ::CiteProc::Name.new(Namae::Name.parse(str))
         else
