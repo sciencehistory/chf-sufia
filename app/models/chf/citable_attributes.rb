@@ -41,7 +41,7 @@ module CHF
         publisher: publisher,
         "publisher-place": publisher_place,
         medium: medium,
-        "URL": "https://digital.sciencehistory.org/#{work.id}",
+        "URL": "https://digital.sciencehistory.org/works/#{work.id}",
         archive: archive,
         'archive-place': archive_place,
         archive_location: archive_location,
