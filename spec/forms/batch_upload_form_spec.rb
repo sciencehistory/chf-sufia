@@ -15,7 +15,7 @@ describe BatchUploadForm do
   describe "form terms" do
     it "exclude defaults" do
       # title and resource type go on the upload form
-      expect(form.primary_terms.count).to eq 23
+      expect(form.primary_terms.count).to eq 24
       expect(form.primary_terms).not_to include :keyword
     end
     it "requires 2 fields" do

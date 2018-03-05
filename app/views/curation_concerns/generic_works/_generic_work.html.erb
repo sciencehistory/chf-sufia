@@ -45,12 +45,19 @@
         </div>
       <% end %>
 
-      <% if (parents = @parent_presenter_lookup && @parent_presenter_lookup[doc_presenter.id]).present? %>
+      <% if (parents = @parent_presenter_lookup && @parent_presenter_lookup[doc_presenter.id]).present? || doc_presenter.source.present? %>
         <div class="chf-results-list-item-parents">
           <ul>
-            <% parents.each do |parent| %>
+            <% if parents.present? %>
+              <% parents.each do |parent| %>
+                <li>
+                  Part of <%= link_to parent.title_or_label, parent %>
+                </li>
+              <% end %>
+            <% end %>
+            <% (doc_presenter.source || []).each do |source| %>
               <li>
-                Part of <%= link_to parent.title_or_label, parent %>
+                Part of <i><%= source %></i>
               </li>
             <% end %>
           </ul>
