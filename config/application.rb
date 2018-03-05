@@ -168,6 +168,7 @@ module Chufia
       'Postage stamps',
       'Press releases',
       'Prints',
+      'Publications',
       'Rare books',
       'Sample books',
       'Scientific apparatus and instruments',
