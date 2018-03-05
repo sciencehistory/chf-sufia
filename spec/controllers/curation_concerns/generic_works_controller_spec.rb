@@ -533,11 +533,12 @@ describe CurationConcerns::GenericWorksController do
             volume: '',
             part: '',
             page: '14',
+            shelfmark: 'MS 13'
           }
         }
 
         work.reload
-        expect(work.physical_container).to eq 'b2|f3|g14'
+        expect(work.physical_container).to eq 'b2|f3|g14|sMS 13'
       end
 
       it 'turns external ids into coded strings' do

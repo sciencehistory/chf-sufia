@@ -8,7 +8,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.human_readable_type = ['Generic Work']
       w.title = ['Super Mario']
       w.additional_title = ['A Super Mario Bros. Adventure']
-      w.physical_container = "b2|f3|v4|p5|g234"
+      w.physical_container = "b2|f3|v4|p5|g234|sMS 13"
       w.identifier = ['object-2004', 'bib-b123456789', 'object-2004-09.003']
       w.creator_of_work = ['Chain Chomp']
       w.contributor = ['Blooper']
@@ -140,6 +140,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Thwump/
       expect(rendered).to match /Joe Printer/
       expect(rendered).to match /Shy Guy/
+      expect(rendered).to match /Shelfmark MS 13/
     end
     it "does not display staff fields" do
       expect(rendered).not_to match /Mario Kart/

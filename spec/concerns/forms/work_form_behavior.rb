@@ -44,7 +44,7 @@ shared_examples_for "work_form_behavior" do
     let(:params) { ActionController::Parameters.new(
       "identifier"=>["object_external_id"], "object_external_id"=>["test"],
       "rights"=>"http://rightsstatements.org/vocab/InC/1.0/",
-      "box"=>"b", "folder"=>"f", "volume"=>"v", "part"=>"p", "page"=>"pa",
+      "box"=>"b", "folder"=>"f", "volume"=>"v", "part"=>"p", "page"=>"pa", "shelfmark" => "MS 13",
       "title"=>"A House is a House for Me",
       "description"=>"A children's book about metaphor",
     )}
@@ -58,7 +58,7 @@ shared_examples_for "work_form_behavior" do
       end
       it 'encodes identifier and physical container fields' do
         expect(subject['identifier']).to eq ['object-test']
-        expect(subject['physical_container']).to eq 'bb|ff|vv|pp|gpa'
+        expect(subject['physical_container']).to eq 'bb|ff|vv|pp|gpa|sMS 13'
       end
     end
 
