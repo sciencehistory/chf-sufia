@@ -37,10 +37,13 @@
         </ul>
       <% end %>
 
-      <% if @presenter.parent_work_presenters.present? %>
+      <% if @presenter.parent_work_presenters.present? || @presenter.source.present? %>
         <ul class="parent-works list-unstyled">
-          <% @presenter.parent_work_presenters.each do |parent| %>
+          <% (@presenter.parent_work_presenters || []).each do |parent| %>
             <li>Part of <%= link_to Array(parent.title).first, [main_app, parent] %></li>
+          <% end %>
+          <% (@presenter.source || []).each do |source| %>
+            <li> Part of <i><%= source %></i></li>
           <% end %>
         </ul>
       <% end %>
