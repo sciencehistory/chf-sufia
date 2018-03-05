@@ -198,7 +198,7 @@ module Chufia
     ]
 
     config.physical_container_fields = {
-      'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part', 'g'=>'page'
+      'b'=>'box', 'f'=>'folder', 'v'=>'volume', 'p'=>'part', 'g'=>'page', 's' => 'shelfmark'
     }
 
     # Organizational social media accounts/handles
