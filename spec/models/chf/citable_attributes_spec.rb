@@ -145,7 +145,8 @@ describe CHF::CitableAttributes do
           work.division = "Archives"
           work.series_arrangement = ["Subseries B", "Series XIV"]
           work.physical_container = "b56|f47"
-          allow(work).to receive("in_collections").and_return([FactoryGirl.build(:collection, title: ["Collection Name"])])
+          # sadly have to stub for solr query, not really testing reliably anymore, what can you do
+          allow(work).to receive("collection_titles_from_solr").and_return(["Collection Name"])
         end
         it "includes collection box and folder but not series" do
           expect(citable_attributes.archive_location).to eq("Collection Name, Box 56, Folder 47")

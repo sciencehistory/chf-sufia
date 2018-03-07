@@ -180,12 +180,8 @@ module CHF
             #
             # If there are more than one collection, we don't
             # know what to do with it or which one to pick, so we just take one arbitrarily.
-            parent_collection = ActiveFedora::SolrService.query(
-              "has_model_ssim:Collection AND member_ids_ssim:#{work.id}",
-              fl: "title_tesim",
-              rows: 1)
-            if parent_collection.present?
-              parts << parent_collection.first["title_tesim"]
+            if work.collection_titles_from_solr.present?
+              parts << work.collection_titles_from_solr.first
             end
 
             # parts.concat item.series_arrangement.to_a if item.series_arrangement.present?
