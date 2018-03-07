@@ -10,6 +10,12 @@ module CHF
   # We use inhertance with TreatAsLocalPhotograph inheriting from StandardTreatment, which
   # may be non-ideal as we ARE doing this to inherit implementation, but makes implementation
   # a lot easier, and we'll keep the implementation classes for non-public use.
+  #
+  # NOTE: It's far too expensive to get "what collections is in this in" from fedora,
+  # So we get it from Solr here, with a global utility call, kind of violating separation
+  # of concerns. This relies on Collections being indexed FIRST in a mass reindex on
+  # an empty solr index, which we made happen in 952766f25. Still going to slow
+  # down indexing, but hopefully not abominably.
   class CitableAttributes
     attr_reader :work, :implementation
 
@@ -168,9 +174,23 @@ module CHF
           if work.division == "Archives"
             parts = []
 
-            parts << work.in_collections.first.title.first if work.in_collections.present?
+            # Go to Solr to get collection, only non-insane way to do it although it's
+            # still unfortunate. Also requires ensuring Collections are indexed first in
+            # solr reindex on empty solr index.
+            #
+            # If there are more than one collection, we don't
+            # know what to do with it or which one to pick, so we just take one arbitrarily.
+            parent_collection = ActiveFedora::SolrService.query(
+              "has_model_ssim:Collection AND member_ids_ssim:#{work.id}",
+              fl: "title_tesim",
+              rows: 1)
+            if parent_collection.present?
+              parts << parent_collection.first["title_tesim"]
+            end
+
             # parts.concat item.series_arrangement.to_a if item.series_arrangement.present?
             #parts = [parts.join("; ")] if parts.present?
+
             parts << CHF::Utils::ParseFields.display_physical_container(work.physical_container) if work.physical_container.present?
             parts.collect(&:presence).compact.join(', ')
           end
