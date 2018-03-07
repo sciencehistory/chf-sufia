@@ -213,6 +213,31 @@ describe CHF::CitableAttributes do
         end
       end
 
+      describe "library with shelfmark" do
+        let(:work) {
+          FactoryGirl.build(:generic_work,
+            title: ["Pretiosa margarita novella"],
+            author: ["Bonus, Petrus"],
+            resource_type: ["Text"],
+            genre_string: ["Rare Books", "Manuscripts"],
+            division: "Library",
+            physical_container: "sMS 3"
+          )
+        }
+        before do
+          allow(work).to receive(:date_of_work).and_return([DateOfWork.new(start: "1450", finish: "1480", start_qualifier: "circa")])
+          allow(work).to receive(:id).and_return("pn89d712c")
+        end
+
+        it "exports CSL we expect" do
+          csl_hash = citable_attributes.as_csl_json
+          expect(csl_hash[:type]).to eq "manuscript"
+          expect(csl_hash[:archive]).to eq "Science History Institute"
+          expect(csl_hash[:'archive-place']).to eq "Philadelphia"
+          expect(csl_hash[:archive_location]).to eq "MS 3"
+        end
+      end
+
       describe "archival" do
         let(:work) {
           # based on https://digital.sciencehistory.org/works/2r36tx526

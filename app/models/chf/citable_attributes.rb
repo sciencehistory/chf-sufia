@@ -177,9 +177,17 @@ module CHF
         end
       end
 
+      def shelfmark
+        memoize(:shelfmark) do
+          if work.physical_container.present?
+            CHF::Utils::ParseFields.parse_physical_container(work.physical_container)["s"]
+          end
+        end
+      end
+
       # We decided NOT to include series/subseries in citation, just collection and physical lcoation
       def archive_location
-        memoize(:archive_location) do
+        #memoize(:archive_location) do
           if work.division == "Archives"
             parts = []
 
@@ -198,18 +206,20 @@ module CHF
 
             parts << CHF::Utils::ParseFields.display_physical_container(work.physical_container) if work.physical_container.present?
             parts.collect(&:presence).compact.join(', ')
+          elsif work.division == "Library" && self.shelfmark
+            self.shelfmark
           end
-        end
+        #end
       end
 
       def archive_place
-        if work.division == "Archives" || work.division == "Museum"
+        if work.division == "Archives" || work.division == "Museum" || shelfmark
           "Philadelphia"
         end
       end
 
       def archive
-        if work.division == "Archives" || work.division == "Museum"
+        if work.division == "Archives" || work.division == "Museum" || shelfmark
           "Science History Institute"
         end
       end
