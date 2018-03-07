@@ -9,7 +9,9 @@ module CHF
         components = str.split('|')
         pc_hash = {}
         components.each do |s|
-          pc_hash[s[0]] = s[1..-1]
+          if physical_container_fields.include?(s[0])
+            pc_hash[s[0]] = s[1..-1]
+          end
         end
         pc_hash
       end
