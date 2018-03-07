@@ -30,7 +30,7 @@ module CHF
     end
 
 
-    delegate :authors, :publisher, :publisher_place, :date,
+    delegate :authors, :publisher, :publisher_place, :date, :container_title,
       :medium, :archive_location, :archive, :archive_place, :title, :csl_id, :abstract, :csl_type,
       to:  :implementation
 
@@ -51,6 +51,7 @@ module CHF
         archive: archive,
         'archive-place': archive_place,
         archive_location: archive_location,
+        "container-title": container_title
       }.compact
     end
 
@@ -164,6 +165,14 @@ module CHF
             "photograph"
           else
             nil
+          end
+        end
+      end
+
+      def container_title
+        memoize(:container_title) do
+          if work.source.present?
+            work.source.first
           end
         end
       end
