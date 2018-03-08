@@ -113,7 +113,7 @@ module CHF
         memoize(:authors) do
           # ordered list of maker fields we're willing to use for author, when we
           # find one with elements, we stop and use those.
-          first_present_field_values(%w{creator_of_work author contributor artist photographer engraver}).collect do |str_name|
+          first_present_field_values(%w{creator_of_work author artist photographer engraver}).collect do |str_name|
             parse_name(str_name)
           end
         end
