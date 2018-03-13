@@ -249,7 +249,7 @@ namespace :chf do
           end
         end
 
-        collection.save!
+        collection.save!(update_index: false)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
         collection_progress.log "Could not migrate: #{errors.last}"
@@ -271,7 +271,7 @@ namespace :chf do
           end
         end
 
-        work.save!
+        work.save!(update_index: false)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
         other_progress.log "Could not migrate: #{errors.last}"
@@ -279,6 +279,7 @@ namespace :chf do
         other_progress.increment
       end
     end
+
     FileSet.find_each do |fs|
       begin
         fs.depositor = substitute.call(fs.depositor)
@@ -290,7 +291,7 @@ namespace :chf do
           end
         end
 
-        fs.save!
+        fs.save!(update_index: false)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone, StandardError => e
         errors << "#{fs.class}:#{fs.id}:#{e}"
         other_progress.log "Could not migrate: #{errors.last}"
