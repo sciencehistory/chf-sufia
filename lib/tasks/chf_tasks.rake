@@ -321,40 +321,67 @@ namespace :chf do
     puts "total: #{reporter.matches.size}"
   end
 
-  desc 'Reindex Collections. `RAILS_ENV=production bundle exec rake chf:reindex_collections`'
-  task reindex_collections: :environment do
-    # reindex only Collections
-    # not a frequent task but useful in upgrade to sufia 7.3
-    # There aren't enough of them to really need batches, etc.
-
-    progress_bar = ProgressBar.create(:total => Collection.count, format: "%t: |%B| %p%% %e")
-
-    Collection.find_each do |coll|
-      coll.update_index
-      progress_bar.increment
-    end
-
-    $stderr.puts 'reindex_collections complete'
-  end
-
   desc 'Reindex all GenericWorks. `RAILS_ENV=production bundle exec rake chf:reindex_works`'
   task reindex_works: :environment do
     # Like :reindex, but only GenericWorks, makes it faster,
     # plus let's us use other solr techniques to make it faster,
     # and allows us to add a progress bar easily.
 
-    progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%t: |%B| %p%% %e")
+    progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
     batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
 
     GenericWork.find_each do |work|
       batch_adder.add(work.to_solr)
       progress_bar.increment
     end
+    progress_bar.finish
     batch_adder.finish
     $stderr.puts "Issuing a solr commit..."
     batch_adder.commit
 
     $stderr.puts 'reindex_works complete'
+  end
+
+  desc 'Reindex all FileSets. `RAILS_ENV=production bundle exec rake chf:reindex_filesets`'
+  task reindex_filesets: :environment do
+    # Like :reindex, but only GenericWorks, makes it faster,
+    # plus let's us use other solr techniques to make it faster,
+    # and allows us to add a progress bar easily.
+
+    progress_bar = ProgressBar.create(:total => FileSet.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
+
+    FileSet.find_each do |work|
+      batch_adder.add(work.to_solr)
+      progress_bar.increment
+    end
+    progress_bar.finish
+    batch_adder.finish
+    $stderr.puts "Issuing a solr commit..."
+    batch_adder.commit
+
+    $stderr.puts 'reindex_filesets complete'
+  end
+
+  desc 'Reindex all Collections. `RAILS_ENV=production bundle exec rake chf:reindex_collections`'
+  task reindex_collections: :environment do
+    # Like :reindex, but only GenericWorks, makes it faster,
+    # plus let's us use other solr techniques to make it faster,
+    # and allows us to add a progress bar easily.
+
+    progress_bar = ProgressBar.create(:total => Collection.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
+
+    Collection.find_each do |work|
+      batch_adder.add(work.to_solr)
+      progress_bar.increment
+    end
+    progress_bar.finish
+    batch_adder.finish
+    $stderr.puts "Issuing a solr commit..."
+    batch_adder.commit
+
+    $stderr.puts 'reindex_collections complete'
   end
 
   desc 'csv report of related_urls'
