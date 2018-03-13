@@ -912,7 +912,7 @@ GEM
     multi_json (1.12.2)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    mustermann (1.0.1)
+    mustermann (1.0.2)
     nenv (0.3.0)
     nest (2.1.0)
       redic
@@ -969,8 +969,8 @@ GEM
       faraday
       nokogiri (~> 1.6)
       rails (>= 4.2.0, < 6.0)
-    rack (2.0.3)
-    rack-protection (2.0.0)
+    rack (2.0.4)
+    rack-protection (2.0.1)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -1119,10 +1119,10 @@ GEM
     simple_form (3.5.0)
       actionpack (> 4, < 5.2)
       activemodel (> 4, < 5.2)
-    sinatra (2.0.0)
+    sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.0)
+      rack-protection (= 2.0.1)
       tilt (~> 2.0)
     sitemap_generator (6.0.1)
       builder (~> 3.0)
