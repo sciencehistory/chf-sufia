@@ -343,27 +343,16 @@ namespace :chf do
     # plus let's us use other solr techniques to make it faster,
     # and allows us to add a progress bar easily.
 
-    add_batch_size = ENV['ADD_BATCH_SIZE'] || 50
-
     progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%t: |%B| %p%% %e")
-    solr_service_conn = ActiveFedora::SolrService.instance.conn
-    batch = []
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
 
     GenericWork.find_each do |work|
-      batch << work.to_solr
-
-      if batch.count % add_batch_size == 0
-        solr_service_conn.add(batch, softCommit: true, commit: false)
-        batch.clear
-      end
+      batch_adder.add(work.to_solr)
       progress_bar.increment
     end
-    if batch.present?
-      solr_service_conn.add(batch, softCommit: true, commit: false)
-      batch.clear
-    end
+    batch_adder.finish
     $stderr.puts "Issuing a solr commit..."
-    solr_service_conn.commit
+    batch_adder.commit
 
     $stderr.puts 'reindex_works complete'
   end
