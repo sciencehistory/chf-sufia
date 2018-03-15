@@ -224,9 +224,35 @@ namespace :chf do
       new_domain = "@chemheritage.org"
     end
 
+    old_domain_regexp = /#{Regexp.quote old_domain}\Z/
+
     substitute = lambda do |str|
-      str.sub(/(.*)#{old_domain}\Z/, "\\1#{new_domain}")
+      str.sub(old_domain_regexp, new_domain)
     end
+
+    mutate_af_record = lambda do |record|
+      if record.depositor =~ old_domain_regexp
+        record.depositor = substitute.call(record.depositor)
+        # using crazy private API to try and do what needs doing quicker,
+        # rough and dirty for this one-time migration script. normal `save`
+        # is crazy slow.
+        record.send(:execute_sparql_update)
+      end
+
+      record.permissions.to_a.each do |perm|
+        if perm.agent.any? { |agent| agent.id =~ /\A#{Regexp.quote 'http://projecthydra.org/ns/auth/person'}.*#{Regexp.quote old_domain}\Z/ }
+          perm.agent = perm.agent.collect do |agent|
+            if agent.id =~ old_domain_regexp
+              Hydra::AccessControls::Agent.new( substitute.call(agent.id) )
+            else
+              agent
+            end
+          end
+          perm.send(:execute_sparql_update)
+        end
+      end
+    end
+
 
     User.where("email like '%#{old_domain}'").each do |user|
       user.email = substitute.call(user.email)
@@ -240,16 +266,7 @@ namespace :chf do
 
     Collection.find_each do |collection|
       begin
-        collection.depositor = substitute.call(collection.depositor)
-
-        %w{edit_users read_users discover_users}.each do |users_method|
-          if collection.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
-            new_list = collection.send(users_method).collect { |u| substitute.call(u) }
-            collection.send("#{users_method}=", new_list)
-          end
-        end
-
-        collection.save!(update_index: false)
+        mutate_af_record.call(collection)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
         collection_progress.log "Could not migrate: #{errors.last}"
@@ -262,16 +279,7 @@ namespace :chf do
     other_progress = ProgressBar.create(:title => "GenericWorks+FileSets", :total => GenericWork.count + FileSet.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
     GenericWork.find_each do |work|
       begin
-        work.depositor = substitute.call(work.depositor)
-
-        %w{edit_users read_users discover_users}.each do |users_method|
-          if work.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
-            new_list = work.send(users_method).collect { |u| substitute.call(u) }
-            work.send("#{users_method}=", new_list)
-          end
-        end
-
-        work.save!(update_index: false)
+        mutate_af_record.call(work)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
         errors << "#{work.class}:#{work.id}:#{e}"
         other_progress.log "Could not migrate: #{errors.last}"
@@ -282,16 +290,7 @@ namespace :chf do
 
     FileSet.find_each do |fs|
       begin
-        fs.depositor = substitute.call(fs.depositor)
-
-        %w{edit_users read_users discover_users}.each do |users_method|
-          if fs.send(users_method).any? { |u| u =~ /#{old_domain}\Z/ }
-            new_list = fs.send(users_method).collect { |u| substitute.call(u) }
-            fs.send("#{users_method}=", new_list)
-          end
-        end
-
-        fs.save!(update_index: false)
+        mutate_af_record.call(fs)
       rescue ActiveFedora::RecordInvalid, Ldp::Gone, StandardError => e
         errors << "#{fs.class}:#{fs.id}:#{e}"
         other_progress.log "Could not migrate: #{errors.last}"
@@ -299,7 +298,7 @@ namespace :chf do
         other_progress.increment
       end
     end
-    other_progress.finish
+    other_progress.stop
     $stderr.puts "Could not fully migrate #{errors.count} objects"
   end
 
