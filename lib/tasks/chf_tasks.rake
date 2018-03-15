@@ -300,6 +300,15 @@ namespace :chf do
     end
     other_progress.stop
     $stderr.puts "Could not fully migrate #{errors.count} objects"
+
+    $stderr.puts "\nReindexing collections..."
+    Rake::Task["chf:reindex_collections"].invoke(t)
+
+    $stderr.puts "\nReindexing works..."
+    Rake::Task["chf:reindex_works"].invoke(t)
+
+    $stderr.puts "\nReindexing filesets..."
+    Rake::Task["chf:reindex_filesets"].invoke(t)
   end
 
   desc 'Reindex everything. `RAILS_ENV=production bundle exec rake chf:reindex`. DELETE_PREVIOUS=true will delete any records created before reindex and not reindexed -- ie, deleted records'
