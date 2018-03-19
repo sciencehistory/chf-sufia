@@ -215,6 +215,102 @@ namespace :chf do
     puts 'migration complete'
   end
 
+  desc "migrate user email addresses to @sciencehistory.org"
+  task :rebrand_email_migrate, [:backwards] => :environment do |t, args|
+    old_domain = "@chemheritage.org"
+    new_domain = "@sciencehistory.org"
+    if args[:backwards]
+      old_domain = "@sciencehistory.org"
+      new_domain = "@chemheritage.org"
+    end
+
+    old_domain_regexp = /#{Regexp.quote old_domain}\Z/
+
+    substitute = lambda do |str|
+      str.sub(old_domain_regexp, new_domain)
+    end
+
+    mutate_af_record = lambda do |record|
+      if record.depositor =~ old_domain_regexp
+        record.depositor = substitute.call(record.depositor)
+        # using crazy private API to try and do what needs doing quicker,
+        # rough and dirty for this one-time migration script. normal `save`
+        # is crazy slow.
+        record.send(:execute_sparql_update)
+      end
+
+      record.permissions.to_a.each do |perm|
+        if perm.agent.any? { |agent| agent.id =~ /\A#{Regexp.quote 'http://projecthydra.org/ns/auth/person'}.*#{Regexp.quote old_domain}\Z/ }
+          perm.agent = perm.agent.collect do |agent|
+            if agent.id =~ old_domain_regexp
+              Hydra::AccessControls::Agent.new( substitute.call(agent.id) )
+            else
+              agent
+            end
+          end
+          perm.send(:execute_sparql_update)
+        end
+      end
+    end
+
+
+    User.where("email like '%#{old_domain}'").each do |user|
+      user.email = substitute.call(user.email)
+      user.save!
+    end
+
+
+    errors = []
+
+    collection_progress = ProgressBar.create(:title => "Collections", :total => Collection.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+
+    Collection.find_each do |collection|
+      begin
+        mutate_af_record.call(collection)
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
+        errors << "#{work.class}:#{work.id}:#{e}"
+        collection_progress.log "Could not migrate: #{errors.last}"
+      ensure
+        collection_progress.increment
+      end
+    end
+    collection_progress.finish
+
+    other_progress = ProgressBar.create(:title => "GenericWorks+FileSets", :total => GenericWork.count + FileSet.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    GenericWork.find_each do |work|
+      begin
+        mutate_af_record.call(work)
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone => e
+        errors << "#{work.class}:#{work.id}:#{e}"
+        other_progress.log "Could not migrate: #{errors.last}"
+      ensure
+        other_progress.increment
+      end
+    end
+
+    FileSet.find_each do |fs|
+      begin
+        mutate_af_record.call(fs)
+      rescue ActiveFedora::RecordInvalid, Ldp::Gone, StandardError => e
+        errors << "#{fs.class}:#{fs.id}:#{e}"
+        other_progress.log "Could not migrate: #{errors.last}"
+      ensure
+        other_progress.increment
+      end
+    end
+    other_progress.stop
+    $stderr.puts "Could not fully migrate #{errors.count} objects"
+
+    $stderr.puts "\nReindexing collections..."
+    Rake::Task["chf:reindex_collections"].invoke(t)
+
+    $stderr.puts "\nReindexing works..."
+    Rake::Task["chf:reindex_works"].invoke(t)
+
+    $stderr.puts "\nReindexing filesets..."
+    Rake::Task["chf:reindex_filesets"].invoke(t)
+  end
+
   desc 'Reindex everything. `RAILS_ENV=production bundle exec rake chf:reindex`. DELETE_PREVIOUS=true will delete any records created before reindex and not reindexed -- ie, deleted records'
   task reindex: :environment do
     CHF::Indexer.new(progress_bar: true, final_commit: true, delete_previous: ENV['DELETE_PREVIOUS'] == "true").reindex_everything
@@ -233,51 +329,67 @@ namespace :chf do
     puts "total: #{reporter.matches.size}"
   end
 
-  desc 'Reindex Collections. `RAILS_ENV=production bundle exec rake chf:reindex_collections`'
-  task reindex_collections: :environment do
-    # reindex only Collections
-    # not a frequent task but useful in upgrade to sufia 7.3
-    # There aren't enough of them to really need batches, etc.
-
-    progress_bar = ProgressBar.create(:total => Collection.count, format: "%t: |%B| %p%% %e")
-
-    Collection.find_each do |coll|
-      coll.update_index
-      progress_bar.increment
-    end
-
-    $stderr.puts 'reindex_collections complete'
-  end
-
   desc 'Reindex all GenericWorks. `RAILS_ENV=production bundle exec rake chf:reindex_works`'
   task reindex_works: :environment do
     # Like :reindex, but only GenericWorks, makes it faster,
     # plus let's us use other solr techniques to make it faster,
     # and allows us to add a progress bar easily.
 
-    add_batch_size = ENV['ADD_BATCH_SIZE'] || 50
-
-    progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%t: |%B| %p%% %e")
-    solr_service_conn = ActiveFedora::SolrService.instance.conn
-    batch = []
+    progress_bar = ProgressBar.create(:total => GenericWork.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
 
     GenericWork.find_each do |work|
-      batch << work.to_solr
-
-      if batch.count % add_batch_size == 0
-        solr_service_conn.add(batch, softCommit: true, commit: false)
-        batch.clear
-      end
+      batch_adder.add(work.to_solr)
       progress_bar.increment
     end
-    if batch.present?
-      solr_service_conn.add(batch, softCommit: true, commit: false)
-      batch.clear
-    end
+    progress_bar.finish
+    batch_adder.finish
     $stderr.puts "Issuing a solr commit..."
-    solr_service_conn.commit
+    batch_adder.commit
 
     $stderr.puts 'reindex_works complete'
+  end
+
+  desc 'Reindex all FileSets. `RAILS_ENV=production bundle exec rake chf:reindex_filesets`'
+  task reindex_filesets: :environment do
+    # Like :reindex, but only GenericWorks, makes it faster,
+    # plus let's us use other solr techniques to make it faster,
+    # and allows us to add a progress bar easily.
+
+    progress_bar = ProgressBar.create(:total => FileSet.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
+
+    FileSet.find_each do |work|
+      batch_adder.add(work.to_solr)
+      progress_bar.increment
+    end
+    progress_bar.finish
+    batch_adder.finish
+    $stderr.puts "Issuing a solr commit..."
+    batch_adder.commit
+
+    $stderr.puts 'reindex_filesets complete'
+  end
+
+  desc 'Reindex all Collections. `RAILS_ENV=production bundle exec rake chf:reindex_collections`'
+  task reindex_collections: :environment do
+    # Like :reindex, but only GenericWorks, makes it faster,
+    # plus let's us use other solr techniques to make it faster,
+    # and allows us to add a progress bar easily.
+
+    progress_bar = ProgressBar.create(:total => Collection.count, format: "%a %t: |%B| %R/s %c/%u %p%% %e")
+    batch_adder = CHF::SolrBatchAdder.new(batch_size: ENV['ADD_BATCH_SIZE'] || 50)
+
+    Collection.find_each do |work|
+      batch_adder.add(work.to_solr)
+      progress_bar.increment
+    end
+    progress_bar.finish
+    batch_adder.finish
+    $stderr.puts "Issuing a solr commit..."
+    batch_adder.commit
+
+    $stderr.puts 'reindex_collections complete'
   end
 
   desc 'csv report of related_urls'
@@ -305,7 +417,7 @@ namespace :chf do
 
   namespace :admin do
 
-    desc 'Grant admin role to existing user. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
+    desc 'Grant admin role to existing c. `RAILS_ENV=production bundle exec rake chf:admin:grant[admin@chemheritage.org]`'
     task :grant, [:email] => :environment do |t, args|
       begin
         CHF::Utils::Admin.grant(args[:email])
