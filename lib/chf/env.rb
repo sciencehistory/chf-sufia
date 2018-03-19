@@ -239,5 +239,9 @@ module CHF
 
     define_key :honeybadger_api_key
 
+    # We may temporarily change this default value below and redeploy, instead of actually
+    # changing in ENV/local_env.yml for now, cause we don't have a great way to do that
+    # temporarily.
+    define_key :logins_disabled, default: false, system_env_transform: BOOLEAN_TRANSFORM
   end
 end
