@@ -13,7 +13,7 @@ FactoryGirl.define do
 
       # unfortunately this does force saving the dates_of_work
       # to fedora, which is slowish.
-      work.date_of_work.concat evaluator.dates_of_work
+      work.date_of_work.concat evaluator.dates_of_work if evaluator.dates_of_work.present?
     end
 
     factory :private_work, aliases: [:public_file] do
