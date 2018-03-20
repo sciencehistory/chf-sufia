@@ -71,6 +71,9 @@ module CHF
         doc['visibility_ssi'] = object.visibility
 
         doc['citation_html_ss'] = render_citation(object)
+
+        # index structured date of works, so we can get them at index time
+        doc['date_of_work_json_ssm'] = object.date_of_work.collect { |d| d.to_json(except: "id") }
       end
     end
 

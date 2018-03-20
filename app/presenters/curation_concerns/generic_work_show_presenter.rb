@@ -48,6 +48,16 @@ module CurationConcerns
       end
     end
 
+    # Returns an array of DateOfWork objects, just like an actual fedora object.
+    # reconstructs from json in solr
+    def date_of_work_models
+      @date_of_work_structured ||= begin
+        solr_document["date_of_work_json_ssm"].collect do |json|
+          DateOfWork.new.from_json(json).tap { |d| d.readonly! }
+        end
+      end
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end

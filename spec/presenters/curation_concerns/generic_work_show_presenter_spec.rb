@@ -28,6 +28,20 @@ describe CurationConcerns::GenericWorkShowPresenter do
     end
   end
 
+  describe "structured dates" do
+    let(:dates_of_work_models) { [DateOfWork.new(start: "1901", finish: "1910", start_qualifier: "circa")] }
+    let(:solr_document) { SolrDocument.new(work.to_solr) }
+    let(:work) do
+      FactoryGirl.build(:generic_work, title: ["work"],
+        dates_of_work: dates_of_work_models
+      )
+    end
+    it "can rehydrate DateOfWork objects" do
+      expect(presenter.date_of_work_models.collect {|m| m.to_json(except: :id) }).to eq(dates_of_work_models.collect {|m| m.to_json(except: :id) })
+      expect(presenter.date_of_work_models.all? {|m| m.readonly? }).to be true
+    end
+  end
+
 
   describe "#viewable_member_presenters" do
     let(:public_work_with_one_file) do
