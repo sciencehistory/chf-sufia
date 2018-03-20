@@ -192,6 +192,24 @@ describe CHF::CitableAttributes do
         end
       end
 
+      describe "decade" do
+        let(:date_of_work) do
+          [DateOfWork.new("start": "1900", start_qualifier: "decade")]
+        end
+        it ("gets a decade range") do
+          expect(citable_attributes.date).to eq(CiteProc::Date.new([[1900], [1909]]))
+        end
+      end
+
+      describe "century" do
+        let(:date_of_work) do
+          [DateOfWork.new("start": "1900", start_qualifier: "century")]
+        end
+        it ("gets a century range") do
+          expect(citable_attributes.date).to eq(CiteProc::Date.new([[1900], [1999]]))
+        end
+      end
+
       describe "no dates" do
         let(:date_of_work) { [] }
         it "has no date" do

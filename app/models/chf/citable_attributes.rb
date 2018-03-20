@@ -245,6 +245,19 @@ module CHF
           return nil
         end
 
+        if date.start_qualifier == "decade"
+          open_year = date.start.to_i / 10 * 10 # cut off year
+          close_year = open_year + 9
+          return CiteProc::Date.new([[open_year], [close_year]])
+        end
+
+
+        if date.start_qualifier == "century"
+          open_year = date.start.to_i / 100 * 100 # cut off tens and units
+          close_year = open_year + 99
+          return CiteProc::Date.new([[open_year], [close_year]])
+        end
+
         # year, month, date
         start_part = date.start.presence && date.start.scan(/\d+/).slice(0..2)
         finish_part = date.finish.presence && date.finish.scan(/\d+/).slice(0..2)
