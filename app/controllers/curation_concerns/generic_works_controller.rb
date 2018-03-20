@@ -35,6 +35,17 @@ module CurationConcerns
 
         render body: CHF::RisSerializer.new(@curation_concern).serialize
       end
+
+      wants.csl do
+        # Terrible hack to get download name from our helper
+        download_name = helpers._download_name_base(presenter) + ".json"
+        headers["Content-Disposition"] = ApplicationHelper.encoding_safe_content_disposition(download_name)
+
+        render body: CHF::CitableAttributes.new(presenter,
+          collection: presenter.in_collection_presenters.first,
+          parent_work: presenter.parent_work_presenters.first
+        ).to_csl_json
+      end
     end
 
     # Pretty hacky way to override the t() I18n method when called from template:
