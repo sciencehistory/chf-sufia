@@ -15,16 +15,19 @@ module CHF
   # used at display time. We tried to do it at index time, it didn't work out.
   #
   # An existing CollectionShowPresenter needs to be passed in, if it is to be used in citations.
+  # Same with parent_work. The citations are far from perfect here.
   class CitableAttributes
     attr_reader :work, :collection, :implementation
 
     # collection is a CollectionShowPresenter,optional, for including in citation for archival
-    def initialize(work, collection: nil)
+    # parent_work if present used for citation container title.
+    def initialize(work, collection: nil, parent_work: nil)
       @work = work
       @collection = collection
+      @parent_work = parent_work
       @implementation = treat_as_local_photograph? ?
-        TreatAsLocalPhotograph.new(@work, collection: @collection) :
-        StandardTreatment.new(@work, collection: @collection)
+        TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work) :
+        StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
     end
 
     # Photos of objects we want to cite as an Institute photo, not the object
@@ -71,10 +74,11 @@ module CHF
     end
 
     class StandardTreatment
-      attr_reader :work, :collection
-      def initialize(work, collection: nil)
+      attr_reader :work, :collection, :parent_work
+      def initialize(work, collection: nil, parent_work: nil)
         @work = work
         @collection = collection
+        @parent_work = parent_work
       end
 
       def title
@@ -187,6 +191,8 @@ module CHF
         memoize(:container_title) do
           if work.source.present?
             work.source.first
+          elsif parent_work && parent_work.title.present?
+            parent_work.title.first
           end
         end
       end

@@ -12,7 +12,8 @@ module CitationRenderingHelper
   # creates citation from presenter using CitableAttributes, and ruby CSL
   def citation_for_work(presenter)
     csl_data = CHF::CitableAttributes.new(
-      presenter, collection: presenter.in_collection_presenters.first
+      presenter, collection: presenter.in_collection_presenters.first,
+      parent_work: presenter.parent_work_presenters.first
     ).as_csl_json.stringify_keys
 
     citation_item = CiteProc::CitationItem.new(id: csl_data["id"] || "id") do |c|
