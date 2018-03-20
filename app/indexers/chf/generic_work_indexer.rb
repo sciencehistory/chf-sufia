@@ -10,7 +10,12 @@ module CHF
         end
         unless object.physical_container.nil?
           require_dependency Rails.root.join('lib','chf','utils','parse_fields')
+
+          # formatted
           doc[ActiveFedora.index_field_mapper.solr_name("physical_container", :stored_searchable)] = CHF::Utils::ParseFields.display_physical_container(object.physical_container)
+
+          # and original
+          doc["physical_container_structured_ss"] = object.physical_container
         end
 
         makers = %w(after artist author addressee creator_of_work contributor engraver interviewee interviewer manufacturer photographer printer printer_of_plates publisher)

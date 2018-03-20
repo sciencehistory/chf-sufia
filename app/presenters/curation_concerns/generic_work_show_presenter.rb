@@ -58,6 +58,12 @@ module CurationConcerns
       end
     end
 
+    # the unparsed structured string from fedora, so we can get the individual fields
+    # at display time, for citations et al.
+    def physical_container_structured_str
+      solr_document['physical_container_structured_ss']
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end
