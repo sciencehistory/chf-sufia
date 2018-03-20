@@ -70,8 +70,6 @@ module CHF
         # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18
         doc['visibility_ssi'] = object.visibility
 
-        doc['citation_html_ss'] = render_citation(object)
-
         # index structured date of works, so we can get them at index time
         doc['date_of_work_json_ssm'] = object.date_of_work.collect { |d| d.to_json(except: "id") }
       end
@@ -87,18 +85,6 @@ module CHF
       # similar to csl_chicago_style
       def self.csl_en_us_locale
         @csl_en_us_locale ||= ::CSL::Locale.load("en-US")
-      end
-
-      def render_citation(work)
-        csl_data = CitableAttributes.new(work).as_csl_json.stringify_keys
-        citation_item = CiteProc::CitationItem.new(id: csl_data["id"] || "id") do |c|
-          c.data = CiteProc::Item.new(csl_data)
-        end
-
-        renderer = CiteProc::Ruby::Renderer.new :format => CiteProc::Ruby::Formats::Html.new,
-          :style => self.class.csl_chicago_style, :locale => self.class.csl_en_us_locale
-
-        renderer.render citation_item, self.class.csl_chicago_style.bibliography
       end
 
       def remove_duplicates(field)
