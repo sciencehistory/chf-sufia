@@ -239,6 +239,12 @@ module CHF
 
       # _single_ local date object to a citeproc date
       def local_date_to_citeproc_date(date)
+        # we consider 'before' or 'after' not enough info for a date for citation at present,
+        # haven't figured out how to interact with CSL to represent these, may be possible.
+        if ([date.start_qualifier, date.finish_qualifier].compact & ['before', 'after']).count > 0
+          return nil
+        end
+
         # year, month, date
         start_part = date.start.presence && date.start.scan(/\d+/).slice(0..2)
         finish_part = date.finish.presence && date.finish.scan(/\d+/).slice(0..2)

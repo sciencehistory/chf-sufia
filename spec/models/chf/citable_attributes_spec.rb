@@ -179,9 +179,11 @@ describe CHF::CitableAttributes do
       describe "Multiple dates with start and finish" do
         let(:date_of_work) do
           [
+            DateOfWork.new(start: "1900", start_qualifier: "after"), # right now ignores 'after'
             DateOfWork.new(start: "1916", finish: "1920"),
             DateOfWork.new(start: "1940", finish: "1960"),
-            DateOfWork.new(start: "1910")
+            DateOfWork.new(start: "1910"),
+            DateOfWork.new(finish: "2000", finish_qualifier: "before")  # right now ignores 'before'
           ]
         end
 
