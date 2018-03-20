@@ -35,6 +35,23 @@ class User < ApplicationRecord
     groups.include? 'registered'
   end
 
+  # A devise method, we're taking advantage of it for a cheesy way to lock out
+  # admin users based on CHF::Env variable.
+  def active_for_authentication?
+    if CHF::Env.lookup(:logins_disabled)
+      false
+    else
+      super
+    end
+  end
+  def inactive_message
+    if CHF::Env.lookup(:logins_disabled)
+      "Sorry, logins are temporarily disabled for some software maintenance."
+    else
+      super
+    end
+  end
+
   # Use on a current_user to ensure it's not a guest / nil object user
   alias_method :logged_in?, :persisted?
 

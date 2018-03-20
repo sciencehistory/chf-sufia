@@ -1,3 +1,22 @@
+
+# Cheesy hacky way to disable login form, replacing with message, when we have logins disabled
+
+original_responder = Devise::SessionsController.responder
+Rails.application.config.to_prepare do
+  Devise::SessionsController.responder = proc do |controller, resources, options|
+    if CHF::Env.lookup(:logins_disabled)
+      controller.render layout: true, status: 403, html: <<-EOF.html_safe
+        <h1>Sorry, staff logins are temporarily disabled.</h1>
+        <p>Some software maintenance is going on.</p>
+        <p><A href='#{ controller.root_path }'>Return to app</a></p>
+      EOF
+    else
+      original_responder.call(controller, resources, options)
+    end
+  end
+end
+
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
