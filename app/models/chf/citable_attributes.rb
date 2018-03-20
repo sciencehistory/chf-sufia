@@ -147,12 +147,20 @@ module CHF
             max_date_part = cite_proc_dates.collect(&:date_parts).flatten.max
 
             if min_date_part.nil? && max_date_part.nil?
-              nil
-            elsif min_date_part == max_date_part
+              return nil
+            end
+
+            date = if min_date_part == max_date_part
               ::CiteProc::Date.new(min_date_part.to_a.compact)
             else
               ::CiteProc::Date.new([min_date_part.to_a.compact, max_date_part.to_a.compact])
             end
+
+            if cite_proc_dates.any?(&:uncertain?)
+              date.uncertain!
+            end
+
+            return date
           end
         end
       end
@@ -268,7 +276,9 @@ module CHF
         return nil if args.empty?
 
         CiteProc::Date.new(args).tap do |citeproc_date|
-          #TODO we need "circa" sometimes
+          if date.start_qualifier == "circa" || date.finish_qualifier == "circa"
+            citeproc_date.uncertain!
+          end
         end
       end
 

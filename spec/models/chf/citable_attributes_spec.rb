@@ -210,6 +210,18 @@ describe CHF::CitableAttributes do
         end
       end
 
+      describe "circa" do
+        let(:date_of_work) do
+          [DateOfWork.new("start": "1947", start_qualifier: "circa")]
+        end
+        it ("sets citeproc date as circa") do
+          date = citable_attributes.date
+          # citeproc equality isn't actually taking circa into account, so we test separately too
+          expect(date.uncertain?).to be true
+          expect(citable_attributes.date).to eq(CiteProc::Date.new([[1947]]).tap {|d| d.uncertain! })
+        end
+      end
+
       describe "no dates" do
         let(:date_of_work) { [] }
         it "has no date" do
