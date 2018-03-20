@@ -52,7 +52,7 @@ module CurationConcerns
     # reconstructs from json in solr
     def date_of_work_models
       @date_of_work_structured ||= begin
-        solr_document["date_of_work_json_ssm"].collect do |json|
+        (solr_document["date_of_work_json_ssm"] || []).collect do |json|
           DateOfWork.new.from_json(json).tap { |d| d.readonly! }
         end
       end

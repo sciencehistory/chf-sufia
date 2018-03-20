@@ -82,16 +82,6 @@ module CHF
 
     private
 
-      # reuse this style cause it's expensive to load. Hope it's concurrency safe!
-      def self.csl_chicago_style
-        @csl_chicago_style ||= ::CSL::Style.load("chicago-note-bibliography")
-      end
-
-      # similar to csl_chicago_style
-      def self.csl_en_us_locale
-        @csl_en_us_locale ||= ::CSL::Locale.load("en-US")
-      end
-
       def remove_duplicates(field)
         entries = object.send(field).to_a
         entries.uniq! {|e| e.id} # can return nil
