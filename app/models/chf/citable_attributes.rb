@@ -11,22 +11,27 @@ module CHF
   # may be non-ideal as we ARE doing this to inherit implementation, but makes implementation
   # a lot easier, and we'll keep the implementation classes for non-public use.
   #
-  # NOTE: It's far too expensive to get "what collections is in this in" from fedora,
-  # So we get it from Solr here, with a global utility call, kind of violating separation
-  # of concerns. This relies on Collections being indexed FIRST in a mass reindex on
-  # an empty solr index, which we made happen in 952766f25. Still going to slow
-  # down indexing, but hopefully not abominably.
+  # NOTE WELL: This class takes a work _presenter_, a GenericWorkShowPresenter, and is
+  # used at display time. We tried to do it at index time, it didn't work out.
+  #
+  # An existing CollectionShowPresenter needs to be passed in, if it is to be used in citations.
   class CitableAttributes
-    attr_reader :work, :implementation
+    attr_reader :work, :collection, :implementation
 
-    def initialize(work)
+    # collection is a CollectionShowPresenter,optional, for including in citation for archival
+    def initialize(work, collection: nil)
       @work = work
-      @implementation = treat_as_local_photograph? ? TreatAsLocalPhotograph.new(@work) : StandardTreatment.new(@work)
+      @collection = collection
+      @implementation = treat_as_local_photograph? ?
+        TreatAsLocalPhotograph.new(@work, collection: @collection) :
+        StandardTreatment.new(@work, collection: @collection)
     end
 
     # Photos of objects we want to cite as an Institute photo, not the object
     def treat_as_local_photograph?
-      @treat_as_local_photograph ||= work.division == "Museum" && work.resource_type.include?("Physical Object") && work.resource_type.count == 1
+      @treat_as_local_photograph ||= work.division && work.division.include?("Museum") &&
+        work.resource_type && work.resource_type.include?("Physical Object") &&
+        work.resource_type.count == 1
     end
 
 
@@ -66,9 +71,10 @@ module CHF
     end
 
     class StandardTreatment
-      attr_reader :work
-      def initialize(work)
+      attr_reader :work, :collection
+      def initialize(work, collection: nil)
         @work = work
+        @collection = collection
       end
 
       def title
@@ -83,21 +89,23 @@ module CHF
       # When in doubt we tend to default to 'manuscript', cause that usually ends up getting cited correctly
       # for archival material.
       def csl_type
-        if work.genre_string.include?('Manuscripts')
+        genre_string = work.genre_string || []
+
+        if genre_string.include?('Manuscripts')
           return "manuscript"
-        elsif (work.genre_string & ['Rare books', 'Sample books']).present?
+        elsif (genre_string & ['Rare books', 'Sample books']).present?
           return "book"
-        elsif work.genre_string.include?('Documents') && work.title.any? { |v| v=~ /report/i }
+        elsif genre_string.include?('Documents') && title =~ /report/i
           return "report"
-        elsif  work.division == "Archives"
+        elsif  division?("Archives")
           # if it's not one of above known to use archival metadata, and it's in
           # Archives, insist on Manuscript.
           return "manuscript"
-        elsif (work.genre_string & %w{Paintings}).present?
+        elsif (genre_string & %w{Paintings}).present?
           return "graphic"
-        elsif work.genre_string.include?('Slides')
+        elsif genre_string.include?('Slides')
           return "graphic"
-        elsif work.genre_string.include?('Encyclopedias and dictionaries')
+        elsif genre_string.include?('Encyclopedias and dictionaries')
           return "book"
         else
           return "manuscript"
@@ -140,8 +148,8 @@ module CHF
       # Can not return multiple distinct dates though, so we try to collapse them when we have them.
       def date
         memoize(:date) do
-          if work.date_of_work.present?
-            cite_proc_dates = work.date_of_work.collect { |d| local_date_to_citeproc_date(d) }.compact
+          if work.date_of_work_models.present?
+            cite_proc_dates = work.date_of_work_models.collect { |d| local_date_to_citeproc_date(d) }.compact
 
             min_date_part = cite_proc_dates.collect(&:date_parts).flatten.min
             max_date_part = cite_proc_dates.collect(&:date_parts).flatten.max
@@ -185,8 +193,8 @@ module CHF
 
       def shelfmark
         memoize(:shelfmark) do
-          if work.physical_container.present?
-            CHF::Utils::ParseFields.parse_physical_container(work.physical_container)["s"]
+          if work.physical_container_structured_str.present?
+            CHF::Utils::ParseFields.parse_physical_container(work.physical_container_structured_str)["s"]
           end
         end
       end
@@ -194,38 +202,29 @@ module CHF
       # We decided NOT to include series/subseries in citation, just collection and physical lcoation
       def archive_location
         #memoize(:archive_location) do
-          if work.division == "Archives"
+          if division?("Archives")
             parts = []
 
-            # Go to Solr to get collection, only non-insane way to do it although it's
-            # still unfortunate. Also requires ensuring Collections are indexed first in
-            # solr reindex on empty solr index.
-            #
-            # If there are more than one collection, we don't
-            # know what to do with it or which one to pick, so we just take one arbitrarily.
-            if work.collection_titles_from_solr.present?
-              parts << work.collection_titles_from_solr.first
+            if collection && collection.title.present?
+              parts << collection.title.first
             end
 
-            # parts.concat item.series_arrangement.to_a if item.series_arrangement.present?
-            #parts = [parts.join("; ")] if parts.present?
-
-            parts << CHF::Utils::ParseFields.display_physical_container(work.physical_container) if work.physical_container.present?
+            parts << work.physical_container if work.physical_container.present?
             parts.collect(&:presence).compact.join(', ')
-          elsif work.division == "Library" && self.shelfmark
+          elsif division?("Library") && self.shelfmark
             self.shelfmark
           end
         #end
       end
 
       def archive_place
-        if work.division == "Archives" || work.division == "Museum" || shelfmark
+        if division?("Archives", "Museum") || shelfmark
           "Philadelphia"
         end
       end
 
       def archive
-        if work.division == "Archives" || work.division == "Museum" || shelfmark
+        if division?("Archives", "Museum") || shelfmark
           "Science History Institute"
         end
       end
@@ -240,6 +239,10 @@ module CHF
           @__memoized[key] = yield
         end
         @__memoized[key]
+      end
+
+      def division?(*divisions)
+        work.division && (work.division & divisions).length > 0
       end
 
 
@@ -352,7 +355,7 @@ module CHF
 
       def date
         # I think this is best way we got to get date of photo
-        date_of_photo = work.date_uploaded
+        date_of_photo = Date.strptime(work.date_uploaded, '%m/%d/%Y')
         # we only give it the year, we don't really trust the other stuff anyway.
         date_of_photo ? CiteProc::Date.new([date_of_photo.year]) : nil
       end

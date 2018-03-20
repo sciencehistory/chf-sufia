@@ -3,10 +3,12 @@ require 'spec_helper'
 #   "Hawes, R. C.", "Beckman Instruments, inc."]
 
 describe CHF::CitableAttributes do
-  let(:citable_attributes) { CHF::CitableAttributes.new(work)}
+  let(:collection) { nil }
+  let(:presenter) { CurationConcerns::GenericWorkShowPresenter.new(SolrDocument.new(work.to_solr), Ability.new(nil)) }
+  let(:citable_attributes) { CHF::CitableAttributes.new(presenter, collection: collection)}
 
   describe "standard treatment" do
-    let(:work) { FactoryGirl.build(:generic_work)}
+    let(:work) { FactoryGirl.build(:generic_work, dates_of_work: nil)}
 
     describe "authors" do
       describe "inverted without dates" do
@@ -141,12 +143,11 @@ describe CHF::CitableAttributes do
         end
       end
       describe "Archives" do
+        let(:collection) { CHF::CollectionShowPresenter.new(SolrDocument.new(title_tesim: ["Collection Name"]), Ability.new(nil)) }
         before do
           work.division = "Archives"
           work.series_arrangement = ["Subseries B", "Series XIV"]
           work.physical_container = "b56|f47"
-          # sadly have to stub for solr query, not really testing reliably anymore, what can you do
-          allow(work).to receive("collection_titles_from_solr").and_return(["Collection Name"])
         end
         it "includes collection box and folder but not series" do
           expect(citable_attributes.archive_location).to eq("Collection Name, Box 56, Folder 47")
@@ -179,11 +180,11 @@ describe CHF::CitableAttributes do
       describe "Multiple dates with start and finish" do
         let(:date_of_work) do
           [
-            DateOfWork.new(start: "1900", start_qualifier: "after"), # right now ignores 'after'
-            DateOfWork.new(start: "1916", finish: "1920"),
-            DateOfWork.new(start: "1940", finish: "1960"),
-            DateOfWork.new(start: "1910"),
-            DateOfWork.new(finish: "2000", finish_qualifier: "before")  # right now ignores 'before'
+            DateOfWork.new(id: SecureRandom.uuid, start: "1901", start_qualifier: "after"), # right now ignores 'after'
+            DateOfWork.new(id: SecureRandom.uuid, start: "1916", finish: "1920"),
+            DateOfWork.new(id: SecureRandom.uuid, start: "1940", finish: "1960"),
+            DateOfWork.new(id: SecureRandom.uuid, start: "1910"),
+            DateOfWork.new(id: SecureRandom.uuid, finish: "2000", finish_qualifier: "before")  # right now ignores 'before'
           ]
         end
 
@@ -239,7 +240,7 @@ describe CHF::CitableAttributes do
 
     describe :as_csl do
       describe "barely metadata" do
-        let(:work) { FactoryGirl.build(:work, title: ["something"], dates_of_work: []) }
+        let(:work) { FactoryGirl.build(:work, title: ["something"], dates_of_work: nil) }
         it "still creates something" do
           expect(citable_attributes.as_csl_json).to be_kind_of(Hash)
         end
@@ -253,7 +254,8 @@ describe CHF::CitableAttributes do
             resource_type: ["Text"],
             genre_string: ["Rare Books", "Manuscripts"],
             division: "Library",
-            physical_container: "sMS 3"
+            physical_container: "sMS 3",
+            dates_of_work: nil
           )
         }
         before do
@@ -282,6 +284,7 @@ describe CHF::CitableAttributes do
             language: ["English"],
             subject: ["Beckman Instruments, inc.", "Scientific apparatus and instruments", "Hydrogen-ion concentration--Measurement--Instruments"],
             division: "Archives",
+            dates_of_work: nil,
             series_arrangement: ["Sub-series 2. Advertisements", "Series VIII. Clippings and Advertisements"],
             physical_container: "b49|f14")
         }
@@ -316,7 +319,8 @@ describe CHF::CitableAttributes do
       publisher: ["Not Publisher"],
       place_of_publication: ["Not this place"],
       medium: ["Iron", "Wood"],
-      date_uploaded: date_uploaded
+      date_uploaded: date_uploaded,
+      dates_of_work: nil
     )}
     before do
       allow(work).to receive(:date_of_work).and_return([DateOfWork.new(start: "1916")])
