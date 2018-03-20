@@ -169,8 +169,6 @@ module CHF
         memoize(:medium) do
           if work.medium.present?
             work.medium.collect(&:downcase).join(", ")
-          elsif work.genre_string == ["Photographs"] # and only photographs
-            "photograph"
           else
             nil
           end
