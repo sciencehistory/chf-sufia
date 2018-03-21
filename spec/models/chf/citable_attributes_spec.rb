@@ -90,6 +90,27 @@ describe CHF::CitableAttributes do
         end
       end
 
+      describe "all sorts of dates" do
+        {
+          'Backus, Standish, 1910-1989' => {family: "Backus", given: "Standish"},
+          "Van Sompel, Pieter 1600?-1643?" => {family: "Van Sompel", given: "Pieter"}, # from work id qj72p783g
+          "Antonius, Wilhelm, -1611" => {family: "Antonius", given: "Wilhelm"}, # from work id vd66vz91p
+          "Ramelli, Agostino, 1531-approximately 1600" => {family: "Ramelli", given: "Agostino"},
+          "Siemienowicz, Kazimierz, -1651?" => {family: "Siemienowicz", given: "Kazimierz"},
+          "Bonus, Petrus, active 1323-1330" => {family: "Bonus", given: "Petrus"},
+          "Faber, John, 1695?-1756" => {family: "Faber", given: "John"}
+
+        }.each do |str, formatted|
+          describe str do
+            before do
+              work.creator_of_work = [str]
+            end
+            it "parses" do
+              expect(citable_attributes.authors).to include(CiteProc::Name.new(formatted))
+            end
+          end
+        end
+      end
     end
 
     describe "publisher" do
