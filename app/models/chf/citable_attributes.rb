@@ -151,7 +151,11 @@ module CHF
         if genre_string.include?('Manuscripts')
           return "manuscript"
         elsif (genre_string & ['Rare books', 'Sample books']).present?
-          return "book"
+          if container_title.present?
+            return "chapter"
+          else
+            return "book"
+          end
         elsif genre_string.include?('Documents') && title =~ /report/i
           return "report"
         elsif  division?("Archives")
@@ -163,7 +167,11 @@ module CHF
         elsif genre_string.include?('Slides')
           return "graphic"
         elsif genre_string.include?('Encyclopedias and dictionaries')
-          return "book"
+          if container_title.present?
+            return "chapter"
+          else
+            return "book"
+          end
         else
           return "manuscript"
         end
