@@ -190,6 +190,7 @@ describe CHF::CitableAttributes do
 
         it ("gets the right CiteProc::Date range") do
           expect(citable_attributes.date).to eq(CiteProc::Date.new([[1910], [1960]]))
+          expect(citable_attributes.issued_date_csl).to eq ({"date-parts"=>[[1910], [1960]], "literal"=>"1910–1960"})
         end
       end
 
@@ -220,6 +221,7 @@ describe CHF::CitableAttributes do
           # citeproc equality isn't actually taking circa into account, so we test separately too
           expect(date.uncertain?).to be true
           expect(citable_attributes.date).to eq(CiteProc::Date.new([[1947]]).tap {|d| d.uncertain! })
+          expect(citable_attributes.issued_date_csl).to eq({"date-parts" => [[1947]], "circa"=>true, "literal" => "circa 1947"})
         end
       end
 

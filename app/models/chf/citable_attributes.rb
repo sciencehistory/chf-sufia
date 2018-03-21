@@ -16,15 +16,22 @@ module CHF
   #
   # An existing CollectionShowPresenter needs to be passed in, if it is to be used in citations.
   # Same with parent_work. The citations are far from perfect here.
+  #
+  # For date ranges and circa dates, will include a formatted literal in csl output,
+  # unless `edge_case_date_literals: false`.
   class CitableAttributes
     attr_reader :work, :collection, :implementation
 
     # collection is a CollectionShowPresenter,optional, for including in citation for archival
     # parent_work if present used for citation container title.
-    def initialize(work, collection: nil, parent_work: nil)
+    def initialize(work,
+                    collection: nil,
+                    parent_work: nil,
+                    edge_case_date_literals: true)
       @work = work
       @collection = collection
       @parent_work = parent_work
+      @edge_case_date_literals = !!edge_case_date_literals
       @implementation = treat_as_local_photograph? ?
         TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work) :
         StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
@@ -37,6 +44,52 @@ module CHF
         work.resource_type.count == 1
     end
 
+    # ruby-csl can't really do date ranges yet.
+    # And the CSL chicago style isn't marking "circa" dates for some reason.
+    # So for these cases, we'll format it ourselves  and send it along as a literal.
+    # We're not formatting as well as CSL spec, just something good enough -- we resort to just years
+    # when we do this, ignoring month/day.
+    def formatted_date_literal
+      open_date = date.parts.first
+      close_date = date.parts.second
+
+      unless date.uncertain? || (open_date && close_date)
+        # let csl-ruby handle it normally, it's a single date or no date at all, not a range!
+        return nil
+      end
+
+      # We're just gonna do years, if they're both the same year, just call it a year.
+      formatted_date = if close_date.nil? || open_date.year == close_date.year
+        open_date.year.to_s
+      else
+        # that's an en-dash not a hyphen.
+        "#{open_date.year}–#{close_date.year}"
+      end
+
+      if date.uncertain?
+        formatted_date ="circa #{formatted_date}"
+      end
+
+      return formatted_date
+    end
+
+    # adds formatted date range as a literal if present.
+    def issued_date_csl
+      return nil unless date
+
+      date_csl = date.to_citeproc
+
+      if edge_case_date_literals?
+        literal = formatted_date_literal
+        date_csl["literal"] = literal if literal
+      end
+
+      return date_csl
+    end
+
+    def edge_case_date_literals?
+      @edge_case_date_literals
+    end
 
     delegate :authors, :publisher, :publisher_place, :date, :container_title,
       :medium, :archive_location, :archive, :archive_place, :title, :csl_id, :abstract, :csl_type,
@@ -51,7 +104,7 @@ module CHF
         id: csl_id,
         abstract: abstract,
         author: authors.collect(&:to_citeproc),
-        issued: date ? date.to_citeproc : nil,
+        issued: issued_date_csl,
         publisher: publisher,
         "publisher-place": publisher_place,
         medium: medium,
