@@ -106,7 +106,10 @@ module CHF
       return @ris_type if defined?(@ris_type)
 
       @ris_type ||= begin
-        if citable_attributes.container_title.present?
+        if citable_attributes.treat_as_local_photograph?
+          # we're treating as a photo taken by us, "ART" is best we've got in RIS?
+          "ART"
+        elsif citable_attributes.container_title.present?
           # basically the only way RIS-handling things are going to handle a
           # container title in any reasonable way, I think.
           "CHAP"
