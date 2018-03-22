@@ -27,13 +27,11 @@ module CurationConcerns
     # override from curation_concerns to add additional response formats to #show
     def additional_response_formats(wants)
       wants.ris do
-        @curation_concern = _curation_concern_type.find(params[:id]) unless curation_concern
-
         # Terrible hack to get download name from our helper
-        download_name = helpers._download_name_base(@curation_concern) + ".ris"
+        download_name = helpers._download_name_base(presenter) + ".ris"
         headers["Content-Disposition"] = ApplicationHelper.encoding_safe_content_disposition(download_name)
 
-        render body: CHF::RisSerializer.new(@curation_concern).serialize
+        render body: CHF::RisSerializer.new(presenter).to_ris
       end
 
       wants.csl do
@@ -41,10 +39,7 @@ module CurationConcerns
         download_name = helpers._download_name_base(presenter) + ".json"
         headers["Content-Disposition"] = ApplicationHelper.encoding_safe_content_disposition(download_name)
 
-        render body: CHF::CitableAttributes.new(presenter,
-          collection: presenter.in_collection_presenters.first,
-          parent_work: presenter.parent_work_presenters.first
-        ).to_csl_json
+        render body: CHF::CitableAttributes.new(presenter).to_csl_json
       end
     end
 
