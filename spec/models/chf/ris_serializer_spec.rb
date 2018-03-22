@@ -9,7 +9,7 @@ describe CHF::RisSerializer do
       publisher: ["Sackett, Israel, 1809-1880"],
       place_of_publication: ["New York (State)--New York"],
       description: ['This is an abstract'],
-      subject: ['subject1', 'subject2'],
+      subject: ['subject2'],
       language: ['English', 'German']
     )
   end

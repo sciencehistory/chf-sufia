@@ -159,12 +159,9 @@ module CHF
       return @ris_date if defined?(@ris_date)
 
       @ris_date ||= begin
-        if work_presenter.date_of_work_models.present?
-          date = work_presenter.date_of_work_models.first
-          if date.start
-            parts = date.start.scan(/\d+/)
-            self.class.formatted_ris_date(year: parts.first, month: parts.second, day: parts.third, extra: date.note)
-          end
+        if start_d = citable_attributes.date && citable_attributes.date.parts.first
+          start = citable_attributes.date.start
+          self.class.formatted_ris_date(year: start_d.year, month: start_d.month, day: start_d.day)
         end
       end
     end
@@ -173,8 +170,9 @@ module CHF
       return @ris_date_year if defined?(@ris_date_year)
 
       @ris_date_year ||= begin
-        work_presenter.date_of_work_models.try(:first).try(:start) =~ /\A(\d\d\d\d)/
-        $1
+        if start_d = citable_attributes.date && citable_attributes.date.parts.first
+          start_d.year
+        end
       end
     end
 
