@@ -50,9 +50,8 @@ module CHF
         # M2 is 'extra' notes field
         "M2" => m2,
 
-        # If there's a container title, it's in TI, and specific title is in T2.
-        "TI" => citable_attributes.container_title.present? ? citable_attributes.container_title : citable_attributes.title,
-        "T2" => citable_attributes.container_title.present? ? citable_attributes.title : nil,
+        "TI" => citable_attributes.title,
+        "T2" => citable_attributes.container_title,
 
         "ID" => work_presenter.id,
         "AU" => citable_attributes.authors_formatted,
@@ -107,7 +106,11 @@ module CHF
       return @ris_type if defined?(@ris_type)
 
       @ris_type ||= begin
-        if genre_string.include?('Manuscripts')
+        if citable_attributes.container_title.present?
+          # basically the only way RIS-handling things are going to handle a
+          # container title in any reasonable way, I think.
+          "CHAP"
+        elsif genre_string.include?('Manuscripts')
           "MANSCPT"
         elsif (genre_string & ['Personal correspondence', 'Business correspondence']).present?
           "PCOMM"
