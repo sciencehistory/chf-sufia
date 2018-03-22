@@ -95,7 +95,8 @@ module CHF
     end
 
     delegate :authors, :publisher, :publisher_place, :date, :container_title,
-      :medium, :archive_location, :archive, :archive_place, :title, :csl_id, :abstract, :csl_type,
+      :medium, :archive_location, :archive, :archive_place, :title, :csl_id,
+      :abstract, :csl_type, :url,
       to:  :implementation
 
     # A _hash_ (not a serialized json string) representing in the csl-data.json
@@ -111,7 +112,7 @@ module CHF
         publisher: publisher,
         "publisher-place": publisher_place,
         medium: medium,
-        "URL": "https://digital.sciencehistory.org/works/#{work.id}",
+        "URL": url,
         archive: archive,
         'archive-place': archive_place,
         archive_location: archive_location,
@@ -249,6 +250,10 @@ module CHF
             nil
           end
         end
+      end
+
+      def url
+        "https://digital.sciencehistory.org/works/#{work.id}"
       end
 
       def container_title
