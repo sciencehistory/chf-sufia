@@ -40,7 +40,7 @@ describe CHF::RisSerializer do
     expect(serialized_fields["UR"]).to eq "https://digital.sciencehistory.org/works/MOCK_ID"
     expect(serialized_fields["AB"]).to eq "This is an abstract"
     expect(serialized_fields["KW"]).to eq "subject2"
-    expect(serialized_fields["LA"]).to eq "English, German"
+    expect(serialized_fields["LA"].split(", ")).to match_array(["English", "German"])
   end
 
   describe "complex archival work" do
