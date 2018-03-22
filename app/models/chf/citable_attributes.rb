@@ -336,7 +336,7 @@ module CHF
       # we use our own :memoize instead of `||=` so it can memoize nil
       def memoize(key)
         key = key.to_sym
-        @__memoized = {}
+        @__memoized ||= {}
         unless @__memoized.has_key?(key)
           @__memoized[key] = yield
         end
