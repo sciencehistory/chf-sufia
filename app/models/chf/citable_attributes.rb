@@ -96,7 +96,7 @@ module CHF
 
     delegate :authors, :publisher, :publisher_place, :date, :container_title,
       :medium, :archive_location, :archive, :archive_place, :title, :csl_id,
-      :abstract, :csl_type, :url,
+      :abstract, :csl_type, :url, :authors_formatted,
       to:  :implementation
 
     # A _hash_ (not a serialized json string) representing in the csl-data.json
@@ -192,6 +192,33 @@ module CHF
           # find one with elements, we stop and use those.
           first_present_field_values(%w{creator_of_work author artist photographer engraver}).collect do |str_name|
             parse_name(str_name)
+          end
+        end
+      end
+
+      # An array of formatted `lastname, first` like typical for RIS AU field and other
+      # non-structured single-string author uses.
+      #
+      # Code extracted from:
+      # https://github.com/inukshuk/citeproc/blob/52fb498b59e4d1c30eb9a44d18bb7a5e10cfaae8/lib/citeproc/names.rb#L314-L337
+      def authors_formatted
+        memoize(:authors_formatted) do
+          authors.collect do |citeproc_name|
+            if citeproc_name.literal.present?
+              citeproc_name.literal
+            elsif !citeproc_name.demote_particle?
+              [
+                [citeproc_name.particle, citeproc_name.family].compact.join(' '),
+                [citeproc_name.initials, citeproc_name.dropping_particle].compact.join(' '),
+                citeproc_name.suffix
+              ].compact.join(citeproc_name.comma)
+            else
+              [
+                citeproc_name.family,
+                [citeproc_name.initials, citeproc_name.dropping_particle, citeproc_name.particle].compact.join(' '),
+                citeproc_name.suffix
+              ].compact.join(citeproc_name.comma)
+            end
           end
         end
       end
