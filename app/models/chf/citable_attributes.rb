@@ -24,13 +24,16 @@ module CHF
 
     # collection is a CollectionShowPresenter,optional, for including in citation for archival
     # parent_work if present used for citation container title.
+    #
+    # Both are optional, and will be looked up from presenter, but you can pass in
+    # if you have a more efficient place to get them, you've already fetched them.
     def initialize(work,
                     collection: nil,
                     parent_work: nil,
                     edge_case_date_literals: true)
       @work = work
-      @collection = collection
-      @parent_work = parent_work
+      @collection = collection.nil? ? work.in_collection_presenters.first : collection
+      @parent_work = parent_work.nil? ? work.parent_work_presenters.first : parent_work
       @edge_case_date_literals = !!edge_case_date_literals
       @implementation = treat_as_local_photograph? ?
         TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work) :
