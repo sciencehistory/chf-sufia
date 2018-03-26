@@ -160,7 +160,6 @@ module CHF
 
       @ris_date ||= begin
         if start_d = citable_attributes.date && citable_attributes.date.parts.first
-          start = citable_attributes.date.start
           self.class.formatted_ris_date(year: start_d.year, month: start_d.month, day: start_d.day)
         end
       end

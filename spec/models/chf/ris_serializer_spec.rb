@@ -43,6 +43,22 @@ describe CHF::RisSerializer do
     expect(serialized_fields["LA"].split(", ")).to match_array(["English", "German"])
   end
 
+  describe "dates" do
+    let(:date_of_work) { nil }
+    before do
+      allow(work).to receive(:date_of_work).and_return(date_of_work)
+    end
+
+    describe "decade" do
+      let(:date_of_work) { [DateOfWork.new(start: "1920", finish: "", start_qualifier: "decade", finish_qualifier: "", note: "")] }
+
+      it "chooses start as RIS date" do
+        expect(serialized_fields["DA"]).to eq("1920///")
+        expect(serialized_fields["YR"]).to eq("1920")
+      end
+    end
+  end
+
   describe "complex archival work" do
     let(:collection) { FactoryGirl.build(:collection, title: ["Collection Title"]) }
     let(:parent_work) { FactoryGirl.build(:work, title: ["parent_work"]) }
