@@ -38,6 +38,21 @@ class GenericWork < ActiveFedora::Base
     end
   end
 
+  # Needed in indexing from citations, far far too expensive to get it from fedora (:()),
+  # so we get it from solr, which does require making sure Collections are indexed first.
+  # And make testing/reliability a lot more of a pain.
+  #
+  # Can be empty array or not empty array. not nil.
+  def collection_titles_from_solr
+    @collection_titles_from_solr ||=  begin
+      raise TypeError.new("Can't find collections from solr until work is saved") unless self.id.present?
+      ActiveFedora::SolrService.query(
+        "has_model_ssim:Collection AND member_ids_ssim:#{self.id}",
+        fl: "id,title_tesim",
+        rows: 100).collect { |hash| hash["title_tesim"]}
+    end
+  end
+
   protected
 
   def legal_representative_id

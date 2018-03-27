@@ -1,116 +1,200 @@
 module CHF
   # https://github.com/aurimasv/translators/wiki/RIS-Tag-Map-(narrow)
-  class RisSerializer < CHF::RisSerializerBase
+  class RisSerializer
+    RIS_LINE_END = "\r\n"
+    RIS_END_RECORD = "ER  -#{RIS_LINE_END}"
+
+    attr_reader :work_presenter, :collection, :parent_work
+
+    def initialize(work_presenter, collection: nil, parent_work: nil)
+      @work_presenter = work_presenter
+      @collection = collection
+      @parent_work = parent_work
+    end
+
+    def citable_attributes
+      @citable_attributes ||= CHF::CitableAttributes.new(work_presenter, collection: collection, parent_work: parent_work)
+    end
+
+    def self.formatted_ris_date(year:, month: nil, day: nil, extra: nil)
+      str = year.to_s
+
+      str += "/"
+      if month.present?
+        str += "%02i" % month.to_i
+      end
+
+      str += "/"
+      if day.present?
+        str += "%02i" % day.to_i
+      end
+
+      str += "/"
+      if extra.present?
+        str += extra
+      end
+
+      str
+    end
+
+    # RIS fields not including type. Values can be arrays or single elements.
+    def ris_hash
+      return @ris_hash if defined?(@ris_hash)
+
+      @ris_hash ||= {
+        # Theoretically "DB" is 'name of database' and "DP" is "database provider"
+        # Different software uses one or the other for "Archive:". We use the plain
+        # institute name for both, in line with rebrand style guide.
+        "DB" => "Science History Institute",
+        "DP" => "Science History Institute",
+        # M2 is 'extra' notes field
+        "M2" => m2,
+
+        "TI" => citable_attributes.title,
+        "T2" => citable_attributes.container_title,
+
+        "ID" => work_presenter.id,
+        "AU" => citable_attributes.authors_formatted,
+        "PB" => citable_attributes.publisher,
+        "CY" => citable_attributes.publisher_place,
+        "DA" => ris_date,
+        "YR" => ris_date_year,
+
+        "M3" => citable_attributes.medium,
+
+        # archival location is according to wikipedia "AV". Endnote uses "VL" (volume) for this though.
+        # And Zotero uses "AN" (accession number)!
+        "AV" => citable_attributes.archive_location,
+        "VL" => citable_attributes.archive_location,
+        "AN" => citable_attributes.archive_location,
+
+        "UR" => citable_attributes.url,
+
+        "AB" => citable_attributes.abstract,
+        "KW" => kw,
+        "LA" => la,
+      }
+    end
+
+    def to_ris
+      return @to_ris if defined?(@to_ris)
+
+      @to_ris ||= begin
+        lines = []
+        # TY needs to be first
+        lines << "TY  - #{ris_type}"
+
+        ris_hash.each_pair do |tag, value|
+          Array(value).each do |v|
+            lines << "#{tag}  - #{v}"
+          end
+        end
+
+        lines << RIS_END_RECORD
+        lines.join(RIS_LINE_END)
+      end
+    end
+
+    def genre_string
+      work_presenter.genre_string || []
+    end
 
     # Limited ability to map to RIS types -- 'manuscript' type seems to get
     # the best functionality for archival fields in most software, so we default to
     # that and use that in many places maybe we COULD have something more specific.
-    self.get_type = lambda do |item|
-      if item.genre_string.include?('Manuscripts')
-        return "MANSCPT"
-      elsif (item.genre_string & ['Personal correspondence', 'Business correspondence']).present?
-        return "PCOMM"
-      elsif (item.genre_string & ['Rare books', 'Sample books']).present?
-        return "BOOK"
-      elsif item.genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
-        return "RPRT"
-      elsif  item.division == "Archives"
-        # if it's not one of above known to use archival metadata, and it's in
-        # Archives, insist on Manuscript.
-        return "MANSCPT"
-      elsif (item.genre_string & %w{Paintings}).present?
-        return "ART"
-      elsif item.genre_string.include?('Slides')
-        return "SLIDE"
-      elsif item.genre_string.include?('Encyclopedias and dictionaries')
-        return "ENCYC"
-      else
-        return "MANSCPT"
-      end
-    end
+    def ris_type
+      return @ris_type if defined?(@ris_type)
 
-    # Theoretically "DB" is 'name of database' and "DP" is "database provider"
-    # Different software uses one or the other for "Archive:". We use the plain
-    # institute name for both, in line with rebrand style guide.
-    serialize :db do
-      "Science History Institute"
-    end
-    serialize :dp do
-      "Science History Institute"
+      @ris_type ||= begin
+        if citable_attributes.treat_as_local_photograph?
+          # we're treating as a photo taken by us, "ART" is best we've got in RIS?
+          "ART"
+        elsif citable_attributes.container_title.present?
+          # basically the only way RIS-handling things are going to handle a
+          # container title in any reasonable way, I think.
+          "CHAP"
+        elsif genre_string.include?('Manuscripts')
+          "MANSCPT"
+        elsif (genre_string & ['Personal correspondence', 'Business correspondence']).present?
+          "PCOMM"
+        elsif (genre_string & ['Rare books', 'Sample books']).present?
+          "BOOK"
+        elsif genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
+          "RPRT"
+        elsif  work_presenter.division == ["Archives"]
+          # if it's not one of above known to use archival metadata, and it's in
+          # Archives, insist on Manuscript.
+          "MANSCPT"
+        elsif (genre_string & %w{Paintings}).present?
+          "ART"
+        elsif genre_string.include?('Slides')
+          "SLIDE"
+        elsif genre_string.include?('Encyclopedias and dictionaries')
+          "ENCYC"
+        else
+          "MANSCPT"
+        end
+      end
     end
 
     # zotero 'extra'. endnote?
-    serialize :m2 do |item|
-      "Courtesy of Science History Institute." +
-        # rights statement
-        if item.rights.present?
-          "  Rights: " + item.rights.collect do |id|
-            CurationConcerns::LicenseService.new.label(id)
-          end.join(", ") + (item.rights_holder.present? ? ", #{item.rights_holder}" : "")
-        else
-          ""
-        end
-    end
-    #serialize :n1 # zotero notes
+    def m2
+      return @m2 if defined?(@m2)
 
-    serialize :ti, property: :title, predicate: ::RDF::Vocab::DC.title
-    serialize :id, property: :id
-    serialize :au, property: (Rails.application.config.makers - [:publisher, :printer, :printer_of_plates, :addressee]), predicate: [::RDF::Vocab::MARCRelators.aut, ::RDF::Vocab::DC.creator, ::RDF::Vocab::DC11.creator]
-    serialize :pb, property: [:publisher, :printer, :printer_of_plates]
-    serialize :a2, property: :addressee
+      @m2 ||= begin
+        "Courtesy of Science History Institute." +
+          # rights statement
+          if work_presenter.rights.present?
+            "  Rights: " + work_presenter.rights.collect do |id|
+              CurationConcerns::LicenseService.new.label(id)
+            end.join(", ") + (work_presenter.rights_holder.present? ? ", #{item.rights_holder}" : "")
+          else
+            ""
+          end
+      end
+    end
 
     # date in RIS format
-    serialize :da do |item|
-      if item.date_of_work.present?
-        date = item.date_of_work.first
-        if date.start
-          parts = date.start.scan(/\d+/)
-          RisSerializerBase.ris_date(year: parts.first, month: parts.second, day: parts.third, extra: date.note)
+    def ris_date
+      return @ris_date if defined?(@ris_date)
+
+      @ris_date ||= begin
+        if start_d = citable_attributes.date && citable_attributes.date.parts.first
+          self.class.formatted_ris_date(year: start_d.year, month: start_d.month, day: start_d.day)
         end
       end
     end
 
-    serialize :yr do |item|
-      item.date_of_work.try(:first).try(:start) =~ /\A(\d\d\d\d)/
-      $1
-    end
+    def ris_date_year
+      return @ris_date_year if defined?(@ris_date_year)
 
-    serialize :ab, property: :description, predicate: [::RDF::Vocab::DC.description, ::RDF::Vocab::DC11.description], transform: proc { |v| ActionView::Base.full_sanitizer.sanitize(v) }
-
-    serialize :cy, property: Rails.application.config.places
-
-    serialize :kw, property: :subject, predicate: [::RDF::Vocab::DC.subject, ::RDF::Vocab::DC11.subject]
-
-    # Multiple values in one RIS field please.
-    serialize :la do |item|
-      extract_values_with(SerializeDefinition.new(model_property: :language, model_predicate: [::RDF::Vocab::DC.language, ::RDF::Vocab::DC11.language], multiple: true)).join(", ")
-    end
-
-    serialize :m3 do |item|
-      (item.genre_string || []).join(", ")
-    end
-
-    archival_location = proc do |item|
-      if item.division == "Archives"
-        parts = []
-
-        parts << item.in_collections.first.title.first if item.in_collections.present?
-        parts.concat item.series_arrangement.to_a if item.series_arrangement.present?
-        parts = [parts.join("; ")] if parts.present?
-        parts << CHF::Utils::ParseFields.display_physical_container(item.physical_container) if item.physical_container.present?
-
-        parts.collect(&:presence).compact.join(': ')
+      @ris_date_year ||= begin
+        if start_d = citable_attributes.date && citable_attributes.date.parts.first
+          start_d.year
+        end
       end
     end
 
-    # archival location is according to wikipedia "AV". Endnote uses "VL" (volume) for this though.
-    # And Zotero uses "AN" (accession number)!
-    serialize :av, &archival_location
-    serialize :vl, &archival_location
-    serialize :an, &archival_location
+    # subjects aren't in CitableAttributes yet, maybe they should be if we
+    # end up using csl-data for zotero export ever.
+    #
+    # Returns an array cause RIS kw is a rare repeatable one.
+    def kw
+      return @kw if defined?(@kw)
 
-    serialize :ur do |item|
-      "https://digital.sciencehistory.org/works/#{item.id}"
+      @kw ||= begin
+        work_presenter.subject
+      end
+    end
+
+    # languages aren't in CitableAttributes yet, maybe they should be if we
+    # end up using csl-data for zotero export ever.
+    #
+    # RIS la is not repeatable, we join multiple with comma
+    def la
+      return @la if defined?(@la)
+
+      @la ||= work_presenter.language.join(", ")
     end
   end
 end

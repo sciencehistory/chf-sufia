@@ -48,6 +48,22 @@ module CurationConcerns
       end
     end
 
+    # Returns an array of DateOfWork objects, just like an actual fedora object.
+    # reconstructs from json in solr
+    def date_of_work_models
+      @date_of_work_structured ||= begin
+        (solr_document["date_of_work_json_ssm"] || []).collect do |json|
+          DateOfWork.new.from_json(json).tap { |d| d.readonly! }
+        end
+      end
+    end
+
+    # the unparsed structured string from fedora, so we can get the individual fields
+    # at display time, for citations et al.
+    def physical_container_structured_str
+      solr_document['physical_container_structured_ss']
+    end
+
     def additional_title
       @additional_title ||= solr_document.additional_title.try(:sort)
     end

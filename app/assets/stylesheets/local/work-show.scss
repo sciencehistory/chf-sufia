@@ -116,10 +116,6 @@
     margin-top: $paragraph-spacer;
   }
 
-  .show-user-actions {
-    margin-bottom: $paragraph-spacer;
-  }
-
   .rights-and-social {
     display: flex;
     flex-wrap: wrap;
@@ -295,3 +291,15 @@
     vertical-align: middle;
   }
 }
+
+// normally we have a table under a show sub-head, but when we want just
+// a block instead, make it look like the table.
+.show-sub-head-body {
+  border-top: 3px solid $table-border-color;
+  padding: $table-condensed-cell-padding;
+}
+
+.citation {
+  line-height: 1.5 !important; // ah, !important, the sign of CSS out of control
+}
+

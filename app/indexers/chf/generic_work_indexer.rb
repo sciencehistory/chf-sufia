@@ -2,6 +2,7 @@ module CHF
   class GenericWorkIndexer < CurationConcerns::WorkIndexer
 
     def generate_solr_document
+
       super.tap do |doc|
         %w(additional_credit inscription date_of_work).each do |field|
           entries = remove_duplicates(field)
@@ -9,7 +10,12 @@ module CHF
         end
         unless object.physical_container.nil?
           require_dependency Rails.root.join('lib','chf','utils','parse_fields')
+
+          # formatted
           doc[ActiveFedora.index_field_mapper.solr_name("physical_container", :stored_searchable)] = CHF::Utils::ParseFields.display_physical_container(object.physical_container)
+
+          # and original
+          doc["physical_container_structured_ss"] = object.physical_container
         end
 
         makers = %w(after artist author addressee creator_of_work contributor engraver interviewee interviewer manufacturer photographer printer printer_of_plates publisher)
@@ -68,10 +74,14 @@ module CHF
         # Taken from hyrax, so we can facet on visibility settings
         # https://github.com/samvera/hyrax/blob/0d2e40e2ed09b07645dd71892e65c93aa58c88f9/app/indexers/hyrax/work_indexer.rb#L18
         doc['visibility_ssi'] = object.visibility
+
+        # index structured date of works, so we can get them at index time
+        doc['date_of_work_json_ssm'] = object.date_of_work.collect { |d| d.to_json(except: "id") }
       end
     end
 
     private
+
       def remove_duplicates(field)
         entries = object.send(field).to_a
         entries.uniq! {|e| e.id} # can return nil

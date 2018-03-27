@@ -131,6 +131,10 @@ hr.brand {
 .branded-body-font {
   p:not(.collection-title):not(.sans-serif), dl:not(.sans-serif) dd, table:not(.sans-serif) td, table:not(.sans-serif) th, .serif {
     @extend %text-font;
+    // super hacky sorry. :(
+    .btn {
+      font-family: $brand-sans-serif;
+    }
   }
   p:not(.collection-title):not(.sans-serif) {
     // try to keep this readable, abril is particularly hard on long line lengths
