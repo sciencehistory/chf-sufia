@@ -179,10 +179,6 @@
   #content {
     // try harder keep it from overflowing viewport, esp on small screens
     max-width: 100%;
-    // very long words will still ruin the layout, but these cause
-    // shorter words to hyphenate in weird places too, so no good now.
-    // word-break: break-all;
-    //hyphens: auto;
   }
 
   ol.catalog {
@@ -194,6 +190,15 @@
   .chf-results-list-item {
     display: flex;
     margin-bottom: 45px;
+
+    overflow-x: hidden;
+
+    // Browser hyphenization isn't great, but only way to keep really long
+    // words from busting the layout. We'll use it at small sizes.
+    @media (max-width: $grid-float-breakpoint-max) {
+      hyphens: auto;
+      word-wrap: break-word;
+    }
 
     .chf-results-list-item-thumb {
       flex-basis: 208px;
@@ -218,6 +223,10 @@
       img {
         max-width: 100%;
       }
+    }
+
+    .chf-results-list-item-content {
+      max-width: calc(67% - 28px);
     }
 
     .chf-results-list-item-head {
