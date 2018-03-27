@@ -119,7 +119,7 @@ module CHF
           "PCOMM"
         elsif (genre_string & ['Rare books', 'Sample books']).present?
           "BOOK"
-        elsif genre_string.include?('Documents') && item.title.any? { |v| v=~ /report/i }
+        elsif genre_string.include?('Documents') && work_presenter.title.any? { |v| v=~ /report/i }
           "RPRT"
         elsif  work_presenter.division == ["Archives"]
           # if it's not one of above known to use archival metadata, and it's in
@@ -147,7 +147,7 @@ module CHF
           if work_presenter.rights.present?
             "  Rights: " + work_presenter.rights.collect do |id|
               CurationConcerns::LicenseService.new.label(id)
-            end.join(", ") + (work_presenter.rights_holder.present? ? ", #{item.rights_holder}" : "")
+            end.join(", ") + (work_presenter.rights_holder.present? ? ", #{work_presenter.rights_holder.try(:first)}" : "")
           else
             ""
           end
