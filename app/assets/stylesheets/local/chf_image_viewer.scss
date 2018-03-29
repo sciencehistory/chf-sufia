@@ -304,6 +304,16 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
     }
   }
 
+
+  @media (max-width: 380px) {
+    // On very small screens, which are probably touch anyway, save space by
+    // hiding some non-essential toolbar buttons.
+    .viewer-navbar-btn.viewer-keyboard, .viewer-navbar-btn.viewer-zoom-fit,
+    .viewer-navbar-btn.viewer-fullscreen, .viewer-navbar-btn.viewer-rotate-right {
+      display: none !important;
+    }
+  }
+
   // At larger screen sizes, thumbs go to a sidebar with multiple columns
   @media (min-width: $screen-sm-min) {
     // sorry the selectors get crazy unpredictable to ensure specificity
