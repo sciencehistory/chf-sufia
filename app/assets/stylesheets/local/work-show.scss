@@ -301,5 +301,6 @@
 
 .citation {
   line-height: 1.5 !important; // ah, !important, the sign of CSS out of control
+  word-break: break-word; // keep long urls from breaking layout, but we don't want ellipsis, so it goes.
 }
 
