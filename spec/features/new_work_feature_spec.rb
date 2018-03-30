@@ -10,8 +10,11 @@ RSpec.feature "Work form", js: true do
     login_as(user, :scope => :user)
   end
 
-  [ :title, :additional_title, :language, :bib_num, :artist_name,
-      :publisher_name ].each do |attr|
+  [ :title, :additional_title, :language, :bib_num,
+      :artist_name, :publisher_name,
+      :inscription_location_0, :inscription_text_0,
+      :inscription_location_1, :inscription_text_1,
+      :inscription_location_2, :inscription_text_2 ].each do |attr|
         let(attr) { "Edited #{attr}"}
     end
   let(:date) { "2010"}
@@ -51,6 +54,18 @@ RSpec.feature "Work form", js: true do
       select "circa", from: "generic_work[date_of_work_attributes][0][start_qualifier]"
     end
 
+    within(".form-group.generic_work_inscription") do
+      gwia = 'generic_work_inscription_attributes'
+      find_by_id("#{gwia}_0_location").send_keys(inscription_location_0)
+      find_by_id("#{gwia}_0_text")    .send_keys(inscription_text_0)
+      click_on "Add another Inscription"
+      find_by_id("#{gwia}_1_location").send_keys(inscription_location_1)
+      find_by_id("#{gwia}_1_text")    .send_keys(inscription_text_1)
+      click_on "Add another Inscription"
+      find_by_id("#{gwia}_2_location").send_keys(inscription_location_2)
+      find_by_id("#{gwia}_2_text")    .send_keys(inscription_text_2)
+    end
+
     select "Image", from: "generic_work[resource_type][]"
 
     choose "Your Institution"
@@ -69,5 +84,12 @@ RSpec.feature "Work form", js: true do
     expect(page).to have_text(publisher_name)
     expect(page).to have_text("circa #{date}")
     expect(page).to have_css(".show-permission-badge", text: I18n.t("sufia.institution_name").upcase)
+    expect(page).to have_text(inscription_location_0)
+    expect(page).to have_text(inscription_text_0)
+    expect(page).to have_text(inscription_location_1)
+    expect(page).to have_text(inscription_text_1)
+    expect(page).to have_text(inscription_location_2)
+    expect(page).to have_text(inscription_text_2)
+
   end
 end
