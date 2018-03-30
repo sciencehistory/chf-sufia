@@ -10,7 +10,7 @@ RSpec.feature "Work form", js: true do
     login_as(user, :scope => :user)
   end
 
-  gwia = 'generic_work_inscription_attributes'
+
   [ :title, :additional_title, :language, :bib_num,
       :artist_name, :publisher_name,
       :inscription_location_0, :inscription_text_0,
@@ -20,7 +20,15 @@ RSpec.feature "Work form", js: true do
     end
   let(:date) { "2010"}
 
+  gwia = 'generic_work_inscription_attributes'
+
   scenario "save new work" do
+
+    inscription_fields = [
+      inscription_location_0, inscription_location_1, inscription_location_2,
+      inscription_text_0,     inscription_text_1,     inscription_text_2,
+    ]
+
     visit new_curation_concerns_generic_work_path
 
     # fields removed from work
@@ -56,14 +64,13 @@ RSpec.feature "Work form", js: true do
     end
 
     within(".form-group.generic_work_inscription") do
-      #gwia = 'generic_work_inscription_attributes'
+      click_on "Add another Inscription"
+      click_on "Add another Inscription"
       find_by_id("#{gwia}_0_location").set(inscription_location_0)
-      find_by_id("#{gwia}_0_text")    .set(inscription_text_0)
-      click_on "Add another Inscription"
       find_by_id("#{gwia}_1_location").set(inscription_location_1)
-      find_by_id("#{gwia}_1_text")    .set(inscription_text_1)
-      click_on "Add another Inscription"
       find_by_id("#{gwia}_2_location").set(inscription_location_2)
+      find_by_id("#{gwia}_0_text")    .set(inscription_text_0)
+      find_by_id("#{gwia}_1_text")    .set(inscription_text_1)
       find_by_id("#{gwia}_2_text")    .set(inscription_text_2)
     end
 
@@ -85,23 +92,17 @@ RSpec.feature "Work form", js: true do
     expect(page).to have_text(publisher_name)
     expect(page).to have_text("circa #{date}")
     expect(page).to have_css(".show-permission-badge", text: I18n.t("sufia.institution_name").upcase)
-    expect(page).to have_text(inscription_location_0)
-    expect(page).to have_text(inscription_text_0)
-    expect(page).to have_text(inscription_location_1)
-    expect(page).to have_text(inscription_text_1)
-    expect(page).to have_text(inscription_location_2)
-    expect(page).to have_text(inscription_text_2)
+    inscription_fields.each {|item| expect(page).to have_text(item)}
 
+    # This is a regression test for bug
+    # https://github.com/sciencehistory/chf-sufia/issues/428 .
+    # Make sure the edited inscriptions are indexed in SOLR
+    # and thus displayed on the item page.
+    # See also app/models/generic_work.rb and app/models/inscription.rb
 
     click_link 'Edit'
 
-    inscription_location_0 << '***'
-    inscription_location_1 << '***'
-    inscription_location_2 << '***'
-    inscription_text_0     << '***'
-    inscription_text_1     << '***'
-    inscription_text_2     << '***'
-
+    inscription_fields.each {|item| item << '***' }
     find_by_id("#{gwia}_0_location").set(inscription_location_0)
     find_by_id("#{gwia}_1_location").set(inscription_location_1)
     find_by_id("#{gwia}_2_location").set(inscription_location_2)
@@ -113,11 +114,11 @@ RSpec.feature "Work form", js: true do
 
     expected_regex = 'Edited inscription_location_\d\*\*\*.*Edited inscription_text_\d\*\*\*'
     all('table.generic_work.chf-attributes tr td ul li').each do |x|
-        if x['innerHTML'].include? 'inscription'
-          the_edits_are_visible_in_solr  = (! x['innerHTML'].match(expected_regex).nil?)
-          expect(the_edits_are_visible_in_solr).to be true
-        end
+      the_contents = x['innerHTML']
+      if the_contents.include? 'inscription'
+        our_changes_are_visible = if the_contents.match(expected_regex).nil? then false else true end
+        expect(our_changes_are_visible).to be true
+      end
     end
-
   end
 end
