@@ -22,7 +22,7 @@ RSpec.feature "Work form", js: true do
 
   gwia = 'generic_work_inscription_attributes'
 
-  scenario "save new work" do
+  scenario "save, edit, and re-save new work" do
 
     inscription_fields = [
       inscription_location_0, inscription_location_1, inscription_location_2,
@@ -102,6 +102,7 @@ RSpec.feature "Work form", js: true do
 
     click_link 'Edit'
 
+    # modify the inscriptions by adding *** to the end.
     inscription_fields.each {|item| item << '***' }
     find_by_id("#{gwia}_0_location").set(inscription_location_0)
     find_by_id("#{gwia}_1_location").set(inscription_location_1)
@@ -112,6 +113,8 @@ RSpec.feature "Work form", js: true do
 
     click_button "Save"
 
+    # Do we see the "***" we just added to the three
+    # inscriptions and their locations, or not?
     expected_regex = 'Edited inscription_location_\d\*\*\*.*Edited inscription_text_\d\*\*\*'
     all('table.generic_work.chf-attributes tr td ul li').each do |x|
       the_contents = x['innerHTML']
