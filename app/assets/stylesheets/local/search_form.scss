@@ -46,6 +46,13 @@
   }
 }
 
+// We use flex to make sure it wraps between heading and body if it needs to
+.form-group.limit-dates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
 // styles for slide-out only when in masthead, not when on home page
 .masthead {
   @media (max-width: $grid-float-breakpoint-max) {
