@@ -1,9 +1,18 @@
+// Only when actually in the header (we use it in other places), pad as a menu
+// item when collapsed.
+@media (max-width: $grid-float-breakpoint-max) {
+  .nav .nav-search-form   {
+    padding: $nav-link-padding;
+  }
+}
+
+
 .nav-search-form {
   position: relative;
   margin-bottom: 0;
   max-width: 470px;
   @media (max-width: $grid-float-breakpoint-max) {
-    padding: $nav-link-padding;
+    padding: 10px 0;
     max-width: 100%;
   }
 
