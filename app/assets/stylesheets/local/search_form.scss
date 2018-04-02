@@ -3,6 +3,14 @@
 @media (max-width: $grid-float-breakpoint-max) {
   .nav .nav-search-form   {
     padding: $nav-link-padding;
+    // and work around FF doing things diff...
+  }
+}
+@media (min-width: $grid-float-breakpoint-max + 1) {
+  // and get FF to calculate width the way we want, does differently
+  // than other browsers.
+  .search-form-wrapper {
+    align-self: stretch;
   }
 }
 
@@ -10,7 +18,6 @@
 .nav-search-form {
   position: relative;
   margin-bottom: 0;
-  max-width: 470px;
   @media (max-width: $grid-float-breakpoint-max) {
     padding: 10px 0;
     max-width: 100%;
