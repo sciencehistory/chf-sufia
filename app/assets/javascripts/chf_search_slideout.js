@@ -3,9 +3,21 @@
 function ChfSearchSlideout(element) {
   var _self = this;
   this.element = $(element);
-  this.element.on("click touch hover focusin", function() {
+  this.element.on("click touch hover", function() {
     _self.open();
   });
+
+  // for some reason IE is not having it with focusin event.
+  var ua = window.navigator.userAgent;
+  if ( ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1) {
+    this.element.find("input").on("focus", function() {
+      _self.open();
+    });
+  } else {
+    this.element.on("focusin", function() {
+      _self.open();
+    });
+  }
 };
 
 ChfSearchSlideout.prototype.animationTime = 180;
