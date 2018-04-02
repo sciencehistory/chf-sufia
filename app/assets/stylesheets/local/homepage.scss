@@ -23,6 +23,8 @@
     }
   }
 
+
+
   .digital-description {
 
     .pre-heading {
@@ -104,8 +106,16 @@
     .collection {
       position: relative;
       width: $categories-box-width;
+      min-width: $categories-box-width;
       height: $categories-box-height;
       margin: $categories-box-margin;
+
+      @media (max-width: $categories-box-width) {
+        width: 100vw;
+        min-width: auto;
+        height: 100vw;
+        margin: $categories-box-margin 0;
+      }
 
       .collection-title-wrapper {
         /* overlay on image */
