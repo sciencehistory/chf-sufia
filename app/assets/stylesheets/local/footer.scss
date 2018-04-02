@@ -29,6 +29,11 @@ body {
     margin: 0 0 20px 0;
     padding: 0;
     line-height: normal;
+
+    @media (max-width: $screen-sm-max) {
+      font-size: 26px;
+    }
+
     &>a {
       color: white;
       &:hover, &:active, &:focus {
