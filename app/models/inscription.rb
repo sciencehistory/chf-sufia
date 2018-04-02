@@ -9,9 +9,8 @@ class Inscription < ActiveFedora::Base
   property :text, predicate: ::RDF::URI.new("http://purl.org/vra/text"), multiple: false
   property :display_label, predicate: ::RDF::Vocab::SKOS.prefLabel, multiple:false
 
-  private
-    def compose_label
-      self.display_label = "(#{self.location}) \"#{self.text.gsub(/\r\n/,' ')}\""
-    end
+  def compose_label
+    self.display_label = "(#{self.location}) \"#{self.text.gsub(/\r\n/,' ')}\""
+  end
 
 end

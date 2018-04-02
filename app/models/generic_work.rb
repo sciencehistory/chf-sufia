@@ -27,6 +27,15 @@ class GenericWork < ActiveFedora::Base
   # This code goes with custom code in indexer to index representative_width,
   # representative_height, representative_original_file_id, and representative_checksum
   def update_index(*args)
+
+    # This fixes bug https://github.com/sciencehistory/chf-sufia/issues/428 .
+    # It updates the display_label property for each inscription associated with this work
+    # before said display_label is indexed into SOLR's 'inscription_tesim' field.
+    # That field, in turn, is what is shown on the individual work display page
+    # as the inscription[s].
+    self.inscription.map(&:compose_label)
+    # end fix
+
     super.tap do
       if self.changes.keys.include?("representative_id") ||
          self.previous_changes.keys.include?("representative_id") ||
