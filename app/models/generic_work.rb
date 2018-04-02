@@ -28,7 +28,7 @@ class GenericWork < ActiveFedora::Base
   # representative_height, representative_original_file_id, and representative_checksum
   def update_index(*args)
 
-    # Thisgit diff fixes bug https://github.com/sciencehistory/chf-sufia/issues/428 .
+    # This fixes bug https://github.com/sciencehistory/chf-sufia/issues/428 .
     # It updates the display_label property for each inscription associated with this work
     # before said display_label is indexed into SOLR's 'inscription_tesim' field.
     # That field, in turn, is what is shown on the individual work display page
