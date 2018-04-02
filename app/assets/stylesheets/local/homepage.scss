@@ -45,6 +45,10 @@
     border-radius: 0;
     letter-spacing: 0.04em;
     margin-bottom: $line-height-computed;
+    // unlike normal btns, normally it's full width, but if screen is so small
+    // it needs to, it should break.
+    white-space: initial;
+    border-radius: 2px;
   }
 
   .search-container {
