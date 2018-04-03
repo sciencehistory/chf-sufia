@@ -305,8 +305,8 @@ $chf_image_viewer_thumb_width: 54px; // Needs to match ImageServiceHelper::THUMB
   }
 
 
-  @media (max-width: 380px) {
-    // On very small screens, which are probably touch anyway, save space by
+  @media (max-width: 500px) {
+    // On small screens, which are probably touch anyway, save space by
     // hiding some non-essential toolbar buttons.
     .viewer-navbar-btn.viewer-keyboard, .viewer-navbar-btn.viewer-zoom-fit,
     .viewer-navbar-btn.viewer-fullscreen, .viewer-navbar-btn.viewer-rotate-right {
