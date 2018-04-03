@@ -466,7 +466,7 @@ ChfImageViewer.prototype.initOpenSeadragon = function() {
     tabIndex: "",
 
     gestureSettingsTouch: {
-      pinchRotate: true
+      pinchRotate: false
     }
   });
 
