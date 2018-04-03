@@ -179,10 +179,6 @@
   #content {
     // try harder keep it from overflowing viewport, esp on small screens
     max-width: 100%;
-    // very long words will still ruin the layout, but these cause
-    // shorter words to hyphenate in weird places too, so no good now.
-    // word-break: break-all;
-    //hyphens: auto;
   }
 
   ol.catalog {
@@ -195,9 +191,13 @@
     display: flex;
     margin-bottom: 45px;
 
+    overflow-x: hidden;
+
+    $thumb-width: 208px;
+
     .chf-results-list-item-thumb {
-      flex-basis: 208px;
-      width: 208px; // Should match ImageServiceHelper::THUMB_BASE_WIDTHS[:standard]
+      flex-basis: $thumb-width;
+      width: $thumb-width; // Should match ImageServiceHelper::THUMB_BASE_WIDTHS[:standard]
       max-width: 33%; // on smaller screens, more space for text
       margin-right: 28px;
       flex-shrink: 0;
@@ -217,6 +217,39 @@
 
       img {
         max-width: 100%;
+      }
+    }
+
+    .chf-results-list-item-content {
+      max-width: calc(67% - 28px);
+    }
+
+    // When the screen is too small for thumb + metadata next to each other,
+    // make em over/under.
+    $max-results-above-below: 525px;
+    @media (max-width: $max-results-above-below), (min-width: ($grid-float-breakpoint-max + 1)) AND (max-width: $grid-float-breakpoint-max + 1 + $max-results-above-below - 400px) {
+      // Browser hyphenization isn't great, but only way to keep really long
+      // words from busting the layout. We'll use it at small sizes.
+      hyphens: auto;
+      word-wrap: break-word;
+
+      display: block;
+      position: relative;
+
+      .chf-results-list-item-thumb, .chf-results-list-item-content {
+        max-width: 100%;
+      }
+      .chf-results-list-item-content {
+        margin-top: $paragraph-spacer;
+      }
+      .chf-results-list-item-num-members {
+        position: absolute;
+        display: block;
+        text-align: left !important;
+        top: 0;
+        left: $thumb-width + ($line-height-computed / 2);
+        right: 0;
+
       }
     }
 

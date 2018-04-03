@@ -1,9 +1,25 @@
+// Only when actually in the header (we use it in other places), pad as a menu
+// item when collapsed.
+@media (max-width: $grid-float-breakpoint-max) {
+  .nav .nav-search-form   {
+    padding: $nav-link-padding;
+    // and work around FF doing things diff...
+  }
+}
+@media (min-width: $grid-float-breakpoint-max + 1) {
+  // and get FF to calculate width the way we want, does differently
+  // than other browsers.
+  .search-form-wrapper {
+    align-self: stretch;
+  }
+}
+
+
 .nav-search-form {
   position: relative;
   margin-bottom: 0;
-  max-width: 470px;
   @media (max-width: $grid-float-breakpoint-max) {
-    padding: $nav-link-padding;
+    padding: 10px 0;
     max-width: 100%;
   }
 
@@ -44,6 +60,13 @@
   input {
     border-radius: $btn-border-radius-base;
   }
+}
+
+// We use flex to make sure it wraps between heading and body if it needs to
+.form-group.limit-dates {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
 }
 
 // styles for slide-out only when in masthead, not when on home page

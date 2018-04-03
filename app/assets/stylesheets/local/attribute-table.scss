@@ -1,38 +1,77 @@
+// At large sizes this is a table with labels in one column and values in another.
+// At small sizes it breaks down, and is just labels on top of values, in a list.
+// It's some pretty hacky CSS to make that so at the moment, so it goes.
+
+// At small sizes that may still be table, we turn on abbreviation, to keep long
+// words from breaking the box in edge cases. But browser hyphenation algorithm can be funky,
+// so only at small sizes where we're likely to need it.
+
 $attribute-cell-padding: 0.66em;
+$attribute-table-max-tabular: 380px;
 
 .chf-attributes {
   @extend .table;
   @extend .table-condensed;
   width: 100%;
-  table-layout: fixed;
-  overflow: hidden;
 
-  & > tbody > tr:first-child  {
-    td, th {
-      border-top: 3px solid $table-border-color;
+  @media (max-width: $attribute-table-max-tabular + $grid-float-breakpoint-max) {
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+
+  // small, break down table
+  @media (max-width: $attribute-table-max-tabular) {
+    table, tbody, thead, td, th {
+      display: block;
+      width: 100%;
+    }
+    td {
+      border-top: 0;
+      &:not(:last-child) {
+        margin-bottom: $paragraph-spacer / 2;
+      }
+      ul {
+        padding-left: 0;
+      }
+    }
+    & > tbody > tr  td {
+      border-top: 0;
     }
   }
 
-  td, th {
-    vertical-align: baseline;
-    padding-top: $attribute-cell-padding;
-    padding-bottom: $attribute-cell-padding;
-  }
-  th, tbody > tr > th { // horizontal label
-    font-weight: normal;
-    width: 33%;
-    max-width: 185px;
-    padding-right: $attribute-cell-padding;
-  }
-  td {
-    width: 67%;
-  }
-  td ul {
-    padding-left: 0;
-    margin-bottom: 0;
-  }
-  .attribute:not(:last-child) {
-    margin-bottom: $paragraph-spacer / 2;
+  // At larger sizes, a table for real.
+  @media (min-width: $attribute-table-max-tabular + 1) {
+    table-layout: fixed;
+    overflow: hidden;
+
+    & > tbody > tr:first-child  {
+      td, th {
+        border-top: 3px solid $table-border-color;
+      }
+    }
+
+    td, th {
+      vertical-align: baseline;
+      padding-top: $attribute-cell-padding;
+      padding-bottom: $attribute-cell-padding;
+    }
+    th, tbody > tr > th { // horizontal label
+      font-weight: normal;
+      width: 33%;
+      max-width: 185px;
+      padding-right: $attribute-cell-padding;
+    }
+    td {
+      width: 67%;
+    }
+    td ul {
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+    .attribute:not(:last-child) {
+      margin-bottom: $paragraph-spacer / 2;
+    }
   }
 }
 

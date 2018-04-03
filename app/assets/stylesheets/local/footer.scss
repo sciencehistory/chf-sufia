@@ -1,7 +1,7 @@
 // This weird absolute positioning calculated body margin comes from sufia, not sure why it's needed,
 // but I couldn't avoid bottom white space under footer without it.
 $footer-height: 333px;
-$footer-height-xs: 600px;
+$footer-height-xs: 660px;
 $footer-top-margin: 0;
 
 body {
@@ -29,6 +29,11 @@ body {
     margin: 0 0 20px 0;
     padding: 0;
     line-height: normal;
+
+    @media (max-width: $screen-sm-max) {
+      font-size: 26px;
+    }
+
     &>a {
       color: white;
       &:hover, &:active, &:focus {

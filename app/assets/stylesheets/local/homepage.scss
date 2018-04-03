@@ -23,6 +23,8 @@
     }
   }
 
+
+
   .digital-description {
 
     .pre-heading {
@@ -42,6 +44,11 @@
     text-transform: uppercase;
     border-radius: 0;
     letter-spacing: 0.04em;
+    margin-bottom: $line-height-computed;
+    // unlike normal btns, normally it's full width, but if screen is so small
+    // it needs to, it should break.
+    white-space: initial;
+    border-radius: 2px;
   }
 
   .search-container {
@@ -103,8 +110,16 @@
     .collection {
       position: relative;
       width: $categories-box-width;
+      min-width: $categories-box-width;
       height: $categories-box-height;
       margin: $categories-box-margin;
+
+      @media (max-width: $categories-box-width) {
+        width: 100vw;
+        min-width: auto;
+        height: 100vw;
+        margin: $categories-box-margin 0;
+      }
 
       .collection-title-wrapper {
         /* overlay on image */

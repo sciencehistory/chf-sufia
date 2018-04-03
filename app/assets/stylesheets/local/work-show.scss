@@ -2,7 +2,7 @@
 // be abstracted out into mixins or shared classes.
 
 .work-show {
-  padding: 0 15px;
+  padding: 0;
 
   .show-admin {
     text-align: right;
@@ -28,6 +28,8 @@
 
 
   @media (min-width: $screen-sm-min) {
+    padding: 0 15px;
+
     .show-representative, .show-metadata, .show-title {
       width: 50%;
       padding: 0 15px;
@@ -301,5 +303,6 @@
 
 .citation {
   line-height: 1.5 !important; // ah, !important, the sign of CSS out of control
+  word-break: break-word; // keep long urls from breaking layout, but we don't want ellipsis, so it goes.
 }
 
