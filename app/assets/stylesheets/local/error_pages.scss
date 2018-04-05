@@ -11,6 +11,19 @@
       padding: 0 2%;
     }
 
+    .image-link-wrapper {
+      display: block;
+      position: relative;
+      .caption {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 4px 8px;
+        background-color: transparentize($brand-inverse, .3);
+        color: white;
+      }
+    }
+
     .hero-image {
       max-width: 100%;
     }
@@ -31,7 +44,8 @@
         &:before {
           font-family: FontAwesome;
           content: '\F0A4'; // hand-right
-          padding-right: 10px;
+          padding-right: 0.4em;
+          color: $brand-red;
         }
       }
     }

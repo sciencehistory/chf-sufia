@@ -40,12 +40,15 @@
 
   <div class="error-body">
     <div class="image-column column">
-      <a href="/works/h989r376z">
+      <a href="/works/h989r376z" class="image-link-wrapper">
         <%= image_tag "500image.jpg", class: "hero-image" %>
+        <div class="caption">
+          Adapted from <i>Triumphs &amp; Wonders of Modern Chemistry</i>.
+        </div>
       </a>
     </div>
     <div class="text-column column">
-      <h1 class="h2 error-headline">We're sorry. A software error occured.</h1>
+      <h1 class="h2 error-headline"><i class="fa fa-warning"></i> We're sorry. A software error occured.</h1>
 
       <div class="error-section">
         <%# https://docs.honeybadger.io/ruby/getting-started/collecting-user-feedback.html %>
