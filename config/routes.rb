@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   # remove help page, replaced with 'faq'
   get 'help', to: proc { raise ActionController::RoutingError.new('Not Found') }
 
+  get "force_500", controller: "application", action: "intentional_error"
+
   # remove weird zotero and mendeley pages with weird message, so it doesn't get
   # google indexed.
   get "zotero", to: proc { raise ActionController::RoutingError.new('Not Found') }
