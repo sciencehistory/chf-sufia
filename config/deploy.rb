@@ -74,7 +74,7 @@ namespace :chf do
   task "link_custom_error_pages" do
     on roles(:web) do
       within release_path do
-        ["404.html"].each do |filename|
+        ["404.html", "500.html"].each do |filename|
           execute "./config/deploy/bin/link_custom_error_pages.rb", filename
         end
       end

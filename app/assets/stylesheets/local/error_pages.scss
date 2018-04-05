@@ -35,6 +35,13 @@
         }
       }
     }
+
+    #honeybadger_feedback_submit {
+      height: auto;
+      @extend .btn;
+      @extend .btn-primary;
+    }
+
     @media (max-width: $grid-float-breakpoint-max) {
       flex-wrap: wrap;
       .column {
