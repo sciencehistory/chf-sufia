@@ -22,6 +22,27 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  #By default only show breadcrumbs to logged-in users.
+  def show_breadcrumbs?
+    current_ability.current_user.logged_in?
+  end
+  helper_method :show_breadcrumbs?
+
+  # This is used in generic_works_controller and collection_show_controller.
+  # It resolves issue https://github.com/sciencehistory/chf-sufia/issues/885
+  #
+  # Careful: this method modifies the_breadcrumbs in place.
+  def filter_breadcrumbs(the_breadcrumbs)
+    return if the_breadcrumbs == nil
+    # If the user's logged in, leave as is.
+    return if current_ability.current_user.logged_in?
+    # Otherwise, only show the "Back to Search Results" breadcrumb,
+    # and suppress all other breadcrumbs.
+    back_str = I18n.t('sufia.bread_crumb.search_results')
+    the_breadcrumbs.keep_if { |bc| bc.name == back_str }
+    return nil
+  end
+
   module RenderQueryConstraintOverride
     # Override to turn it into a live search box/form allowing you to change query,
     # instead of just a label
