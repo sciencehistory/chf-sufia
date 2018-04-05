@@ -3,10 +3,6 @@ api_key: <%= CHF::Env.lookup(:honeybadger_api_key) %>
 env: <%= CHF::Env.lookup(:service_level) || Rails.env.to_s %>
 feedback:
   enabled: true
-  labels:
-    name: "Your name (optional)"
-    email: "Your email address (optional)"
-    comment: "Comment"
 user_informer:
   enabled: true
   info: "Error ID: {{error_id}}"

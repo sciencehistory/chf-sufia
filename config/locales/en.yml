@@ -28,3 +28,10 @@ en:
     pagination_compact:
       next: "Next" # get rid of ugly unicode carets
       previous: "Previous" # get rid of ugly unicode carets
+  honeybadger:
+    feedback:
+      labels:
+        name: "Your name (optional)"
+        email: "Your email address (optional)"
+        comment: "Comment"
+
