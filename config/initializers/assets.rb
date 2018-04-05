@@ -12,3 +12,7 @@ Rails.application.config.assets.version = '1.0'
 # Adding the below due to complaints on rails upgrade from 4.2.2 to 4.2.3. However, default.png *is*
 #   in the app/assets folder in sufia, so unsure why this was necessary.
 Rails.application.config.assets.precompile += %w( default.png )
+
+# We're going to use sprockets to compile static html error pages
+Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'html')
+Rails.application.config.assets.register_mime_type('text/html', '.html')
