@@ -114,6 +114,18 @@ class CollectionsShowController < CatalogController
     end
     super(options)
   end
+
+  # Show breadcrumbs to all users, even if they're not logged in...
+  def show_breadcrumbs?
+    true
+  end
+
+  # ... but, for not-logged-in users, only show the "Back to Search Results" breacrumb.
+  def build_breadcrumbs
+    super
+    filter_breadcrumbs(@breadcrumbs)
+  end
+
 end
 
 

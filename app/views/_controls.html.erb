@@ -1,6 +1,7 @@
 <%# overrides https://github.com/projecthydra/sufia/blob/v7.3.0/app/views/_controls.html.erb %>
-<nav id="breadcrumbs" class="breadcrumbs-navbar-wrapper">
-  <%# custom CHF breadcrumbs up here instead of nav elements %>
-  <%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
-</nav><!-- /.navbar -->
-
+<% if show_breadcrumbs? %>
+  <nav id="breadcrumbs" class="breadcrumbs-navbar-wrapper">
+    <%# custom CHF breadcrumbs up here instead of nav elements %>
+    <%= render_breadcrumbs builder: Sufia::BootstrapBreadcrumbsBuilder %>
+  </nav><!-- /.navbar -->
+<% end %>
