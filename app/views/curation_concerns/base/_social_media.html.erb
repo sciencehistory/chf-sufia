@@ -76,7 +76,7 @@ end %>
 
   <!-- Sharingbutton Tumblr -->
   <%# see https://www.tumblr.com/docs/en/share_button %>
-  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'link', canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}",
+  <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'photo', content: share_media, caption: title_plus_description, canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}",
               class: 'social-media-link tumblr btn btn-brand-dark',
               target: '_blank',
               rel: 'noopener noreferrer',
