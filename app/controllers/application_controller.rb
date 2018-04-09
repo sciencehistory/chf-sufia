@@ -22,6 +22,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+
+  def intentional_error
+    raise "Intentional error to test our error handling"
+  end
+
   #By default only show breadcrumbs to logged-in users.
   def show_breadcrumbs?
     current_ability.current_user.logged_in?
