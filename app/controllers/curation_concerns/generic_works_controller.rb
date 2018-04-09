@@ -68,6 +68,18 @@ module CurationConcerns
     # overrides https://github.com/samvera/sufia/blob/v7.3.1/app/controllers/concerns/sufia/works_controller_behavior.rb#L93
     def add_breadcrumb_for_controller
       super if current_ability.current_user.logged_in?
+     end
+
+    # Show breadcrumbs to all users, even if they're not logged in...
+    def show_breadcrumbs?
+      true # this overrides the default case in application_controller.rb .
+    end
+
+    # ... but, for not-logged-in users, only show the "Back to Search Results" breacrumb.
+    def build_breadcrumbs
+      super
+      # This method is in application_controller.rb :
+      filter_breadcrumbs(@breadcrumbs)
     end
 
     # overriding presenter to pass in view_context
