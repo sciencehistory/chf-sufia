@@ -3,6 +3,7 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
+  include BlacklightOaiProvider::Controller
 
   include ParentLookup
 

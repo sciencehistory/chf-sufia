@@ -1,6 +1,8 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  concern :oai_provider, BlacklightOaiProvider::Routes.new
+
   # this will fall through to ./views/application/robots.txt.erb, no need for an action method
   get 'robots.txt', to: "application#robots.txt", format: "text"
 
@@ -39,6 +41,8 @@ Rails.application.routes.draw do
     concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    concerns :oai_provider
+
     concerns :searchable
     concerns :range_searchable
 
