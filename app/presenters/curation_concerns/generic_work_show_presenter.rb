@@ -39,6 +39,17 @@ module CurationConcerns
       @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
     end
 
+    # http://www.loc.gov/standards/datetime/pre-submission.html
+    # https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0039_iso_wd_8601-2_2016-02-16.pdf
+    # used in OAI-DC for DPLA representation
+    def dates_as_8601_edtf
+
+    end
+
+    def content_types
+      solr_document['content_types_ssim'] || []
+    end
+
     def catalog_bib_numbers
       @catalog_big_numbers ||= if solr_document.identifier
         solr_document.identifier.
@@ -155,6 +166,12 @@ module CurationConcerns
         length: 400,
         separator: /\s/
       )}"
+    end
+
+    # No tags, used in oai-dc
+    # For a truncated version see #short_plain_description
+    def plain_description
+      @plain_description ||= strip_tags(description.first)
     end
 
     # If it's a child work, return the child work, don't go further to fileset. Gives

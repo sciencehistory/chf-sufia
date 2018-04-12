@@ -131,6 +131,9 @@ class SolrDocument
     # should be a single value but sometimes comes back as an array not sure why
     Array.wrap(self[Solrizer.solr_name('original_file_id')]).first
   end
+  def resource_type
+    self[ Solrizer.solr_name('resource_type') ]
+  end
   def thumbnail_path
     self['thumbnail_path_ss']
   end

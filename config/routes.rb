@@ -1,6 +1,8 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  default_url_options host: 'digital.sciencehistory.org'
+
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   # this will fall through to ./views/application/robots.txt.erb, no need for an action method
