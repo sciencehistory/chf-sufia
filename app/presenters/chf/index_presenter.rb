@@ -93,5 +93,10 @@ module Chf
     def permission_badge
       CurationConcerns::PermissionBadge.new(solr_document).render
     end
+
+    def date_display_arr
+      date_objects = solr_document["date_of_work_json_ssm"]
+      CHF::DateHelper.new(date_objects).display_array
+    end
   end
 end

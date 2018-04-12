@@ -191,6 +191,11 @@ module CurationConcerns
       field_values(field_config, options)
     end
 
+    def date_display_arr
+      date_objects = solr_document["date_of_work_json_ssm"]
+      CHF::DateHelper.new(date_objects).display_array
+    end
+
     private
 
       # Copied from Blacklight presenter, so we can use the same logic we use in 'index'
