@@ -220,7 +220,8 @@ class CatalogController < ApplicationController
         sample_id: GenericWork.first.try(:id)
       },
       document: {
-        limit: 50           # number of records returned with each request, default: 15
+        # http://oval.base-search.net/ validation recommends at least 100
+        limit: 100           # number of records returned with each request, default: 15
       }
     }
   end
