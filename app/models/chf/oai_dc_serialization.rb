@@ -127,7 +127,7 @@ module CHF
     end
 
     def in_our_app_url
-      "https://digital.sciencehistory.org/works/#{work_presenter.id}"
+      "#{CHF::Env.lookup!(:app_url_base)}/works/#{work_presenter.id}"
     end
 
     # "Repeatable: no"

@@ -214,7 +214,7 @@ class CatalogController < ApplicationController
     config.oai = {
       provider: {
         repository_name: 'Science History Institute',
-        repository_url: 'https://digital.sciencehistory.org/catalog/oai',
+        repository_url: "#{CHF::Env.lookup!(:app_url_base)}/catalog/oai",
         record_prefix: 'oai:sciencehistoryorg',
         admin_email: 'digital@sciencehistory.org',
         sample_id: GenericWork.first.try(:id)

@@ -1,7 +1,7 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-  default_url_options host: 'digital.sciencehistory.org'
+  default_url_options host: CHF::Env.lookup(:app_hostname)
 
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 

@@ -29,7 +29,7 @@ describe CHF::OaiDcSerialization do
     container = xml.at_xpath("./oai_dc:dc")
     expect(container).to be_present
 
-    expect(container.at_xpath("./dc:identifier").text).to eq "https://digital.sciencehistory.org/works/#{work.id}"
+    expect(container.at_xpath("./dc:identifier").text).to eq "#{CHF::Env.lookup(:app_url_base)}/works/#{work.id}"
     expect(container.at_xpath("./dc:title").text).to eq work.title.first
     expect(container.at_xpath("./dc:rights").text).to eq work.rights.first
     expect(container.at_xpath("./dc:creator").text).to eq work.author.first
@@ -40,7 +40,7 @@ describe CHF::OaiDcSerialization do
     expect(container.at_xpath("./dc:type").text).to eq work.resource_type.first
     expect(container.at_xpath("./dc:identifier.thumbnail").text).to eq mocked_thumb_url
 
-    expect(container.at_xpath("./dpla:originalRecord").text).to eq "https://digital.sciencehistory.org/works/#{work.id}"
+    expect(container.at_xpath("./dpla:originalRecord").text).to eq "#{CHF::Env.lookup(:app_url_base)}/works/#{work.id}"
     expect(container.at_xpath("./edm:rights").text).to eq work.rights.first
     expect(container.at_xpath("./edm:hasType").text).to eq work.genre_string.first.downcase
     expect(container.at_xpath("./edm:object").text).to eq Rails.application.routes.url_helpers.download_url(work.representative_id)
