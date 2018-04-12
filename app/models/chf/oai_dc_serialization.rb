@@ -51,8 +51,13 @@ module CHF
           xml["dc"].title work_presenter.title.first
 
           xml["dc"].rights work_presenter.rights_url
+
           dc_creators.each do |creator|
             xml["dc"].creator creator
+          end
+
+          dc_contributors.each do |contributor|
+            xml["dc"].contributor contributor
           end
 
           # DATE to do, need "ISO 8601 (W3CDTF) format (YYYY-MM-DD) with optional EDTF"
@@ -66,7 +71,7 @@ module CHF
           # Ideally should be ISO 692-2 according to PA Digital, but we don't have it, I think this will do.
           xml["dc"].language work_presenter.language.join(";")
 
-          (work_presenter.manufacturer || []).each do |publisher|
+          (work_presenter.publisher || []).each do |publisher|
             xml["dc"].publisher publisher
           end
 
@@ -143,13 +148,30 @@ module CHF
       # We'll use the same subset of all our 'maker' fields we use in our citations in CitableAttributes
       @dc_creators ||= begin
         arr =  work_presenter.creator_of_work || []
-        arr += work_presenter.author || []
         arr += work_presenter.artist || []
-        arr += work_presenter.photographer || []
+        arr += work_presenter.author || []
         arr += work_presenter.engraver || []
+        arr += work_presenter.manufacturer || []
+        arr += work_presenter.photographer || []
+
         arr
       end
     end
+
+    def dc_contributors
+      arr =  work_presenter.addressee || []
+      arr += work_presenter.after || []
+      arr += work_presenter.contributor || []
+      arr += work_presenter.interviewee || []
+      arr += work_presenter.interviewer || []
+      arr += work_presenter.printer || []
+      arr += work_presenter.printer_of_plates || []
+
+      arr
+    end
+
+    # TODO add contributor
+
 
     # using our custom in-house object that can give us thumbnail URLs, but not with
     # quite a convenient API for this, oh well. We want "medium" _download_ size
