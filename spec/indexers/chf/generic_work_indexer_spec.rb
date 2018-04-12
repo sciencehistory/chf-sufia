@@ -50,6 +50,15 @@ RSpec.describe CHF::GenericWorkIndexer do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 3
   end
 
+  describe "with a real file child" do
+    let (:work) do
+      FactoryGirl.create(:generic_work, :real_public_image, dates_of_work: [])
+    end
+    it "indexes content-type" do
+      expect(solr_document['content_types_ssim']).to eq ["image/jpeg"]
+    end
+  end
+
   # These are slow, was hard to get them to work reliably and be reliably testing at all
   describe "representative fields" do
     let(:width) { 100 }

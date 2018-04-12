@@ -77,6 +77,13 @@ module CHF
 
         # index structured date of works, so we can get them at index time
         doc['date_of_work_json_ssm'] = object.date_of_work.collect { |d| d.to_json(except: "id") }
+
+        # Need all content-types for oai_dc serialization. This does force loading all members, was
+        # that happening already, will it be a performance problem?
+        doc['content_types_ssim'] = object.members.collect do |member|
+          # We're NOT descending into child generic works, too crazy performance-wise.
+          member.mime_type if member.respond_to?(:mime_type)
+        end.uniq
       end
     end
 
