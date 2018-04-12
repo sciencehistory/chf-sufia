@@ -14,7 +14,7 @@ end
 
 SitemapGenerator::Sitemap.create(
   sitemaps_path: 'sitemap/',
-  default_host: 'https://digital.sciencehistory.org',
+  default_host: CHF::Env.lookup!(:app_url_base),
   adapter: sitemap_adapter
 ) do
   image_service_class = ImageServiceHelper.image_url_service_class(CHF::Env.lookup(:image_server_for_thumbnails))

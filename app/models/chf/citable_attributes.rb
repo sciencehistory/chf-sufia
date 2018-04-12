@@ -280,7 +280,7 @@ module CHF
       end
 
       def url
-        "https://digital.sciencehistory.org/works/#{work.id}"
+        "#{CHF::Env.lookup(:app_url_base)}/works/#{work.id}"
       end
 
       def container_title
