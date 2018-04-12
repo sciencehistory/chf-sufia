@@ -138,4 +138,9 @@ class SolrDocument
     self['thumbnail_path_ss']
   end
 
+  # the gems blacklight_oai_provider and oai end up calling this, we're gonna
+  # just take it over completely and not call super, to use our own implementation.
+  def to_oai_dc
+    CHF::OaiDcSerialization.new(self).to_oai_dc
+  end
 end
