@@ -3,7 +3,6 @@ class CatalogController < ApplicationController
   include Hydra::Controller::ControllerBehavior
   include Sufia::Catalog
   include BlacklightRangeLimit::ControllerOverride
-  include BlacklightOaiProvider::Controller
 
   include ParentLookup
 
@@ -210,20 +209,6 @@ class CatalogController < ApplicationController
     # config.view.delete(:slideshow)
     # config.view.delete(:gallery)
     # config.view[:gallery][:partials] = ["custom"]
-
-    config.oai = {
-      provider: {
-        repository_name: 'Science History Institute',
-        repository_url: "#{CHF::Env.lookup!(:app_url_base)}/catalog/oai",
-        record_prefix: 'oai:sciencehistoryorg',
-        admin_email: 'digital@sciencehistory.org',
-        sample_id: GenericWork.first.try(:id)
-      },
-      document: {
-        # http://oval.base-search.net/ validation recommends at least 100
-        limit: 100           # number of records returned with each request, default: 15
-      }
-    }
   end
 
   # disable the bookmark control from displaying in gallery view
