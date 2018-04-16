@@ -183,7 +183,13 @@ module CHF
           checksum: work_presenter.representative_checksum
         )
         download_options = service.download_options
-        (download_options.find { |h| h[:option_key] == "medium "} || download_options.first).try { |h| h[:url] }
+        url = (download_options.find { |h| h[:option_key] == "medium "} || download_options.first).try { |h| h[:url] }
+        # make it an absolute url
+        if url
+          url = Addressable::URI.parse(CHF::Env.lookup!(:app_url_base)) + url
+        end
+
+        url
       end
     end
 
