@@ -41,6 +41,12 @@ module CurationConcerns
 
         render body: CHF::CitableAttributes.new(presenter).to_csl_json
       end
+
+      # Provide our OAI-PMH representation as "xml", useful for debugging,
+      # maybe useful for clients.
+      wants.xml do
+        render xml: CHF::OaiDcSerialization.new(curation_concern_from_search_results).to_oai_dc(xml_decleration: true)
+      end
     end
 
     # Pretty hacky way to override the t() I18n method when called from template:

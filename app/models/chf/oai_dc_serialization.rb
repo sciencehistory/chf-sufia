@@ -1,4 +1,11 @@
 module CHF
+
+  #
+  #    CHF::OaiDcSerialization.new(work_show_presenter).to_oai_dc
+  #      # => XML string
+  #
+  #    CHF::OaiDcSerialization.new(work_show_presenter).to_oai_dc(xml_decleration: true)
+  #
   class OaiDcSerialization
     # all of em from https://drive.google.com/file/d/1fJEWhnYy5Ch7_ef_-V48-FAViA72OieG/view
     # why not, be complete in case we need em.
@@ -36,8 +43,12 @@ module CHF
     end
 
     # a string, which does not have an XML decleration or DTD
-    def to_oai_dc
-      save_options = Nokogiri::XML::Node::SaveOptions::FORMAT + Nokogiri::XML::Node::SaveOptions::NO_DECLARATION
+    def to_oai_dc(xml_decleration: false)
+      save_options = if xml_decleration
+        Nokogiri::XML::Node::SaveOptions::FORMAT
+      else
+        Nokogiri::XML::Node::SaveOptions::FORMAT + Nokogiri::XML::Node::SaveOptions::NO_DECLARATION
+      end
       as_oai_dc_builder.to_xml(save_with: save_options)
     end
 

@@ -7,6 +7,9 @@
 <%# we use the download medium (1200px wide) size for social media thumb share, seems to be around
     what all the sites want %>
 
+<%= tag(:link, rel: "alternate", type: "application/xml", title: "OAI-DC metadata in XML",
+          href: "#{presenter.id}.xml") %>
+
 <meta property="og:type" content="article"/>
 <meta property="og:rich_attachment" content="true" />
 <meta property="og:site_name" content="<%= application_name %>"/>
