@@ -25,10 +25,10 @@ RSpec.feature "sitemap generator", js: false do
   end
 
   let!(:public_work) { FactoryGirl.create(:public_work, :real_public_image) }
-  let(:public_work_url) { "https://digital.sciencehistory.org/works/#{public_work.id}" }
+  let(:public_work_url) { "#{CHF::Env.lookup(:app_hostname)}/works/#{public_work.id}" }
 
   let!(:private_work) { FactoryGirl.create(:private_work) }
-  let(:private_work_url) { "https://digital.sciencehistory.org/works/#{private_work.id}" }
+  let(:private_work_url) { "#{CHF::Env.lookup(:app_hostname)}/works/#{private_work.id}" }
 
   it "smoke tests" do
     Rake::Task["sitemap:create"].invoke

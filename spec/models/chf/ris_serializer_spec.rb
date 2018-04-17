@@ -37,7 +37,7 @@ describe CHF::RisSerializer do
     expect(serialized_fields["AU"]).to eq "Hawes, R. C."
     expect(serialized_fields["PB"]).to eq "Israel Sackett"
     expect(serialized_fields["CY"]).to eq "New York, New York"
-    expect(serialized_fields["UR"]).to eq "https://digital.sciencehistory.org/works/MOCK_ID"
+    expect(serialized_fields["UR"]).to eq "#{CHF::Env.lookup(:app_url_base)}/works/MOCK_ID"
     expect(serialized_fields["AB"]).to eq "This is an abstract"
     expect(serialized_fields["KW"]).to eq "subject2"
     expect(serialized_fields["LA"].split(", ")).to match_array(["English", "German"])

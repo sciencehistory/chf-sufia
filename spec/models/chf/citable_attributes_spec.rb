@@ -322,7 +322,7 @@ describe CHF::CitableAttributes do
             :title=>"pH means Beckman",
             :id=>"scihist123456",
             :issued => {"date-parts"=>[[1957]]},
-            :URL=>"https://digital.sciencehistory.org/works/123456",
+            :URL=>"#{CHF::Env.lookup(:app_url_base)}/works/123456",
             :archive=>"Science History Institute",
             :'archive-place'=>"Philadelphia",
             :archive_location=>"Box 49, Folder 14"})

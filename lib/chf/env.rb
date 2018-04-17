@@ -155,6 +155,25 @@ module CHF
     #
     ######
 
+    define_key :app_url_base, default: -> {
+      if Rails.env.test?
+        "http://test.app"
+      elsif Rails.env.development?
+        "http://localhost:3000"
+      elsif staging?
+        "https://staging.digital.sciencehistory.org"
+      else
+        "https://digital.sciencehistory.org"
+      end
+    }
+
+    define_key :app_hostname, default: -> {
+      # kind of cheesy way to do this that isn't really a config/default, but it's convenient
+      # when we just want the hostname. Don't ever set this in config without setting
+      # app_url_base to match.
+      URI.parse(lookup!(:app_url_base)).host
+    }
+
     define_key :iiif_public_url, default: '//localhost:3000/image-service'
     define_key :iiif_internal_url
     define_key :app_role
