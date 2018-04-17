@@ -191,11 +191,7 @@ module CurationConcerns
       field_values(field_config, options)
     end
 
-    # This allows us to have more control over the presentation
-    # of dates on the search result and item view pages.
-    # app/presenters/chf/time_span_for_display.rb subclasses and
-    # cannibalizes model app/models/time_span.rb for its
-    # date display methods.
+    # See app/presenters/chf/time_span_for_display.rb
     def date_display_arr
       date_objects = solr_document["date_of_work_json_ssm"]
       time_span_arr ||= begin
