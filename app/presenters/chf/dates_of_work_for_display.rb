@@ -13,7 +13,7 @@ module CHF
     end
 
     #Return an array of strings, each containing a formatted date.
-    def to_a
+    def display_dates
       @dates_for_display
     end
 

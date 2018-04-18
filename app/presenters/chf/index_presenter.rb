@@ -106,7 +106,7 @@ module Chf
     end
 
     def display_dates
-      CHF::DatesOfWorkForDisplay.new(date_of_work_models).to_a
+      CHF::DatesOfWorkForDisplay.new(date_of_work_models).display_dates
     end
 
   end
