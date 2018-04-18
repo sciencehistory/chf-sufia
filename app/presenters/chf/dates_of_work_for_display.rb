@@ -12,14 +12,9 @@ module CHF
       @dates_for_display = dates_of_work.collect {|d| display_label(d)}
     end
 
-    #Return an array of string, each containing a formatted date.
-    #maybe rename this to_a
+    #Return an array of strings, each containing a formatted date.
     def to_a
       @dates_for_display
-    end
-
-    def range?(date_of_work)
-      date_of_work.start.present? && date_of_work.finish.present?
     end
 
     def display_label(date_of_work)
@@ -29,12 +24,32 @@ module CHF
       finish_string = qualified_date(
         fix_month(date_of_work.finish),
         date_of_work.finish_qualifier)
-      # careful, this is an en dash:
-      date_string = [start_string, finish_string].compact.join(" – ")
+
+      if finish_string.blank?
+        date_string = start_string
+      else
+        # careful, this is an en dash:
+        date_string = [start_string, finish_string].compact.join(" – ")
+      end
+
       if date_of_work.note.present?
         date_string << " (#{date_of_work.note})"
       end
-      date_string.slice(0,1).capitalize + date_string.slice(1..-1)
+
+      capitalize(date_string)
+    end
+
+
+    def capitalize (str)
+      if str == nil
+        nil
+      elsif str.blank?
+        str
+      elsif str.length == 1
+        str.capitalize
+      else
+        str.slice(0,1).capitalize + str.slice(1..-1)
+      end
     end
 
     def fix_month(date_given)
@@ -54,6 +69,8 @@ module CHF
       rescue
         int_date_value = nil
       end
+
+      date=fix_month(date)
 
       if qualifier == (BEFORE) || qualifier == (AFTER) || qualifier == (CIRCA)
         "#{qualifier} #{date}"
@@ -76,7 +93,7 @@ module CHF
       elsif date.present?
         date
       else
-        nil
+        ""
       end
     end # qualified_date
   end # class

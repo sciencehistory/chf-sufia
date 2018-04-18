@@ -196,16 +196,6 @@ module CurationConcerns
       field_values(field_config, options)
     end
 
-    # See app/presenters/chf/time_span_for_display.rb
-    def date_display_arr
-      date_objects = solr_document["date_of_work_json_ssm"]
-      time_span_arr ||= begin
-        (date_objects || []).collect do |json|
-          CHF::TimeSpanForDisplay.new.from_json(json)
-        end
-      end
-      time_span_arr.map{ |ts| ts.display_label }
-    end
 
     private
 
