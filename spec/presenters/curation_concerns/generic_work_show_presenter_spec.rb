@@ -53,12 +53,12 @@ describe CurationConcerns::GenericWorkShowPresenter do
       )
     end
     it 'correctly displays the date strings given a set of date objects' do
+      # see methods "correct_results" and "date_array"
+      # at the end of this file for the data.
       the_display_dates = presenter.display_dates
       expected_dates = correct_results
       correct_results.each_with_index.map { |x,i| expect(expected_dates[i]).to eq x }
-      #puts the_display_dates
     end
-
   end
 
 
@@ -113,28 +113,27 @@ end
 
 def date_array
   data = [
-    ["1800",       "",            "",          "",       ""            ],
-    [nil,          nil,           nil,         nil,      nil           ],
-    [nil,          nil,           nil,         nil,      "circa"       ],
-    ["1912",       "",            "decade",    "",       ""            ],
-    ["1780",       "",            "decade",    "",       ""            ],
-    ["way back when",  "",        "decade",    "",       ""            ],
-    ["1912",       "",            "century",   "",       ""            ],
-    ["1780",       "",            "century",   "",       ""            ],
-    ["way back when",  "",        "century",   "",       ""            ],
-    ["1700",       "",            "century",   "",       ""            ],
-    ["the end of time",   "",     "after",     "",       "For real!"   ],
-    ["the end of time",   "",     "circa",     "",       ""            ],
-    ["1800",       "1900",        "century",   "",       "Note 1"      ],
-    ["1800",       "1900",        "century",   "",       "Note 2"      ],
-    ["1929-01-02", "1929-01-03",  "circa",     "before", "Note 3"      ],
-    ["1872",       "1929-01-03",  "after",     "before", "Note 4"      ],
-    ["1920",       "1928-11",     "decade",    "",       "Note 5"      ],
+    ["1800",            "",             "",          "",       ""           ],
+    [nil,               nil,           nil,         nil,      nil           ],
+    [nil,               nil,           nil,         nil,      "circa"       ],
+    ["1912",            "",            "decade",    "",       ""            ],
+    ["1780",            "",            "decade",    "",       ""            ],
+    ["way back when",   "",            "decade",    "",       ""            ],
+    ["1912",            "",            "century",   "",       ""            ],
+    ["1780",            "",            "century",   "",       ""            ],
+    ["way back when",   "",            "century",   "",       ""            ],
+    ["1700",            "",            "century",   "",       ""            ],
+    ["the end of time", "",            "after",     "",       "For real!"   ],
+    ["the end of time", "",            "circa",     "",       ""            ],
+    ["1800",            "1900",        "century",   "",       "Note 1"      ],
+    ["1800",            "1900",        "century",   "",       "Note 2"      ],
+    ["1929-01-02",      "1929-01-03",  "circa",     "before", "Note 3"      ],
+    ["1872",            "1929-01-03",  "after",     "before", "Note 4"      ],
+    ["1920",            "1928-11",     "decade",    "",       "Note 5"      ],
   ]
   data.collect { |d| DateOfWork.new(
     start:           d[0],    finish:           d[1],
-    start_qualifier: d[2],    finish_qualifier: d[3],
-    note: d[4])}
+    start_qualifier: d[2],    finish_qualifier: d[3],   note: d[4])}
 end
 
 def correct_results

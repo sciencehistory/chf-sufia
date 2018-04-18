@@ -18,11 +18,9 @@ module CHF
     end
 
     def display_label(date_of_work)
-      start_string = qualified_date(
-        fix_month(date_of_work.start),
+      start_string = qualified_date(date_of_work.start,
         date_of_work.start_qualifier)
-      finish_string = qualified_date(
-        fix_month(date_of_work.finish),
+      finish_string = qualified_date(date_of_work.finish,
         date_of_work.finish_qualifier)
 
       if finish_string.blank?
