@@ -50,9 +50,9 @@
 
       <% if @presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
         <div class="show-date">
-          <% if @presenter.date_display_arr.present? %>
+          <% if @presenter.display_dates.present? %>
             <ul>
-              <% @presenter.date_display_arr.each do |interval| %>
+              <% @presenter.display_dates.each do |interval| %>
                 <li>
                   <span itemprop="date_created">
                     <%= interval %>
@@ -63,6 +63,7 @@
           <% end %>
         </div>
       <% end %>
+
 
     </header>
   </div>

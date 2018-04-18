@@ -58,6 +58,11 @@ module CurationConcerns
       end
     end
 
+    def display_dates
+      CHF::DatesOfWorkForDisplay.new(date_of_work_models).to_a
+    end
+
+
     # the unparsed structured string from fedora, so we can get the individual fields
     # at display time, for citations et al.
     def physical_container_structured_str

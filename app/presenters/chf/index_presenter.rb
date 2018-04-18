@@ -94,15 +94,19 @@ module Chf
       CurationConcerns::PermissionBadge.new(solr_document).render
     end
 
-    # See app/presenters/chf/time_span_for_display.rb
-    def date_display_arr
-      date_objects = solr_document["date_of_work_json_ssm"]
-      time_span_arr ||= begin
-        (date_objects || []).collect do |json|
-          CHF::TimeSpanForDisplay.new.from_json(json)
+
+    # Returns an array of DateOfWork objects, just like an actual fedora object.
+    # reconstructs from json in solr
+    def date_of_work_models
+      @date_of_work_structured ||= begin
+        (solr_document["date_of_work_json_ssm"] || []).collect do |json|
+          DateOfWork.new.from_json(json).tap { |d| d.readonly! }
         end
       end
-      time_span_arr.map{ |ts| ts.display_label }
+    end
+
+    def display_dates
+      CHF::DatesOfWorkForDisplay.new(date_of_work_models).to_a
     end
 
   end
