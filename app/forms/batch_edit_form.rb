@@ -6,11 +6,11 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
   end
 
   self.terms = [
-    # Single-value fields don't work
-    #:division,
-    #:physical_container,
-    #:rights_holder,
-    #:file_creator,
+    :division,
+    # This one doesn't quite work.
+    # :physical_container,
+    :rights_holder,
+    :file_creator,
     :additional_title,
     :identifier,
     :admin_note,
@@ -90,9 +90,40 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       clean_params
     end
 
-    # override sufia form's visibility default if we can find a better option
+    def accepts_multiple_values(prop)
+      model_class.properties[prop.to_s].instance_values['opts'][:multiple]
+    end
+
     def initialize_combined_fields
-      super
+
+      plain_attributes = {}
+      combined_attributes = {}
+      permissions = []
+      # For each of the files in the batch, set the attributes to be the concatenation of all the attributes
+      batch_document_ids.each do |doc_id|
+        work = model_class.find(doc_id)
+        terms.each do |key|
+          if accepts_multiple_values(key)
+            combined_attributes[key] ||= []
+            combined_attributes[key] = (combined_attributes[key] +  work[key].to_a).uniq
+          else
+            plain_attributes[key] = work[key]
+          end
+        end
+        names << work.to_s
+        permissions = (permissions + work.permissions).uniq
+      end
+
+      terms.each do |key|
+        if accepts_multiple_values(key)
+          # if value is empty, we create an one element array to loop over for output
+          model[key] = combined_attributes[key].empty? ? [''] : combined_attributes[key]
+        else
+          model[key] = plain_attributes[key]
+        end
+      end
+      model.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }]
+      # override sufia form's visibility default if we can find a better option
       model.visibility = set_batch_visibility
     end
 
