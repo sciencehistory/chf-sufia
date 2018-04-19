@@ -34,7 +34,7 @@ module CHF
         date_string = "#{date_string} (#{date_of_work.note})"
       end
 
-      capitalize(date_string)
+      date_string
     end
 
 
