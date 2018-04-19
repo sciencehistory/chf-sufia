@@ -31,7 +31,7 @@ module CHF
       end
 
       if date_of_work.note.present?
-        date_string << " (#{date_of_work.note})"
+        date_string = "#{date_string}  (#{date_of_work.note})"
       end
 
       capitalize(date_string)
