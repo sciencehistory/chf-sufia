@@ -162,6 +162,15 @@
           </tr>
         <% end %>
     </table>
+    <% if @presenter.related_work_presenters.present? %>
+      <h2 class="attribute-sub-head">Related Items</h2>
+      <ul class="related-items show-sub-head-body list-unstyled">
+        <%= render partial: "chf_related_work", collection: @presenter.related_work_presenters, as: :presenter %>
+      </ul>
+    <% end %>
+
+
+
 
     <h2 class="attribute-sub-head">Cite as</h2>
     <div class="show-sub-head-body">

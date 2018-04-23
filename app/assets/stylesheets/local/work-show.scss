@@ -273,6 +273,18 @@
   }
 }
 
+.related-work {
+  display: flex;
+  flex-wrap: wrap;
+  .related-work-thumb {
+    width: 108px;
+    padding-right: $paragraph-spacer;
+    img {
+      width: 100%;
+    }
+  }
+}
+
 // This applies to image viewer too, where it's not inside a .work-show
 // div, so has to be out here. Sorry that it's in this .scss file, work
 // in progress.

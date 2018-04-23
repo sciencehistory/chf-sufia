@@ -1,0 +1,13 @@
+<li class="related-work">
+  <div class="related-work-thumb">
+    <%= link_to [main_app, presenter] do %>
+      <%= member_image_tag(parent_id: nil, member: presenter, size_key: :standard, lazy: true) %>
+    <% end %>
+  </div>
+
+  <div class="related-work-text">
+    <%= link_to [main_app, presenter] do %>
+      <%= presenter.title.first %>
+    <% end %>
+  </div>
+</li>
