@@ -66,9 +66,22 @@
 
       <% if doc_presenter.has_values_for?(Solrizer.solr_name('date_of_work', :stored_searchable)) %>
         <div class="chf-results-list-item-date">
-          <%= doc_presenter.field_value(Solrizer.solr_name("date_of_work", :stored_searchable), join_type: :list) %>
+          <% if doc_presenter.display_dates.present? %>
+            <ul>
+              <% doc_presenter.display_dates.each do |interval| %>
+                <li>
+                  <span itemprop="date_created">
+                    <%= interval %>
+                  </span>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
         </div>
       <% end %>
+
+
+
 
       <% if doc_presenter.has_values_for?(Solrizer.solr_name("description", :stored_searchable)) %>
         <div class="chf-results-list-item-description">
