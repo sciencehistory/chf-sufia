@@ -273,6 +273,29 @@
   }
 }
 
+.related-work {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: $paragraph-spacer;
+  margin-bottom: $paragraph-spacer * 2;
+  .related-work-thumb {
+    width: 108px;
+    flex-shrink: 0;
+    padding-right: $paragraph-spacer;
+    img {
+      width: 100%;
+    }
+  }
+  .related-work-text {
+    flex: 1;
+    align-self: flex-end;
+    min-width: 165px;
+    @extend .h4;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
 // This applies to image viewer too, where it's not inside a .work-show
 // div, so has to be out here. Sorry that it's in this .scss file, work
 // in progress.

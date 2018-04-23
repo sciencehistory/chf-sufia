@@ -1,5 +1,11 @@
 module CurationConcerns
   class GenericWorkShowPresenter < Sufia::WorkShowPresenter
+    # for now we match on PRODUCTION urls in any env, to avoid confusion.
+    #   (should we match on both?)
+    # We do match on both new and "old style" work urls, which are already
+    #   in the repo as related_url data.
+    RELATED_WORK_PREFIX_RE = %r{\A\s*https?://digital\.sciencehistory\.org/(works/|concern/generic_works/)}
+
     include ActionView::Helpers::TextHelper # for truncate
     include ActionView::Helpers::SanitizeHelper # for strip_tags
     # There's no such thing as self.terms in the presenter anymore.
@@ -50,6 +56,27 @@ module CurationConcerns
       @urls_to_catalog ||= catalog_bib_numbers.collect do |bib_num|
         "http://othmerlib.sciencehistory.org/record=#{CGI.escape bib_num}"
       end
+    end
+
+    # Find all related_urls that match the template for URLs to other works in our app.
+    # template hard-coded to "https://digital.sciencehistory.org/works/" to avoid staging confusion.
+    def related_work_ids
+      @related_work_ids ||= begin
+        Array(related_url).find_all do |url|
+          url =~ RELATED_WORK_PREFIX_RE
+        end.collect do |url|
+          url.sub(RELATED_WORK_PREFIX_RE, '')
+        end
+      end
+    end
+
+    # Don't entirely understand what this is, copied/modified from CurationConcerns/Sufia through
+    # many levels of callstack.
+    #
+    # This WILL do a fetch from solr. We use on 'show' page, if you were using on a listing page, you
+    # would get some perf-destroying n+1 queries.
+    def related_work_presenters
+      @related_work_presenters ||= PresenterFactory.build_presenters(related_work_ids, self.class, *presenter_factory_arguments)
     end
 
     # Returns an array of DateOfWork objects, just like an actual fedora object.

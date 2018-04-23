@@ -64,6 +64,9 @@ form label {
   font-family: $brand-alt-header-font;
   font-weight: $brand-alt-header-weight;
 }
+.brand-alt-h4, .brand-alt-h5, .brand-alt-h6 {
+  font-weight: 600;
+}
 
 hr.brand {
   width: 65px;
