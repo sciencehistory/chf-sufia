@@ -133,7 +133,7 @@ module CHF
         CreateDerivativesOnS3Service.s3_url(
           file_set_id: image_info.file_set_id,
           file_checksum: image_info.checksum,
-          type_key: "dl_small"
+          type_key: "dl_medium"
         )
       else
         raise TypeError, "Don't know how to get JPG source for CHF::Env.lookup(:image_server_for_thumbnails): `#{CHF::Env.lookup(:image_server_for_thumbnails).inspect}`"
