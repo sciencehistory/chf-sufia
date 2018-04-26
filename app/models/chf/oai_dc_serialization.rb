@@ -75,12 +75,16 @@ module CHF
 
           xml["dc"].description work_presenter.plain_description
 
+          # Mime types in DC:format
           work_presenter.content_types.each do |ctype|
             xml["dc"].format ctype
           end
 
-          # Ideally should be ISO 692-2 according to PA Digital, but we don't have it, I think this will do.
-          xml["dc"].language work_presenter.language.join(";")
+          # PA Digital says language IS repeatable, and there's no need to actually give them
+          # ISO 692-2, they'd just throw it out anyway.
+          (work_presenter.language || []).each do |lang|
+            xml["dc"].language lang
+          end
 
           (work_presenter.publisher || []).each do |publisher|
             xml["dc"].publisher publisher
@@ -98,15 +102,25 @@ module CHF
             xml["dc"].subject subject
           end
 
-          xml["dc"].type dc_type
+          # PA Digital says dc:type IS repeatable.
+          (work_presenter.resource_type || []).each do |type|
+            xml["dc"].type type
+          end
+          # PA digital also says dc:type is the place to put any local vocab, so
+          # we'll try our genres in there too.
+          Array(work_presenter.genre_string).each do |genre|
+            xml["dc"].type genre.downcase
+          end
 
-          xml["dc"].send(:"identifier.thumbnail", thumb_url)
+
+          # PA Digital wants the thumbnail in a repeated dc:identifier, okay then!
+          xml["dc"].send(:"identifier", thumb_url)
 
           ########################
           #
-          # Some that are not in PA Digital Guide, but are in DPLA Metadata Application Profile, if I
-          # understand it. Might as well throw them in. Some duplicate other statements expressed with
-          # other terms agove.
+          # PA Digital will probably throw these out and not forward them to DPLA, but they
+          # are tags DPLA MAP asks for, we might as well include them so they are there in the future
+          # if anyone wants em, without us having to code em then.
 
           xml["dpla"].originalRecord in_our_app_url
           xml["edm"].preview thumb_url
@@ -139,20 +153,6 @@ module CHF
 
     def in_our_app_url
       "#{CHF::Env.lookup!(:app_url_base)}/works/#{work_presenter.id}"
-    end
-
-    # "Repeatable: no"
-    # "Recommend use of local controlled vocabulary and/ or DCMI Type Vocabulary."
-    # "Recommended best practice is to assign the type Text to images of textual materials."
-    def dc_type
-      return @dc_type if defined?(@dc_type)
-
-      # we have more than one, can only have one.
-      @dc_type ||= if Array(work_presenter.resource_type).include?("Text")
-        "Text"
-      else
-        Array(work_presenter.resource_type).first
-      end
     end
 
     def dc_creators
