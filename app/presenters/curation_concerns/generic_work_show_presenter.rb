@@ -39,13 +39,6 @@ module CurationConcerns
       @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
     end
 
-    # http://www.loc.gov/standards/datetime/pre-submission.html
-    # https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0039_iso_wd_8601-2_2016-02-16.pdf
-    # used in OAI-DC for DPLA representation
-    def dates_as_8601_edtf
-
-    end
-
     def content_types
       solr_document['content_types_ssim'] || []
     end

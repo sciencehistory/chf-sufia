@@ -71,7 +71,15 @@ module CHF
             xml["dc"].contributor contributor
           end
 
-          # DATE to do, need "ISO 8601 (W3CDTF) format (YYYY-MM-DD) with optional EDTF"
+          # Very unclear what minimal requirements for parseable date formats are.
+          # We're just going to put our human-readable dates in a single dc:date, cause
+          # PA Digital guidelines say they are not repeatable. We may have to do more
+          # work later to give them something they can parse, even if we dumb our dates
+          # down.
+          display_dates = work_presenter.display_dates
+          if display_dates.present?
+            xml["dc"].date display_dates.join(", ")
+          end
 
           xml["dc"].description work_presenter.plain_description
 
