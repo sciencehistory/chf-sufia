@@ -39,6 +39,10 @@ module CurationConcerns
       @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten
     end
 
+    def content_types
+      solr_document['content_types_ssim'] || []
+    end
+
     def catalog_bib_numbers
       @catalog_big_numbers ||= if solr_document.identifier
         solr_document.identifier.
@@ -155,6 +159,12 @@ module CurationConcerns
         length: 400,
         separator: /\s/
       )}"
+    end
+
+    # No tags, used in oai-dc
+    # For a truncated version see #short_plain_description
+    def plain_description
+      @plain_description ||= strip_tags(description.first)
     end
 
     # If it's a child work, return the child work, don't go further to fileset. Gives
