@@ -71,12 +71,12 @@ module CHF
 
       image_info_list.each do |image_info|
         embed_width, embed_height = image_embed_dimensions(image_info)
+        # If they were missing, we do our best
+        embed_width ||= PAGE_WIDTH
+        embed_height ||= PAGE_HEIGHT
 
-        #pdf.start_new_page(:size => [pg_w, pg_h], :layout => :portrait, :margin => 0)
         pdf.start_new_page(size: [embed_width, embed_height], margin: 0)
 
-        #y_pos = pdf.cursor   # Record the top y value (y=0 is the bottom of the page)
-        #pdf.image open(url_or_path_for_image(image_info), "rb"), :at => [0, y_pos], :fit => fit_value
 
         pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [embed_width, embed_height]
       end
@@ -97,6 +97,12 @@ module CHF
     #
     # Returns an array tuple `[w, h]`
     def image_embed_dimensions(image_info)
+      unless image_info.width.present? && image_info.height.present?
+        # shouldn't happen, and we can do nothing.
+        Rails.logger.error("#{self.class.name}: Couldn't find height and width to make PDF for #{work_id}")
+        return nil
+      end
+
       target_aspect_ratio = PAGE_WIDTH.to_f / PAGE_HEIGHT.to_f
       target_aspect_ratio_sideways = PAGE_HEIGHT.to_f / PAGE_WIDTH.to_f
 
