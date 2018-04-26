@@ -54,18 +54,49 @@ module CHF
       )
 
       image_info_list.each do |image_info|
-        #pdf.start_new_page(:size => [pg_w, pg_h], :layout => :portrait, :margin => 0)
-        pdf.start_new_page
-        #y_pos = pdf.cursor   # Record the top y value (y=0 is the bottom of the page)
+        embed_width, embed_height = image_embed_dimensions(image_info)
 
+        #pdf.start_new_page(:size => [pg_w, pg_h], :layout => :portrait, :margin => 0)
+        pdf.start_new_page(size: [embed_width, embed_height], margin: 0)
+
+        #y_pos = pdf.cursor   # Record the top y value (y=0 is the bottom of the page)
         #pdf.image open(url_or_path_for_image(image_info), "rb"), :at => [0, y_pos], :fit => fit_value
-        pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [PAGE_WIDTH, PAGE_HEIGHT]
+
+        pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [embed_width, embed_height]
       end
 
       return pdf
     end
 
     protected
+
+    # We want to fit the image on an 8.5x11 page, expressed in prawn's 72 dpi coordinates.
+    # At the moment, instead of actually marking a page as 'landscape' orientation (which would
+    # require rotating the image), we'll allow the page to be EITHER 8.5x11 or 11x8.5. This might
+    # cause weirdness if someone wants to print, we may improve later -- but MacOS Preview
+    # at least rotates the page for you when printing (whether you like it or not, in default settings).
+    #
+    # So chooses sizes such that original aspect ratio is maintained, and both dimensions fit into
+    # either 8.5x11 or 11x8.5, expressed with 72dpi coordinates.
+    #
+    # Returns an array tuple `[w, h]`
+    def image_embed_dimensions(image_info)
+      target_aspect_ratio = PAGE_WIDTH.to_f / PAGE_HEIGHT.to_f
+      target_aspect_ratio_sideways = PAGE_HEIGHT.to_f / PAGE_WIDTH.to_f
+
+      if image_info.aspect_ratio < target_aspect_ratio
+        embed_height = PAGE_HEIGHT
+        embed_width = (PAGE_HEIGHT.to_f * image_info.aspect_ratio).round
+      elsif image_info.aspect_ratio < target_aspect_ratio_sideways
+        embed_width = PAGE_WIDTH
+        embed_height = (PAGE_WIDTH.to_f / image_info.aspect_ratio).round
+      else
+        embed_width = PAGE_HEIGHT
+        embed_height = (PAGE_HEIGHT.to_f / image_info.aspect_ratio).round
+      end
+
+      return [embed_width, embed_height]
+    end
 
     def work_presenter
       @work_presenter ||= begin
