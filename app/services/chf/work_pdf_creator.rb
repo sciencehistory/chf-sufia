@@ -11,14 +11,30 @@
 #
 # note: will take a couple trips to solr to get what it needs. And then download
 # jpgs to make the PDF. Can def be slow.
-
+#
+# ## Sizes
+#
+# We want to produce PDFs that are reasonable to read on screen, and ideally to print,
+# at decent resolution, without being too enormous files -- for all our diverse images,
+# with varying aspect ratios.
+#
+# prawn seems to do do it's coordinates in 72dpi (or maybe that's a PDF thing),
+# but printers print at at least 300dpi (sometimes more), and displays these days
+# are usually 100dpi and up (up to 300+ for high-res mobile).
+#
+# We are targetting US Letter size pages for convenient printing, and perhaps reasonable
+# display in various PDF readers, desktop and mobile.
+#
+# * US Letter size, 612x792px at 72dpi (which is what prawn uses for it's coordinates).
+# * US letter is 2550x3300 at 300dpi -- most printers are higher than that, even budget printers are 300dpi these days.
+#
+# For now we are using dl_medium size images, which are at 1200px _width_ regardless of image
+# aspect ratio. For portrait-orientation pages, that ends up being about 150dpi, but it can
+# end up much lower for REALLY wide images which have been resized a higher percentage to get
+# into 1200px width. dl_large size images created 2GB PDF for Ramelli; dl_medium much more
+# reasonable 300MB even for ramelli.
 module CHF
   class WorkPdfCreator
-    # US Letter size, 612x792px at 72dpi (which is what prawn uses for it's coordinates, I think).
-    # We create the pages at this size (with no margins), but embed images at higher res.
-    # US letter is 2550x3300 at 300dpi -- most printers are higher than that, even budget printers are 300dpi these days.
-    # no actual monitors are at 72dpi these days, even the lowest-res laptop is probably 100.
-    # mobile tends to be 150 and up, up to 400 for some iphones.
     PAGE_WIDTH = 612
     PAGE_HEIGHT = 792
 
