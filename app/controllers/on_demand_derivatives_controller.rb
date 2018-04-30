@@ -2,21 +2,36 @@
 # demand, via a background job, and provide JSON status messages for front-end
 # to display progress and redirect to download, etc.
 class OnDemandDerivativesController < ApplicationController
+  before_action do
+    # I dunno why we authorize the solr_document, but that appears to be
+    # what the stack does.
+    authorize! :show, presenter.solr_document
+  end
+
 
   # Returns a JSON hash with status of on-demand derivative, including a URL
   # if it's available now.
   def pdf
-    id = params.require(:id)
+    checksum = checksum_for_work
 
-    checksum = checksum_for_work_id(id)
-
-    record = find_or_create_record(id, "pdf", checksum)
+    record = find_or_create_record(work_id, "pdf", checksum)
 
     render json: record.as_json(methods: :url)
   end
 
 
   protected
+
+  def work_id
+    @work_id = params.require(:id)
+  end
+
+  def presenter
+    @presenter ||= CurationConcerns::GenericWorkShowPresenter.new(
+      SolrDocument.find(work_id),
+      Ability.new(current_user)
+    )
+  end
 
   # Finds or creates the status record, and also kicks off the bg job if creating the status
   # record. Also if the status record is stale, will delete it and create a new one.
@@ -50,11 +65,7 @@ class OnDemandDerivativesController < ApplicationController
   # We gotta get all it's representatives, and compile all their checksums, to make
   # sure checksum changes if members have changed at all. This will be a couple
   # Solr fetches.
-  def checksum_for_work_id(work_id)
-    presenter = CurationConcerns::GenericWorkShowPresenter.new(
-      SolrDocument.find(work_id),
-      Ability.new(current_user)
-    )
+  def checksum_for_work
     representative_checksums = presenter.work_presenters.collect(&:representative_checksum).compact
 
     Digest::MD5.hexdigest(representative_checksums.join("-"))
