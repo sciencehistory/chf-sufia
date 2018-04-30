@@ -26,7 +26,7 @@ RSpec.describe CHF::WorkPdfCreator do
 
   it "smoke tests" do
     creator = CHF::WorkPdfCreator.new(work.id)
-    creator.write_pdf(pdf_output_path)
+    creator.write_pdf_to_path(pdf_output_path)
 
     # open it and make sure it's a PDF with num pages we expect
     reader = PDF::Reader.new(pdf_output_path)

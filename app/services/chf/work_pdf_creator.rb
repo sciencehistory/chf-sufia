@@ -43,8 +43,12 @@ module CHF
       @work_id = work_id
     end
 
-    def write_pdf(filepath)
+    def write_pdf_to_path(filepath)
       make_prawn_pdf.render_file(filepath)
+    end
+
+    def write_pdf_to_stream(io)
+      io.write make_prawn_pdf.render
     end
 
     # you probably want {#write_pdf} instead. We intentionally write to disk
