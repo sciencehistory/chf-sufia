@@ -13,6 +13,7 @@ class CreateWorkPdfJob < ActiveJob::Base
     on_demand_record.write_from_path(tmp_file.path)
     on_demand_record.update(status: "success")
   rescue StandardError => e
+    Rails.application.log_error(e)
     on_demand_record.update(status: "error", error_info: {class: e.class.name, message: e.message, backtrace: e.backtrace}.to_json)
   ensure
     tmp_file.close
