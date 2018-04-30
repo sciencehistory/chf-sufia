@@ -16,7 +16,7 @@ class OnDemandDerivativesController < ApplicationController
 
     record = find_or_create_record(work_id, "pdf", checksum)
 
-    render json: record.as_json(methods: :url)
+    render json: record.as_json(methods: (record.success? ? "url" : nil))
   end
 
 
