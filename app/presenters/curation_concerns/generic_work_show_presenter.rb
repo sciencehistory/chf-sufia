@@ -35,7 +35,7 @@ module CurationConcerns
     end
 
     def public_member_presenters
-      @public_member_presenters ||= member_presenters.find_all { |m| m.visibility == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
+      @public_member_presenters ||= member_presenters.find_all { |m| m.solr_document["visibility_ssi"] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
     end
 
     # similar to parent_work_presenters, but for collections. Yes, this is all confusing.
