@@ -135,7 +135,7 @@ module CHF
     # construction. This works becuase we're storing width, height, and file_set_id of representative
     # image in solr, which presenters give us access to.
     def image_info_list
-      @image_info_list ||= work_presenter.member_presenters.collect do |member|
+      @image_info_list ||= work_presenter.public_member_presenters.collect do |member|
         OpenStruct.new(
           file_set_id: member.representative_file_set_id,
           file_id: member.representative_file_id,

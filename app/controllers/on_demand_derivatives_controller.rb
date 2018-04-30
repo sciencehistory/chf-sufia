@@ -66,7 +66,7 @@ class OnDemandDerivativesController < ApplicationController
   # sure checksum changes if members have changed at all. This will be a couple
   # Solr fetches.
   def checksum_for_work
-    representative_checksums = presenter.work_presenters.collect(&:representative_checksum).compact
+    representative_checksums = presenter.public_member_presenters.collect(&:representative_checksum).compact
 
     Digest::MD5.hexdigest(representative_checksums.join("-"))
   end
