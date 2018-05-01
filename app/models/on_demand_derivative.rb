@@ -74,7 +74,7 @@ class OnDemandDerivative < ApplicationRecord
   # Will go to solr to fetch. Always creates presenter for non-logged-in-user.
   # Ideally all these class-methods should prob be extracted into a new object.
   def self.work_presenter(work_id)
-    @work_presenter ||= CurationConcerns::GenericWorkShowPresenter.new(
+    CurationConcerns::GenericWorkShowPresenter.new(
       SolrDocument.find(work_id),
       Ability.new(nil)
     )
