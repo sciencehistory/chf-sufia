@@ -11,7 +11,7 @@ class CreateWorkPdfJob < ActiveJob::Base
     tmp_file.rewind
 
     on_demand_record.write_from_path(tmp_file.path)
-    on_demand_record.update(status: "success")
+    on_demand_record.update(status: "success", byte_size: tmp_file.size())
   rescue StandardError => e
     Rails.application.log_error(e)
     on_demand_record.update(status: "error", error_info: {class: e.class.name, message: e.message, backtrace: e.backtrace}.to_json)
