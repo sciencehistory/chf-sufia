@@ -1,6 +1,10 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  default_url_options host: CHF::Env.lookup(:app_hostname)
+
+  concern :oai_provider, BlacklightOaiProvider::Routes.new
+
   # this will fall through to ./views/application/robots.txt.erb, no need for an action method
   get 'robots.txt', to: "application#robots.txt", format: "text"
 
@@ -39,9 +43,19 @@ Rails.application.routes.draw do
     concern :searchable, Blacklight::Routes::Searchable.new
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    #concerns :oai_provider
+
     concerns :searchable
     concerns :range_searchable
 
+  end
+
+  # Gives us a top-level "/oai" path, that routes to OaiPmhController#oai, our custom
+  # controller that sub-classes CatalogController, that we've added blacklight_oai_provider
+  # functionality to. This is a bit different than default blacklight_oai_provider, in part
+  # because it was one way we found to limit results to just genericworks in oai-pmh.
+  scope controller: "oai_pmh", as: "oai_pmh" do
+    concerns :oai_provider
   end
 
   devise_for :users

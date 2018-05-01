@@ -27,6 +27,9 @@ module CHF
         if candidate_file_size && candidate_file_size =~ /(\d+)/
           doc[file_size_key] = $1
         end
+
+        # So we can filter on visibility from solr docs
+        doc['visibility_ssi'] = object.visibility
       end
     end
   end

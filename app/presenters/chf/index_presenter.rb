@@ -93,5 +93,21 @@ module Chf
     def permission_badge
       CurationConcerns::PermissionBadge.new(solr_document).render
     end
+
+
+    # Returns an array of DateOfWork objects, just like an actual fedora object.
+    # reconstructs from json in solr
+    def date_of_work_models
+      @date_of_work_structured ||= begin
+        (solr_document["date_of_work_json_ssm"] || []).collect do |json|
+          DateOfWork.new.from_json(json).tap { |d| d.readonly! }
+        end
+      end
+    end
+
+    def display_dates
+      CHF::DatesOfWorkForDisplay.new(date_of_work_models).display_dates
+    end
+
   end
 end

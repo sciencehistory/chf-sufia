@@ -24,6 +24,9 @@ gem 'hydra-editor', git: 'https://github.com/projecthydra/hydra-editor', ref: 'c
 # 1.3 broke OpacRecordService; lock for now
 gem 'oauth2', '1.2.0'
 
+# OAI PMH for DPLA export
+gem 'blacklight_oai_provider'
+
 # used in some rake tasks, some of which we may want ot run on production.
 gem 'ruby-progressbar', '~> 1.0'
 
