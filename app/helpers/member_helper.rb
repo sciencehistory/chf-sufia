@@ -19,7 +19,7 @@ module MemberHelper
   # that way, but performance impact of partial was too much, on work pages
   # that wanted to display many members and call these many times. Not entirely
   # sure why partial so much slower than helper, even in production config.
-  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil)
+  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil, whole_work_downloads: true)
     list_elements = []
 
     if parent.has_rights_statement?
@@ -30,6 +30,11 @@ module MemberHelper
     end
 
     if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
+      if whole_work_downloads
+        list_elements << content_tag("li", "Download all images (#{parent.public_member_presenters.count})", class: "dropdown-header")
+        list_elements << content_tag("li", "<a data-download-deriv-type=pdf data-download-whole-work-deriv=#{parent.id}>PDF</a>".html_safe)
+      end
+
       list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
 
       download_options.each do |option_config|
