@@ -18,6 +18,7 @@ $( document ).ready(function() {
         window.location = json.url;
 
       } else if (json.status == "in_progress") {
+        _self.updateProgress(json);
         _self.getModal().modal("show");
         // wait, then check again....
         _self.nextFetch = setTimeout(function() {
@@ -35,8 +36,8 @@ $( document ).ready(function() {
   ChfOnDemandDownloader.prototype.getModal = function() {
     var _self = this;
 
-    if (this.modalElement) {
-      return this.modalElement;
+    if (_self.modalElement) {
+      return _self.modalElement;
     }
     //create a new bootstrap modal
     var modalEl = $('\
@@ -45,9 +46,7 @@ $( document ).ready(function() {
           <div class="modal-content">\
             <div class="modal-body">\
             <p>Preparing your download, may take a bit.</p>\
-            <div class="progress progress-striped active">\
-              <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">\
-              </div>\
+            <div data-progress-placeholder>\
             </div>\
             </div>\
             <div class="modal-footer">\
@@ -72,15 +71,30 @@ $( document ).ready(function() {
       }
     })
 
-    this.modalElement = modalEl;
+    _self.modalElement = modalEl;
 
-    return this.modalElement;
+    return _self.modalElement;
   };
 
-  ChfOnDemandDownloader.prototype.initiate = function() {
+  ChfOnDemandDownloader.prototype.updateProgress = function(json_response) {
+    html = "";
 
-  };
-
+    if (json_response.progress && json_response.progress_total) {
+      html = '<div class="progress">' +
+                '<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuenow="' +
+                    json_response.progress + '" aria-valuemax="' + json_response.progress_total + '"' +
+                    'style="width: ' + Math.floor((json_response.progress / json_response.progress_total) * 100) + '%;"' +
+                    '>' +
+                '</div>' +
+              '</div>';
+    } else {
+      html = '<div class="progress progress-striped active">\
+              <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+              '</div>\
+            </div>';
+    }
+    this.getModal().find("*[data-progress-placeholder]").html(html);
+  }
 
   $(document).on('click', '*[data-download-deriv-type]', function(e) {
     e.preventDefault();
@@ -89,9 +103,6 @@ $( document ).ready(function() {
     var id   = $(e.target).data("download-whole-work-deriv");
 
     var downloader = new ChfOnDemandDownloader(id, type);
-    downloader.initiate();
-
     downloader.fetchForStatus();
-
   });
 });

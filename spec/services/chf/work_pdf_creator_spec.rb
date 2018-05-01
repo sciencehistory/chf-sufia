@@ -34,9 +34,9 @@ RSpec.describe CHF::WorkPdfCreator do
     reader = PDF::Reader.new(pdf_output_path)
 
     expect(reader.page_count).to eq 3
-    expect(callback_spy).to have_received(:call).with(progress_total: 3, progress_i: 1)
-    expect(callback_spy).to have_received(:call).with(progress_total: 3, progress_i: 2)
-    expect(callback_spy).to have_received(:call).with(progress_total: 3, progress_i: 3)
+    expect(callback_spy).to have_received(:call).with(progress_total: 4, progress_i: 1)
+    expect(callback_spy).to have_received(:call).with(progress_total: 4, progress_i: 2)
+    expect(callback_spy).to have_received(:call).with(progress_total: 4, progress_i: 3)
 
     # we are adding metadata, but PDF::Reader can't find it for some reason.
     # https://github.com/yob/pdf-reader/issues/274

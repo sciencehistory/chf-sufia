@@ -90,7 +90,9 @@ module CHF
         pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [embed_width, embed_height]
 
         if callback
-          callback.call(progress_total: count, progress_i: index + 1)
+          # we add one to count so we don't show 100% when we're still waiting to compile
+          # and upload the whole thing to S3, even though we're done with all pages.
+          callback.call(progress_total: count + 1, progress_i: index + 1)
         end
       end
 
