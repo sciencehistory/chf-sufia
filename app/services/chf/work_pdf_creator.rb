@@ -33,6 +33,9 @@
 # end up much lower for REALLY wide images which have been resized a higher percentage to get
 # into 1200px width. dl_large size images created 2GB PDF for Ramelli; dl_medium much more
 # reasonable 300MB even for ramelli.
+#
+# Callback arg is any object that accepts `call(progress_i:, progress_total:)`, usually
+# proc object.
 module CHF
   class WorkPdfCreator
     PAGE_WIDTH = 612
@@ -43,17 +46,17 @@ module CHF
       @work_id = work_id
     end
 
-    def write_pdf_to_path(filepath)
-      make_prawn_pdf.render_file(filepath)
+    def write_pdf_to_path(filepath, callback: nil)
+      make_prawn_pdf(callback: callback).render_file(filepath)
     end
 
-    def write_pdf_to_stream(io)
-      io.write make_prawn_pdf.render
+    def write_pdf_to_stream(io, callback: nil)
+      io.write make_prawn_pdf(callback: callback).render
     end
 
     # you probably want {#write_pdf} instead. We intentionally write to disk
     # to not use huge RAM for our potentially huge PDFs.
-    def make_prawn_pdf
+    def make_prawn_pdf(callback: nil)
       pdf = Prawn::Document.new(
         margin: 0,
         skip_page_creation: true,
@@ -73,7 +76,9 @@ module CHF
         }
       )
 
-      image_info_list.each do |image_info|
+      count = image_info_list.count
+
+      image_info_list.each_with_index do |image_info, index|
         embed_width, embed_height = image_embed_dimensions(image_info)
         # If they were missing, we do our best
         embed_width ||= PAGE_WIDTH
@@ -83,6 +88,10 @@ module CHF
 
 
         pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [embed_width, embed_height]
+
+        if callback
+          callback.call(progress_total: count, progress_i: index + 1)
+        end
       end
 
       return pdf
