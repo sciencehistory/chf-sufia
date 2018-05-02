@@ -14,9 +14,10 @@ $( document ).ready(function() {
       return response.json();
     }).then(function(json) {
       if (json.status == "success") {
-        _self.getModal().modal("hide");
+        if (existing = _self.getModal(true)) {
+          existing.modal("hide");
+        }
         window.location = json.url;
-
       } else if (json.status == "in_progress") {
         _self.updateProgress(json);
         _self.getModal().modal("show");
@@ -33,10 +34,12 @@ $( document ).ready(function() {
     });
   };
 
-  ChfOnDemandDownloader.prototype.getModal = function() {
+  ChfOnDemandDownloader.prototype.getModal = function(lazy) {
     var _self = this;
     if (_self.modalElement) {
       return _self.modalElement;
+    } else if (lazy) {
+      return undefined;
     }
     //create a new bootstrap modal
     var modalEl = $('\
@@ -60,8 +63,7 @@ $( document ).ready(function() {
     $("body").append(modalEl);
 
     modalEl.modal({
-      backdrop: "static",
-      keyboard: true,
+      backdrop: true,
       show: false
     });
 

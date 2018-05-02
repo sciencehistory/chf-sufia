@@ -329,7 +329,7 @@
   word-break: break-word; // keep long urls from breaking layout, but we don't want ellipsis, so it goes.
 }
 
-.modal.on-demand-download {
+.modal.on-demand-download.in {
   // magically makes the dialog vertically centered
   display: flex;
   flex-direction: column;
