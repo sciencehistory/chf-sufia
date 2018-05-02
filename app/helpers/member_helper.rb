@@ -29,12 +29,13 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
-      if whole_work_downloads
-        list_elements << content_tag("li", "Download all images (#{parent.public_member_presenters.count})", class: "dropdown-header")
-        list_elements << content_tag("li", "<a data-download-deriv-type=pdf data-download-whole-work-deriv=#{parent.id}>PDF</a>".html_safe)
-      end
+    if whole_work_downloads && parent && parent.public_member_presenters.count > 1
+      list_elements << content_tag("li", "Download all #{parent.public_member_presenters.count} images", class: "dropdown-header")
+      list_elements << dropdown_menuitem(link_to(nil, "PDF", data: { 'download-deriv-type': "pdf", 'download-whole-work-deriv': parent.id}))
+      list_elements << "<li class='divider'></li>".html_safe
+    end
 
+    if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
       list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
 
       download_options.each do |option_config|

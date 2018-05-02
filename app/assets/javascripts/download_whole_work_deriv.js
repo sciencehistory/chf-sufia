@@ -44,13 +44,15 @@ $( document ).ready(function() {
       <div class="modal on-demand-download" role="dialog"> \
         <div class="modal-dialog" role="document">\
           <div class="modal-content">\
-            <div class="modal-body">\
-            <p>Preparing your download, may take a bit.</p>\
-            <div data-progress-placeholder>\
+            <div class="modal-header">\
+              <span class="modal-title">Preparing your ' + _self.deriv_type.toUpperCase() + ' download</span>\
             </div>\
+            <div class="modal-body">\
+              <div data-progress-placeholder></div>\
+              <p>Large downloads may take some time to prepare. We appreciate your patience.</p>\
             </div>\
             <div class="modal-footer">\
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>\
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>\
             </div>\
           </div>\
         </div>\
@@ -60,6 +62,7 @@ $( document ).ready(function() {
 
     modalEl.modal({
       backdrop: "static",
+      keyboard: true,
       show: false
     });
 
