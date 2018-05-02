@@ -71,6 +71,10 @@ $( document ).ready(function() {
         clearTimeout(_self.nextFetch);
         _self.nextFetch = null;
       }
+      // and destroy the element so we can create a new one later on another
+      // click, without interfering. JQuery-based dev is a bit hacky...
+      _self.modalElement.remove();
+      _self.modalElement = null;
     })
 
     _self.modalElement = modalEl;
