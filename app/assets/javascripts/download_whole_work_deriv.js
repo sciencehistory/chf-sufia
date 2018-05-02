@@ -11,7 +11,7 @@ $( document ).ready(function() {
     var _self = this;
 
     fetch("/works/" + this.work_id + "/pdf").then(function(response) {
-      return response.json()
+      return response.json();
     }).then(function(json) {
       if (json.status == "success") {
         _self.getModal().modal("hide");
@@ -25,17 +25,16 @@ $( document ).ready(function() {
           _self.fetchForStatus();
         }, 2000);
       } else {
-
+        json_error = JSON.parse(json.error_info);
+        throw json_error.class + ": " + json_error.message;
       }
     }).catch(function(error) {
-      debugger;
-      1+1;
+      _self.handleError(error);
     });
   };
 
   ChfOnDemandDownloader.prototype.getModal = function() {
     var _self = this;
-
     if (_self.modalElement) {
       return _self.modalElement;
     }
@@ -97,7 +96,15 @@ $( document ).ready(function() {
             </div>';
     }
     this.getModal().find("*[data-progress-placeholder]").html(html);
-  }
+  };
+
+  ChfOnDemandDownloader.prototype.handleError = function(error) {
+    console.log("Error fetching on-demand derivative: " + error);
+    this.getModal().find(".modal-body").html(
+      '<h1 class="h2"><i class="fa fa-warning text-danger"></i> A software error occured.</h1>' +
+      '<p class="text-danger">We\'re sorry, your download can not be delivered at this time.</p>'
+    );
+  };
 
   $(document).on('click', '*[data-download-deriv-type]', function(e) {
     e.preventDefault();
