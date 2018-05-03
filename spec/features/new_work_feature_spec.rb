@@ -91,6 +91,11 @@ RSpec.feature "Work form", js: true do
     expect(page).to have_text(artist_name)
     expect(page).to have_text(publisher_name)
     expect(page).to have_text("circa #{date}")
+
+    # Regression test for bug
+    # https://github.com/sciencehistory/chf-sufia/issues/1049
+    expect(page.all(:xpath, '//span[@itemprop="date_created"]').count).to eq 1
+
     expect(page).to have_css(".show-permission-badge", text: I18n.t("sufia.institution_name").upcase)
     inscription_fields.each {|item| expect(page).to have_text(item)}
 
