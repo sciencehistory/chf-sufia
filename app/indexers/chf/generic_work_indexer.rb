@@ -76,6 +76,9 @@ module CHF
         doc['visibility_ssi'] = object.visibility
 
         # index structured date of works, so we can get them at index time
+        # Not totally sure why we're getting duplicates here, the duplicates don't seem to make it to fedora,
+        # but we have dups as input here when indexing after an edit. We just de-dup here for now to avoid
+        # dups in index.
         doc['date_of_work_json_ssm'] = remove_duplicates('date_of_work').collect { |d| d.to_json(except: "id") }
 
         # Need all content-types for oai_dc serialization. This does force loading all members, was
