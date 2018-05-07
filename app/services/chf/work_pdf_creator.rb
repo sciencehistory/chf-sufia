@@ -90,7 +90,7 @@ module CHF
         pdf.image open(url_or_path_for_image(image_info), "rb"), vposition: :center, position: :center, fit: [embed_width, embed_height]
 
         # We don't really need to update on every page, the front-end is only polling every two seconds anyway
-        if callback && (index % 9 == 0 || index == count - 1)
+        if callback && (index % 3 == 0 || index == count - 1)
           callback.call(progress_total: count, progress_i: index + 1)
         end
       end
