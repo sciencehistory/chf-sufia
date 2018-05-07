@@ -328,19 +328,3 @@
   line-height: 1.5 !important; // ah, !important, the sign of CSS out of control
   word-break: break-word; // keep long urls from breaking layout, but we don't want ellipsis, so it goes.
 }
-
-.modal.on-demand-download.in {
-  // magically makes the dialog vertically centered
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  .modal-header {
-    background-color: $brand-bright-green;
-    border-top-left-radius: $border-radius-large;
-    border-top-right-radius: $border-radius-large;
-    .modal-title {
-      font-size: 24px;
-    }
-  }
-}
-
