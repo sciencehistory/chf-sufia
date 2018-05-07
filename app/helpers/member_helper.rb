@@ -31,7 +31,8 @@ module MemberHelper
 
     if whole_work_downloads && parent && parent.public_member_presenters.count > 1
       list_elements << content_tag("li", "Download all #{parent.public_member_presenters.count} images", class: "dropdown-header")
-      list_elements << dropdown_menuitem(link_to(nil, "PDF", data: { 'download-deriv-type': "pdf", 'download-whole-work-deriv': parent.id}))
+      list_elements << dropdown_menuitem(link_to("PDF", "", data: { 'download-deriv-type': "pdf", 'download-whole-work-deriv': parent.id}))
+      list_elements << dropdown_menuitem(link_to("ZIP ".html_safe + content_tag("small", "of full-sized JPGs"), "", data: { 'download-deriv-type': "zip", 'download-whole-work-deriv': parent.id}))
       list_elements << "<li class='divider'></li>".html_safe
     end
 

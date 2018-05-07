@@ -17,6 +17,12 @@ class OnDemandDerivativesController < ApplicationController
     render json: record.as_json(methods: (record.success? ? "url" : nil))
   end
 
+  def zip
+    record = OnDemandDerivative.find_or_create_record(work_id, "zip", work_presenter: presenter)
+
+    render json: record.as_json(methods: (record.success? ? "url" : nil))
+  end
+
 
   protected
 

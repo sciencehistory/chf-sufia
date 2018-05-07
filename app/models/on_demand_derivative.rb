@@ -18,10 +18,16 @@ class OnDemandDerivative < ApplicationRecord
   LOCAL_FILE_PATH_BASE = Rails.root + "public"
 
 
-  enum deriv_type: %w{pdf}.collect {|v| [v, v]}.to_h.freeze,
+  enum deriv_type: %w{pdf zip}.collect {|v| [v, v]}.to_h.freeze,
        status: %w{in_progress success error}.collect {|v| [v, v]}.to_h.freeze
 
   delegate :file_exists?, :url, :write_from_path, to: :resource_locator
+
+  class_attribute :job_class_for_type, instance_accessor: false
+  self.job_class_for_type = {
+    :pdf => CreateWorkPdfJob,
+    :zip => CreateWorkZipJob
+  }
 
   # Finds or creates the status record, and also kicks off the CreateWorkPdfJob in bg if status
   # requires it.
@@ -50,7 +56,7 @@ class OnDemandDerivative < ApplicationRecord
     record = OnDemandDerivative.where(work_id: id, deriv_type: type).first
     if record.nil?
       record = OnDemandDerivative.create(work_id: id, deriv_type: type, status: :in_progress, checksum: checksum)
-      CreateWorkPdfJob.perform_later(record)
+      self.job_class_for_type[type.to_sym].perform_later(record)
     end
 
     if ( record.in_progress? && (Time.now - record.updated_at) > OnDemandDerivative::STALE_IN_PROGRESS_SECONDS ) ||
@@ -90,9 +96,13 @@ class OnDemandDerivative < ApplicationRecord
     Digest::MD5.hexdigest(representative_checksums.join("-"))
   end
 
+  def file_suffix
+    deriv_type
+  end
+
 
   def file_name
-    "#{work_id}_#{checksum}.pdf"
+    "#{work_id}_#{checksum}.#{file_suffix}"
   end
 
   def work_presenter
@@ -105,7 +115,7 @@ class OnDemandDerivative < ApplicationRecord
     @resource_locator ||= begin
       path_prefix = deriv_type
       if CHF::Env.lookup("derivatives_cache_bucket")
-        S3File.new(self, CHF::Env.lookup("derivatives_cache_bucket"), path_prefix)
+        S3File.new(self, CHF::Env.lookup("derivatives_cache_bucket"), path_prefix, file_suffix)
       else
         LocalFile.new(self, LOCAL_FILE_PATH_BASE, path_prefix)
       end
@@ -114,8 +124,8 @@ class OnDemandDerivative < ApplicationRecord
 
 
   class S3File
-    def initialize(model, bucket_name, prefix)
-      @model, @bucket_name, @prefix = model, bucket_name, prefix || ""
+    def initialize(model, bucket_name, prefix, suffix)
+      @model, @bucket_name, @prefix, @suffix = model, bucket_name, prefix || "", suffix
     end
 
     def file_exists?
@@ -128,7 +138,7 @@ class OnDemandDerivative < ApplicationRecord
       @url ||= s3_bucket.object(key_path).presigned_url(:get,
         expires_in: 7.days.to_i,
         response_content_disposition: ApplicationHelper.encoding_safe_content_disposition(
-          ImageServiceHelper.download_name(@model.work_presenter, suffix: "pdf")
+          ImageServiceHelper.download_name(@model.work_presenter, suffix: @suffix)
         )
       )
     end

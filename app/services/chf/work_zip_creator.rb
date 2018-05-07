@@ -1,3 +1,5 @@
+require 'zip'
+
 module CHF
   # Create a ZIP of full-size JPGs of all images in a work.
   #
@@ -33,7 +35,7 @@ module CHF
 
       count = members_to_include.size
 
-      Zip::File.open(tmp_file.path, Zip::File::CREATE) do |zipfile|
+      Zip::File.open(filepath, Zip::File::CREATE) do |zipfile|
         zipfile.comment = comment_text
 
         zipfile.add("about.txt", tmp_comment_file)
@@ -70,11 +72,11 @@ module CHF
     end
 
     def comment_text
-      @comment_text ||= <<-EOS
-        From the Science History Institute, https://sciencehistory.org
+      @comment_text ||= <<~EOS
+        Courtesy of the Science History Institute, https://sciencehistory.org
 
-        #{work_presenter.title}
-        "#{CHF::Env.lookup!(:app_url_base)}/works/#{work_id}"
+        #{work_presenter.title.first}
+        #{CHF::Env.lookup!(:app_url_base)}/works/#{work_id}
 
         Prepared on #{Time.now}
         EOS

@@ -10,7 +10,7 @@ $( document ).ready(function() {
   ChfOnDemandDownloader.prototype.fetchForStatus = function() {
     var _self = this;
 
-    fetch("/works/" + this.work_id + "/pdf").then(function(response) {
+    fetch("/works/" + this.work_id + "/" + _self.deriv_type).then(function(response) {
       return response.json();
     }).then(function(json) {
       if (json.status == "success") {
