@@ -163,16 +163,16 @@ module CHF
     # The stack API is a mess here, and sadly our home-grown image service API is NOT
     # working out well for expanded use cases.
     def url_or_path_for_image(image_info)
-      if [nil, "legacy", :legacy].include? CHF::Env.lookup(:image_server_for_thumbnails)
+      if [nil, "legacy", :legacy].include? CHF::Env.lookup(:image_server_downloads)
         CurationConcerns::DerivativePath.derivative_path_for_reference(image_info.file_set_id, "jpeg")
-      elsif CHF::Env.lookup(:image_server_for_thumbnails).to_s == "dzi_s3"
+      elsif CHF::Env.lookup(:image_server_downloads).to_s == "dzi_s3"
         CreateDerivativesOnS3Service.s3_url(
           file_set_id: image_info.file_set_id,
           file_checksum: image_info.checksum,
           type_key: "dl_medium"
         )
       else
-        raise TypeError, "Don't know how to get JPG source for CHF::Env.lookup(:image_server_for_thumbnails): `#{CHF::Env.lookup(:image_server_for_thumbnails).inspect}`"
+        raise TypeError, "Don't know how to get JPG source for CHF::Env.lookup(:image_server_downloads): `#{CHF::Env.lookup(:image_server_downloads).inspect}`"
       end
     end
   end
