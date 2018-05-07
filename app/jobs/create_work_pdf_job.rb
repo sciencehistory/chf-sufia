@@ -2,7 +2,7 @@ class CreateWorkPdfJob < ActiveJob::Base
   queue_as :jobs_server
 
   class_attribute :working_dir
-  self.working_dir = Rails.root + "tmp" + "pdf_create"
+  self.working_dir = Pathname.new(Dir.tmpdir) + "scihist_pdf_create"
 
   def perform(on_demand_record)
     FileUtils.mkdir_p(working_dir)
