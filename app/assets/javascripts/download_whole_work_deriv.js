@@ -5,12 +5,18 @@ $( document ).ready(function() {
   function ChfOnDemandDownloader(work_id, type) {
     this.work_id = work_id;
     this.deriv_type = type;
+
+    if (!this.work_id || !this.deriv_type) {
+      console.error("tried to create ChfOnDemandDownloader with missing args");
+      throw { "work_id": work_id, type: type};
+    }
   }
 
   ChfOnDemandDownloader.prototype.fetchForStatus = function() {
     var _self = this;
 
     fetch("/works/" + this.work_id + "/" + _self.deriv_type).then(function(response) {
+
       return response.json();
     }).then(function(json) {
       if (json.status == "success") {
@@ -27,7 +33,11 @@ $( document ).ready(function() {
         }, 2000);
       } else {
         json_error = JSON.parse(json.error_info);
-        throw json_error.class + ": " + json_error.message;
+        if (json_error) {
+          throw json_error.class + ": " + json_error.message;
+        } else {
+          throw json;
+        }
       }
     }).catch(function(error) {
       _self.handleError(error);
@@ -110,13 +120,16 @@ $( document ).ready(function() {
       '<h1 class="h2"><i class="fa fa-warning text-danger"></i> A software error occured.</h1>' +
       '<p class="text-danger">We\'re sorry, your download can not be delivered at this time.</p>'
     );
+    this.getModal().modal("show");
   };
 
   $(document).on('click', '*[data-download-deriv-type]', function(e) {
     e.preventDefault();
 
-    var type = $(e.target).data("download-deriv-type");
-    var id   = $(e.target).data("download-whole-work-deriv");
+    var target = $(e.target).closest("a");
+
+    var type = target.data("download-deriv-type");
+    var id   = target.data("download-whole-work-deriv");
 
     var downloader = new ChfOnDemandDownloader(id, type);
     downloader.fetchForStatus();
