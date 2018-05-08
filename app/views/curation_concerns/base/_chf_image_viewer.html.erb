@@ -46,6 +46,11 @@
                 <%= render_rights_statement(work) %>
               </div>
             <% end %>
+            <% if work.public_member_presenters.present? %>
+              <div style="display: none" class="parent-download-options-inline">
+                <%= safe_join(whole_work_download_options(work)) %>
+              </div>
+            <% end %>
 
             <%# will be filled by JS, from json endpoint data %>
             <%= content_tag "div", "", id:"viewer-thumbs", class: "viewer-thumbs", data: { total_count: work.viewable_member_presenters.count } %>
