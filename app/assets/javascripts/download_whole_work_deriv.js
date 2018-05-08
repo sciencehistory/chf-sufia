@@ -97,7 +97,7 @@ $( document ).ready(function() {
   ChfOnDemandDownloader.prototype.updateProgress = function(json_response) {
     html = "";
 
-    if (json_response.progress && json_response.progress_total) {
+    if (json_response.progress && json_response.progress_total && json_response.progress != json_response.progress_total) {
       html = '<div class="progress">' +
                 '<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuenow="' +
                     json_response.progress + '" aria-valuemax="' + json_response.progress_total + '"' +
@@ -105,6 +105,12 @@ $( document ).ready(function() {
                     '>' +
                 '</div>' +
               '</div>';
+    } else if (json_response.progress && json_response.progress_total && json_response.progress == json_response.progress_total) {
+      html = '<div class="progress progress-striped active">\
+              <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+              ' Finishing... ' +
+              '</div>' +
+            '</div>';
     } else {
       html = '<div class="progress progress-striped active">\
               <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
