@@ -1,6 +1,6 @@
 Rails.application.configure do
-  # use inline job queue in development
-  config.active_job.queue_adapter = :inline
+  # use async job queue in development
+  config.active_job.queue_adapter = :async
 
   # Settings specified here will take precedence over those in config/application.rb.
 
