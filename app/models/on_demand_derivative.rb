@@ -23,78 +23,6 @@ class OnDemandDerivative < ApplicationRecord
 
   delegate :file_exists?, :url, :write_from_path, to: :resource_locator
 
-  class_attribute :job_class_for_type, instance_accessor: false
-  self.job_class_for_type = {
-    :pdf => CreateWorkPdfJob,
-    :zip => CreateWorkZipJob
-  }
-
-  # Finds or creates the status record, and also kicks off the CreateWorkPdfJob in bg if status
-  # requires it.
-  #
-  # Record created will have checksum in it, and old records with wrong checksum (cause members
-  # have changed) will not be accepted -- will be deleted and re-created (in a concurrency-safe way).
-  #
-  # "Stale" records will also be deleted and recreated -- still in_progress that is way too old,
-  # success but no actual derivative found, error that is old. New record created, bg job
-  # kicked off for 'stale' records.
-  #
-  # optionally pass in `work_presenter:` if you already have it, saves us from having to
-  # fetch and make it.
-  #
-  # retry_count is just for internal use to prevent infinite recursion in presence of a bug
-  # that would otherwise result in it.
-  def self.find_or_create_record(id, type, work_presenter: nil, checksum: nil, retry_count: 0)
-    if retry_count > 10
-      # what the heck is going on? Let's keep us from infinitely doing it and taking up all the CPU
-      raise StandardError.new("Tried to find/create an OnDemandDerivative record too many times for work #{id}")
-    end
-
-    work_presenter ||= self.work_presenter(id)
-    checksum ||= self.checksum_for_work(work_presenter)
-
-    record = OnDemandDerivative.where(work_id: id, deriv_type: type).first
-    if record.nil?
-      record = OnDemandDerivative.create(work_id: id, deriv_type: type, status: :in_progress, checksum: checksum)
-      self.job_class_for_type[type.to_sym].perform_later(record)
-    end
-
-    if ( record.in_progress? && (Time.now - record.updated_at) > OnDemandDerivative::STALE_IN_PROGRESS_SECONDS ) ||
-       ( record.error? && (Time.now - record.updated_at) > OnDemandDerivative::ERROR_RETRY_SECONDS ) ||
-       ( record.success? && (record.checksum != checksum || !record.file_exists? ))
-          # It's stale, delete it!
-          record.delete
-          # and try again
-          record = find_or_create_record(id, type,
-            checksum: checksum,
-            work_presenter: work_presenter,
-            retry_count: retry_count + 1)
-    end
-
-    return record
-  rescue ActiveRecord::RecordNotUnique
-    # race condition, someone else created it, no biggy
-    return find_or_create_record(id, type, checksum, retry_count: retry_count + 1)
-  end
-
-  # Will go to solr to fetch. Always creates presenter for non-logged-in-user.
-  # Ideally all these class-methods should prob be extracted into a new object.
-  def self.work_presenter(work_id)
-    CurationConcerns::GenericWorkShowPresenter.new(
-      SolrDocument.find(work_id),
-      Ability.new(nil)
-    )
-  end
-
-  # We gotta get all it's representatives, and compile all their checksums, to make
-  # sure checksum changes if members have changed at all. This will be a couple
-  # Solr fetches.
-  #
-  # Ideally all these class-methods should prob be extracted into a new object.
-  def self.checksum_for_work(work_presenter)
-    representative_checksums = work_presenter.public_member_presenters.collect(&:representative_checksum).compact
-    Digest::MD5.hexdigest(representative_checksums.join("-"))
-  end
 
   def file_suffix
     deriv_type
@@ -105,8 +33,16 @@ class OnDemandDerivative < ApplicationRecord
     "#{work_id}_#{checksum}.#{file_suffix}"
   end
 
+  # Goes to Solr to fetch and create a WorkPresenter, for a non-logged-in user.
   def work_presenter
-    @work_presenter = self.class.work_presenter(work_id)
+    @work_presenter||= CurationConcerns::GenericWorkShowPresenter.new(
+      SolrDocument.find(work_id),
+      Ability.new(nil)
+    )
+  end
+
+  def self.find_or_create_record(id, type, work_presenter: nil)
+    FindOrCreator.new(id, work_presenter: work_presenter).find_or_create_record(type)
   end
 
   protected
@@ -121,6 +57,82 @@ class OnDemandDerivative < ApplicationRecord
       end
     end
   end
+
+  class FindOrCreator
+    class_attribute :job_class_for_type
+    self.job_class_for_type = {
+      :pdf => CreateWorkPdfJob,
+      :zip => CreateWorkZipJob
+    }
+
+    attr_reader :work_id
+
+    # optionally pass in `work_presenter:` if you already have it, saves us from having to
+    # fetch and make it.
+    def initialize(work_id, work_presenter: nil)
+      @work_id = work_id
+      @work_presenter = work_presenter
+    end
+
+    # Finds or creates the status record, and also kicks off the CreateWorkPdfJob in bg if status
+    # requires it.
+    #
+    # Record created will have checksum in it, and old records with wrong checksum (cause members
+    # have changed) will not be accepted -- will be deleted and re-created (in a concurrency-safe way).
+    #
+    # "Stale" records will also be deleted and recreated -- still in_progress that is way too old,
+    # success but no actual derivative found, error that is old. New record created, bg job
+    # kicked off for 'stale' records.
+    #
+    # retry_count is just for internal use to prevent infinite recursion in presence of a bug
+    # that would otherwise result in it.
+    def find_or_create_record(type, retry_count: 0)
+      if retry_count > 10
+        # what the heck is going on? Let's keep us from infinitely doing it and taking up all the CPU
+        raise StandardError.new("Tried to find/create an OnDemandDerivative record too many times for work #{id}")
+      end
+
+      record = OnDemandDerivative.where(work_id: work_id, deriv_type: type).first
+      if record.nil?
+        record = OnDemandDerivative.create(work_id: work_id, deriv_type: type, status: :in_progress, checksum: checksum)
+        job_class_for_type[type.to_sym].perform_later(record)
+      end
+
+      if ( record.in_progress? && (Time.now - record.updated_at) > OnDemandDerivative::STALE_IN_PROGRESS_SECONDS ) ||
+         ( record.error? && (Time.now - record.updated_at) > OnDemandDerivative::ERROR_RETRY_SECONDS ) ||
+         ( record.success? && (record.checksum != checksum || !record.file_exists? ))
+            # It's stale, delete it!
+            record.delete
+            # and try again
+            record = find_or_create_record(type, retry_count: retry_count + 1)
+      end
+
+      return record
+    rescue ActiveRecord::RecordNotUnique
+      # race condition, someone else created it, no biggy
+      return find_or_create_record(type, retry_count: retry_count + 1)
+    end
+
+    # Will go to solr to fetch. Always creates presenter for non-logged-in-user.
+    def work_presenter
+      @work_presenter||= CurationConcerns::GenericWorkShowPresenter.new(
+        SolrDocument.find(work_id),
+        Ability.new(nil)
+      )
+    end
+
+    # We gotta get all it's representatives, and compile all their checksums, to make
+    # sure checksum changes if members have changed at all. This will be a couple
+    # Solr fetches.
+    def checksum
+      @checksum ||= begin
+        representative_checksums = work_presenter.public_member_presenters.collect(&:representative_checksum).compact
+        Digest::MD5.hexdigest(representative_checksums.join("-"))
+      end
+    end
+
+  end
+
 
 
   class S3File
