@@ -95,6 +95,13 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     end
 
     def initialize_combined_fields
+      # This overrides the superclass,
+      # https://github.com/samvera/sufia/blob/v7.4.0/app/forms/sufia/forms/batch_edit_form.rb
+      # The goal here is to allow single-value fields to be edited via the form.
+      # To determine whether a field expects a single value or an array, we check the model's properties.
+      # If the field accepts an array, we process it as in the superclass. If it accepts a single value,
+      # then we process it slightly differently, storing the values in plain_attributes
+      # instead of combined_attributes.
 
       plain_attributes = {}
       combined_attributes = {}
