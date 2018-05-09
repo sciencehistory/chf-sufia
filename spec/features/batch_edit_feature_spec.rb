@@ -2,23 +2,22 @@ require 'rails_helper'
 
 RSpec.feature "Batch Edit form", js: true do
   let(:user) { FactoryGirl.create(:depositor) }
-
   let!(:w1) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w2) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w3) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w4) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w5) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
 
-  before do
+  scenario "Batch edit division, file creator and rights holder" do
+    ids = nil
     login_as(user, :scope => :user)
-    Capybara.page.current_window.resize_to(1600, 1200)
-  end
-
-  scenario "Create six new works, then batch edit three of them." do
+    Capybara.page.current_window.resize_to(1600, 3000)
+    Capybara.default_max_wait_time=10
     w1, w2, w3, w4, w5 = GenericWork.all
     new_test_work('abc', 'xyz')
     my_work = GenericWork.where(title: ["abc"]).first
     aci = my_work.access_control_id
+    ids = GenericWork.all.map { |gw|  gw.id }
 
     # This is a hack to avoid having to create
     # Fedora access control objects asssociated with the works.
@@ -29,10 +28,13 @@ RSpec.feature "Batch Edit form", js: true do
       w.depositor='depositor@example.com'
       w.save
     end
-    ids = GenericWork.all.map { |gw|  gw.id }
-    edit_batch(ids, [1,2,3], 'division', 'Department', 'Center for Oral History')
-    edit_batch(ids, [0,3,5], 'file_creator', 'File creator', 'Tobias, Gregory')
-    edit_batch(ids, [3, 4], 'rights_holder', 'Rights holder', 'Ludwig van Beethoven', false)
+    edit_batch_single_valued(ids, [1,2,3], 'division',      'Department',    'Center for Oral History')
+    edit_batch_single_valued(ids, [0,3,5], 'file_creator',  'File creator',  'Tobias, Gregory')
+    edit_batch_single_valued(ids, [3, 4],  'rights_holder', 'Rights holder', 'Ludwig van Beethoven', false)
+    edit_batch_multi_valued(ids, [3,4,5], 'genre_string',  'Genre',  'Pesticides', 'Pesticides')
+    # Why does this break???
+    #edit_batch_multi_valued(ids, [1,3,5],     'rights',  'Rights', 'http://rightsstatements.org/vocab/InC/1.0/', 'In Copyright')
+
 
   end
 
@@ -48,13 +50,12 @@ RSpec.feature "Batch Edit form", js: true do
       select "Image", from: "generic_work[resource_type][]"
       choose "Your Institution"
       click_button "Save"
-      puts "Saved a work."
   end
 
   # Batch edits a number of Generic Works, whose indices are specified in which_items,
   # so that their "field" value is set to "value". Checks that the modification
   # did take place, and that the same field on other GenericWorks were not affected.
-  def edit_batch(ids, which_items, field, field_label, value, dropdown=true)
+  def edit_batch_single_valued(ids, which_items, field, field_label, value, dropdown=true)
     visit '/dashboard/works'
     #check values beforehand
     values_beforehand = get_properties(field)
@@ -63,15 +64,12 @@ RSpec.feature "Batch Edit form", js: true do
     ids_to_change.each { |id| find_by_id("batch_document_#{id}").click }
     click_button "Edit Selected"
     click_link field_label
-
     if dropdown
       select value, from: "generic_work[#{field}]"
     else
       fill_in "generic_work[#{field}]", with: value
     end
-
     click_button "Save changes"
-
     expect(page).to have_content 'Changes Saved'
     # check that values were changed as expected
     get_properties(field).each do | id, new_value |
@@ -79,6 +77,27 @@ RSpec.feature "Batch Edit form", js: true do
         expect( new_value).to eq(value)
       else
         expect( new_value).to eq(values_beforehand[id])
+      end
+    end
+  end
+
+  def edit_batch_multi_valued(ids, which_items, field, field_label, value, value_label)
+    visit '/dashboard/works'
+    Capybara.page.current_window.resize_to(1600, 3000)
+    values_beforehand = get_properties(field)
+    ids_to_change=ids.values_at(*which_items)
+    ids_to_change.each { |id| find_by_id("batch_document_#{id}").click }
+    click_button "Edit Selected"
+    expect(page).to have_content 'Batch Edit Descriptions'
+    click_link field_label
+    select value_label, :from => field_label
+    click_button "Save changes"
+    expect(page).to have_content 'Changes Saved'
+    get_properties(field).each do | id, new_value |
+      if ids_to_change.include? id
+        expect(new_value).to eq([value])
+      else
+        expect(new_value).to eq(values_beforehand[id])
       end
     end
   end
