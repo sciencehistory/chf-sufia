@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "Batch Edit form", js: true do
   let(:user) { FactoryGirl.create(:depositor) }
+
   let!(:w1) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w2) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w3) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
@@ -15,36 +16,24 @@ RSpec.feature "Batch Edit form", js: true do
 
   scenario "Create six new works, then batch edit three of them." do
     w1, w2, w3, w4, w5 = GenericWork.all
-    new_test_work('Title 1', 'xyz')
-    my_work = GenericWork.where(title: ["Title 1"]).first
+    new_test_work('abc', 'xyz')
+    my_work = GenericWork.where(title: ["abc"]).first
     aci = my_work.access_control_id
 
-    # Just a quick hack so these works actually
-    # show up on the "My Works" page. Otherwise we
-    # can't batch-edit them.
+    # This is a hack to avoid having to create
+    # Fedora access control objects asssociated with the works.
+    # The goal here is to get these works to show up on the
+    # My Works page, so they can be batch-edited.
     [w1, w2, w3, w4, w5].each do |w|
       w.access_control_id=aci
       w.depositor='depositor@example.com'
       w.save
     end
+    ids = GenericWork.all.map { |gw|  gw.id }
+    edit_batch(ids, [1,2,3], 'division', 'Department', 'Center for Oral History')
+    edit_batch(ids, [0,3,5], 'file_creator', 'File creator', 'Tobias, Gregory')
+    edit_batch(ids, [3, 4], 'rights_holder', 'Rights holder', 'Ludwig van Beethoven', false)
 
-
-    visit '/dashboard/works'
-    find_by_id("batch_document_#{w2.id}").click
-    find_by_id("batch_document_#{w3.id}").click
-    find_by_id("batch_document_#{w4.id}").click
-    click_button "Edit Selected"
-    click_link "Department"
-    select "Center for Oral History", from: "generic_work[division]"
-    click_button "Save changes"
-    expect(page).to have_content 'Changes Saved'
-    w1, w2, w3, w4, w5, w6 = GenericWork.all
-    expect( w1.division).to eq('Library')
-    expect( w2.division).to eq('Center for Oral History')
-    expect( w3.division).to eq('Center for Oral History')
-    expect( w4.division).to eq('Center for Oral History')
-    expect( w5.division).to eq('Library')
-    expect( w6.division).to eq('')
   end
 
   def new_test_work(title, bib_num)
@@ -61,4 +50,41 @@ RSpec.feature "Batch Edit form", js: true do
       click_button "Save"
       puts "Saved a work."
   end
+
+  # Batch edits a number of Generic Works, whose indices are specified in which_items,
+  # so that their "field" value is set to "value". Checks that the modification
+  # did take place, and that the same field on other GenericWorks were not affected.
+  def edit_batch(ids, which_items, field, field_label, value, dropdown=true)
+    visit '/dashboard/works'
+    #check values beforehand
+    values_beforehand = get_properties(field)
+    #make the change
+    ids_to_change=ids.values_at(*which_items)
+    ids_to_change.each { |id| find_by_id("batch_document_#{id}").click }
+    click_button "Edit Selected"
+    click_link field_label
+
+    if dropdown
+      select value, from: "generic_work[#{field}]"
+    else
+      fill_in "generic_work[#{field}]", with: value
+    end
+
+    click_button "Save changes"
+
+    expect(page).to have_content 'Changes Saved'
+    # check that values were changed as expected
+    get_properties(field).each do | id, new_value |
+      if ids_to_change.include? id
+        expect( new_value).to eq(value)
+      else
+        expect( new_value).to eq(values_beforehand[id])
+      end
+    end
+  end
+
+  def get_properties(field)
+    GenericWork.all.map { |gw| [gw.id, gw[field]] }.to_h
+  end
+
 end
