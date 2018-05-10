@@ -26,25 +26,25 @@ module CHF
 
     # filename_base, if provided, is used to make more human-readable
     # 'save as' download file names.
-    def download_options(filename_base: nil)
+    def download_options(filename_base: nil, no_content_disposition: false)
       return [] unless file_set_id
 
       [
         {
           option_key: "small",
-          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_small", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_small", filename_base: filename_base, no_content_disposition: no_content_disposition)
         },
         {
           option_key: "medium",
-          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_medium", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_medium", filename_base: filename_base, no_content_disposition: no_content_disposition)
         },
         {
           option_key: "large",
-          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_large", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_large", filename_base: filename_base, no_content_disposition: no_content_disposition)
         },
         {
           option_key: "full",
-          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_full_size", filename_base: filename_base)
+          url: Rails.application.routes.url_helpers.s3_download_redirect_path(file_set_id, "dl_full_size", filename_base: filename_base, no_content_disposition: no_content_disposition)
         }
       ]
     end
