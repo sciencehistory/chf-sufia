@@ -10,7 +10,7 @@ RSpec.feature "BatchEditForm", js: true do
 
   scenario "batch edit division, file creator, rights holder and genre" do
     login_as(user, :scope => :user)
-    Capybara.default_max_wait_time=600
+    Capybara.default_max_wait_time=60
     w1, w2, w3, w4, w5 = GenericWork.all
     new_test_work('abc', 'xyz')
     my_work = GenericWork.where(title: ["abc"]).first
