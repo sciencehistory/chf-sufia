@@ -99,7 +99,10 @@ module CHF
     # 'save as' download file names, and triggers content-disposition: attachment.
     #
     # These can be slow-ish to create due to creating a signed url.
-    def self.s3_url(file_set_id:, file_checksum:, type_key:, filename_base: nil)
+    #
+    # By default redirects to an S3 URL that will have content-disposition headers forcing
+    # download with a good filename. `include_content_disposition: false` will omit content-disposition headers.
+    def self.s3_url(file_set_id:, file_checksum:, type_key:, filename_base: nil, include_content_disposition: true)
       obj = s3_bucket!.object(s3_path(file_set_id: file_set_id, file_checksum: file_checksum, type_key: type_key))
 
       if filename_base
@@ -112,7 +115,7 @@ module CHF
 
         obj.presigned_url(:get,
                           expires_in: 3.days.to_i, # no hurry
-                          response_content_disposition: ApplicationHelper.encoding_safe_content_disposition(file_name))
+                          response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(file_name) : "")
       else
         obj.public_url
       end
