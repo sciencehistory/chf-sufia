@@ -29,7 +29,8 @@ module CHF
       "#{thumb_url(size: size)} 1x, #{thumb_url(size: size, density_descriptor: '2X')} 2x"
     end
 
-    def download_options(filename_base: nil)
+    # no_content_disposition there for compat with dzi_s3 service, ignored.
+    def download_options(filename_base: nil, no_content_disposition: false)
       []
     end
   end

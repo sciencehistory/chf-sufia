@@ -201,7 +201,7 @@ module CHF
           file_id: work_presenter.representative_file_id,
           checksum: work_presenter.representative_checksum
         )
-        download_options = service.download_options
+        download_options = service.download_options(no_content_disposition: true)
         url = (download_options.find { |h| h[:option_key] == "medium "} || download_options.first).try { |h| h[:url] }
         # make it an absolute url
         if url

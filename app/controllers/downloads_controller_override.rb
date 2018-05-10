@@ -4,6 +4,11 @@ DownloadsController.class_eval do
   # Since creating these URLs is expensive, we generate links to here, then
   # redirect to S3. Also means we can have bookmarkable non-signed non-expiring
   # links on the actual page.
+  #
+  # Even though this is in downloads controller and has downloads in name,
+  # you can add `&no_content_disposition=true` to header to get a redirect
+  # to S3 response that will NOT have content-disposition header forcing download,
+  # for using "download" images in a web page. Used for OAI-PMH feed for DPLA.
   def s3_download_redirect
     unless CHF::Env.lookup("image_server_downloads").to_s == "dzi_s3"
       raise ActionController::RoutingError.new('Not Found')
@@ -27,7 +32,8 @@ DownloadsController.class_eval do
       file_set_id: file_set_id,
       file_checksum: file_checksum,
       type_key: params[:filename_key],
-      filename_base: filename_base
+      filename_base: filename_base,
+      include_content_disposition: !(params["no_content_disposition"] == "true")
     )
 
     redirect_to s3_url, status: 302
