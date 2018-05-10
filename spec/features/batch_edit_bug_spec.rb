@@ -8,13 +8,12 @@ require 'rails_helper'
 # [ "http://rightsstatements.org/vocab/InC/1.0/" ].
 # This appears to be pre-existing bug in Sufia.
 
-you_want_this_test_to_fail = false
-
-# Change the above to true and this test will fail.
 
 RSpec.feature "BatchEditForm", js: true do
   let(:user) { FactoryGirl.create(:depositor) }
-  scenario "demonstrate bug with batch editing empty property array" do
+
+  scenario "bug with batch editing empty property array",
+    :skip => "someday we may want to fix this bug"  do
     login_as(user, :scope => :user)
     Capybara.default_max_wait_time=60
     visit new_curation_concerns_generic_work_path
@@ -40,8 +39,6 @@ RSpec.feature "BatchEditForm", js: true do
     click_button "Save changes"
     expect(page).to have_content 'Changes Saved'
     new_value = GenericWork.find(work_id).rights
-    if you_want_this_test_to_fail
-      expect(new_value).to eq(['http://rightsstatements.org/vocab/InC/1.0/'])
-    end
+    expect(new_value).to eq(['http://rightsstatements.org/vocab/InC/1.0/'])
   end
 end
