@@ -12,9 +12,9 @@ you_want_this_test_to_fail = false
 
 # Change the above to true and this test will fail.
 
-RSpec.feature "Batch Edit form", js: true do
+RSpec.feature "BatchEditForm", js: true do
   let(:user) { FactoryGirl.create(:depositor) }
-  scenario "Demonstrate bug with batch editing empty property array" do
+  scenario "demonstrate bug with batch editing empty property array" do
     login_as(user, :scope => :user)
     Capybara.default_max_wait_time=60
     visit new_curation_concerns_generic_work_path

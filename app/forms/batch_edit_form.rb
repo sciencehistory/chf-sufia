@@ -90,19 +90,22 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       clean_params
     end
 
-    def accepts_multiple_values(prop)
+    # If this property of the model is an array (which is the default) then return true.
+    # If it accepts only one value, return false.
+    # Note that this value is stored as a boolean in the properties of the model class.
+    def accepts_multiple_values?(prop)
       model_class.properties[prop.to_s].instance_values['opts'][:multiple]
     end
 
-    def initialize_combined_fields
-      # This overrides the superclass,
-      # https://github.com/samvera/sufia/blob/v7.4.0/app/forms/sufia/forms/batch_edit_form.rb
-      # The goal here is to allow single-value fields to be edited via the form.
-      # To determine whether a field expects a single value or an array, we check the model's properties.
-      # If the field accepts an array, we process it as in the superclass. If it accepts a single value,
-      # then we process it slightly differently, storing the values in plain_attributes
-      # instead of combined_attributes.
 
+    # This overrides the superclass,
+    # https://github.com/samvera/sufia/blob/v7.4.0/app/forms/sufia/forms/batch_edit_form.rb
+    # The goal here is to allow single-value fields to be edited via the form.
+    # To determine whether a field expects a single value or an array, we check the model's properties.
+    # If the field accepts an array, we process it as in the superclass. If it accepts a single value,
+    # then we process it slightly differently, storing the values in plain_attributes
+    # instead of combined_attributes.
+    def initialize_combined_fields
       plain_attributes = {}
       combined_attributes = {}
       permissions = []
@@ -110,7 +113,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       batch_document_ids.each do |doc_id|
         work = model_class.find(doc_id)
         terms.each do |key|
-          if accepts_multiple_values(key)
+          if accepts_multiple_values?(key)
             combined_attributes[key] ||= []
             combined_attributes[key] = (combined_attributes[key] +  work[key].to_a).uniq
           else
@@ -122,7 +125,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
       end
 
       terms.each do |key|
-        if accepts_multiple_values(key)
+        if accepts_multiple_values?(key)
           # if value is empty, we create an one element array to loop over for output
           model[key] = combined_attributes[key].empty? ? [''] : combined_attributes[key]
         else

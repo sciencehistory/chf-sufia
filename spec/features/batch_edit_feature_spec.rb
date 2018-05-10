@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "Batch Edit form", js: true do
+RSpec.feature "BatchEditForm", js: true do
   let(:user) { FactoryGirl.create(:depositor) }
   let!(:w1) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w2) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
@@ -8,7 +8,7 @@ RSpec.feature "Batch Edit form", js: true do
   let!(:w4) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w5) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
 
-  scenario "Batch edit division, file creator, rights holder and genre" do
+  scenario "batch edit division, file creator, rights holder and genre" do
     login_as(user, :scope => :user)
     Capybara.default_max_wait_time=60
     w1, w2, w3, w4, w5 = GenericWork.all
