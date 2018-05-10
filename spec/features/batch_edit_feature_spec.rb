@@ -8,11 +8,9 @@ RSpec.feature "Batch Edit form", js: true do
   let!(:w4) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
   let!(:w5) { FactoryGirl.create(:generic_work, :with_complete_metadata) }
 
-  scenario "Batch edit division, file creator and rights holder" do
-    ids = nil
+  scenario "Batch edit division, file creator, rights holder and genre" do
     login_as(user, :scope => :user)
-    Capybara.page.current_window.resize_to(1600, 3000)
-    Capybara.default_max_wait_time=10
+    Capybara.default_max_wait_time=60
     w1, w2, w3, w4, w5 = GenericWork.all
     new_test_work('abc', 'xyz')
     my_work = GenericWork.where(title: ["abc"]).first
@@ -28,14 +26,10 @@ RSpec.feature "Batch Edit form", js: true do
       w.depositor='depositor@example.com'
       w.save
     end
-    edit_batch_single_valued(ids, [1,2,3], 'division',      'Department',    'Center for Oral History')
-    edit_batch_single_valued(ids, [0,3,5], 'file_creator',  'File creator',  'Tobias, Gregory')
-    edit_batch_single_valued(ids, [3, 4],  'rights_holder', 'Rights holder', 'Ludwig van Beethoven', false)
-    edit_batch_multi_valued(ids, [3,4,5], 'genre_string',  'Genre',  'Pesticides', 'Pesticides')
-    # Why does this break???
-    #edit_batch_multi_valued(ids, [1,3,5],     'rights',  'Rights', 'http://rightsstatements.org/vocab/InC/1.0/', 'In Copyright')
-
-
+    edit_batch_single_valued(ids, [1,2,3], 'division',      'Department',     'Center for Oral History')
+    edit_batch_single_valued(ids, [0,3,5], 'file_creator',  'File creator',   'Tobias, Gregory')
+    edit_batch_single_valued(ids, [3,4],   'rights_holder', 'Rights holder',  'Ludwig van Beethoven', false)
+    edit_batch_multi_valued(ids,  [3,4,5], 'genre_string',  'Genre',          'Pesticides',    'Pesticides')
   end
 
   def new_test_work(title, bib_num)
