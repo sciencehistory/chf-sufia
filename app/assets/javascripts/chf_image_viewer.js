@@ -372,7 +372,6 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
 
   var parentDownloadElements = modalElement.querySelector('.parent-download-options-inline');
   if (parentDownloadElements) {
-    debugger;
     this.parentDownloadInlineHtml = parentDownloadElements.innerHTML;
   }
 
@@ -426,7 +425,6 @@ ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
     htmlElements.push('<li tabindex="-1" role="menuItem">' + _self.rightsInlineHtml + '</li>');
     htmlElements.push('<li role="separator" class="divider"></li>');
   }
-  debugger;
   if (_self.parentDownloadInlineHtml) {
     htmlElements.push(_self.parentDownloadInlineHtml);
     htmlElements.push('<li role="separator" class="divider"></li>');
