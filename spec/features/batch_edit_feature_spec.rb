@@ -10,7 +10,6 @@ RSpec.feature "BatchEditForm", js: true do
 
   scenario "batch edit division, file creator, rights holder and genre" do
     login_as(user, :scope => :user)
-    Capybara.default_max_wait_time=60
     w1, w2, w3, w4, w5 = GenericWork.all
     new_test_work('abc', 'xyz')
     my_work = GenericWork.where(title: ["abc"]).first
@@ -64,7 +63,9 @@ RSpec.feature "BatchEditForm", js: true do
       fill_in "generic_work[#{field}]", with: value
     end
     click_button "Save changes"
-    expect(page).to have_content 'Changes Saved'
+    using_wait_time 30 do
+      expect(page).to have_content 'Changes Saved'
+    end
     # check that values were changed as expected
     get_properties(field).each do | id, new_value |
       if ids_to_change.include? id
@@ -77,7 +78,6 @@ RSpec.feature "BatchEditForm", js: true do
 
   def edit_batch_multi_valued(ids, which_items, field, field_label, value, value_label)
     visit '/dashboard/works'
-    Capybara.page.current_window.resize_to(1600, 3000)
     values_beforehand = get_properties(field)
     ids_to_change=ids.values_at(*which_items)
     ids_to_change.each { |id| find_by_id("batch_document_#{id}").click }
