@@ -1,6 +1,6 @@
 # README
 
-[![Build Status](https://travis-ci.org/chemheritage/chf-sufia.svg?branch=master)](https://travis-ci.org/chemheritage/chf-sufia)
+[![Build Status](https://travis-ci.org/sciencehistory/chf-sufia.svg?branch=master)](https://travis-ci.org/sciencehistory/chf-sufia)
 
 ## Description
 The Sufia-based application powering CHF's digital collections site. CHF's digitical collections team is currently hard at work ingesting content before making the site publicly available!
