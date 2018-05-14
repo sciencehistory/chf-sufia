@@ -46,7 +46,7 @@
                 <%= render_rights_statement(work) %>
               </div>
             <% end %>
-            <% if work.public_member_presenters.present? %>
+            <% if work.public_member_presenters.size >  1 %>
               <div style="display: none" class="parent-download-options-inline">
                 <%= safe_join(whole_work_download_options(work)) %>
               </div>
