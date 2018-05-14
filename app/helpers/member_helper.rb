@@ -11,8 +11,30 @@ module MemberHelper
   def whole_work_download_options(work)
     list_elements = []
     list_elements << content_tag("li", "Download all #{work.public_member_presenters.count} images", class: "dropdown-header")
-    list_elements << dropdown_menuitem(link_to("PDF", "", data: { 'download-deriv-type': "pdf", 'download-whole-work-deriv': work.id}))
-    list_elements << dropdown_menuitem(link_to("ZIP ".html_safe + content_tag("small", "of full-sized JPGs"), "", data: { 'download-deriv-type': "zip", 'download-whole-work-deriv': work.id}))
+
+    pdf_link = link_to("PDF", "",
+      data: {
+        'download-deriv-type': "pdf",
+        'download-whole-work-deriv': work.id,
+        'analytics-category': "Work",
+        'analytics-action':  "download_pdf",
+        'analytics-label': work.id
+      }
+    )
+
+    list_elements << dropdown_menuitem( pdf_link )
+
+    zip_link = link_to("ZIP ".html_safe + content_tag("small", "of full-sized JPGs"), "",
+      data: {
+          'download-deriv-type': "zip",
+          'download-whole-work-deriv': work.id,
+          'analytics-category': "Work",
+          'analytics-action':  "download_zip",
+          'analytics-label': work.id
+        }
+      )
+
+    list_elements << dropdown_menuitem( zip_link )
 
     return list_elements
   end
