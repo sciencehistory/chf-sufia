@@ -1,0 +1,41 @@
+<% provide :page_title, "Fixity report" %>
+
+<div class="branded-body-font">
+<h1 class="brand-alt-h1">Fixity report</h1>
+<% if @no_failed_checks %>
+  <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
+  <p>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</p>
+  <p><%= @recent_checksum_count %> files were checked in the past  <%= @how_many_days_back_to_look %> days.</p>
+  <p>All computed checksums match the ones on file.</p>
+<%else %>
+ <h2>Tne following fixity checks recently failed:</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Work</th>
+        <th>File</th>
+        <th>Date of checksum mismatch</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% @failed_checks.each do |c|
+                fs_id = c.file_set_id
+                file_set = FileSet.find(fs_id)
+                work = file_set.in_works.first
+            %>
+            <tr>
+                <td>
+                    <%= link_to work, work, itemprop: "url" %>
+                </td>
+                <td>
+                    <%= link_to file_set.label, file_set, itemprop: "url" %>
+                </td>
+                <td>
+                   <%= c.created_at %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+    </table>
+<% end  %>
+</div>
