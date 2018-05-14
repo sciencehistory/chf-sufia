@@ -196,6 +196,8 @@ module CHF
     define_key :aws_access_key_id
     define_key :aws_secret_access_key
 
+    define_key :aws_region, default: "us-east-1"
+
     define_key :dzi_s3_bucket, default: -> {
       if Rails.env.development?
         "chf-dzi-dev"
@@ -240,6 +242,17 @@ module CHF
       # production just configure it in env please
     }
     define_key :sitemap_s3_region, default: "us-east-1"
+
+    # If nil will use file system
+    define_key :derivatives_cache_bucket, default: -> {
+      if Rails.env.development? || Rails.env.test?
+        nil
+      elsif staging?
+        "scih-derivatives-cache-staging"
+      else
+        "scih-derivatives-cache-production"
+      end
+    }
 
 
 

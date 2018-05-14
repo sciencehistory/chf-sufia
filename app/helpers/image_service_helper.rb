@@ -187,13 +187,25 @@ module ImageServiceHelper
   # Wanted to include the 'index number' for better sortability when
   # downloading multiple pages, but got too hard to actually keep track of/calculate
   # depending on access path.
-  def _download_name_base(work, item_id: nil)
+  #
+  # doesn't actually need to be a helper, let's make it a global module-method so we can use it
+  # everywhere -- helper version below.
+  def self._download_name_base(work, item_id: nil)
     three_words = Array(work.title).first.gsub(/[']/, '').gsub(/([[:space:]]|[[:punct:]])+/, ' ').split.slice(0..2).join('_').downcase[0..25]
 
     base = "#{three_words}_#{work.id}"
     base += "_#{item_id}" if item_id
 
     base
+  end
+
+  def _download_name_base(*args)
+    ImageServiceHelper._download_name_base(*args)
+  end
+
+  def self.download_name(work, item_id: nil, suffix:)
+    suffix = ".#{suffix}" unless suffix.start_with?('.')
+    _download_name_base(work, item_id: item_id) + suffix
   end
 
 

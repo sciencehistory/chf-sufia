@@ -76,6 +76,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'openseadragon'
+gem 'prawn', "~> 2.2" #PDF Maker
+gem "pdf-reader", group: [:test, :development] # at the moment just used in a spec to verify PDF
 
 gem 'honeybadger', '~> 3.1'
 

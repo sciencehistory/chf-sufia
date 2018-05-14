@@ -217,5 +217,9 @@ module Chufia
 
     # Active job should use resque
     config.active_job.queue_adapter = :resque
+
+    def log_error(error)
+      Honeybadger.notify(error)
+    end
   end
 end

@@ -370,6 +370,11 @@ ChfImageViewer.prototype.initModal = function(modalElement) {
     this.rightsInlineHtml = rightsElement.innerHTML;
   }
 
+  var parentDownloadElements = modalElement.querySelector('.parent-download-options-inline');
+  if (parentDownloadElements) {
+    this.parentDownloadInlineHtml = parentDownloadElements.innerHTML;
+  }
+
   var _self = this;
   var imageInfoUrl = modalElement.getAttribute("data-images-info-path");
   // This promise should be used in #show to make sure we don't until this
@@ -418,6 +423,10 @@ ChfImageViewer.prototype.downloadMenuItems = function(thumbData) {
   if (_self.rightsInlineHtml) {
     htmlElements.push('<li class="dropdown-header">Rights</li>');
     htmlElements.push('<li tabindex="-1" role="menuItem">' + _self.rightsInlineHtml + '</li>');
+    htmlElements.push('<li role="separator" class="divider"></li>');
+  }
+  if (_self.parentDownloadInlineHtml) {
+    htmlElements.push(_self.parentDownloadInlineHtml);
     htmlElements.push('<li role="separator" class="divider"></li>');
   }
 

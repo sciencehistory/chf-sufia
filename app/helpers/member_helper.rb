@@ -6,6 +6,17 @@ module MemberHelper
     content_tag("li", content, {tabindex: "-1", role: "menuitem"}.merge(attributes))
   end
 
+
+  # returns array of <li> strings, INCLUDING the <li> header but NOT a <li> separator.
+  def whole_work_download_options(work)
+    list_elements = []
+    list_elements << content_tag("li", "Download all #{work.public_member_presenters.count} images", class: "dropdown-header")
+    list_elements << dropdown_menuitem(link_to("PDF", "", data: { 'download-deriv-type': "pdf", 'download-whole-work-deriv': work.id}))
+    list_elements << dropdown_menuitem(link_to("ZIP ".html_safe + content_tag("small", "of full-sized JPGs"), "", data: { 'download-deriv-type': "zip", 'download-whole-work-deriv': work.id}))
+
+    return list_elements
+  end
+
   # returns a <ul> with <li>s suitable to be used inside a bootstrap
   # dropdown-toggle, representing download options for the member passed in.
   # also includes a rights statement from parent.
@@ -19,13 +30,18 @@ module MemberHelper
   # that way, but performance impact of partial was too much, on work pages
   # that wanted to display many members and call these many times. Not entirely
   # sure why partial so much slower than helper, even in production config.
-  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil)
+  def member_download_menu(member, parent:, labelled_by: nil, filename_base: nil, whole_work_downloads: true)
     list_elements = []
 
     if parent.has_rights_statement?
       list_elements << content_tag("li", "Rights", class: "dropdown-header")
 
       list_elements << dropdown_menuitem(render_rights_statement(parent))
+      list_elements << "<li class='divider'></li>".html_safe
+    end
+
+    if whole_work_downloads && parent && parent.public_member_presenters.present?
+      list_elements.concat whole_work_download_options(parent)
       list_elements << "<li class='divider'></li>".html_safe
     end
 

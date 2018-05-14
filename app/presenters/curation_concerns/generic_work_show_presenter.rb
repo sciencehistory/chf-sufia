@@ -34,6 +34,10 @@ module CurationConcerns
       @parent_work_presenters ||= grouped_presenters(filtered_by: "generic_work").values.flatten
     end
 
+    def public_member_presenters
+      @public_member_presenters ||= member_presenters.find_all { |m| m.solr_document["visibility_ssi"] == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
+    end
+
     # similar to parent_work_presenters, but for collections. Yes, this is all confusing.
     def in_collection_presenters
       @in_collection_presenters ||= grouped_presenters(filtered_by: "collection").values.flatten

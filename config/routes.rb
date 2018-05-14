@@ -21,6 +21,10 @@ Rails.application.routes.draw do
 
   get "force_500", controller: "application", action: "intentional_error"
 
+  # On-demand derivatives
+  get "works/:id/pdf", to: "on_demand_derivatives#pdf", as: :on_demand_pdf
+  get "works/:id/zip", to: "on_demand_derivatives#zip", as: :on_demand_zip
+
   # remove weird zotero and mendeley pages with weird message, so it doesn't get
   # google indexed.
   get "zotero", to: proc { raise ActionController::RoutingError.new('Not Found') }
