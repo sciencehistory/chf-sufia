@@ -62,7 +62,7 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    if whole_work_downloads && parent && parent.public_member_presenters.present?
+    if whole_work_downloads && parent && parent.public_member_presenters.size > 1
       list_elements.concat whole_work_download_options(parent)
       list_elements << "<li class='divider'></li>".html_safe
     end
