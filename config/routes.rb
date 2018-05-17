@@ -1,6 +1,7 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+        mount BrowseEverything::Engine => '/browse'
   default_url_options host: CHF::Env.lookup(:app_hostname)
 
   concern :oai_provider, BlacklightOaiProvider::Routes.new

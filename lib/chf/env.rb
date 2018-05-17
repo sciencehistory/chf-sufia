@@ -254,6 +254,8 @@ module CHF
       end
     }
 
+    define_key :ingest_bucket
+
 
 
     # Only matters on a job server, used in resque-pool.yml
