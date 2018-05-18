@@ -38,6 +38,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'admin/fixity', to: 'fixity#index', as: :fixity
+
+
   mount Blacklight::Engine => '/'
 
     concern :searchable, Blacklight::Routes::Searchable.new
@@ -145,7 +148,6 @@ Rails.application.routes.draw do
 
   get '/focus/:id', to: 'synthetic_category#index', as: :synthetic_category
 
-  get '/fixity', to: 'fixity#index', as: :fixity
 
   Hydra::BatchEdit.add_routes(self)
   # Sufia should be mounted before curation concerns to give priority to its routes

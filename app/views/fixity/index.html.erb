@@ -1,14 +1,21 @@
 <% provide :page_title, "Fixity report" %>
 
-<div class="branded-body-font">
-<h1 class="brand-alt-h1">Fixity report</h1>
+<% content_for :page_header do %>
+  <h1><span class="fa fa-check-square-o"></span> Fixity report</h1>
+<% end %>
+<div>
 <% if @no_failed_checks %>
   <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
-  <p>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</p>
-  <p><%= @recent_checksum_count %> files were checked in the past  <%= @how_many_days_back_to_look %> days.</p>
-  <p>All computed checksums match the ones on file.</p>
+  <ul>
+  <li><%= @unique_checked_files_count %> out of <%= @total_files  %> total files have been checked, . </li>
+  <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
+  <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
+  <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. </li>
+
+  <li>All computed checksums match the ones on file.</li>
+  </ul>
 <%else %>
- <h2>Tne following fixity checks recently failed:</h2>
+ <h2>The following fixity checks recently failed:</h2>
     <table class="table">
     <thead>
       <tr>
