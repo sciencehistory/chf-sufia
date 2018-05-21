@@ -10,7 +10,7 @@ RSpec.describe Admin::FixityController, type: :controller do
     end
     context 'No fixity problems' do
       it 'shows correct data' do
-        byebug
+        #byebug
 
         #get :index
         #expect(response).to be_success
