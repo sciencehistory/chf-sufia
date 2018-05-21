@@ -7,13 +7,12 @@
 <% if @no_failed_checks %>
   <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
   <ul>
-  <li><%= @unique_checked_files_count %> unique files have been checked.</li>
-  <li>The total number of files currently in the repository is <%= @total_files  %>.</li>
-  <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
-  <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
-  <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. </li>
-
-  <li>All computed checksums match the ones on file.</li>
+    <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
+    <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
+    <li><%= @unique_checked_files_count %> unique files have been checked.</li>
+    <li>The total number of files currently in the repository is <%= @total_files  %>.</li>
+    <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. </li>
+    <li>All computed checksums match the ones on file.</li>
   </ul>
 <%else %>
  <h2>The following fixity checks recently failed:</h2>
