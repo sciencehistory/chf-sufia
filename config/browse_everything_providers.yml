@@ -15,12 +15,12 @@
 #   :client_id: YOUR_GOOGLE_API_CLIENT_ID
 #   :client_secret: YOUR_GOOGLE_API_CLIENT_SECRET
 
-s3:
-  bucket: "<%= CHF::Env.lookup!(:ingest_bucket) %>"
-  response_type: signed_url # set to :public_url for public urls or :s3_uri for an s3://BUCKET/KEY uri
-  app_key: "<%= CHF::Env.lookup!(:aws_access_key_id) %>"       # :app_key, :app_secret, and :region can be specified
-  app_secret: "<%= CHF::Env.lookup!(:aws_secret_access_key) %>" # explicitly here, or left out to use system-configured
-  region: "<%= CHF::Env.lookup!(:aws_region) %>"    # defaults.
+scihist_s3:
+  :bucket: "<%= CHF::Env.lookup(:ingest_bucket) %>"
+  :response_type: :signed_url # set to :public_url for public urls or :s3_uri for an s3://BUCKET/KEY uri
+  :app_key: "<%= CHF::Env.lookup(:aws_access_key_id) %>"       # :app_key, :app_secret, and :region can be specified
+  :app_secret: "<%= CHF::Env.lookup(:aws_secret_access_key) %>" # explicitly here, or left out to use system-configured
+  :region: "<%= CHF::Env.lookup(:aws_region) %>"    # defaults.
 
 
 # s3:
