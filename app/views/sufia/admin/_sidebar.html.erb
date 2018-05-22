@@ -32,12 +32,8 @@
       </li>
     </ul>
   </li>
-  <%
-    # TODO: Figure out what namespace this is in.
-    admin_fixity_index_path = '/admin/fixity'
-  %>
-  <li class="<%= 'active' if current_page? admin_fixity_index_path %>">
-    <%= link_to admin_fixity_index_path do %>
+  <li class="<%= 'active' if current_page? main_app.admin_fixity_index_path %>">
+    <%= link_to main_app.admin_fixity_index_path do %>
       <span class="fa fa-check-square-o"></span> <%= t('Fixity checks') %>
     <% end %>
   </li>
