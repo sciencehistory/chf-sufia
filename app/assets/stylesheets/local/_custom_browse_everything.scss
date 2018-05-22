@@ -1,0 +1,20 @@
+// We're trying to override some browse-everything and sufia styles to make the b-e modal
+// take up more of the screen.
+
+#browse-everything {
+  top: 0;
+  margin: 0;
+  left: 0;
+  width: initial;
+
+  .modal-dialog {
+    // browse-everything scss don't have a modifier, but we want large.
+    @extend .modal-lg;
+  }
+  .ev-files {
+    // was 50vh, we want to take up most of the screen instead, tricky when it depends on so many other
+    // things, this does us pretty okay. 60px is some margin, 7em is estimate of how much the intenrnal
+    // header and footer take up.
+    height: calc(90vh - 7em - 60px)
+  }
+}
