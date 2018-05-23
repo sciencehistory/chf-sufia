@@ -1,12 +1,13 @@
 // This weird absolute positioning calculated body margin comes from sufia, not sure why it's needed,
 // but I couldn't avoid bottom white space under footer without it.
-$footer-height: 333px;
+$footer-height: 400px;
 $footer-height-xs: 660px;
 $footer-top-margin: 0;
 
 body {
   margin-bottom: $footer-height + $footer-top-margin;
 }
+
 #footer {
   display: block;
   background-color: $brand-inverse;
@@ -95,7 +96,17 @@ body {
       }
     }
   }
+
+  .footerprivacycopyright {
+    color: $brand-bright-green;
+    font-size: 12px;
+    a, a:link, a:visited, a:hover, a:active {
+      color: $brand-bright-green;
+      text-decoration: none;
+    }
+  }
 }
+
 @media (max-width: $screen-sm-max) {
   body {
     margin-bottom: $footer-height-xs + $footer-top-margin;
