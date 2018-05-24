@@ -254,7 +254,7 @@ module CHF
       end
     }
 
-    define_key :ingest_bucket
+    define_key :upload_bucket
 
 
 
