@@ -1,8 +1,12 @@
 <nav class="navbar navbar-default navbar-fixed-bottom accept_cookies_banner_nav">
     <!-- TODO: Still doesn't display properly at all screen sizes. -->
     <div id="accept_cookies_banner_container" class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 i-accept-copy">
+        <div class="row"
+            role="dialog"
+            aria-live="polite"
+            aria-label="accept_cookies"
+            aria-describedby="accept_cookies_copy" >
+            <div class="col-md-10 i-accept-copy" id="accept_cookies_copy">
                 This website uses cookies to perform analytics,
                 improve functionality, and enhance user experience.
                 You may set your browser to
@@ -12,7 +16,11 @@
                 <a href="https://www.sciencehistory.org/site-terms">privacy policy</a>.
             </div>
             <div class="col-md-2 i-accept-div text-center">
-                <a href="#" class="i-accept-link">I Accept</a>
+                <a href="#"
+                    class="i-accept-link"
+                    aria-label="dismiss cookie message"
+                    role="button"
+                    tabindex="0">I Accept</a>
             </div>
         </div>
     </div>
