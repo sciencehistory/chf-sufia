@@ -6,6 +6,8 @@
 #
 # See overview docs at coordinating class, local app/actors/sufia/create_with_files_actor.rb.
 class AttachRemoteFileJob < ActiveJob::Base
+  queue_as :jobs_server
+
   attr_reader :file_info
   def perform(work, file_info, user)
     url = file_info[:url]
