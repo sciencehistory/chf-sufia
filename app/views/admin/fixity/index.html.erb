@@ -1,48 +1,50 @@
 <% provide :page_title, "Fixity report" %>
-
 <% content_for :page_header do %>
   <h1><span class="fa fa-check-square-o"></span> Fixity report</h1>
 <% end %>
 <div>
-<% if @no_failed_checks %>
-  <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
-  <ul>
-    <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
-    <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
-    <li>The total number of files currently in the repository is <%= @total_files  %>.</li>
-    <li>There are fixity checks on record for a total of <%= @unique_checked_files_count %> unique files. (This may include checks for files no longer in the repository).</li>
-    <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. (This may include checks for files no longer in the repository).</li>
-    <li>All computed checksums match the ones on file.</li>
-  </ul>
-<%else %>
- <h2>The following fixity checks recently failed:</h2>
-    <table class="table">
-    <thead>
-      <tr>
-        <th>Work</th>
-        <th>File</th>
-        <th>Date of checksum mismatch</th>
-      </tr>
-    </thead>
-    <tbody>
-        <% @failed_checks.each do |c|
-                fs_id = c.file_set_id
-                file_set = FileSet.find(fs_id)
-                work = file_set.in_works.first
-            %>
-            <tr>
-                <td>
-                    <%= link_to work, work, itemprop: "url" %>
-                </td>
-                <td>
-                    <%= link_to file_set.label, file_set, itemprop: "url" %>
-                </td>
-                <td>
-                   <%= c.created_at %>
-                </td>
-            </tr>
+    <% if @no_failed_checks %>
+        <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
+    <%else %>
+        <h2>The following fixity checks recently failed:</h2>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>Work</th>
+            <th>File</th>
+            <th>Date of checksum mismatch</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% @failed_checks.each do |c|
+                    fs_id = c.file_set_id
+                    file_set = FileSet.find(fs_id)
+                    work = file_set.in_works.first
+                %>
+                <tr>
+                    <td>
+                        <%= link_to work, work, itemprop: "url" %>
+                    </td>
+                    <td>
+                        <%= link_to file_set.label, file_set, itemprop: "url" %>
+                    </td>
+                    <td>
+                       <%= c.created_at %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+        </table>
+        <h3>Other statistics:</h3>
+    <% end  %>
+      <ul>
+        <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
+        <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
+        <li>The total number of files currently in the repository is <%= @total_files  %>.</li>
+        <li>There are fixity checks on record for a total of <%= @unique_checked_files_count %> unique files. (This may include checks for files no longer in the repository).</li>
+        <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. (This may include checks for files no longer in the repository).</li>
+        <% if @no_failed_checks %>
+            <li>All computed checksums match the ones on file.</li>
         <% end %>
-    </tbody>
-    </table>
-<% end  %>
+      </ul>
 </div>
