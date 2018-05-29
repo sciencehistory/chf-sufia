@@ -144,23 +144,24 @@ nav.accept_cookies_banner_nav {
     background-color: white;
     div.i-accept-copy {
       padding-top: 1px;
-      color: rgb(131, 131, 145);
+      color: /* rgb(131, 131, 145); */ $text-muted;
       background-color: white;
     }
     div.i-accept-div {
       height: $accept_cookies_banner_container_height;
+      padding-left: 0px;
     }
     a.i-accept-link {
       height: $accept_cookies_banner_container_height;
       width: 100%;
       display: block;
-      padding-top: 10px;
+      padding-top: 12px;
       font-size: .9em;
       font-weight: 700;
-      border-style: solid;
+      border: 0px;
       white-space: nowrap;
       color: white;
-      background-color: rgb(75, 129, 232);
+      background-color: $brand-medium-blue;
       border-color: transparent;
       text-decoration: none;
     }
