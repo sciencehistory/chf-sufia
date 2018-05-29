@@ -127,13 +127,6 @@ body {
    so it could live in its own scss file.
 */
 
-/* TODO:
-   * use proper color variables instead of hard-coding RGB values.
-   * nudge padding, etc. so that everything is properly centered.
-   * make sure everything looks good at all screen widths
-   * screen-reader accessiblility. (aria-labels, etc.)
-*/
-
 $accept_cookies_banner_container_height: 45px;
 nav.accept_cookies_banner_nav {
   border: 0px;
@@ -144,7 +137,7 @@ nav.accept_cookies_banner_nav {
     background-color: white;
     div.i-accept-copy {
       padding-top: 1px;
-      color: /* rgb(131, 131, 145); */ $text-muted;
+      color: $text-muted;
       background-color: white;
     }
     div.i-accept-div {
@@ -152,18 +145,17 @@ nav.accept_cookies_banner_nav {
       padding-left: 0px;
     }
     a.i-accept-link {
+      display: block;
       height: $accept_cookies_banner_container_height;
       width: 100%;
-      display: block;
-      padding-top: 12px;
-      font-size: .9em;
-      font-weight: 700;
       border: 0px;
+      padding-top: 12px;
       white-space: nowrap;
       color: white;
       background-color: $brand-medium-blue;
-      border-color: transparent;
       text-decoration: none;
+      font-size: .9em;
+      font-weight: 700;
     }
   }
 }
