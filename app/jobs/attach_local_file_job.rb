@@ -47,7 +47,7 @@ class AttachLocalFileJob < ActiveJob::Base
     log = CurationConcerns::Operation.create!(user: actor.user,
                                               operation_type: "Attach File")
 
-    ImportUrlJob.perform_now(actor.file_set, log)
+    ImportUrlJob.perform_now(actor.file_set, nil, log)
   end
 
 

@@ -39,6 +39,8 @@ class ImportUrlJob < ActiveJob::Base
   # @param [String] file_name
   # @param [CurationConcerns::Operation] log to send messages
   def perform(file_set, file_name, log)
+    file_name ||= file_set.import_url && File.basename(URI.parse(file_set.import_url).path)
+
     log.performing!
     user = User.find_by_user_key(file_set.depositor)
     File.open(File.join(Dir.tmpdir, CarrierWave::SanitizedFile.new(file_name).filename), 'wb') do |f|
