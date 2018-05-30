@@ -19,14 +19,16 @@ module Sufia
       self.uploaded_file_ids = attributes.delete(:uploaded_files)
       self.remote_files = attributes.delete(:remote_files)
 
-      validate_local_files && next_actor.create(attributes) && attach_local_files && attach_remote_files
+      # Not sure why we are validating local files but not remote files, that's what the
+      # stack was doing before we refactored too, we think.
+      validate_local_files && next_actor.create(attributes) && trigger_attach_files
     end
 
     def update(attributes)
       self.uploaded_file_ids = attributes.delete(:uploaded_files)
       self.remote_files = attributes.delete(:remote_files)
 
-      validate_local_files && next_actor.update(attributes) && attach_local_files && attach_remote_files
+      validate_local_files && next_actor.update(attributes) && trigger_attach_files
     end
 
     protected
@@ -48,30 +50,14 @@ module Sufia
         true
       end
 
-      # @return [TrueClass]
-      def attach_local_files
-        uploaded_files.each do |uploaded_file|
-          AttachLocalFileJob.perform_later(curation_concern, uploaded_file, user)
-        end
-        true
-      end
-
-      # Taken from CreateWithRemoteFilesActor#attach_files, but some logic moved into
-      # our custom per-file job.
-      def attach_remote_files
-        remote_files.each do |file_info|
-          next if file_info.blank? || file_info[:url].blank?
-          AttachRemoteFileJob.perform_later(curation_concern, file_info, user)
-        end
-        true
-      end
-
-
-
       # Fetch uploaded_files from the database
       def uploaded_files
         return [] if uploaded_file_ids.empty?
         @uploaded_files ||= UploadedFile.find(uploaded_file_ids)
+      end
+
+      def trigger_attach_files
+        AttachFileSetsJob.perform_later(curation_concern, uploaded_files: uploaded_files, remote_files: remote_files, user: user)
       end
   end
 end

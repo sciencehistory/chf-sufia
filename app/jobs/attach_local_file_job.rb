@@ -1,5 +1,7 @@
-# Converts an UploadedFile into a FileSet and attaches it to works.
-# Modified from sufia AttachFilesToWorkJob, to be a single file at a time.
+# Takes a file set, and an UploadedFile, and attaches the bytestream to the fileset.
+# Modified from sufia AttachFilesToWorkJob, to be a single file at a time, but with all
+# the fedora objects created in our custom attach_file_sets_job (which then calls this one),
+# cause attaching file sets to a work can't be done concurrently.
 #
 # https://github.com/samvera/sufia/blob/v7.4.0/app/jobs/attach_files_to_work_job.rb
 #
@@ -7,16 +9,10 @@
 class AttachLocalFileJob < ActiveJob::Base
   queue_as :ingest
 
-
-  # @param [ActiveFedora::Base] the work class
-  # @param [Array<UploadedFile>] an array of files to attach
-  def perform(work, uploaded_file)
-    file_set = FileSet.new
-    user = User.find_by_user_key(work.depositor)
+  # @param [ActiveFedora::Base] the file_set class to attach bytestream too
+  # @param [Array<UploadedFile>] an array of info on bytestreams from local files to attach
+  def perform(file_set, uploaded_file, user)
     actor = CurationConcerns::Actors::FileSetActor.new(file_set, user)
-    actor.create_metadata(work, visibility: work.visibility) do |file|
-      file.permissions_attributes = work.permissions.map(&:to_hash)
-    end
 
     attach_content(actor, uploaded_file.file)
     uploaded_file.update(file_set_uri: file_set.uri)
