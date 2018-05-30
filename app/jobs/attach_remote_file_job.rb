@@ -8,7 +8,9 @@
 #
 # See overview docs at coordinating class, local app/actors/sufia/create_with_files_actor.rb.
 class AttachRemoteFileJob < ActiveJob::Base
-  queue_as :jobs_server
+  # may need to be running on exact same jobs server as further jobs in the stack, like
+  # curation_concerns-1.7.8/app/jobs/ingest_file_job.rb:16 :(
+  queue_as :ingest
 
   attr_reader :file_info
   def perform(file_set, file_info, user)
