@@ -43,7 +43,8 @@ class ImportUrlJob < ActiveJob::Base
 
     log.performing!
     user = User.find_by_user_key(file_set.depositor)
-    File.open(File.join(Dir.tmpdir, CarrierWave::SanitizedFile.new(file_name).filename), 'wb') do |f|
+
+    File.open(standardized_tmp_file_name(file_set, CarrierWave::SanitizedFile.new(file_name).filename), 'wb') do |f|
       importer = UrlImporter.new(file_set.import_url, f)
       importer.copy_remote_file
 
@@ -70,6 +71,24 @@ class ImportUrlJob < ActiveJob::Base
   end
 
   protected
+
+    # Try to use the same local file as the stack does for it's temporary working files, so:
+    # 1) We can clean it up in our CreateDerivatives override, just as we do for default stack temp files, and
+    # 2) Other jobs looking for a local cached working copy can find it again, and not have to dl it again,
+    #    if it's already been fetched and they're running on the same server.
+    #
+    # Yes, this requires using private API of CurationConcerns::WorkingDirectory, so it goes.
+    #
+    # cf:
+    #  * https://github.com/samvera/curation_concerns/blob/v1.7.8/app/services/curation_concerns/working_directory.rb#L11
+    #  * https://github.com/samvera/curation_concerns/blob/v1.7.8/app/jobs/characterize_job.rb#L10
+    def standardized_tmp_file_name(file_set, file_name)
+      CurationConcerns::WorkingDirectory.send(:full_filename, file_set.id, file_name).tap do |path|
+        # and make it's parents so we can open a file in it later.
+        FileUtils.mkdir_p(File.dirname(path))
+      end
+    end
+
 
     def on_error(log, file_set, user)
       CurationConcerns.config.callback.run(:after_import_url_failure, file_set, user)

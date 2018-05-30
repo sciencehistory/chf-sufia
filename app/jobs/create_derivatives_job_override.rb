@@ -32,17 +32,22 @@ module CreateDerivativesJobOverride
       # Doesn't use filepath, it's gonna fetch from fedora, and clean up after itself
       CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call
     elsif create_derivatives_mode == "legacy"
-      begin
-        super
-      ensure
-        # Very hacky way to TRY to clean up temporary working files, which the stack does not.
-        # May be incomplete or even accidentally clean up something that someone else
-        # still wants, not planning on using in production.
-        filename = Hydra::PCDM::File.find(file_id).try(:original_name)
-        if filename
-          working_copy_path = CurationConcerns::WorkingDirectory.send(:full_filename, file_id, filename)
-          FileUtils.rm_f(working_copy_path) if working_copy_path && working_copy_path.start_with?(CurationConcerns.config.working_path)
-        end
+      super
+    end
+  ensure
+    # Very hacky way to TRY to clean up temporary working files, which the stack does not.
+    # May not get everything, we hope (and it seems?) not to get things that might still be in use
+    # after this -- after derivatives, no other jobs want it. We hope.
+    #
+    # Different parts of the stack (or maybe just our local customizatons) seem to sometimems make working
+    # copies on file_set.id, sometimes on file_set.original_file.id. :(
+    filename = Hydra::PCDM::File.find(file_id).try(:original_name)
+    if filename
+      [
+        CurationConcerns::WorkingDirectory.send(:full_filename, file_id, filename),
+        CurationConcerns::WorkingDirectory.send(:full_filename, file_set.id, filename)
+      ].each do |working_copy_path|
+        FileUtils.rm_f(working_copy_path) if working_copy_path && working_copy_path.start_with?(CurationConcerns.config.working_path)
       end
     end
   end
