@@ -3,8 +3,9 @@
 # This creates confusion when attempting to ensure that all current files have had their fixity
 # checked recently.
 #
-# This job loops through all fixity records and verified that they are associated with a fileset that we
-# still have on hand. If it turns out they are not, we delete the "orphaned" fixity check record.
+# What this job does:
+# Loop through all fixity records and verify that they are associated with a fileset that we
+# still have on hand. If it turns out they are not, delete the "orphaned" fixity check record.
 
 namespace :chf do
   desc "run fixity checks with logs and notification on failure"
@@ -36,7 +37,6 @@ end
 def items_missing_in_solr(list_of_file_set_ids)
   ids_string = list_of_file_set_ids.join(",")
   response = @conn.get('get', params: {:ids => ids_string  , :fl => 'id' })
-  puts response
   if list_of_file_set_ids.count == response['response']['docs'].count
     []
   else
