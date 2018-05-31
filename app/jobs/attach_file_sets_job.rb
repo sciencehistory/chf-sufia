@@ -17,6 +17,8 @@
 
 
 class AttachFileSetsJob < ActiveJob::Base
+  include CurationConcerns::Lockable
+
   attr_reader :work, :uploaded_files, :remote_files, :user
 
   def perform(work, uploaded_files:, remote_files:, user:)
@@ -30,34 +32,92 @@ class AttachFileSetsJob < ActiveJob::Base
 
   # @return [TrueClass]
   def attach_local_files
+    new_file_sets = []
+
     uploaded_files.each do |uploaded_file|
-      file_set = create_and_attach_file_set
+      file_set = create_file_set
+
+      new_file_sets << file_set
+
       AttachLocalFileJob.perform_later(file_set, uploaded_file, user)
     end
+
+    add_new_file_sets_to_work(new_file_sets)
+
     true
   end
 
   # Taken from CreateWithRemoteFilesActor#attach_files, but some logic moved into
   # our custom per-file job.
   def attach_remote_files
+    new_file_sets = []
+
     remote_files.each do |remote_file_info|
       next if remote_file_info.blank? || remote_file_info[:url].blank?
 
-      file_set = create_and_attach_file_set(import_url: remote_file_info[:url], label: remote_file_info[:file_name])
+      file_set = create_file_set(import_url: remote_file_info[:url], label: remote_file_info[:file_name])
+      new_file_sets << file_set
+
       AttachRemoteFileJob.perform_later(file_set, remote_file_info, user)
     end
+
+    add_new_file_sets_to_work(new_file_sets)
+
     true
   end
 
-  def create_and_attach_file_set(import_url: nil, label: nil)
+  def add_new_file_sets_to_work(new_file_sets)
+   return unless new_file_sets.present?
+
+    acquire_lock_for(work.id) do
+      work.reload unless work.new_record?
+
+      new_file_sets.each do |file_set|
+        work.ordered_members << file_set
+      end
+
+      if work.representative_id.blank?
+        work.representative = new_file_sets.first
+      end
+      if work.thumbnail_id.blank?
+        work.thumbnail = new_file_sets.first
+      end
+
+      work.save!
+    end
+  end
+
+  # Creates FileSet with metadata for our purposes, and saves it.
+  # does _not_ attach to work yet. Does _not_ attach bytestream yet.
+  # Trying to make performance for these operations reasonable by splitting
+  # up what operations are done when more reasonably and things aren't done multiple
+  # times that only need to be done once (like saving the work)
+  #
+  # Extracted from FileSetActor#create_metadata as well as things in default stock
+  # actor/jobs.
+  # https://github.com/samvera/curation_concerns/blob/v1.7.8/app/actors/curation_concerns/actors/file_set_actor.rb
+  def create_file_set(import_url: nil, label: nil)
     file_set = FileSet.new(import_url: import_url, label: label)
 
-    actor = CurationConcerns::Actors::FileSetActor.new(file_set, user)
-    actor.create_metadata(work, visibility: work.visibility) do |file|
-      file.permissions_attributes = work.permissions.map(&:to_hash)
+    file_set.apply_depositor_metadata(user)
+    now = CurationConcerns::TimeService.time_in_utc
+    file_set.date_uploaded = now
+    file_set.date_modified = now
+    file_set.creator = [user.user_key]
+
+    visibility_params = {
+      visbility: work.visibility,
+      embargo_release_date: work.embargo_release_date,
+      lease_expiration_date: work.lease_expiration_date
+    }.compact
+    if visibility_params.present?
+      CurationConcerns::Actors::ActorStack.new(file_set, user, [CurationConcerns::Actors::InterpretVisibilityActor]).create(visibility_params)
     end
+
+    file_set.permissions_attributes = work.permissions.map(&:to_hash)
+
+    file_set.save!
 
     return file_set
   end
-
 end
