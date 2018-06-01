@@ -17,16 +17,29 @@
         </thead>
         <tbody>
             <% @failed_checks.each do |c|
-                    fs_id = c.file_set_id
+                show_file_set_and_work = true
+                fs_id = c.file_set_id
+                begin
                     file_set = FileSet.find(fs_id)
                     work = file_set.in_works.first
-                %>
+                rescue  Ldp::Gone
+                    how_file_set_and_work = false
+                end
+            %>
                 <tr>
                     <td>
-                        <%= link_to work, work, itemprop: "url" %>
+                        <% if show_file_set_and_work %>
+                          <%= link_to work, work, itemprop: "url" %>
+                        <% else %>
+                          ( Unavailable )
+                        <% end %>
                     </td>
                     <td>
-                        <%= link_to file_set.label, file_set, itemprop: "url" %>
+                        <% if show_file_set_and_work %>
+                          <%= link_to file_set.label, file_set, itemprop: "url" %>
+                        <% else %>
+                          ( Unavailable )
+                        <% end %>
                     </td>
                     <td>
                        <%= c.created_at %>
