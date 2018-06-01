@@ -21,9 +21,14 @@
                 fs_id = c.file_set_id
                 begin
                     file_set = FileSet.find(fs_id)
-                    work = file_set.in_works.first
+                    if file_set != nil
+                      work = file_set.in_works.first
+                    else
+                      work = nil
+                      show_file_set_and_work = false
+                    end
                 rescue  Ldp::Gone
-                    how_file_set_and_work = false
+                    show_file_set_and_work = false
                 end
             %>
                 <tr>
