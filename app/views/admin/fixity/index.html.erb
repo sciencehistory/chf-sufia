@@ -35,16 +35,16 @@
             <% end %>
         </tbody>
         </table>
-        <h3>Other statistics:</h3>
+        <h3>Other info:</h3>
     <% end  %>
       <ul>
-        <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
-        <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
-        <li>The total number of files currently in the repository is <%= @total_files  %>.</li>
-        <li>There are fixity checks on record for a total of <%= @unique_checked_files_count %> unique files. (This may include checks for files no longer in the repository).</li>
-        <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>. (This may include checks for files no longer in the repository).</li>
         <% if @no_failed_checks %>
             <li>All computed checksums match the ones on file.</li>
         <% end %>
+        <li>Recent checks: <%= @recent_checksum_count %> files have been checked in the past  <%= @how_many_days_back_to_look %> days.</li>
+        <li>The most recent fixity checks ran on <%= @most_recent_check_date.iso8601[0..9] %>.</li>
+        <li>The total number of files currently in the repository is <%= @total_file_sets  %>.</li>
+        <li>There are fixity checks on record for a total of <%= @unique_checked_files_count %> unique files. <em>(May include checks for files no longer in the repository).</em></li>
+        <li>The oldest fixity check on record dates from <%= @oldest_check_date.iso8601[0..9] %>.  <em>(May include checks for files no longer in the repository).</em></li>
       </ul>
 </div>
