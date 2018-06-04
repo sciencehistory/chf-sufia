@@ -11,23 +11,16 @@ namespace :chf do
   desc "run fixity checks with logs and notification on failure"
   task :clean_up_orphaned_fixity_checks => :environment do
     @conn = Blacklight.default_index.connection
-    x = 0
-    n = 100
-    loop do
-      batch = ChecksumAuditLog.select(:file_set_id).distinct[x..x+n-1]
-      if batch == nil
-        break
-      end
+    ChecksumAuditLog.find_in_batches(batch_size: 100 ) do | batch |
       # This next line is cheap (just looks at 100 solr records at a time)
       #and most of the time returns an empty array.
-      missing =  items_missing_in_solr(batch.map{|a| a.file_set_id})
+      missing =  items_missing_in_solr(batch.map(&:file_set_id))
       missing.each do |m|
         # Oh no! One of the logs refers to something that's not in SOLR.
         # If it's not in Fedora, get rid of it.
         delete_unless_exists_in_fedora(m)
       end
-      x = x + n
-    end #loop
+    end # find in batches
   end #task
 end
 
@@ -55,6 +48,8 @@ def item_in_fedora(file_set_id)
 end
 
 def delete_unless_exists_in_fedora(file_set_id)
+  # It's OK to call this on the same file_set_id twice in a row;
+  # it won't fail if the ChecksumAuditLog has already been destroyed.
   if !item_in_fedora(file_set_id)
     ChecksumAuditLog.where(:file_set_id => file_set_id).find_each(&:destroy)
   end
