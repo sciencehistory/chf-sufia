@@ -6,7 +6,11 @@
     <% if @no_failed_checks %>
         <h2><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> No problems to report.</h2>
     <%else %>
-        <h2>The following fixity checks have failed:</h2>
+        <% if @failed_check_count  >  @max_failed_checks_to_show %>
+           <h2> <%= @failed_check_count %> fixity checks have failed. The first <%= @max_failed_checks_to_show %> are below:</h2>
+        <% else %>
+            <h2> The following fixity checks have failed:</h2>
+        <% end %>
         <table class="table">
         <thead>
           <tr>

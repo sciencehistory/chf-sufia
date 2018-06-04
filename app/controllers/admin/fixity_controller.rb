@@ -31,9 +31,17 @@ module Admin
       # all_checked_filset_ids = ChecksumAuditLog.select(:file_set_id).distinct.map{|fs| fs.file_set_id}
       # unchecked_fileset_ids = (all_fileset_ids -  all_checked_filset_ids)
 
+      @failed_check_count = ChecksumAuditLog.where( passed: false).count
+      @max_failed_checks_to_show =  10
 
-      @failed_checks = ChecksumAuditLog.where( passed: false)
-      @no_failed_checks = (@failed_checks.count == 0)
+      if @failed_check_count  > @max_failed_checks_to_show
+        @failed_checks = ChecksumAuditLog.where( passed: false)[0.. @max_failed_checks_to_show - 1]
+      else
+        @failed_checks = ChecksumAuditLog.where( passed: false)
+      end
+
+      @no_failed_checks = (@failed_check_count  == 0)
+
     end
   end
 end
