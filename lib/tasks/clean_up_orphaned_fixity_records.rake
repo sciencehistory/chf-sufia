@@ -19,7 +19,7 @@ namespace :chf do
       # SOLR, check Fedora to ensure that the fileset has really been deleted.
       # If the fileset has been deleted from Fedora, then go ahead and remove the
       # ChecksumAuditLog that refers to it.
-      missing.map!(&:delete_unless_exists_in_fedora)
+      missing.each{|m| delete_unless_exists_in_fedora(m)}
     end # find in batches
   end #task
 end
