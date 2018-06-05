@@ -17,14 +17,12 @@ class AttachRemoteFileJob < ActiveJob::Base
     url = file_info[:url]
     file_name = file_info[:file_name]
 
-    actor = CurationConcerns::Actors::FileSetActor.new(file_set, user)
-
     # not sure what this URI encoding thing is about, but we're copying from CreateWithRemoteFilesActor
     uri = URI.parse(URI.encode(url))
     if uri.scheme == 'file'
       IngestLocalFileJob.perform_now(file_set, URI.decode(uri.path), user)
     else
-      ImportUrlJob.perform_now(file_set, file_name, log(actor.user))
+      ImportUrlJob.perform_now(file_set, file_name, user)
     end
   end
 
