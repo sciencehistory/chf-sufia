@@ -11,15 +11,11 @@ RSpec.describe UsersController do
     end
   end
 
-  byebug
-  # context "a staff user" do
-  #   before { allow(controller.current_ability).to receive(:can?).and_return(true) }
-  #   it "routes to the list of all users" do
-  #     byebug
-
-  #     #get :index
-  #     #byebug
-  #     #expect(response).to be_successful
-  #   end
-  # end
+  context "a staff user" do
+    before { allow(controller.current_ability).to receive(:can?).and_return(true) }
+    it "routes to the list of all users" do
+      get :index
+      expect(response).to be_successful
+    end
+  end
 end
