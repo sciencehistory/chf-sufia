@@ -33,16 +33,25 @@ class AttachFileSetsJob < ActiveJob::Base
   # @return [TrueClass]
   def attach_local_files
     new_file_sets = []
+    ingest_job_args = []
 
     uploaded_files.each do |uploaded_file|
       file_set = create_and_attach_file_set
 
       new_file_sets << file_set
-
-      AttachLocalFileJob.perform_later(file_set, uploaded_file, user)
+      ingest_job_args << [file_set, uploaded_file, user]
     end
 
+    # First add all filesets to work in _one_ work save.
     add_new_file_sets_to_work(new_file_sets)
+
+    # Now launch jobs for them all. We previously tried launching jobs incrementally
+    # before adding filesets to works, but found some jobstream jobs assumed filesets
+    # were already attached to works, so even though this is not as efficient for throughput,
+    # it's safer.
+    ingest_job_args.each do |job_args|
+      AttachLocalFileJob.perform_later(*job_args)
+    end
 
     true
   end
@@ -51,17 +60,27 @@ class AttachFileSetsJob < ActiveJob::Base
   # our custom per-file job.
   def attach_remote_files
     new_file_sets = []
+    ingest_job_args = []
 
     remote_files.each do |remote_file_info|
       next if remote_file_info.blank? || remote_file_info[:url].blank?
 
       file_set = create_file_set(import_url: remote_file_info[:url], label: remote_file_info[:file_name])
-      new_file_sets << file_set
 
-      AttachRemoteFileJob.perform_later(file_set, remote_file_info, user)
+      new_file_sets << file_set
+      ingest_job_args << [file_set, remote_file_info, user]
     end
 
+    # First add all filesets to work in _one_ work save.
     add_new_file_sets_to_work(new_file_sets)
+
+    # Now launch jobs for them all. We previously tried launching jobs incrementally
+    # before adding filesets to works, but found some jobstream jobs assumed filesets
+    # were already attached to works, so even though this is not as efficient for throughput,
+    # it's safer.
+    ingest_job_args.each do |job_args|
+      AttachRemoteFileJob.perform_later(*job_args)
+    end
 
     true
   end
