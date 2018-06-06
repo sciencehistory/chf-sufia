@@ -1,6 +1,6 @@
 // This weird absolute positioning calculated body margin comes from sufia, not sure why it's needed,
 // but I couldn't avoid bottom white space under footer without it.
-$footer-height: 400px;
+$footer-height: 410px;
 $footer-height-xs: 660px;
 $footer-top-margin: 0;
 
@@ -119,6 +119,43 @@ body {
       img {
         width: 100%;
       }
+    }
+  }
+}
+/* NOTE:
+   This is not technically part of the footer,
+   so it could live in its own scss file.
+*/
+
+$accept_cookies_banner_container_height: 45px;
+nav.accept_cookies_banner_nav {
+  border: 0px;
+  display: none;
+  div#accept_cookies_banner_container {
+    margin: 0px;
+    padding-right: 0px;
+    background-color: white;
+    div.i-accept-copy {
+      padding-top: 1px;
+      color: $text-muted;
+      background-color: white;
+    }
+    div.i-accept-div {
+      height: $accept_cookies_banner_container_height;
+      padding-left: 0px;
+    }
+    a.i-accept-link {
+      display: block;
+      height: $accept_cookies_banner_container_height;
+      width: 100%;
+      border: 0px;
+      padding-top: 12px;
+      white-space: nowrap;
+      color: white;
+      background-color: $brand-blue;
+      text-decoration: none;
+      font-size: .9em;
+      font-weight: 700;
     }
   }
 }
