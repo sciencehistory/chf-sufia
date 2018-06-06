@@ -24,3 +24,7 @@ end
 every :tuesday, :at => '4:00 am', roles: [:cron] do
   rake "sitemap:create"
 end
+
+every :wednesday, :at => '3:00 am', roles: [:cron] do
+  rake "chf:clean_up_orphaned_fixity_checks"
+end

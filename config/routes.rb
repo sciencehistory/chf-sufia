@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     constraints ResqueAdmin do
       mount Resque::Server, at: 'queues'
     end
+    # Fixity check
+    resources :fixity, only: [:index]
   end
 
   mount Blacklight::Engine => '/'
