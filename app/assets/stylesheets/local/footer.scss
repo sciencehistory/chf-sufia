@@ -129,6 +129,8 @@ body {
 
 $accept_cookies_banner_container_height: 45px;
 nav.accept_cookies_banner_nav {
+  min-height: 1px;
+  background-color: white;
   border: 0px;
   display: none;
   div#accept_cookies_banner_container {
@@ -146,13 +148,14 @@ nav.accept_cookies_banner_nav {
     }
     a.i-accept-link {
       display: block;
-      height: $accept_cookies_banner_container_height;
+      height: $accept_cookies_banner_container_height + 1;
       width: 100%;
       border: 0px;
       padding-top: 12px;
       white-space: nowrap;
       color: white;
-      background-color: $brand-blue;
+      background-color: $brand-red;
+      &:hover { background-color: $brand-blue; }
       text-decoration: none;
       font-size: .9em;
       font-weight: 700;
