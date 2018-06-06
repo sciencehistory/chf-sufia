@@ -11,7 +11,8 @@ chf.set_up_accept_cookies_banner = function () {
 chf.cookies_already_accepted_by_user = function () {
     return document.cookie.match(/user_accepts_our_cookies=true/) != null;
 }
-chf.user_accepts_our_cookies = function() {
+chf.user_accepts_our_cookies = function(event) {
+    event.preventDefault();
     document.cookie = "user_accepts_our_cookies=true; path=/"
     jQuery('.accept_cookies_banner_nav').fadeOut(1000);
 }
