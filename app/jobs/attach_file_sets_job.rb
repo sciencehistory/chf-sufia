@@ -133,9 +133,20 @@ class AttachFileSetsJob < ActiveJob::Base
       CurationConcerns::Actors::ActorStack.new(file_set, user, [CurationConcerns::Actors::InterpretVisibilityActor]).create(visibility_params)
     end
 
-    file_set.permissions_attributes = work.permissions.map(&:to_hash)
-
+    # We have a weird hard to reproduce bug involving
+    # NoMethodError: undefined method 'update' for nil:NilClass at
+    #     hydra-access-controls-10.4.0/app/models/hydra/access_control.rb:31 :in 'block in permissions_attributes=``
+    #
+    # Can't reproduce on demand, not sure what's going on, but hoping that maybe
+    # saving the file_set _before_ trying to set permissions will be helpful.
     file_set.save!
+
+    work_permissions = work.permissions.map(&:to_hash)
+    if work_permissions.present?
+      file_set.permissions_attributes = work_permissions
+      # no additional save seems necessary after doing permissions_attributes=, seems to do it's own save of what's
+      # needed...
+    end
 
     return file_set
   end
