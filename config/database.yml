@@ -5,24 +5,28 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: 5
   timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: scihist_sufia_dev
+
 profile:
   <<: *default
-  database: db/development.sqlite3
+  database: scihist_sufia_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: scihist_sufia_test
 
+# Actual production values are not in this repo file, but in case you want to run
+# your dev copy in production mode, we'll just use the dev db.
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: scihist_sufia_dev
