@@ -12,7 +12,10 @@ cache:
     - $HOME/.phantomjs
 before_script:
   - jdk_switcher use oraclejdk8
+  - psql -c 'create database scihist_sufia_test;' -U postgres
+  -
 # We need redis even in test due to sufia/curation_concerns
 # use of redlock gem in some internals.
 services:
   - redis-server
+  - postgresql
