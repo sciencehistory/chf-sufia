@@ -2,8 +2,10 @@
 
 The assets are organized in 3 folders on the P drive at `P/Othmer Library/Digital Collections - External Access/Crops for Hydra Redesign/`
 
-First download the original tiff into `uncropped_originals/`. Use the `base_name` provided on the spreadsheet: https://docs.google.com/spreadsheets/d/1D4HFGb0Yy4iFDiRrbw9LKN51Dld8YAXklLAbAp0ZRTM/edit#gid=0
+Cropping an image:
 
+- Pick the image to use as the thumbnail.
+- Download the original tiff into `uncropped_originals/`. Use the `base_name` provided on the spreadsheet: https://docs.google.com/spreadsheets/d/1D4HFGb0Yy4iFDiRrbw9LKN51Dld8YAXklLAbAp0ZRTM/edit#gid=0
 - Open the tiff in your image software.
 - If you're making a thumbnail for a collection or a featured topic, crop the image to a 700 pixel square. (This is actually double resolution we display at, for high-res screens).
 - Regardless, crop such that height and width are equal or just eyeball the proportions for a hero image / featured collection image.
