@@ -6,7 +6,7 @@ First download the original tiff into `uncropped_originals/`. Use the `base_name
 
 - Open the tiff in your image software.
 - If you're making a thumbnail for a collection or a featured topic, crop the image to a 700 pixel square. (This is actually double resolution we display at, for high-res screens).
-- Regardless, crop such that height and width are equal (if you're doing a collection or topic image) or just eyeball the proportions for a hero image / featured collection image.
+- Regardless, crop such that height and width are equal or just eyeball the proportions for a hero image / featured collection image.
 - Save into the directory `cropped_tiffs`; optionally into the `categories` or `collections` subdirectory.
 - Add `_full` onto the filename.
 
