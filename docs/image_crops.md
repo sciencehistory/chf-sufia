@@ -17,7 +17,7 @@ Developer instructions for associating a cropped image with a collection:
 - At the command line, cd into the `Crops for Hydra Redesign` directory. (On a Mac, if you've installed the ignyte software, you'll find the shared drive in `/Volumes/315chestnut`). Use ImageMagick to resize the image with the quality settings recommended by google:
 `convert cropped_tiffs/[BASE_NAME]_full.tif -resize [WIDTH]x -quality 85 -interlace JPEG -colorspace RGB web_ready/[BASE_NAME]_2x.jpg`
 
-- Copy the resulting image into the code repository at the desired location under `app/assets/images/`. Create a new branch, commit this change, push the branch, and create a pull request.
+- Copy the resulting image into the code repository at the desired location under `app/assets/images/`. For a collection thumbnail, put it in `app/assets/images/collections`. Create a new branch, commit this change, push the branch, and create a pull request.
 
 - If you've added a collection image, once the new image has been deployed a rake task needs to be run to link the image to the collection itself. For documentation of that task, including an example, run `RAILS_ENV=production bundle exec rake -D collection`
 
