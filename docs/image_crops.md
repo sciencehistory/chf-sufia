@@ -11,7 +11,7 @@ At the command line, cd into the `Crops for Hydra Redesign` directory. (On a Mac
 
 Copy the resulting image into the code repository at the desired location under `app/assets/images/`. Create a new branch, commit this change, push the branch, and create a pull request.
 
-If you've added a collection image, once the new image has been deployed a rake task needs to be run to link the image to the collection itself. For documentation of that task, including an example, run `rake -D collection`
+If you've added a collection image, once the new image has been deployed a rake task needs to be run to link the image to the collection itself. For documentation of that task, including an example, run `RAILS_ENV=production bundle exec rake -D collection`
 
 For more background see https://github.com/chemheritage/chf-sufia/issues/529
 
