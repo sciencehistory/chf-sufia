@@ -61,11 +61,6 @@ rake sufia:default_admin_set:create
      email/password, and create 6 sample works (5 public one private) attached to that account.
   * `./bin/rake dev:data` will create the same 6 sample works, but each belonging to a different
     newly created random user.
-  * Add a default workflow into your test database so the 'edit' view of the sample works won't throw an error:
-```
-$ cd db
-$ sqlite3 -separator $'\t' -header development.sqlite3 "insert into sipity_workflows values (1, 'default', 'Default workflow', 'A single submission step, default workflow', '','' , 't');"
-```
 
 ### Running tests locally
 
