@@ -56,7 +56,7 @@ gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'resque-pool'
 # used by resque admin page
-gem 'sinatra', '~> 2.0'
+gem 'sinatra', '~> 2.0.2'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
