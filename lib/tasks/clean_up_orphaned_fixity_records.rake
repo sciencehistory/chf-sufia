@@ -42,7 +42,7 @@ end
 def item_exists_in_fedora?(file_set_id)
   begin
     FileSet.find(file_set_id) != nil
-  rescue ActiveFedora::ObjectNotFoundError
+  rescue ActiveFedora::ObjectNotFoundError, Ldp::Gone
     false
   end
 end
