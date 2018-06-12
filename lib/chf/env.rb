@@ -254,6 +254,8 @@ module CHF
       end
     }
 
+    define_key :upload_bucket
+
 
 
     # Only matters on a job server, used in resque-pool.yml
