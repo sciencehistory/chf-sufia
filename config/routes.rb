@@ -1,10 +1,23 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-        mount BrowseEverything::Engine => '/browse'
   default_url_options host: CHF::Env.lookup(:app_hostname)
 
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+
+
+  # Override a path from BrowseEverything engine, to
+  # fix: https://github.com/samvera/browse-everything/commit/6416ce9d611a3f24d9684916edc0484e737c34d9
+  # If we are using a version of BrowseEverything in the future containing this commit, this patch
+  # will be unneccesary.
+  #
+  # We have to put it FIRST in routes to 'override', and then also use a constraint to avoid
+  # taking over the b-e routes that are supposed to come first. :(
+  scope format: false, constraints: { provider: %r{(?!(resolve|connect)/?)[^/]+} } do
+    match '/browse/:provider(/*path)', to: 'browse_everything#show', via: [:get, :post]
+  end
+  mount BrowseEverything::Engine => '/browse'
+
 
   # this will fall through to ./views/application/robots.txt.erb, no need for an action method
   get 'robots.txt', to: "application#robots.txt", format: "text"
