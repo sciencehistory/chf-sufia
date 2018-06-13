@@ -2,7 +2,7 @@ language: ruby
 sudo: false
 script: bundle exec rake dev:spec_with_app_load
 rvm:
-  - 2.3.1
+  - 2.5.1
 cache:
   bundler: true
   directories:
