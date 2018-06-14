@@ -26,7 +26,10 @@
   </div>
   <%= render 'sufia/homepage/recent_items' %>
 
-  <h2 class="brand-alt-h2">Collections</h2>
+  <div class='row featured-topics-title-div'>
+    <h2 class="brand-alt-h2">Featured Topics</h2>
+  </div>
+
   <div class="row categories-list">
     <%= render partial: "category_teaser", collection: CHF::SyntheticCategory.all, as: :category %>
   </div>
