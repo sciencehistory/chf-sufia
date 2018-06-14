@@ -213,15 +213,13 @@ $recent-items-box-margin: 30px;
     min-width: $recent-items-box-width;
     height: $recent-items-box-height;
     margin: $recent-items-box-margin;
+    overflow: hidden;
 
     @media (max-width: $recent-items-box-width) {
       width: 100vw;
       min-width: auto;
       height: 100vw;
       margin: $recent-items-box-margin 0;
-    }
-    .recent-items-image {
-      max-height: $recent-items-box-height
     }
 
     .recent-item-image-matte {
