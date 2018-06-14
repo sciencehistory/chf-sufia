@@ -179,8 +179,25 @@
 
   .featured-collection-image {
     padding: 0;
-    img {
-      width: 100%;
+    .featured-collection-matte {
+      position: relative;
+      img {
+        width: 100%;
+      }
+      figcaption {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 5px 10px;
+        font-weight: 300;
+        font-style: italic;
+        a {
+          color: white;
+          text-decoration: none;
+          opacity: 1;
+        }
+      }
     }
   }
 }

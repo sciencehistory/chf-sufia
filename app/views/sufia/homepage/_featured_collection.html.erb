@@ -11,7 +11,21 @@
     </div>
   </div>
   <div class="featured-collection-image hidden-xs col-sm-6">
-    <%= image_tag "featured_collection_narrow_2x.jpg", class: "hidden-md hidden-lg", alt: "" %>
-    <%= image_tag "featured_collection_wide_2x.jpg", class: "hidden-xs hidden-sm", alt: "" %>
+    <span class="hidden-md hidden-lg">
+      <div class="featured-collection-matte">
+        <figure>
+          <%= image_tag "featured_collection_narrow_2x.jpg", alt: "Portrait of Arnold O. Beckman" %>
+          <figcaption><a href="/works/wm117p231">Portrait of Arnold O. Beckman</a></figcaption>
+        </figure>
+      </div>
+    </span>
+    <span class="hidden-xs hidden-sm">
+      <div class="featured-collection-matte">
+        <figure>
+          <%= image_tag "featured_collection_wide_2x.jpg", alt: "Portrait of Arnold O. Beckman" %>
+          <figcaption><a href="/works/wm117p231">Portrait of Arnold O. Beckman</a></figcaption>
+        </figure>
+      </div>
+    </span>
   </div>
 </div>
