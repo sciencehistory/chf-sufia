@@ -236,6 +236,9 @@ $recent-items-box-margin: 30px;
         background-color: $brand-dark-grey;
     }
 
+    .recent-items-image {
+      width: 100%;
+    }
     .recent-item-title-wrapper {
       @if $collage-style == true {
         display: none;
