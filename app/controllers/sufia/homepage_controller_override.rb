@@ -14,18 +14,6 @@ Sufia::HomepageController.class_eval do
   end
 
 
-  def featured_collection_image_link(featured_collection_image_id)
-    begin
-      solr_doc = SolrDocument.find(featured_collection_image_id)
-    rescue
-      # handle dev case
-      return link_to("Featured collection image not in this repository", "#")
-    end
-    link_to(solr_doc.title.first, curation_concerns_generic_work_path(solr_doc.id))
-  end
-  helper_method :featured_collection_image_link
-
-
   protected
 
   def public_works_count
@@ -51,6 +39,16 @@ Sufia::HomepageController.class_eval do
     works_to_pick_from.sort_by{rand}[0..how_many_works_to_show-1]
   end
   helper_method :recent_items
+
+  def featured_collection_image_link(work_id, title)
+    begin
+      solr_doc = SolrDocument.find(work_id)
+    rescue
+      return view_context.link_to("Image not in this repository", "#")
+    end
+    link_to(solr_doc.title.first, curation_concerns_generic_work_path(solr_doc.id))
+  end
+  helper_method :featured_collection_image_link
 
 
 end

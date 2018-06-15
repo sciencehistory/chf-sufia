@@ -11,21 +11,18 @@
     </div>
   </div>
   <div class="featured-collection-image hidden-xs col-sm-6">
-    <span class="hidden-md hidden-lg">
-      <div class="featured-collection-matte">
-        <figure>
-          <%= image_tag "featured_collection_narrow_2x.jpg", alt: "Portrait of Arnold O. Beckman" %>
-          <figcaption><a href="/works/wm117p231">Portrait of Arnold O. Beckman</a></figcaption>
-        </figure>
-      </div>
-    </span>
-    <span class="hidden-xs hidden-sm">
-      <div class="featured-collection-matte">
-        <figure>
-          <%= image_tag "featured_collection_wide_2x.jpg", alt: "Portrait of Arnold O. Beckman" %>
-          <figcaption><a href="/works/wm117p231">Portrait of Arnold O. Beckman</a></figcaption>
-        </figure>
-      </div>
-    </span>
+    <% [
+          ['hidden-md hidden-lg', 'featured_collection_narrow_2x.jpg'],
+          ['hidden-xs hidden-sm', 'featured_collection_wide_2x.jpg'  ]
+    ].each do |image_properties| %>
+      <span class="<%= image_properties[0] %>">
+        <div class="featured-collection-matte">
+          <figure>
+            <%= image_tag image_properties[1], alt: "Portrait of Arnold O. Beckman" %>
+            <figcaption><%= featured_collection_image_link('wm117p231', 'Portrait of Arnold O. Beckman') %></figcaption>
+          </figure>
+        </div>
+      </span>
+    <% end %>
   </div>
 </div>
