@@ -22,7 +22,7 @@ Sufia::HomepageController.class_eval do
   helper_method :public_works_count
 
   def recent_items
-    how_many_works_to_show = 5
+    how_many_works_to_show = 6
     how_often_to_change = 60 * 10 # ten minutes in seconds
 
     # @@arbitrary_number is a slowly incrementing integer that changes at most every

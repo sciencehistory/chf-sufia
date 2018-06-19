@@ -223,9 +223,10 @@ $recent-items-box-margin: 30px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
-  padding-right: 15px;
   padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
+  padding-bottom: 30px;
 
   .recent-item {
     position: relative;
@@ -235,15 +236,7 @@ $recent-items-box-margin: 30px;
     margin: $recent-items-box-margin;
     overflow: hidden;
     @if $collage-style == true {
-      margin-left: 0px;
-      margin-right: 0px;
-    }
-
-    @media (max-width: $recent-items-box-width) {
-      width: 100vw;
-      min-width: auto;
-      height: 100vw;
-      margin: $recent-items-box-margin 0;
+      margin: 0px;
     }
 
     .recent-item-image-matte {
