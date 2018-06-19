@@ -224,6 +224,8 @@ $recent-items-box-margin: 30px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  padding-right: 15px;
+  padding-left: 15px;
 
   .recent-item {
     position: relative;
