@@ -38,14 +38,18 @@ class User < ApplicationRecord
   # A devise method, we're taking advantage of it for a cheesy way to lock out
   # admin users based on CHF::Env variable.
   def active_for_authentication?
-    if CHF::Env.lookup(:logins_disabled)
+    if locked_out
+      false
+    elsif CHF::Env.lookup(:logins_disabled)
       false
     else
       super
     end
   end
   def inactive_message
-    if CHF::Env.lookup(:logins_disabled)
+    if locked_out
+      "Your account is no longer active."
+    elsif CHF::Env.lookup(:logins_disabled)
       "Sorry, logins are temporarily disabled for some software maintenance."
     else
       super
