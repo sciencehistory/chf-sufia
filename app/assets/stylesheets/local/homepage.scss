@@ -229,6 +229,7 @@ $recent-items-box-margin: 30px;
   padding-bottom: 30px;
 
   .recent-item {
+    float:left;
     position: relative;
     width: $recent-items-box-width;
     min-width: $recent-items-box-width;
