@@ -56,9 +56,9 @@ Sufia::HomepageController.class_eval do
     begin
       @solr_doc ||= SolrDocument.find(work_id)
     rescue
-      return view_context.link_to("Image not in this repository", "#")
+      return view_context.link_to(title, "#")
     end
-    view_context.link_to(@solr_doc.title.first, curation_concerns_generic_work_path(@solr_doc.id))
+    view_context.link_to(title, curation_concerns_generic_work_path(@solr_doc.id))
   end
   helper_method :featured_collection_image_link
 
