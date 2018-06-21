@@ -392,6 +392,35 @@ namespace :chf do
     $stderr.puts 'reindex_collections complete'
   end
 
+  desc 'Lock out existing user. `RAILS_ENV=production bundle exec rake chf:lock_out[username@sciencehistory.org]`'
+  task :lock_out, [:email] => :environment do |t, args|
+    email = args[:email]
+    if email.to_s.empty?
+      abort("Please specify the email of the user you want to lock out.")
+    elsif User.find_by_email(email) == nil
+      abort("Could not find a user with email '#{email}'.")
+    end
+    ex_employee = User.find_by_email(email)
+    ex_employee.locked_out = true
+    ex_employee.save
+    puts "Done. User '#{email}' can no longer log in to the site."
+  end
+
+  desc 'Let locked out user back in after locking them out. `RAILS_ENV=production bundle exec rake chf:un_lock_out[username@sciencehistory.org]`'
+  task :un_lock_out, [:email] => :environment do |t, args|
+    email = args[:email]
+    if email.to_s.empty?
+      abort("Please specify the email of the user you want to let back in.")
+    elsif User.find_by_email(email) == nil
+      abort("Could not find a user with email '#{email}'.")
+    end
+    ex_employee =  User.find_by_email(email)
+    ex_employee.locked_out = false
+    ex_employee.save
+    puts "Done. User '#{email}' can once again log in to the site."
+  end
+
+
   desc 'csv report of related_urls'
   task :related_url_csv, [:output_path] => :environment do |t, args|
     output = args[:output_path] || "related_urls.csv"
