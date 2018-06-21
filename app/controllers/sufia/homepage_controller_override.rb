@@ -22,11 +22,11 @@ Sufia::HomepageController.class_eval do
   helper_method :public_works_count
 
   def recent_items
-    how_many_works_to_show = 12
+    how_many_works_to_show = 8
     how_often_to_change = 60 * 10 # ten minutes in seconds
 
     # @@arbitrary_number is a slowly incrementing integer that changes at most every
-    # how_often_to_change minutes. When it does change, we a new bag of recent works
+    # how_often_to_change minutes. When it does change, we fetch a new bag of recent works
     # from SOLR and reshuffle the bag even if there haven't been any new works added.
     new_arbitrary_number = Time.now.to_i / how_often_to_change
     if (!defined? @@arbitrary_number) || (@@arbitrary_number != new_arbitrary_number)
