@@ -13,7 +13,6 @@ Sufia::HomepageController.class_eval do
     SearchBuilder::HomePage
   end
 
-
   protected
 
   def public_works_count
@@ -22,35 +21,9 @@ Sufia::HomepageController.class_eval do
   helper_method :public_works_count
 
   def recent_items
-    how_many_works_to_show = 6
-    how_often_to_change = 60 * 10 # ten minutes in seconds
-
-    # @@arbitrary_number is a slowly incrementing integer that changes at most every
-    # how_often_to_change minutes. When it does change, we fetch a new bag of recent works
-    # from SOLR and reshuffle the bag even if there haven't been any new works added.
-    new_arbitrary_number = Time.now.to_i / how_often_to_change
-    if (!defined? @@arbitrary_number) || (@@arbitrary_number != new_arbitrary_number)
-      @@arbitrary_number = new_arbitrary_number
-      @@bag_of_recent_items = nil # thus forcing a new call to SOLR.
-    end
-
-    #First, put a bunch of eligible works into a bag.
-    works_to_pick_from = bag_of_recent_items
-
-    # Now, pick a few of these out of the bag at random to show.
-    # Reshuffle the bag every now and then.
-    srand @@arbitrary_number
-    works_to_pick_from.sort_by{rand}[0...how_many_works_to_show]
+    RecentItemsHelper::RecentItems.new().recent_items()
   end
   helper_method :recent_items
-
-  def bag_of_recent_items
-    how_many_works_in_bag = 15
-    conditions =  {'read_access_group_ssim'=>'public'}
-    sort_by = ["system_modified_dtsi desc"]
-    opts = {:rows=>how_many_works_in_bag, :sort=>sort_by}
-    @@bag_of_recent_items ||= GenericWork.search_with_conditions( conditions, opts)
-  end
 
   def featured_collection_image_link(work_id, title)
     begin
