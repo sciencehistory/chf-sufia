@@ -19,4 +19,21 @@ Sufia::HomepageController.class_eval do
     @public_works_count ||= search_results({}).first.total
   end
   helper_method :public_works_count
+
+  def recent_items
+    RecentItemsHelper::RecentItems.new().recent_items()
+  end
+  helper_method :recent_items
+
+  def featured_collection_image_link(work_id, title)
+    begin
+      @solr_doc ||= SolrDocument.find(work_id)
+    rescue
+      return view_context.link_to(title, "#")
+    end
+    view_context.link_to(title, curation_concerns_generic_work_path(@solr_doc.id))
+  end
+  helper_method :featured_collection_image_link
+
+
 end
