@@ -37,10 +37,9 @@ class BatchCreateJob < ActiveJob::Base
     def create_uploaded_files(titles, resource_types, attributes, uploaded_files = [])
       uploaded_files.each do |upload_id|
         title = [titles[upload_id]] if titles[upload_id]
-        resource_type = [resource_types[upload_id]] if resource_types[upload_id]
         attributes = attributes.merge(uploaded_files: [upload_id],
                                       title: title,
-                                      resource_type: resource_type)
+                                      resource_type: resource_types[upload_id])
         model = model_to_create(attributes)
         child_log = CurationConcerns::Operation.create!(user: user,
                                                         operation_type: "Create Work",
