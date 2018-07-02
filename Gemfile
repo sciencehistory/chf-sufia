@@ -11,7 +11,7 @@ gem 'blacklight_range_limit', ">= 6.1.2"
 # Update: slackarchive permalink doesn't work after some max. search for 'rsolr' and look
 # at April 7 results for hints of the conversation? Unfortunately you can't get context.
 gem 'rsolr', '~> 1.0'
-gem 'active-fedora', '~>11.1.6'
+gem 'active-fedora', '~>11.5.2'
 gem 'curation_concerns', '~>1.7.7'
 
 # pull in fix to "add another" label
@@ -20,9 +20,6 @@ gem 'curation_concerns', '~>1.7.7'
 # Requires hydra-editor >= 3.2.0, but that reqiures almond-rails >= 0.1, and
 # sufia insists on almond-rails 0.1.x. :(
 gem 'hydra-editor', git: 'https://github.com/projecthydra/hydra-editor', ref: 'c1e9d298'
-
-# 1.3 broke OpacRecordService; lock for now
-gem 'oauth2', '1.2.0'
 
 # OAI PMH for DPLA export
 gem 'blacklight_oai_provider'
