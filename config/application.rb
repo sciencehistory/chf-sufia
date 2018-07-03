@@ -185,6 +185,7 @@ module Chufia
       "Transmutations",
       "Lobby 2017",
       'ExhibitLab',
+      'Age of Alchemy'
       "Things Fall Apart",
       "Second Skin",
       "Science at Play",
