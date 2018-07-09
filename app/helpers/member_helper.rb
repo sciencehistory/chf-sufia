@@ -6,7 +6,6 @@ module MemberHelper
     content_tag("li", content, {tabindex: "-1", role: "menuitem"}.merge(attributes))
   end
 
-
   # returns array of <li> strings, INCLUDING the <li> header but NOT a <li> separator.
   def whole_work_download_options(work)
     list_elements = []
@@ -62,13 +61,17 @@ module MemberHelper
       list_elements << "<li class='divider'></li>".html_safe
     end
 
-    if whole_work_downloads && parent && parent.public_member_presenters.size > 1
+    # Only provide whole-work downloads if we have more than one child, and, for now,
+    # only when all items are images.
+    if whole_work_downloads && parent && parent.public_member_presenters.size > 1 && parent.content_types.all? {|t| t.start_with?("image/")}
       list_elements.concat whole_work_download_options(parent)
       list_elements << "<li class='divider'></li>".html_safe
     end
 
     if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
-      list_elements << content_tag("li", "Download selected image", class: "dropdown-header")
+      thing_name = member.representative_content_type.start_with?("image/") ? "image" : "document"
+
+      list_elements << content_tag("li", "Download selected #{thing_name}", class: "dropdown-header")
 
       download_options.each do |option_config|
         list_elements << dropdown_menuitem(

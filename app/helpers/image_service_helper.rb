@@ -106,13 +106,25 @@ module ImageServiceHelper
     orig_width = member_presenter.representative_width
     orig_height = member_presenter.representative_height
 
+
+    subhead = Mime::Type.lookup(member_presenter.representative_content_type).symbol.to_s.upcase
+    if orig_width && orig_height
+      subhead += " — #{orig_width} x #{orig_height}px"
+    end
+
     direct_original = {
       option_key: "original",
       label: "Original file",
-      subhead: ("TIFF — #{orig_width} x #{orig_height}px" if orig_width && orig_height),
+      subhead: subhead,
       analyticsAction: "download_original",
       url: main_app.download_path(member_presenter.representative_file_set_id)
     } if member_presenter.representative_file_set_id
+
+    unless member_presenter.representative_content_type&.start_with?("image/")
+      # we don't currently have alternate downloads for PDFs or non-images.
+      return [direct_original].compact
+    end
+
 
     service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
 
