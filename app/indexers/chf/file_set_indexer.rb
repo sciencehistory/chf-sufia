@@ -5,6 +5,7 @@ module CHF
         if object.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('original_file_id')] = object.original_file.id
           doc[ActiveFedora.index_field_mapper.solr_name('original_file_checksum')] = object.original_file.checksum.value
+          doc[ActiveFedora.index_field_mapper.solr_name('original_file_content_type')] = object.original_file.mime_type
         end
 
         # For reasons we don't understand, some parts of the stack are at least once trying to

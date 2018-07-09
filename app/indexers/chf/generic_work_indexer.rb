@@ -52,6 +52,7 @@ module CHF
           doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_file_set_id')] = representative.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_checksum')] = representative.original_file.checksum.value if representative.original_file
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_content_type')] = representative.mime_type if representative.respond_to?(:mime_type)
 
           # Our app tries not to use this field at all anymore, but just in case
           # set it to proper thumb URL as expected by stack, which is actually

@@ -219,6 +219,10 @@ module CurationConcerns
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
     end
 
+    def representative_content_type
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_content_type')]).first
+    end
+
     # handy for use with field_value below
     def has_values_for?(field_name)
       solr_document[field_name].present?
