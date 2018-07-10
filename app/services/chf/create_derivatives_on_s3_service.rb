@@ -66,12 +66,6 @@ module CHF
       dl_medium: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium], label: "Medium JPG", style: :download, suffix: '.jpg').freeze,
       dl_small: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small], label: "Small JPG", style: :download, suffix: '.jpg').freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download, suffix: '.jpg').freeze,
-
-      # compressed TIFF disabled for now, needs testing to make sure
-      # our staging server can handle it, and decision if we really want
-      # to take the S3 space.
-      # https://github.com/jcupitt/libvips/issues/777
-      #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff, suffix: '.tif').freeze
     }.freeze
 
     class_attribute :acl
@@ -186,8 +180,6 @@ module CHF
           desired_types.each_pair do |key, defn|
             if defn.style == :thumb || defn.style == :download
               futures << create_jpg_derivative(width: defn.width, type_key: key)
-            elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
-              futures << create_compressed_tiff(type_key: key)
             end
           end
 
@@ -293,32 +285,5 @@ module CHF
                            cache_control: cache_control)
       end
     end
-
-
-    # IM/GM crash our system using unholy amounts of RAM trying to operate on
-    # very big TIFFs for anything at all. VIPS with correct compression args
-    # (predictor=horizontal as below) needs to be tested to make sure it won't.
-    def create_compressed_tiff(type_key:)
-      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
-
-      if lazy && s3_obj.exists?
-        return nil
-      end
-
-      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        TTY::Command.new(printer: :null).run(
-          "vips", "copy",
-          "#{working_original_path}[predictor=horizontal,compression=deflate]",
-          output_path
-        )
-        s3_obj.upload_file(output_path,
-                           acl: acl,
-                           content_type: "image/tiff",
-                           content_disposition: "attachment",
-                           cache_control: cache_control)
-      end
-    end
-
   end
 end
