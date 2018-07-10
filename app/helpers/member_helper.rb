@@ -69,7 +69,7 @@ module MemberHelper
     end
 
     if member && (download_options = download_options(member, filename_base: filename_base)).count > 0
-      thing_name = member.representative_content_type.start_with?("image/") ? "image" : "document"
+      thing_name = member.representative_content_type&.start_with?("image/") ? "image" : "document"
 
       list_elements << content_tag("li", "Download selected #{thing_name}", class: "dropdown-header")
 

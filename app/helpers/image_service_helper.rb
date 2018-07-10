@@ -44,13 +44,22 @@ module ImageServiceHelper
   def viewer_trigger_data_attributes(parent_id:, member:)
     return {} unless member
 
-    {
-      trigger: "chf_image_viewer",
-      member_id: member.representative_id,
-      analytics_category: "Work",
-      analytics_action: "view",
-      analytics_label: parent_id
-    }
+    if member.representative_content_type&.start_with?("image/")
+      # trigger the viewer
+      {
+        trigger: "chf_image_viewer",
+        member_id: member.representative_id,
+        analytics_category: "Work",
+        analytics_action: "view",
+        analytics_label: parent_id
+      }
+    else
+      # trigger a direct load of object in browser
+      {
+        trigger: "chf_view_original",
+        href: main_app.download_path(member.representative_file_set_id, no_content_disposition: true)
+      }
+    end
   end
 
   # create an image tag for a 'member' (could be fileset or child work) thumb,
