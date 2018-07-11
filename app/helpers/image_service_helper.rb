@@ -57,7 +57,7 @@ module ImageServiceHelper
       # trigger a direct load of object in browser
       {
         trigger: "chf_view_original",
-        href: main_app.download_path(member.representative_file_set_id, no_content_disposition: true)
+        href: main_app.download_path(member.representative_file_set_id, disposition: "inline")
       }
     end
   end
