@@ -309,12 +309,20 @@ module CHF
       output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
 
+      # very hard to get ImageMagick to take a PDF page and resize it as a smaller jpg, without it looking
+      # like a blurry mess.
+      # These commands are the best I could get so far, with density and unsharp. Still not totally sure
+      # what's going on, better may be possible.
+
       image_magick_command_arr = [
         "convert",
-        "-colorspace",  "RGB",
+        "-density", "400",
+        "-colorspace",  "sRGB",
         "-thumbnail", "#{width}x",
-        "-define", "jpeg:size=#{width}x",
+        "-unsharp", "0x3.0",
+        "-define", "jpeg:size=#{width * 2}x", # not sure if this is hurting resolution, using width*2 in case, although that might defeat the purpose
         "-alpha",  "remove",
+        "-quality", "85",
         "#{working_original_path}[0]", # index is PDF page number
         output_path
       ]
