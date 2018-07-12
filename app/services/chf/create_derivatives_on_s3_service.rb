@@ -302,7 +302,8 @@ module CHF
     end
 
 
-    # Takes a pdf, makes a thumb. Not bothering to do it in a future
+    # Takes a pdf, makes a thumb. Includes small border around thumb, since this
+    # works better for typical white-bg print-like PDFs.
     def create_pdf_jpg_thumb_future(width:, type_key:)
       defn = get_type_defn(type_key)
       style = defn.style
@@ -318,11 +319,14 @@ module CHF
         "convert",
         "-density", "400",
         "-colorspace",  "sRGB",
-        "-thumbnail", "#{width}x",
+        # remove 2 from width to account for two pixels of border we're adding, and still get the right width.
+        "-thumbnail", "#{width - 2}x",
         "-unsharp", "0x3.0",
         "-define", "jpeg:size=#{width * 2}x", # not sure if this is hurting resolution, using width*2 in case, although that might defeat the purpose
         "-alpha",  "remove",
         "-quality", "85",
+        "-bordercolor", "#050939",  # brand dark blue
+        "-border",  "1",
         "#{working_original_path}[0]", # index is PDF page number
         output_path
       ]
