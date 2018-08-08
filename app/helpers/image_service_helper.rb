@@ -114,11 +114,15 @@ module ImageServiceHelper
   def download_options(member_presenter, filename_base: nil)
     orig_width = member_presenter.representative_width
     orig_height = member_presenter.representative_height
+    orig_page_count = member_presenter.representative_page_count
 
 
     subhead = CHF::Util.humanized_content_type(member_presenter.representative_content_type)
     if orig_width && orig_height
       subhead += " — #{orig_width} x #{orig_height}px"
+    end
+    if orig_page_count
+      subhead += " — #{orig_page_count} #{'page'.pluralize(orig_page_count.to_i)}"
     end
 
     direct_original = {
