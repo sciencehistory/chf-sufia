@@ -37,6 +37,10 @@ module CHF
       Array(solr_document[Solrizer.solr_name("original_file_content_type")]).first
     end
 
+    def representative_page_count
+      Array(solr_document[Solrizer.solr_name("original_file_page_count", type: :integer)]).first
+    end
+
     def representative_height
       height
     end

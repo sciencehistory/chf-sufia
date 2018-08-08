@@ -224,6 +224,10 @@ module CurationConcerns
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
     end
 
+    def representative_page_count
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_page_count', type: :integer)]).first
+    end
+
     def representative_content_type
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_content_type')]).first
     end

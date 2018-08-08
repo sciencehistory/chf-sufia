@@ -6,6 +6,7 @@ module CHF
           doc[ActiveFedora.index_field_mapper.solr_name('original_file_id')] = object.original_file.id
           doc[ActiveFedora.index_field_mapper.solr_name('original_file_checksum')] = object.original_file.checksum.value
           doc[ActiveFedora.index_field_mapper.solr_name('original_file_content_type')] = object.original_file.mime_type
+          doc[ActiveFedora.index_field_mapper.solr_name('original_file_page_count', type: :integer)] = object.original_file.page_count.try(:first)
         end
 
         # For reasons we don't understand, some parts of the stack are at least once trying to
