@@ -116,7 +116,7 @@ module ImageServiceHelper
     orig_height = member_presenter.representative_height
 
 
-    subhead = Mime::Type.lookup(member_presenter.representative_content_type).symbol.to_s.upcase
+    subhead = CHF::Util.humanized_content_type(member_presenter.representative_content_type)
     if orig_width && orig_height
       subhead += " — #{orig_width} x #{orig_height}px"
     end
