@@ -22,6 +22,12 @@ RSpec.feature "Search smoke-tests", js: true do
   shared_examples "searching" do
     scenario "searching" do
       visit(root_path)
+
+      # Get cookie banner out of the way if it's present
+      if has_link?('I Accept')
+        click_link('I Accept')
+      end
+
       fill_in 'q', with: 'two'
       click_button 'Search'
 
