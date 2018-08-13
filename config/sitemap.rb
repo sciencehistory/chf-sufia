@@ -39,8 +39,13 @@ SitemapGenerator::Sitemap.create(
   GenericWork.find_each(read_solr_field => 'public') do |w|
     presenter = CurationConcerns::GenericWorkShowPresenter.new(w, Ability.new(nil))
 
+    member_presenters = presenter.viewable_member_presenters
+
+    image_presenters, non_image_presenters = member_presenters.partition { |presenter| presenter.representative_content_type.start_with?('image/') }
+
+
     # spec says max 1000 images.
-    image_urls = presenter.viewable_member_presenters.slice(0, 1000).collect do |member|
+    image_urls = image_presenters.slice(0, 1000).collect do |member|
       image_service = image_service_class.new(file_set_id: member.representative_file_set_id, file_id: member.representative_file_id, checksum: member.representative_checksum)
       image_service.thumb_url(size: :large, density_descriptor: "2X")
     end
@@ -49,6 +54,11 @@ SitemapGenerator::Sitemap.create(
         changefreq: 'monthly',
         lastmod: nil,
         images: image_urls.collect { |url| { loc: url } }
+
+    # add non-image members (like PDFs) directly to sitemap, at URL for downloading original.
+    non_image_presenters.each do |presenter|
+      add Rails.application.routes.url_helpers.download_path(presenter.representative_file_set_id, disposition: "inline")
+    end
   end
 end
 

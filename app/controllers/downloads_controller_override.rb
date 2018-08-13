@@ -42,6 +42,28 @@ DownloadsController.class_eval do
 
   private
 
+  # override to add content-disposition to force download for our PDFs, don't want
+  # browser displaying them for a 'download' button. BUT also add new param that can
+  # override for cases we do.
+  #
+  # Also add a better filename in http headers than base provides.
+  #
+  # params["disposition"] == "inline" for inline
+  def content_options
+    base = super
+
+    extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
+    if extension
+      download_name = helpers._download_name_base(asset) + ".#{extension}"
+      base.merge!(
+        filename: download_name,
+        disposition: params["disposition"] == "inline" ? "inline" : "attachment"
+      )
+    end
+
+    base
+  end
+
   # Attempts to get Rails to send HEADERS right away, even with streaming response.
   #
   # Matters cause imgix (and maybe other CDNs?) won't wait more than 10 seconds for headers, although will wait

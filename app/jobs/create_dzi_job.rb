@@ -19,10 +19,17 @@ class CreateDziJob < ActiveJob::Base
     # to get it from fedora? Or from Solr, and would that be reliable enough?
     file_set = FileSet.find(file_set_id)
     file_obj = file_set.send(repo_file_type) if file_set
+
+    if ! file_obj.mime_type&.start_with?("image/")
+      Rails.logger.warn("Skipping dzi creation for non-image file #{file_set_id}")
+      return
+    end
+
     if file_obj
       checksum = file_obj.checksum.value
       CHF::CreateDziService.new(file_obj.id, checksum: checksum).call
     else
+
       Rails.logger.warn("No original_file for #{file_set_id}? Could not push dzi")
     end
   end

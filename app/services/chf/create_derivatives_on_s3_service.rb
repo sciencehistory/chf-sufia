@@ -66,12 +66,6 @@ module CHF
       dl_medium: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:medium], label: "Medium JPG", style: :download, suffix: '.jpg').freeze,
       dl_small: OpenStruct.new(width: ImageServiceHelper::DOWNLOAD_WIDTHS[:small], label: "Small JPG", style: :download, suffix: '.jpg').freeze,
       dl_full_size: OpenStruct.new(width: nil, label: "Original-size JPG", style: :download, suffix: '.jpg').freeze,
-
-      # compressed TIFF disabled for now, needs testing to make sure
-      # our staging server can handle it, and decision if we really want
-      # to take the S3 space.
-      # https://github.com/jcupitt/libvips/issues/777
-      #tiff_compressed:  OpenStruct.new(label: "Original", style: :compressed_tiff, suffix: '.tif').freeze
     }.freeze
 
     class_attribute :acl
@@ -144,6 +138,10 @@ module CHF
       @only_types = Array(only_types).collect(&:to_s) if only_types
     end
 
+    def file_set_content_type
+      @file_set_content_type ||= file_set.mime_type
+    end
+
     # If not already set, we have to fetch from fedora, which is kinda slow with AF on wells.
     def file_checksum
       @file_checksum ||= Hydra::PCDM::File.find(file_id).checksum.value
@@ -153,17 +151,14 @@ module CHF
     # it to helper methods, definitely not thread-safe, don't share instances
     # between threads, you weren't going to anyway.
     def call
-      # copied from upstream,but don't understand why needed, shouldn't the operations
-      # themselves just be smart enough to do this guard?
-      return if file_set.video? && !CurationConcerns.config.enable_ffmpeg
-
       futures = []
 
       # mktmpdir will clean up tmp dir and all it's contents for us
       Dir.mktmpdir("fileset_#{file_set.id}_", WORKING_DIR_PARENT) do |temp_dir|
         desired_types = IMAGE_TYPES.collect do |type, defn|
           [type, defn] if ((only_styles.nil? || only_styles.include?(defn.style.to_s)) &&
-                           (only_types.nil? || only_types.include?(key.to_s)))
+                           (only_types.nil? || only_types.include?(key.to_s)) &&
+                           style_okay_for_original_type?(defn))
         end.compact.to_h
 
         if lazy
@@ -182,28 +177,27 @@ module CHF
         @working_dir = temp_dir
         @working_original_path = CHF::GetFedoraBytestreamService.new(file_id, local_path: File.join(@working_dir, "original")).get
 
-        if file_set.image?
-          desired_types.each_pair do |key, defn|
-            if defn.style == :thumb || defn.style == :download
-              futures << create_jpg_derivative(width: defn.width, type_key: key)
-            elsif defn.style == :compressed_tiff && file_set.mime_type == "image/tiff"
-              futures << create_compressed_tiff(type_key: key)
+
+        desired_types.each_pair do |key, defn|
+          future = if file_set_content_type == "application/pdf"
+              create_pdf_jpg_thumb_future(width: defn.width, type_key: key)
+            else
+              create_image_jpg_derivative_future(width: defn.width, type_key: key)
             end
-          end
-
-          futures.compact.each(&:value!)
-          futures.clear
-
-          # TODO nope, get rid of this, for just our own derivatives here.
-          #file_set.create_derivatives(working_original_path)
-        else
-          # We COULD still try do this default behavior calling #create_derivatives on
-          # fileset, to get any superclass stack derivatives from sufia, say PDF
-          # related and such. But we're not for now, we don't use em, don't do it,
-          # if we want em, we should copy the kinds of derivativds we want here, and
-          # do em right.
-          # file_set.create_derivatives(working_original_path)
+          futures << future
         end
+
+        futures.compact.each(&:value!)
+        futures.clear
+
+        # We COULD  try do  default behavior for types we don't handle here, calling #create_derivatives on
+        # fileset, to get any superclass stack derivatives from sufia, say PDF
+        # related and such. But we're not for now, we don't use em, don't do it,
+        # if we want em, we should copy the kinds of derivativds we want here, and
+        # do em right.
+        # if desired_types.count == 0
+        #   file_set.create_derivatives(working_original_path)
+        # end
       end
     ensure
       @working_dir = nil
@@ -219,6 +213,19 @@ module CHF
       self.class.get_type_defn(type_key)
     end
 
+    def style_okay_for_original_type?(style_defn)
+      if file_set_content_type.start_with?("image/")
+        return true # all good
+      elsif file_set_content_type == 'application/pdf'
+        # only thumbs for PDFs
+        return style_defn.style == :thumb
+      else
+        # we don't know how to create derivs for it at present. We could try to use
+        # # sufia super implementation instead, but we're not right now.
+        return false
+      end
+    end
+
     def working_dir
       @working_dir || (raise TypeError.new("unexpected nil @working_dir"))
     end
@@ -227,7 +234,7 @@ module CHF
       @working_original_path || (raise TypeError.new("Unexpected nil @working_original_path"))
     end
 
-    # create and push to s3.
+    # create and push to s3. Operates on an IMAGE (tiff, jpeg, whatever) input.
     #
     # returns a Future
     #
@@ -238,7 +245,7 @@ module CHF
     #     * https://developers.google.com/speed/docs/insights/OptimizeImages
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     #     * https://github.com/jcupitt/libvips/issues/775
-    def create_jpg_derivative(width:, type_key:)
+    def create_image_jpg_derivative_future(width:, type_key:)
       defn = get_type_defn(type_key)
       style = defn.style
       output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
@@ -295,28 +302,42 @@ module CHF
     end
 
 
-    # IM/GM crash our system using unholy amounts of RAM trying to operate on
-    # very big TIFFs for anything at all. VIPS with correct compression args
-    # (predictor=horizontal as below) needs to be tested to make sure it won't.
-    def create_compressed_tiff(type_key:)
-      output_path = Pathname.new(working_dir).join(filename.to_s).sub_ext(".tif").to_s
+    # Takes a pdf, makes a thumb. Includes small border around thumb, since this
+    # works better for typical white-bg print-like PDFs.
+    def create_pdf_jpg_thumb_future(width:, type_key:)
+      defn = get_type_defn(type_key)
+      style = defn.style
+      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
 
-      if lazy && s3_obj.exists?
-        return nil
-      end
+      # very hard to get ImageMagick to take a PDF page and resize it as a smaller jpg, without it looking
+      # like a blurry mess.
+      # These commands are the best I could get so far, with density and unsharp. Still not totally sure
+      # what's going on, better may be possible.
+
+      image_magick_command_arr = [
+        "convert",
+        "-density", "400",
+        "-colorspace",  "sRGB",
+        # remove 2 from width to account for two pixels of border we're adding, and still get the right width.
+        "-thumbnail", "#{width - 2}x",
+        "-unsharp", "0x3.0",
+        "-define", "jpeg:size=#{width * 2}x", # not sure if this is hurting resolution, using width*2 in case, although that might defeat the purpose
+        "-alpha",  "remove",
+        "-quality", "85",
+        "-bordercolor", "#050939",  # brand dark blue
+        "-border",  "1",
+        "#{working_original_path}[0]", # index is PDF page number
+        output_path
+      ]
+
 
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        TTY::Command.new(printer: :null).run(
-          "vips", "copy",
-          "#{working_original_path}[predictor=horizontal,compression=deflate]",
-          output_path
-        )
+        TTY::Command.new(printer: :null).run(*image_magick_command_arr)
         s3_obj.upload_file(output_path,
-                           acl: acl,
-                           content_type: "image/tiff",
-                           content_disposition: "attachment",
-                           cache_control: cache_control)
+           acl: acl,
+           content_type: "image/jpeg",
+           cache_control: cache_control)
       end
     end
 
