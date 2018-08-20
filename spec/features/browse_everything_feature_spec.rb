@@ -1,10 +1,14 @@
 require 'rails_helper'
+file_names = ['sample_1.tiff', 'sample_2.tiff', 'sample_3.tiff']
+used_file_names = file_names[1..2]
+
 RSpec.feature "BrowseEverything client for s3 files", js: true do
   let!(:user) { FactoryGirl.create(:depositor) }
   before do
     login_as(user, :scope => :user)
-    set_up_fake_browser_and_client()
-    Capybara.default_max_wait_time = 1000
+    set_up_fake_browser_and_client(file_names)
+    # no fits on travis
+    allow_any_instance_of(CharacterizeJob).to receive(:perform).and_return(nil)
   end
   scenario "Attaches two files to a new work" do
     visit new_curation_concerns_generic_work_path
@@ -25,62 +29,52 @@ RSpec.feature "BrowseEverything client for s3 files", js: true do
     find_all('input[type=checkbox]')[1].click
     find_all('input[type=checkbox]')[2].click
     click_on "Submit"
-    stub_image_requests('sample_2.tiff')
-    stub_image_requests('sample_3.tiff')
+    used_file_names.each {|f| stub_image_requests(f)}
     expect {
-      Capybara.using_wait_time 100 do
-        click_on "Save"
-      end
+      click_on "Save"
     }.to change(GenericWork, :count).by(1)
     file_set_labels = FileSet.all.map { |x|  x.label }
-    expect(file_set_labels).to include('sample_2.tiff')
-    expect(file_set_labels).to include('sample_3.tiff')
-    newly_added_work = GenericWork.last
-    expect(page).to have_current_path(curation_concerns_generic_work_path(newly_added_work.id))
+    used_file_names.each{|x| expect(file_set_labels).to include(x)}
+    expected_path = curation_concerns_generic_work_path(GenericWork.last.id)
+    expect(page).to have_current_path(expected_path)
     expect(page.source).to include('Download all 2 images')
   end
 end
 
-private
-
-  def set_up_fake_browser_and_client()
-    BrowseEverything.configure(
-      'scihist_s3' => { app_key: 'S3AppKey', app_secret: 'S3AppSecret', bucket: 's3.bucket', response_type: :signed_url, :base=>"/"}
+def set_up_fake_browser_and_client(file_names)
+  BrowseEverything.configure(
+    'scihist_s3' => { bucket: 's3.bucket',
+      response_type: :signed_url, :base=>"/" }
     )
-    fake_files = ['sample_1.tiff', 'sample_2.tiff', 'sample_3.tiff', ].map { |x| fake_file(x)}
-    fake_aws_s3_client = Aws::S3::Client.new(stub_responses: true)
-    fake_aws_s3_client.stub_responses(:list_objects,
-        Aws::S3::Types::ListObjectsOutput.new(
-        is_truncated: false,   marker: '',
-        next_marker: nil,      name: 's3.bucket',
-        delimiter: '/',        max_keys: 1000,
-        encoding_type: 'url',  contents: fake_files,
-        common_prefixes: []
-      )
+  fake_aws_s3_client = Aws::S3::Client.new(stub_responses: true)
+  fake_aws_s3_client.stub_responses(:list_objects,
+      Aws::S3::Types::ListObjectsOutput.new(
+      is_truncated: false,   marker: '',
+      next_marker: nil,      name: 's3.bucket',
+      delimiter: '/',        max_keys: 1000,
+      encoding_type: 'url',
+      contents: file_names.map{|x| fake_file(x)},
+      common_prefixes: []
     )
-    allow_any_instance_of(BrowseEverything::Driver::ScihistS3).to receive(:client).and_return(fake_aws_s3_client)
-  end
+  )
+  allow_any_instance_of(BrowseEverything::Driver::ScihistS3).to receive(:client).and_return(fake_aws_s3_client)
+end
 
-  def fake_file(title)
-    Struct.new(:key, :size, :last_modified, :type, :id,
-      :location, :name, :etag, :storage_class, :owner).new(
-        "/spec/fixtures/#{title}",
-        44121544,
-        Time.now(),
-        'image/tiff',
-        'file_id_01234',
-        '/spec/fixtures/#{title}',
-        title,
-        '"4e2ad532e659a65e8f106b350255a7ba"',
-        'STANDARD',
-        { display_name: 'mbklein' }
-    )
-  end
+def fake_file(title)
+  path = "/spec/fixtures/#{title}"
+  Struct.new(
+    :key, :size, :last_modified, :type,
+    :id, :location, :name).new(
+    path, 44121544, Time.now(), 'image/tiff',
+    'file_id_01234', path, title
+  )
+end
 
-  def stub_image_requests (filename)
-    link = BrowseEverything::Browser.new().providers['scihist_s3'].link_for("/spec/fixtures/#{filename}")[0]
-    path_to_image = File.join([Rails.root, 'spec', 'fixtures', filename])
-    body_file = File.open(path_to_image)
-    stub_request(:head, link).to_return(status: 200, body: "", headers: {})
-    stub_request(:get, link).to_return(body: body_file, status: 200)
-  end
+def stub_image_requests(filename)
+  provider = BrowseEverything::Browser.new().providers['scihist_s3']
+  link = provider.link_for("/spec/fixtures/#{filename}")[0]
+  path_to_image = File.join([Rails.root, 'spec', 'fixtures', filename])
+  body_file = File.open(path_to_image)
+  stub_request(:head, link).to_return(status: 200, body: "", headers: {})
+  stub_request(:get, link).to_return(body: body_file, status: 200)
+end
