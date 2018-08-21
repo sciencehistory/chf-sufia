@@ -39,8 +39,6 @@ RSpec.feature "Collections", js: true do
               # expect(page).to have_link(title, href: curation_concerns_generic_work_path(work.id))
               # expect(page).to have_css(".constraints-container .constraint-value", text: subject)
 
-    # Accept cookies:
-    click_on "I Accept"
     # # do a query search too
     within(".chf-collection-search-form") do
       page.fill_in "q", with: title

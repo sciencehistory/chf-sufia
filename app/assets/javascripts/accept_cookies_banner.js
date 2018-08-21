@@ -1,6 +1,8 @@
 var chf = chf || {}
 $( document ).ready(function() {
-    chf.set_up_accept_cookies_banner();
+    if (jQuery('.accept_cookies_banner_nav').length) {
+        chf.set_up_accept_cookies_banner();
+    }
 });
 chf.set_up_accept_cookies_banner = function () {
     if (! chf.cookies_already_accepted_by_user()) {
