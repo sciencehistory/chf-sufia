@@ -1,9 +1,6 @@
 <%
-    if Rails.application.config.respond_to?(:hide_accept_cookies_banner) &&
-    Rails.application.config.hide_accept_cookies_banner
+    unless Rails.application.config.hide_accept_cookies_banner
 %>
-    <%# Don't show this cookie banner to the unit tests unless they specifically request it.%>
-<% else %>
     <nav class="navbar navbar-default navbar-fixed-bottom accept_cookies_banner_nav">
         <div id="accept_cookies_banner_container" class="container-fluid">
             <div class="row"
