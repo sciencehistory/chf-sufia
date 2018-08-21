@@ -11,3 +11,6 @@ collection:
     dir: solr/config
     name: hydra-test
 version: 6.3.0
+# Attempt to use mirror url to keep travis tests from being blocked by
+# apache for too many solr downloads.
+mirror_url: http://lib-solr-mirror.princeton.edu/dist/
