@@ -21,7 +21,6 @@ RSpec.feature "BrowseEverything client for s3 files", js: true do
     end
     find('#generic_work_visibility_open').click
     click_on "Files"
-    click_on "I Accept"
     click_on "Browse cloud files"
     sleep 2
     find(:xpath, '//select/option[normalize-space(text())="Scihist S3"]').select_option
