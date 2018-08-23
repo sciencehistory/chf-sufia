@@ -170,31 +170,56 @@ module MemberHelper
     end
   end
 
-  def can_promote_to_child_work?(pres)
-    return false unless pres.respond_to? 'parent'
+
+  def self.can_promote_to_child_work?(user, parent, member)
     [
-      (can?(:edit, pres.id)),
-      (pres.solr_document._source['has_model_ssim']  == ["FileSet"]),
-      (can?(:edit, pres.parent.id)),
-      (pres.parent.solr_document._source['has_model_ssim'] == ["GenericWork"]),
-      (pres.parent.solr_document._source['member_ids_ssim'].include? pres.id),
+      (parent.is_a? GenericWork),
+      (member.is_a? FileSet),
+      (self.check_connection(parent, member)),
+      (user.can?(:edit, member.id)),
+      (user.can?(:edit, parent.id)),
     ].all?
   end
 
-  def can_demote_to_file_set?(pres)
-    [
-      (can?(:delete, pres.id)),
-      (pres.solr_document._source['has_model_ssim'] == ["GenericWork"] ),
-      (pres.solr_document._source['member_ids_ssim'].uniq.count == 1),
-      (pres.parent_work_presenters.present?),
-      (pres.parent_work_presenters.count == 1 ),
-      (pres.parent_work_presenters.first != nil ),
-      (can?(:edit, pres.parent_work_presenters.first.solr_document._source['id'])),
-      (pres.parent_work_presenters.first.solr_document._source['has_model_ssim'] == ["GenericWork"] ),
-      (pres.parent_work_presenters.first.solr_document._source['member_ids_ssim'].include? pres.id ),
+  def self.can_demote_to_file_set?(user, parent, member)
+    [ (parent.is_a? GenericWork),
+      (member.is_a? GenericWork),
+      (self.look_up_parent_work_ids(member.id).count == 1),
+      (self.check_connection(parent, member)),
+      (member.members.to_a.count == 1),
+      (member.ordered_members.to_a.count == 1),
+      (member.members.first.is_a? FileSet),
+      (user.can?(:destroy, member.id)),
+      (user.can?(:edit, parent.id)),
     ].all?
   end
 
+  def self.check_connection(parent, member)
+    [ (parent != nil), (member != nil),
+      (parent.ordered_members.to_a.include?(member)),
+      (parent.members.to_a.include?(member)),
+    ].all?
+  end
 
+  def self.look_up_collection_ids(id)
+    self.look_up_container_ids(id, 'Collection')
+  end
 
+  def self.look_up_parent_work_ids(id)
+    self.look_up_container_ids(id, 'GenericWork')
+  end
+
+  """
+  Search SOLR for items that contain this item in their member_ids_ssim field.
+  This is used both to store the collection-item relationship, but also the parent-child relationship.
+  This is adapted from:
+  https://github.com/samvera/curation_concerns/blob/v1.7.8/app/presenters/curation_concerns/work_show_presenter.rb#L92
+  """
+  def self.look_up_container_ids(id, container_model)
+    solr = ActiveFedora::SolrService
+    q = "{!field f=member_ids_ssim}#{id}"
+    solr.query(q, fl:'id,has_model_ssim')
+      .select { |x| x["has_model_ssim"] == [container_model] }
+      .map    { |x| x.fetch('id') }
+  end
 end

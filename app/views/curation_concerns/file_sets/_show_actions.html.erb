@@ -1,3 +1,6 @@
+
+
+
 <div class="form-actions">
   <% if Sufia.config.analytics %>
     <%= link_to "Analytics", @presenter.stats_path, id: 'stats', class: 'btn btn-default' %>
@@ -16,7 +19,11 @@
                   class: 'btn btn-default generate-single-use-link' %>
   <% end %>
 
-  <% if can_promote_to_child_work?(@presenter) %>
+  <% if MemberHelper.can_promote_to_child_work?(
+    current_user,
+    GenericWork.find(@presenter.parent.id),
+    FileSet.find(@presenter.id)
+    ) %>
     <div class="alert alert-info fade in alert-dismissible">
         If you want to add metadata to this item (e.g. for an illustration in a book), you can promote it to a child work.
     </div>

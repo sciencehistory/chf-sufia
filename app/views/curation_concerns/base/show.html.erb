@@ -6,6 +6,7 @@
 
 <div class="work-show" itemscope <%= @presenter.microdata_type_to_html %> class="row">
 
+
   <% if current_ability.current_user.staff? %>
     <div class="show-admin">
       <%= render "show_actions", presenter: @presenter %>
@@ -40,7 +41,11 @@
         <ul class="parent-works list-unstyled">
           <% (@presenter.parent_work_presenters || []).each do |parent| %>
             <li>Part of <%= link_to Array(parent.title).first, [main_app, parent] %>
-              <% if can_demote_to_file_set?(@presenter) %>
+               <% if MemberHelper.can_demote_to_file_set?(
+                current_user,
+                GenericWork.find(parent.id),
+                GenericWork.find(@presenter.id)
+               ) %>
                 <%=  link_to "Demote to file ...",
                 "/works/parent/#{parent.id}/child/#{@presenter.id}/to_fileset" ,
                 class: 'btn btn-danger',
