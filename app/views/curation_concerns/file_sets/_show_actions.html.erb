@@ -19,21 +19,23 @@
                   class: 'btn btn-default generate-single-use-link' %>
   <% end %>
 
-  <% if MemberHelper.can_promote_to_child_work?(
-    current_user,
-    GenericWork.find(@presenter.parent.id),
-    FileSet.find(@presenter.id)
-    ) %>
-    <div class="alert alert-info fade in alert-dismissible">
-        If you want to add metadata to this item (e.g. for an illustration in a book), you can promote it to a child work.
-    </div>
+  <% if @presenter.respond_to? :parent %>
+    <% if  MemberHelper.can_promote_to_child_work?(
+      current_user,
+      GenericWork.find(@presenter.parent.id),
+      FileSet.find(@presenter.id)
+      ) %>
+      <div class="alert alert-info fade in alert-dismissible">
+          If you want to add metadata to this item (e.g. for an illustration in a book), you can promote it to a child work.
+      </div>
 
-   <%=  link_to "Promote to child work ...",
-    "/concern/parent/#{@presenter.parent.id}/file_sets/#{@presenter.id}/to_child_work" ,
-    class: 'btn btn-info',
-    data: { confirm: "Promote \"#{@presenter.title.first}\" to a child work of \"#{@presenter.parent.title.first}\" ?" },
-    method: :post %>
+     <%=  link_to "Promote to child work ...",
+      "/concern/parent/#{@presenter.parent.id}/file_sets/#{@presenter.id}/to_child_work" ,
+      class: 'btn btn-info',
+      data: { confirm: "Promote \"#{@presenter.title.first}\" to a child work of \"#{@presenter.parent.title.first}\" ?" },
+      method: :post %>
 
+    <% end %>
   <% end %>
 
 </div>
