@@ -41,11 +41,7 @@
         <ul class="parent-works list-unstyled">
           <% (@presenter.parent_work_presenters || []).each do |parent| %>
             <li>Part of <%= link_to Array(parent.title).first, [main_app, parent] %>
-               <% if MemberHelper.can_demote_to_file_set?(
-                current_user,
-                GenericWork.find(parent.id),
-                GenericWork.find(@presenter.id)
-               ) %>
+               <% if current_ability.can?(:destroy, @presenter.id)   && current_ability.can?(:edit, parent.id) %>
                 <%=  link_to "Demote to file ...",
                 "/works/parent/#{parent.id}/child/#{@presenter.id}/to_fileset" ,
                 class: 'btn btn-danger',
