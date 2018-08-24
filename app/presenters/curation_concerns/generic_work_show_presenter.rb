@@ -187,6 +187,11 @@ module CurationConcerns
       @viewable_member_presenters ||= member_presenter_factory.permitted_member_presenters(action: :read)
     end
 
+    def viewable_members_content_types
+      @viewable_members_content_types ||= viewable_member_presenters.collect(&:representative_content_type).uniq
+    end
+
+
     # viewable_member_presenters, but if our representative image is the FIRST image,
     # don't repeat it below.
     def show_thumb_member_presenters
@@ -217,6 +222,14 @@ module CurationConcerns
 
     def representative_width
       Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)]).first
+    end
+
+    def representative_page_count
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_page_count', type: :integer)]).first
+    end
+
+    def representative_content_type
+      Array.wrap(solr_document[ActiveFedora.index_field_mapper.solr_name('representative_content_type')]).first
     end
 
     # handy for use with field_value below

@@ -44,13 +44,22 @@ module ImageServiceHelper
   def viewer_trigger_data_attributes(parent_id:, member:)
     return {} unless member
 
-    {
-      trigger: "chf_image_viewer",
-      member_id: member.representative_id,
-      analytics_category: "Work",
-      analytics_action: "view",
-      analytics_label: parent_id
-    }
+    if member.representative_content_type&.start_with?("image/")
+      # trigger the viewer
+      {
+        trigger: "chf_image_viewer",
+        member_id: member.representative_id,
+        analytics_category: "Work",
+        analytics_action: "view",
+        analytics_label: parent_id
+      }
+    else
+      # trigger a direct load of object in browser
+      {
+        trigger: "chf_view_original",
+        href: main_app.download_path(member.representative_file_set_id, disposition: "inline")
+      }
+    end
   end
 
   # create an image tag for a 'member' (could be fileset or child work) thumb,
@@ -105,14 +114,30 @@ module ImageServiceHelper
   def download_options(member_presenter, filename_base: nil)
     orig_width = member_presenter.representative_width
     orig_height = member_presenter.representative_height
+    orig_page_count = member_presenter.representative_page_count
+
+
+    subhead = CHF::Util.humanized_content_type(member_presenter.representative_content_type)
+    if orig_width && orig_height
+      subhead += " — #{orig_width} x #{orig_height}px"
+    end
+    if orig_page_count
+      subhead += " — #{orig_page_count} #{'page'.pluralize(orig_page_count.to_i)}"
+    end
 
     direct_original = {
       option_key: "original",
       label: "Original file",
-      subhead: ("TIFF — #{orig_width} x #{orig_height}px" if orig_width && orig_height),
+      subhead: subhead,
       analyticsAction: "download_original",
       url: main_app.download_path(member_presenter.representative_file_set_id)
     } if member_presenter.representative_file_set_id
+
+    unless member_presenter.representative_content_type&.start_with?("image/")
+      # we don't currently have alternate downloads for PDFs or non-images.
+      return [direct_original].compact
+    end
+
 
     service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
 

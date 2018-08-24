@@ -566,9 +566,20 @@ jQuery(document).ready(function($) {
 
     $(document).on("click", "*[data-trigger='chf_image_viewer']", function(event) {
       event.preventDefault();
+
       var id = this.getAttribute('data-member-id');
       chf_image_viewer().show(id);
     });
+
+    // Links set up for things that are not images, we just display them in the browser, using
+    // href supplied.
+    $(document).on("click", "*[data-trigger='chf_view_original']", function(event) {
+      event.preventDefault();
+
+      var href = this.getAttribute('data-href');
+      window.location.href = href;
+    });
+
 
     // with keyboard-tab nav to our thumbs, let return/space trigger click as for normal links
     $(document).on("keydown", "*[data-trigger='chf_image_viewer']", function(event) {

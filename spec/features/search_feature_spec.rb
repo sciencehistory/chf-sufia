@@ -22,6 +22,7 @@ RSpec.feature "Search smoke-tests", js: true do
   shared_examples "searching" do
     scenario "searching" do
       visit(root_path)
+
       fill_in 'q', with: 'two'
       click_button 'Search'
 

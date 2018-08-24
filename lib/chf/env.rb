@@ -120,7 +120,7 @@ module CHF
 
     def load_yaml_file
       return {} unless File.exist?(@local_env_path)
-      YAML.load(File.open(@local_env_path))
+      YAML.load(ERB.new(File.read(@local_env_path)).result) || {}
     end
 
     def default_lookup(defn)

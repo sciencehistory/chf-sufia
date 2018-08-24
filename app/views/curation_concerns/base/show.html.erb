@@ -130,6 +130,19 @@
         <%= @presenter.attribute_to_html(:place_of_manufacture, render_as: :faceted, search_field: 'place_facet') %>
         <%= @presenter.attribute_to_html(:place_of_publication, render_as: :faceted, search_field: 'place_facet') %>
         <%= @presenter.attribute_to_html(:resource_type, render_as: :faceted, label: "Format" ) %>
+
+        <% if @presenter.viewable_members_content_types.compact.length > 0 %>
+          <tr>
+            <th>Original file type</th>
+            <td>
+                <%= @presenter.viewable_members_content_types.compact.
+                      collect { |content_type| CHF::Util.humanized_content_type(content_type) }.
+                      join(", ") %>
+            </td>
+          </tr>
+        <% end %>
+
+
         <%= @presenter.attribute_to_html(:genre_string, render_as: :faceted) %>
         <%= @presenter.attribute_to_html(:medium, render_as: :faceted) %>
         <%= @presenter.attribute_to_html(:extent) %>

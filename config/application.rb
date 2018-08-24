@@ -220,6 +220,11 @@ module Chufia
     # Active job should use resque
     config.active_job.queue_adapter = :resque
 
+    # Show the GDPR "I accept" cookies banner by default.
+    # This setting is overridden in test.rb,
+    # so the tests don't have to click "I accept".)
+    config.hide_accept_cookies_banner = true
+
     def log_error(error)
       Honeybadger.notify(error)
     end

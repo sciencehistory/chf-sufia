@@ -49,9 +49,11 @@ module CHF
           # this work as a representative also get updated.
           doc[ActiveFedora.index_field_mapper.solr_name('representative_width', type: :integer)] = representative.width.first if representative.width.present?
           doc[ActiveFedora.index_field_mapper.solr_name('representative_height', type: :integer)] = representative.height.first if representative.height.present?
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_page_count', type: :integer)] = representative.try(:original_file).try(:page_count).try(:first)
           doc[ActiveFedora.index_field_mapper.solr_name('representative_original_file_id')] = representative.original_file.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_file_set_id')] = representative.id if representative.original_file
           doc[ActiveFedora.index_field_mapper.solr_name('representative_checksum')] = representative.original_file.checksum.value if representative.original_file
+          doc[ActiveFedora.index_field_mapper.solr_name('representative_content_type')] = representative.mime_type if representative.respond_to?(:mime_type)
 
           # Our app tries not to use this field at all anymore, but just in case
           # set it to proper thumb URL as expected by stack, which is actually
