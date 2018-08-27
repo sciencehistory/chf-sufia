@@ -68,28 +68,6 @@ RSpec.describe MemberConversionController, type: :controller do
 
       # However, the new child work's title should come from the fileset:
       expect(new_child_work.title).to eq ["sample.jpg"]
-
-      # Now run the procedure in reverse: demote the new child work to a fileset.
-      post :to_fileset, params: {
-        parentworkid: parent_work.id,
-        childworkid: new_child_work.id
-      }
-
-      expect(response).to be_redirect
-
-      parent_work.reload
-      collection.reload
-
-      # This gets rid of the child work
-      expect { new_child_work.reload }.to raise_error(Ldp::Gone)
-
-      #and re-attaches the fileset directly to the parent.
-      expect(GenericWork.all.to_a.count).to eq 1
-      expect(parent_work.members.to_a.count).to eq 1
-      expect(parent_work.ordered_members.to_a.count).to eq 1
-      expect(parent_work.members.first).to eq file_set
-      expect(parent_work.thumbnail_id).to eq file_set.id
-      expect(parent_work.representative_id).to eq file_set.id
     end
   end
 
@@ -143,5 +121,4 @@ RSpec.describe MemberConversionController, type: :controller do
       expect(parent_work.representative_id).to eq file_set.id
     end
   end
-
 end
