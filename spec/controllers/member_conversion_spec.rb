@@ -11,18 +11,18 @@ RSpec.describe MemberConversionController, type: :controller do
       id: 'parent123'
     ) }
 
-    let!(:collection) { FactoryGirl.create(
-      :public_collection,
-      members: [parent_work]
-    ) }
+  let!(:collection) { FactoryGirl.create(
+    :public_collection,
+    members: [parent_work]
+  ) }
 
-    before do
-      sign_in user
-    end
+  before do
+    sign_in user
+  end
 
-    context "a generic work with a file attached to it." do
+  context "a generic work with a file attached to it." do
     before do
-        allow(controller.current_ability).to receive(:can?).and_return(true)
+      allow(controller.current_ability).to receive(:can?).and_return(true)
     end
 
     it "promotes a fileset to a child work, then back to a fileset" do
@@ -47,7 +47,6 @@ RSpec.describe MemberConversionController, type: :controller do
       expect(collection.members.to_a.count).to eq 2
       expect(collection.members.to_a).to include parent_work
       expect(collection.members.to_a).to include new_child_work
-
 
       # all parent's permissions should be transferred to the new child work.
       # Otherwise stated, if you subtract the new child's permissions
@@ -91,7 +90,6 @@ RSpec.describe MemberConversionController, type: :controller do
       expect(parent_work.members.first).to eq file_set
       expect(parent_work.thumbnail_id).to eq file_set.id
       expect(parent_work.representative_id).to eq file_set.id
-
     end
   end
 end
