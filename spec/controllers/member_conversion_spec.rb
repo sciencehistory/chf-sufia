@@ -2,28 +2,28 @@ require 'rails_helper'
 RSpec.describe MemberConversionController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
 
-  let(:parent_work) {  FactoryGirl.create(
+  let!(:collection) { FactoryGirl.create(
+    :public_collection,
+    members: [parent_work]
+  )}
+
+  before do
+    sign_in user
+  end
+
+  before do
+    allow(controller.current_ability).to receive(:can?).and_return(true)
+  end
+
+  context "a generic work with a file attached to it." do
+    let(:parent_work) {  FactoryGirl.create(
       :work,
       :fake_public_image,
       creator: ["Fred"],
       title: ["abc"],
       language: ['en'],
       id: 'parent123'
-    ) }
-
-  let!(:collection) { FactoryGirl.create(
-    :public_collection,
-    members: [parent_work]
-  ) }
-
-  before do
-    sign_in user
-  end
-
-  context "a generic work with a file attached to it." do
-    before do
-      allow(controller.current_ability).to receive(:can?).and_return(true)
-    end
+    )}
 
     it "promotes a fileset to a child work, then back to a fileset" do
       # Note that a member fileset was already created,
@@ -92,4 +92,56 @@ RSpec.describe MemberConversionController, type: :controller do
       expect(parent_work.representative_id).to eq file_set.id
     end
   end
+
+  context "a work with a child work attached to it" do
+    let(:child_work) { FactoryGirl.create(
+      :work,
+      :fake_public_image,
+      creator: ["Fred"],
+      title: ["abc"],
+      language: ['en'],
+      id: 'child123'
+    )}
+
+    let(:parent_work) {
+      FactoryGirl.create(
+        :work,
+        creator: ["Fred"],
+        title: ["abc"],
+        language: ['en'],
+        id: 'parent123'
+      ).tap do |work|
+        work.ordered_members += [child_work]
+        work.representative_id = child_work.id
+        work.thumbnail_id = child_work.id
+        work.save!
+      end
+    }
+
+    it "replaces child work with direct fileset" do
+      file_set = child_work.members.first
+
+      post :to_fileset, params: {
+        parentworkid: parent_work.id,
+        childworkid: child_work.id
+      }
+
+      expect(response).to be_redirect
+
+      parent_work.reload
+      collection.reload
+
+      # This gets rid of the child work
+      expect { child_work.reload }.to raise_error(Ldp::Gone)
+
+      #and re-attaches the fileset directly to the parent.
+      expect(GenericWork.all.to_a.count).to eq 1
+      expect(parent_work.members.to_a.count).to eq 1
+      expect(parent_work.ordered_members.to_a.count).to eq 1
+      expect(parent_work.members.first).to eq file_set
+      expect(parent_work.thumbnail_id).to eq file_set.id
+      expect(parent_work.representative_id).to eq file_set.id
+    end
+  end
+
 end
