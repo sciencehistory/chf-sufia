@@ -198,9 +198,12 @@ module MemberHelper
   end
 
   def self.check_connection(parent, member)
+    # avoid actually fetching members, which kind of only helps if
+    # we don't have to fetch them later anyway, which we may but we're
+    # trying, so we use fancy solr technique...
+
     [ (parent != nil), (member != nil),
-      (parent.ordered_members.to_a.include?(member)),
-      (parent.members.to_a.include?(member)),
+      look_up_parent_work_ids(member.id).include?(parent.id),
     ].all?
   end
 
