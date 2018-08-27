@@ -25,7 +25,7 @@ RSpec.describe MemberConversionController, type: :controller do
       id: 'parent123'
     )}
 
-    it "promotes a fileset to a child work, then back to a fileset" do
+    it "promotes a fileset to a child work" do
       # Note that a member fileset was already created,
       # conveniently enough, when we created the parent work.
 
