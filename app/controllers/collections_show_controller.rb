@@ -23,6 +23,10 @@ class CollectionsShowController < CatalogController
   # so :id can continue being our parent collection id.
   # displays values and pagination links for a single facet field
   def facet
+    unless params.key?(:facet_id)
+      redirect_back fallback_location: { action: "index", id: params['id'] }
+      return
+    end
     @facet = blacklight_config.facet_fields[params[:facet_id]]
     @response = get_facet_field_response(@facet.key, params)
     @display_facet = @response.aggregations[@facet.key]
@@ -34,6 +38,14 @@ class CollectionsShowController < CatalogController
       # Draw the partial for the "more" facet modal window:
       format.js { render :layout => false }
     end
+  end
+
+  def range_limit
+    unless params.key?('range_field')
+      redirect_back fallback_location: collection_url
+      return
+    end
+    super
   end
 
   # catalog controller action method we don't want to expose
