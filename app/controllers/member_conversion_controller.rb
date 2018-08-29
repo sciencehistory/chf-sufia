@@ -142,7 +142,7 @@ class MemberConversionController < ApplicationController
   #
   # Does _not_ call save on anything -- not sure, member changing may trigger it's own save under the hood
   def add_to_parent(parent, member, place_in_order, make_representative:, make_thumbnail:)
-    parent.ordered_members = parent.ordered_members.to_a.insert(place_in_order, member)
+    parent.ordered_members.insert_at(place_in_order, member)
     # ordered_members seems to take care of this for us, if tests still pass...
     #parent.members.push(member)
     if make_representative
