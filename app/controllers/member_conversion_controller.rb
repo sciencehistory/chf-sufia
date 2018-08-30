@@ -1,15 +1,4 @@
 class MemberConversionController < ApplicationController
-  include CurationConcerns::Lockable
-
-
-  ## simple method to output some timing info. Will probably remove
-  # when we're done with exploring.
-  def bm(message)
-    s_time = Time.now
-    yield
-    Rails.logger.info "memberconvert benchmark #{msg} #{Time.now - s_time}"
-  end
-
   # Promote a FileSet to a child GenericWork.
   # Note: this saves the parent FileSet and the new child work *twice each*.
   # The hard part here is trying to do this as performant as we can, with as few saves as
@@ -120,12 +109,21 @@ class MemberConversionController < ApplicationController
 
 
   def self.transfer_collection_membership(parent, member)
+    locker = ObjectLocker.new
     look_up_collection_ids(parent.id).each do |c_id|
-      # TODO need lock on collection??
-      c = Collection.find(c_id)
-      c.members.push(member)
-      c.save!
+      locker.acquire_lock_for(c_id) do
+        c = Collection.find(c_id)
+        c.members.push(member)
+        c.save!
+      end
     end
+  end
+
+  # We need an object that includes CurationConcerns::Lockable, so we can use it's
+  # redis-based pessmismistic lock behavior in transfer_collection_membership.
+  # Kind of annoying API from CurationConcerns.
+  class ObjectLocker
+    include CurationConcerns::Lockable
   end
 
 
