@@ -60,35 +60,15 @@ class MemberConversionController < ApplicationController
       return
     end
 
-    place_in_order = parent_work.ordered_members.to_a.find_index(child_work)
-    was_thumbnail = is_thumbnail?(parent_work, child_work)
-    was_representative = is_representative?(parent_work, child_work)
+    WorkToFilesetCompletionJob.perform_later(parent_work.id, child_work_id: child_work.id)
 
     file_set = child_work.members.first
 
-    acquire_lock_for(parent_work.id) do
-        # Detach the child work from the parent ...
-        self.class.remove_member_from_parent(parent_work, child_work)
-        # and replace it with the fileset.
-        self.class.add_to_parent(parent_work, file_set, place_in_order, make_representative: was_representative, make_thumbnail: was_thumbnail)
-        parent_work.save!
-    end
-    child_work.delete
-
-    flash[:notice] = "\"#{file_set.title.first}\" has been demoted to a file attached to \"#{parent_work.title.first}\". All metadata associated with the child work has been deleted."
+    flash[:notice] = "\"#{file_set.title.first}\" is IN PROCESS of being demoted to a file attached to \"#{parent_work.title.first}\". All metadata associated with the child work has been deleted. You can edit the file immediately if desired."
     redirect_to "/concern/parent/#{parent_work.id}/file_sets/#{file_set.id}"
   end
 
   private
-
-
-  def is_thumbnail?(parent, member)
-    parent.thumbnail      == member
-  end
-
-  def is_representative?(parent, member)
-    parent.representative == member
-  end
 
   # Creates child work with:
   # * All the appropriate metadata copied from parent
