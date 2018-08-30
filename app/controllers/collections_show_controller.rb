@@ -24,7 +24,7 @@ class CollectionsShowController < CatalogController
   # displays values and pagination links for a single facet field
   def facet
     unless params.key?(:facet_id)
-      redirect_back fallback_location: { action: "index", id: params['id'] }
+      redirect_back fallback_location: { action: "index", id: params[:id] }
       return
     end
     @facet = blacklight_config.facet_fields[params[:facet_id]]
@@ -42,7 +42,7 @@ class CollectionsShowController < CatalogController
 
   def range_limit
     unless params.key?('range_field')
-      redirect_back fallback_location: collection_url
+      redirect_back fallback_location: collection_path(params[:id])
       return
     end
     super
