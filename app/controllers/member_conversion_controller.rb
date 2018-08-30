@@ -1,8 +1,19 @@
 class MemberConversionController < ApplicationController
   include CurationConcerns::Lockable
 
+
+  ## simple method to output some timing info. Will probably remove
+  # when we're done with exploring.
+  def bm(message)
+    s_time = Time.now
+    yield
+    Rails.logger.info "memberconvert benchmark #{msg} #{Time.now - s_time}"
+  end
+
   # Promote a FileSet to a child GenericWork.
   # Note: this saves the parent FileSet and the new child work *twice each*.
+  # The hard part here is trying to do this as performant as we can, with as few saves as
+  # we can, proper locking, etc. This stack makes this HARD.
   def to_child_work
     begin
       parent_work = GenericWork.find(params['parentid'])
@@ -12,32 +23,38 @@ class MemberConversionController < ApplicationController
       redirect_to "/works/#{parent_work.id}"
       return
     end
-    if !MemberHelper.can_promote_to_child_work?(current_user, parent_work, file_set)
+    if !self.class.can_promote_to_child_work?(current_user, parent_work, file_set)
       flash[:notice] = "\"#{file_set.title.first}\" can't be promoted to a child work."
       redirect_to "/concern/parent/#{parent_work.id}/file_sets/#{file_set.id}"
       return
     end
     #Validation is now out of the way.
 
-    place_in_order = parent_work.ordered_members.to_a.find_index(file_set)
-    # Was the fileset we are promoting serving as the thumbnail or representative?
-    thumb_or_rep = get_thumbnail_and_rep_status(parent_work, file_set)
+
     # Create the new child work and transfer all the metadata from its parent.
-    new_child_work = GenericWork.new(title: file_set.title, creator: [current_user.user_key])
-    new_child_work.apply_depositor_metadata(current_user.user_key)
-    # Add the fileset to the child work ...
-    add_to_parent(new_child_work, file_set, 0, {:thumb => true, :rep => true} )
-    # and set the child work's metadata based on the parent work.
-    copy_metadata_from_parent(parent_work, new_child_work)
+    new_child_work = create_intermediary_child_work(parent_work, file_set)
+
+
+    # figure out it's context in the parent, and swap em.
+
+    place_in_order = parent_work.ordered_members.to_a.find_index(file_set)
+    was_thumbnail = is_thumbnail?(parent_work, file_set)
+    was_representative = is_representative?(parent_work, file_set)
+
     acquire_lock_for(parent_work.id) do
-        # Detach the fileset from the parent ...
-        remove_member_from_parent(parent_work, file_set, thumb_or_rep)
-        # and attach the child work in its place.
-        add_to_parent(parent_work, new_child_work, place_in_order, thumb_or_rep)
+      # Detach the fileset from the parent ...
+      remove_member_from_parent(parent_work, file_set)
+      # and attach the child work in its place.
+      add_to_parent(parent_work, new_child_work, place_in_order, make_thumbnail: was_thumbnail, make_representative: was_representative)
+      parent_work.save!
     end
+
+
+    # TODO needs lock on collections
+    transfer_collection_membership(parent_work, new_child_work)
+
     flash[:notice] = "\"#{new_child_work.title.first}\" has been promoted to a child work of \"#{parent_work.title.first}\". Click \"Edit\" to adjust metadata."
     redirect_to "/works/#{new_child_work.id}"
-
   end
 
 
@@ -52,96 +69,174 @@ class MemberConversionController < ApplicationController
       redirect_to "/works/#{parent_work.id}"
       return
     end
-    if !MemberHelper.can_demote_to_file_set?(current_user, parent_work, child_work)
+    if !self.class.can_demote_to_file_set?(current_user, parent_work, child_work)
       flash[:notice] = "Sorry. \"#{child_work.title.first}\" can't be demoted to a file."
       redirect_to "/works/#{child_work.id}"
       return
     end
+
     place_in_order = parent_work.ordered_members.to_a.find_index(child_work)
-    # Was the child work we're removing serving as the thumbnail or representative?
-    # If so we'll replace it with the fileset.
-    thumb_or_rep = get_thumbnail_and_rep_status(parent_work, child_work)
+    was_thumbnail = is_thumbnail?(parent_work, child_work)
+    was_representative = is_representative?(parent_work, child_work)
+
     file_set = child_work.members.first
+
     acquire_lock_for(parent_work.id) do
         # Detach the child work from the parent ...
-        remove_member_from_parent(parent_work, child_work, thumb_or_rep)
+        remove_member_from_parent(parent_work, child_work)
         # and replace it with the fileset.
-        add_to_parent(parent_work, file_set, place_in_order, thumb_or_rep)
+        add_to_parent(parent_work, file_set, place_in_order, make_representative: was_representative, make_thumbnail: was_thumbnail)
+        parent_work.save!
     end
-    # Now get rid of the child work.
     child_work.delete
+
     flash[:notice] = "\"#{file_set.title.first}\" has been demoted to a file attached to \"#{parent_work.title.first}\". All metadata associated with the child work has been deleted."
     redirect_to "/concern/parent/#{parent_work.id}/file_sets/#{file_set.id}"
   end
 
   private
 
-  # A lot of the code in this controller hinges on whether a fileset
-  # or work was the thumbnail or representative of a parent
-  # work before it got deleted or moved. Instead of checking
-  # every single time, store it in a hash and pass it around.
-  def get_thumbnail_and_rep_status(parent, member)
-    {
-      :thumb => (parent.thumbnail      == member),
-      :rep   => (parent.representative == member)
-    }
+
+  def is_thumbnail?(parent, member)
+    parent.thumbnail      == member
   end
+
+  def is_representative?(parent, member)
+    parent.representative == member
+  end
+
+  # Creates child work with:
+  # * All the appropriate metadata copied from parent
+  # * title/creator copied from file_set
+  # * file_set set as member of new child_work
+  #
+  # DOES save the new child work.
+  # DOES NOT actually add it to parent_work yet. That's expensive and needs to be done
+  # in a lock.
+  # DOES NOT transfer collection membership, that's a whole different mess.
+  def create_intermediary_child_work(parent, file_set)
+    new_child_work = GenericWork.new(title: file_set.title, creator: [current_user.user_key])
+    new_child_work.apply_depositor_metadata(current_user.user_key)
+    # make original fileset a member of our new child work
+    add_to_parent(new_child_work, file_set, 0, make_thumbnail: true, make_representative: true)
+
+    # and set the child work's metadata based on the parent work.
+
+    # bibliographic
+    attrs_to_copy = parent.attributes.sort.map { |a| a[0] }
+    attrs_to_copy -= ['id', "title", 'lease_id', 'embargo_id', 'head', 'tail', 'access_control_id', 'thumbnail_id', 'representative_id' ]
+    attrs_to_copy.each do |a|
+      new_child_work[a] = parent[a]
+    end
+
+    # permissions-related
+    new_child_work.visibility = parent.visibility
+    new_child_work.embargo_release_date = parent.embargo_release_date
+    new_child_work.lease_expiration_date = parent.lease_expiration_date
+    parent_permissions = parent.permissions.map(&:to_hash)
+
+    # member HAS to be saved to set it's permission attributes, not sure why.
+    # extra saves make things extra slow. :(
+    new_child_work.save!
+    if parent_permissions.present?
+      new_child_work.permissions_attributes = parent_permissions
+    end
+    # But now everything seems to be properly saved without need for another save.
+    return new_child_work
+  end
+
 
   # Add a fileset or generic work to a parent work's list of members.
   # If requested, reset the thumbnail or representative to the new item.
-  def add_to_parent(parent, member, place_in_order, thumb_or_rep)
-    parent.ordered_members = parent.ordered_members.to_a.insert(place_in_order, member)
-    parent.members.push(member)
-    if thumb_or_rep[:rep]
+  #
+  # Does _not_ call save on anything -- not sure, member changing may trigger it's own save under the hood
+  def add_to_parent(parent, member, place_in_order, make_representative:, make_thumbnail:)
+    parent.ordered_members.insert_at(place_in_order, member)
+    # ordered_members seems to take care of this for us, if tests still pass...
+    #parent.members.push(member)
+    if make_representative
       parent.representative_id = member.id
-      parent.representative = member
     end
-    if thumb_or_rep[:thumb]
+    if make_thumbnail
       parent.thumbnail_id = member.id
-      parent.thumbnail = member
     end
-    parent.save!
   end
 
   # Remove a fileset or child work from a parent work.
   # If the fileset or child work happened to be
   # the thumbnail or representative, set that value to nil.
-  def remove_member_from_parent(parent, member, thumb_or_rep)
-    parent.thumbnail_id = nil if thumb_or_rep[:thumb]
-    parent.representative_id = nil if thumb_or_rep[:rep]
+  def remove_member_from_parent(parent, member)
     parent.ordered_members.delete(member)
     parent.members.delete(member)
-    parent.save!
   end
 
-  def copy_metadata_from_parent(parent, member)
-    # bibliographic
-    attrs_to_copy = parent.attributes.sort.map { |a| a[0] }
-    attrs_to_copy -= ['id', "title", 'lease_id', 'embargo_id', 'head', 'tail', 'access_control_id', 'thumbnail_id', 'representative_id' ]
-    attrs_to_copy.each do |a|
-      member[a] = parent[a]
-    end
-
-    # permissions-related
-    member.visibility = parent.visibility
-    member.embargo_release_date = parent.embargo_release_date
-    member.lease_expiration_date = parent.lease_expiration_date
-    parent_permissions = parent.permissions.map(&:to_hash)
-    if parent_permissions.present?
-      member.permissions_attributes = parent_permissions
-    end
-
-    # membership
-    transfer_collection_membership(parent, member)
-    member.save!
-  end
 
   def transfer_collection_membership(parent, member)
-      MemberHelper.look_up_collection_ids(parent.id).each do |c_id|
+    self.class.look_up_collection_ids(parent.id).each do |c_id|
       c = Collection.find(c_id)
       c.members.push(member)
       c.save!
     end
+  end
+
+  ###
+  # Some utility methods implemented as class-methods so they can be used anywhere if needed
+  ###
+
+
+  def self.can_promote_to_child_work?(user, parent, member)
+    [
+      (parent.is_a? GenericWork),
+      (member.is_a? FileSet),
+      (self.check_connection(parent, member)),
+      (user.can?(:edit, member.id)),
+      (user.can?(:edit, parent.id)),
+    ].all?
+  end
+
+  def self.can_demote_to_file_set?(user, parent, member)
+    [ (parent.is_a? GenericWork),
+      (member.is_a? GenericWork),
+      (self.look_up_parent_work_ids(member.id).count == 1),
+      (self.check_connection(parent, member)),
+      (member.members.to_a.count == 1),
+      (member.ordered_members.to_a.count == 1),
+      (member.members.first.is_a? FileSet),
+      (user.can?(:destroy, member.id)),
+      (user.can?(:edit, parent.id)),
+    ].all?
+  end
+
+  def self.check_connection(parent, member)
+    # avoid actually fetching members, which kind of only helps if
+    # we don't have to fetch them later anyway, which we may but we're
+    # trying, so we use fancy solr technique...
+
+    [ (parent != nil), (member != nil),
+      look_up_parent_work_ids(member.id).include?(parent.id),
+    ].all?
+  end
+
+  def self.look_up_collection_ids(id)
+    self.look_up_container_ids(id, 'Collection')
+  end
+
+  def self.look_up_parent_work_ids(id)
+    self.look_up_container_ids(id, 'GenericWork')
+  end
+
+  """
+  Search SOLR for items that contain this item in their member_ids_ssim field.
+  This is used both to store the collection-item relationship, but also the parent-child relationship.
+  This is adapted from:
+  https://github.com/samvera/curation_concerns/blob/v1.7.8/app/presenters/curation_concerns/work_show_presenter.rb#L92
+  """
+  def self.look_up_container_ids(id, container_model)
+    solr = ActiveFedora::SolrService
+    q = "{!field f=member_ids_ssim}#{id}"
+    solr.query(q, fl:'id,has_model_ssim')
+      .select { |x| x["has_model_ssim"] == [container_model] }
+      .map    { |x| x.fetch('id') }
   end
 
 end

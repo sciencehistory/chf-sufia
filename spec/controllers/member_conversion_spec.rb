@@ -2,30 +2,30 @@ require 'rails_helper'
 RSpec.describe MemberConversionController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
 
-  let(:parent_work) {  FactoryGirl.create(
+  let!(:collection) { FactoryGirl.create(
+    :public_collection,
+    members: [parent_work]
+  )}
+
+  before do
+    sign_in user
+  end
+
+  before do
+    allow(controller.current_ability).to receive(:can?).and_return(true)
+  end
+
+  context "a generic work with a file attached to it." do
+    let(:parent_work) {  FactoryGirl.create(
       :work,
       :fake_public_image,
       creator: ["Fred"],
       title: ["abc"],
       language: ['en'],
       id: 'parent123'
-    ) }
+    )}
 
-  let!(:collection) { FactoryGirl.create(
-    :public_collection,
-    members: [parent_work]
-  ) }
-
-  before do
-    sign_in user
-  end
-
-  context "a generic work with a file attached to it." do
-    before do
-      allow(controller.current_ability).to receive(:can?).and_return(true)
-    end
-
-    it "promotes a fileset to a child work, then back to a fileset" do
+    it "promotes a fileset to a child work" do
       # Note that a member fileset was already created,
       # conveniently enough, when we created the parent work.
 
@@ -68,11 +68,40 @@ RSpec.describe MemberConversionController, type: :controller do
 
       # However, the new child work's title should come from the fileset:
       expect(new_child_work.title).to eq ["sample.jpg"]
+    end
+  end
 
-      # Now run the procedure in reverse: demote the new child work to a fileset.
+  context "a work with a child work attached to it" do
+    let(:child_work) { FactoryGirl.create(
+      :work,
+      :fake_public_image,
+      creator: ["Fred"],
+      title: ["abc"],
+      language: ['en'],
+      id: 'child123'
+    )}
+
+    let(:parent_work) {
+      FactoryGirl.create(
+        :work,
+        creator: ["Fred"],
+        title: ["abc"],
+        language: ['en'],
+        id: 'parent123'
+      ).tap do |work|
+        work.ordered_members += [child_work]
+        work.representative_id = child_work.id
+        work.thumbnail_id = child_work.id
+        work.save!
+      end
+    }
+
+    it "replaces child work with direct fileset" do
+      file_set = child_work.members.first
+
       post :to_fileset, params: {
         parentworkid: parent_work.id,
-        childworkid: new_child_work.id
+        childworkid: child_work.id
       }
 
       expect(response).to be_redirect
@@ -81,7 +110,7 @@ RSpec.describe MemberConversionController, type: :controller do
       collection.reload
 
       # This gets rid of the child work
-      expect { new_child_work.reload }.to raise_error(Ldp::Gone)
+      expect { child_work.reload }.to raise_error(Ldp::Gone)
 
       #and re-attaches the fileset directly to the parent.
       expect(GenericWork.all.to_a.count).to eq 1
