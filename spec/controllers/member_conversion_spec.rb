@@ -1,4 +1,9 @@
 require 'rails_helper'
+
+# The actual cconversion work is done in a bg job launched by the controller.
+# But this test currently tests for results of that bg job too, sort of "integration" style.
+# This works cause we run jobs inline in test.
+# Not necessarily ideal test design, but good enough for now, we're dealing with a lot here.
 RSpec.describe MemberConversionController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
 
