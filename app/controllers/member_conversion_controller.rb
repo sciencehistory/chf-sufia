@@ -1,6 +1,15 @@
 class MemberConversionController < ApplicationController
   include CurationConcerns::Lockable
 
+
+  ## simple method to output some timing info. Will probably remove
+  # when we're done with exploring.
+  def bm(message)
+    s_time = Time.now
+    yield
+    Rails.logger.info "memberconvert benchmark #{msg} #{Time.now - s_time}"
+  end
+
   # Promote a FileSet to a child GenericWork.
   # Note: this saves the parent FileSet and the new child work *twice each*.
   # The hard part here is trying to do this as performant as we can, with as few saves as
@@ -14,7 +23,7 @@ class MemberConversionController < ApplicationController
       redirect_to "/works/#{parent_work.id}"
       return
     end
-    if !MemberHelper.can_promote_to_child_work?(current_user, parent_work, file_set)
+    if !self.class.can_promote_to_child_work?(current_user, parent_work, file_set)
       flash[:notice] = "\"#{file_set.title.first}\" can't be promoted to a child work."
       redirect_to "/concern/parent/#{parent_work.id}/file_sets/#{file_set.id}"
       return
@@ -60,7 +69,7 @@ class MemberConversionController < ApplicationController
       redirect_to "/works/#{parent_work.id}"
       return
     end
-    if !MemberHelper.can_demote_to_file_set?(current_user, parent_work, child_work)
+    if !self.class.can_demote_to_file_set?(current_user, parent_work, child_work)
       flash[:notice] = "Sorry. \"#{child_work.title.first}\" can't be demoted to a file."
       redirect_to "/works/#{child_work.id}"
       return
@@ -163,11 +172,71 @@ class MemberConversionController < ApplicationController
 
 
   def transfer_collection_membership(parent, member)
-    MemberHelper.look_up_collection_ids(parent.id).each do |c_id|
+    self.class.look_up_collection_ids(parent.id).each do |c_id|
       c = Collection.find(c_id)
       c.members.push(member)
       c.save!
     end
+  end
+
+  ###
+  # Some utility methods implemented as class-methods so they can be used anywhere if needed
+  ###
+
+
+  def self.can_promote_to_child_work?(user, parent, member)
+    [
+      (parent.is_a? GenericWork),
+      (member.is_a? FileSet),
+      (self.check_connection(parent, member)),
+      (user.can?(:edit, member.id)),
+      (user.can?(:edit, parent.id)),
+    ].all?
+  end
+
+  def self.can_demote_to_file_set?(user, parent, member)
+    [ (parent.is_a? GenericWork),
+      (member.is_a? GenericWork),
+      (self.look_up_parent_work_ids(member.id).count == 1),
+      (self.check_connection(parent, member)),
+      (member.members.to_a.count == 1),
+      (member.ordered_members.to_a.count == 1),
+      (member.members.first.is_a? FileSet),
+      (user.can?(:destroy, member.id)),
+      (user.can?(:edit, parent.id)),
+    ].all?
+  end
+
+  def self.check_connection(parent, member)
+    # avoid actually fetching members, which kind of only helps if
+    # we don't have to fetch them later anyway, which we may but we're
+    # trying, so we use fancy solr technique...
+
+    [ (parent != nil), (member != nil),
+      look_up_parent_work_ids(member.id).include?(parent.id),
+    ].all?
+  end
+
+  def self.look_up_collection_ids(id)
+    self.look_up_container_ids(id, 'Collection')
+  end
+
+  def self.look_up_parent_work_ids(id)
+    self.look_up_container_ids(id, 'GenericWork')
+  end
+
+  """
+  Search SOLR for items that contain this item in their member_ids_ssim field.
+  This is used both to store the collection-item relationship, but also the parent-child relationship.
+  This is adapted from:
+  https://github.com/samvera/curation_concerns/blob/v1.7.8/app/presenters/curation_concerns/work_show_presenter.rb#L92
+  """
+  def self.look_up_container_ids(id, container_model)
+    solr = ActiveFedora::SolrService
+    q = "{!field f=member_ids_ssim}#{id}"
+    solr.query(q, fl:'id,has_model_ssim')
+      .select { |x| x["has_model_ssim"] == [container_model] }
+      .map    { |x| x.fetch('id') }
   end
 
 end
