@@ -227,8 +227,7 @@ class MemberConversionController < ApplicationController
   def self.look_up_container_ids(id, container_model)
     solr = ActiveFedora::SolrService
     q = "{!field f=member_ids_ssim}#{id}"
-    solr.query(q, fl:'id,has_model_ssim')
-      .select { |x| x["has_model_ssim"] == [container_model] }
+    solr.query(q, fl:'id,has_model_ssim', fq: "has_model_ssim:#{container_model}")
       .map    { |x| x.fetch('id') }
   end
 
