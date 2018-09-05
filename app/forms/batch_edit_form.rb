@@ -52,9 +52,11 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
   self.required_fields = []
 
   def self.model_attributes(params)
-    clean_params = super #hydra-editor/app/forms/hydra_editor/form.rb:54
-    # model expects this as multi-value
+    # The model expects the "Copyright status" field
+    # to be multi-value, so turn it into an array
+    # before invoking super.
     params[:rights] = Array(params[:rights]) if params[:rights].present?
+    clean_params = super # hydra-editor/app/forms/hydra_editor/form.rb:54
     clean_params = encode_external_id(params, clean_params)
     clean_params.keys.each do |key|
       # strip ALL the things!
