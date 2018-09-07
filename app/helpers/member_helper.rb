@@ -153,6 +153,19 @@ module MemberHelper
       )
     end
 
+    if can?(:edit, file_set.id) && can?(:edit, @presenter.id)
+      list_items <<  '<li class="divider"></li>'.html_safe
+      list_items <<   dropdown_menuitem(
+                        link_to(
+                          "Promote to work",
+                          "/concern/parent/#{@presenter.id}/file_sets/#{file_set.id}/to_child_work" ,
+                          data: { confirm: "Promote \"#{file_set.title.first}\" to a child work of \"#{@presenter.title.first}\" ?\n\nIf you want to add metadata to this item (e.g. for an illustration in a book), you can promote it to a child work." },
+                          method: :post,
+                          target: "_blank")
+                      )
+    end
+
+
     content_tag("ul",
                 safe_join(list_items),
                 class: "dropdown-menu dropdown-menu-right",
