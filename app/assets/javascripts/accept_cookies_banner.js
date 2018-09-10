@@ -15,7 +15,11 @@ chf.cookies_already_accepted_by_user = function () {
 }
 chf.user_accepts_our_cookies = function(event) {
     event.preventDefault();
-    document.cookie = "user_accepts_our_cookies=true; path=/"
+    var expiraton_str = new Date(new Date()
+        .setFullYear(new Date()
+        .getFullYear() + 3))
+        .toString();
+    document.cookie = "user_accepts_our_cookies=true; path=/; expires=" + expiraton_str
     jQuery('.accept_cookies_banner_nav').fadeOut(1000);
 }
 chf.user_does_not_accept_our_cookies = function() {
