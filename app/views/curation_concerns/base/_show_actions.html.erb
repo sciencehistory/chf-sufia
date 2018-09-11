@@ -11,6 +11,14 @@
       <% if presenter.member_presenters.size > 1 %>
           <%= link_to t("file_manager.link_text"), polymorphic_path([main_app, :file_manager, presenter]), class: 'btn btn-default' %>
       <% end %>
+
+      <% if (presenter.parent_work_presenters || []).count == 1 && presenter.member_presenters.size == 1 %>
+          <%=  link_to "Demote to file",
+              "/works/parent/#{presenter.parent_work_presenters.first.id}/child/#{presenter.id}/to_fileset" ,
+              class: 'btn btn-danger',
+              data: { confirm: "Demote \"#{presenter.title.first}\" to a file? The metadata on this child work will be discarded if you do this." },
+              method: :post %>
+      <% end %>
   <% end %>
   <% if presenter.display_feature_link? %>
       <%= link_to "Feature", sufia.featured_work_path(presenter, format: :json),

@@ -6,6 +6,7 @@
 
 <div class="work-show" itemscope <%= @presenter.microdata_type_to_html %> class="row">
 
+
   <% if current_ability.current_user.staff? %>
     <div class="show-admin">
       <%= render "show_actions", presenter: @presenter %>
@@ -36,7 +37,6 @@
           <% end %>
         </ul>
       <% end %>
-
       <% if @presenter.parent_work_presenters.present? || @presenter.source.present? %>
         <ul class="parent-works list-unstyled">
           <% (@presenter.parent_work_presenters || []).each do |parent| %>
