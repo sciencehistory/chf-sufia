@@ -223,7 +223,7 @@ module Chufia
     # Show the GDPR "I accept" cookies banner by default.
     # This setting is overridden in test.rb,
     # so the tests don't have to click "I accept".)
-    config.hide_accept_cookies_banner = true
+    config.hide_accept_cookies_banner = false
 
     def log_error(error)
       Honeybadger.notify(error)
