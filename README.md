@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/sciencehistory/chf-sufia.svg?branch=master)](https://travis-ci.org/sciencehistory/chf-sufia)
 
 ## Description
-The Sufia-based application powering CHF's digital collections site. CHF's digitical collections team is currently hard at work ingesting content before making the site publicly available!
+The Sufia-based application powering the Science History Institute's digital collections site at https://digital.sciencehistory.org
 
 ## Dependencies
 All system setup for development and production machines is managed and documented via ansible playbooks that use the roles defined in https://github.com/curationexperts/ansible-hydra.
