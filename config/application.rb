@@ -110,6 +110,7 @@ module Chufia
 
     config.file_creators = [
       'Brown, Will',
+      'Center for Oral History',
       'Conservation Center for Art & Historic Artifacts',
       'DiMeo, Michelle',
       'George Blood Audio LP',
