@@ -4,7 +4,12 @@ module ApplicationHelper
   # @return [String] rights statement label
   def license_label(id)
     service = CurationConcerns::LicenseService.new
-    service.label(id)
+    begin
+      result = service.label(id)
+    rescue KeyError
+      result = id
+    end
+    result
   end
 
   # A work uses its thumbnail for preview; file just uses itself.
