@@ -21,6 +21,6 @@ services:
   - postgresql
 
 env:
-  matrix:
-  - secure: P/iCE9cJn62iR9zHzHpCnT9a5cizKS7ASBxs7vM2OPKkc335Dxm4VxzejEFmVOqWAT//utGzLI6MGLYkqFwYIZznB6oJucEIz5Xp+ABOX6ZWMN3bueU2BILiRW9AVWWZVH+19KXSOQVqh1dz55Cv8J8iwUHfXdZCmdOoli5TzAI=
-  - secure: m7YZobFsjitZ5PLKKWEYEopNBRku5ot8St4HA3o2/t/PEgQrep74/+01Styl5RHb8ZAbFCM6hgt4asQczsujEF86+65NW3AKEpjcgL4zQ1+98Dd3+qApwh5JGgiwu2u31noQ6x/PfLO4k6E0vMtshfni91WDGPXsLZRP/3hzPns=
+  global:
+  - secure: Nom1EhdruXCCqnP2TncEJnq/iVfF9vMTIdtwgi+9MqEJVNM+yFcZ+gmU4GbVLwIaW06L+AjSDKgf6NbZMhkf05aJLEGSFwCRK8KQy0ZGrzAM/KuhirNQP5HSnX15XL3hmZwIPmBq7DoF1o6LgyyQ5Xey+JbepTZt/WMk3wo0VD4=
+  - secure: P0g6AmpNHLG/l57KzgHBjCMRiqk45T1bC4HRTxcwuRnZn1EiniEjp7ratFyb9LqxLkM+RkbB31YHWdmiYT16HyNNoTLA9r7B7oXh9fIi++2pqg7wEK8aBB286Zj/4b5lQxQPxMVhbkUtEY1ocw56SpU1YJOHPVkb+/8FCdturwc=
