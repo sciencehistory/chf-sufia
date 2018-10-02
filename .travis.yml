@@ -19,3 +19,8 @@ before_script:
 services:
   - redis-server
   - postgresql
+
+env:
+  matrix:
+  - secure: P/iCE9cJn62iR9zHzHpCnT9a5cizKS7ASBxs7vM2OPKkc335Dxm4VxzejEFmVOqWAT//utGzLI6MGLYkqFwYIZznB6oJucEIz5Xp+ABOX6ZWMN3bueU2BILiRW9AVWWZVH+19KXSOQVqh1dz55Cv8J8iwUHfXdZCmdOoli5TzAI=
+  - secure: m7YZobFsjitZ5PLKKWEYEopNBRku5ot8St4HA3o2/t/PEgQrep74/+01Styl5RHb8ZAbFCM6hgt4asQczsujEF86+65NW3AKEpjcgL4zQ1+98Dd3+qApwh5JGgiwu2u31noQ6x/PfLO4k6E0vMtshfni91WDGPXsLZRP/3hzPns=

@@ -15,7 +15,10 @@ version: 6.3.0
 
 # Attempt to use mirror url to keep travis tests from being blocked by
 # apache for too many solr downloads.
-# (Commenting this out, as it was more trouble than it was worth. See 
+# (Commenting this out, as it was more trouble than it was worth. See
 # https://github.com/sciencehistory/chf-sufia/pull/1153
 # for more details.)
 # mirror_url: http://lib-solr-mirror.princeton.edu/dist/
+
+url: https://s3.amazonaws.com/science-history-build-cache/solr/6.3.0/solr-6.3.0.zip
+validate: false
