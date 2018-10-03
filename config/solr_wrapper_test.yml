@@ -13,9 +13,14 @@ collection:
 version: 6.3.0
 
 
-# Attempt to use mirror url to keep travis tests from being blocked by
+# Use mirror url to keep travis tests from being blocked by
 # apache for too many solr downloads.
-# (Commenting this out, as it was more trouble than it was worth. See 
+# Ignore the checksum, which is coming from apache until
+# https://github.com/cbeer/solr_wrapper/pull/119 is merged.
+
+mirror_url: http://lib-solr-mirror.princeton.edu/dist/
+validate: false
+
+# See also:
+# https://github.com/cbeer/solr_wrapper/issues/122
 # https://github.com/sciencehistory/chf-sufia/pull/1153
-# for more details.)
-# mirror_url: http://lib-solr-mirror.princeton.edu/dist/
