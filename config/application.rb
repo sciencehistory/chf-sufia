@@ -158,6 +158,7 @@ module Chufia
       'Medical equipment & supplies',
       'Minutes (Records)',
       'Molecular models',
+      'Money (Objects)',
       'Negatives',
       'Oral histories',
       'Paintings',
