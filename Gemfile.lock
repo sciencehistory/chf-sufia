@@ -490,7 +490,7 @@ GEM
     logging (2.2.2)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.12)
@@ -523,7 +523,7 @@ GEM
     netrc (0.11.0)
     nio4r (2.1.0)
     noid (0.9.0)
-    nokogiri (1.8.3)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -944,4 +944,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.16.2
+   1.17.0
