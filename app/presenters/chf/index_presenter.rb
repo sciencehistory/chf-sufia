@@ -109,5 +109,13 @@ module Chf
       CHF::DatesOfWorkForDisplay.new(date_of_work_models).display_dates
     end
 
+
+    def is_pdf?
+      (solr_document["content_types_ssim"] || []).collect do |x|
+        return true if x.include? 'pdf'
+      end
+      false
+    end
+
   end
 end

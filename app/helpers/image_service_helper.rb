@@ -88,6 +88,8 @@ module ImageServiceHelper
       }
     }
 
+    args[:class] += ['pdf_border'] if member.representative_content_type.include? "pdf"
+
     src_args = member_src_attributes(member: member, size_key: size_key)
 
     if lazy

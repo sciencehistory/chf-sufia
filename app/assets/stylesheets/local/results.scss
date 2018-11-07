@@ -220,6 +220,10 @@
       }
     }
 
+    .chf-results-list-item-thumb.pdf_border img{
+      border: 2px solid grey;
+    }
+
     .chf-results-list-item-content {
       max-width: calc(67% - 28px);
     }

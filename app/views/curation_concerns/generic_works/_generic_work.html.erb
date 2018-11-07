@@ -14,9 +14,7 @@
 
 <li id="document_<%= generic_work.to_param %>" class="chf-results-list-item document <%= render_document_class generic_work %>" itemscope itemtype="<%= generic_work.itemtype %>">
     <% doc_presenter = Chf::IndexPresenter.new(generic_work, self) %>
-
-
-    <div class="chf-results-list-item-thumb">
+    <div class="chf-results-list-item-thumb <%= "pdf_border" if doc_presenter.is_pdf? %>">
       <%# render_thumbnail_tag generic_work %>
       <%= link_to generic_work do %>
         <%= tag "img", member_src_attributes(member: doc_presenter, size_key: :standard).merge(alt: "") %>

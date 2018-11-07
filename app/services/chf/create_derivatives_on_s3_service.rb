@@ -151,6 +151,7 @@ module CHF
     # it to helper methods, definitely not thread-safe, don't share instances
     # between threads, you weren't going to anyway.
     def call
+
       futures = []
 
       # mktmpdir will clean up tmp dir and all it's contents for us
@@ -177,14 +178,8 @@ module CHF
         @working_dir = temp_dir
         @working_original_path = CHF::GetFedoraBytestreamService.new(file_id, local_path: File.join(@working_dir, "original")).get
 
-
         desired_types.each_pair do |key, defn|
-          future = if file_set_content_type == "application/pdf"
-              create_pdf_jpg_thumb_future(width: defn.width, type_key: key)
-            else
-              create_image_jpg_derivative_future(width: defn.width, type_key: key)
-            end
-          futures << future
+          futures << create_image_derivative_future(width: defn.width, type_key: key)
         end
 
         futures.compact.each(&:value!)
@@ -245,7 +240,7 @@ module CHF
     #     * https://developers.google.com/speed/docs/insights/OptimizeImages
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     #     * https://github.com/jcupitt/libvips/issues/775
-    def create_image_jpg_derivative_future(width:, type_key:)
+    def create_image_derivative_future(width:, type_key:)
       defn = get_type_defn(type_key)
       style = defn.style
       output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
@@ -300,46 +295,5 @@ module CHF
                            cache_control: cache_control)
       end
     end
-
-
-    # Takes a pdf, makes a thumb. Includes small border around thumb, since this
-    # works better for typical white-bg print-like PDFs.
-    def create_pdf_jpg_thumb_future(width:, type_key:)
-      defn = get_type_defn(type_key)
-      style = defn.style
-      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
-
-      # very hard to get ImageMagick to take a PDF page and resize it as a smaller jpg, without it looking
-      # like a blurry mess.
-      # These commands are the best I could get so far, with density and unsharp. Still not totally sure
-      # what's going on, better may be possible.
-
-      image_magick_command_arr = [
-        "convert",
-        "-density", "400",
-        "-colorspace",  "sRGB",
-        # remove 2 from width to account for two pixels of border we're adding, and still get the right width.
-        "-thumbnail", "#{width - 2}x",
-        "-unsharp", "0x3.0",
-        "-define", "jpeg:size=#{width * 2}x", # not sure if this is hurting resolution, using width*2 in case, although that might defeat the purpose
-        "-alpha",  "remove",
-        "-quality", "85",
-        "-bordercolor", "#050939",  # brand dark blue
-        "-border",  "1",
-        "#{working_original_path}[0]", # index is PDF page number
-        output_path
-      ]
-
-
-      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        TTY::Command.new(printer: :null).run(*image_magick_command_arr)
-        s3_obj.upload_file(output_path,
-           acl: acl,
-           content_type: "image/jpeg",
-           cache_control: cache_control)
-      end
-    end
-
   end
 end
