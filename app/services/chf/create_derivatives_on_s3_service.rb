@@ -249,11 +249,11 @@ module CHF
       sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
 
       vips_jpg_params = if style.to_s == "thumb"
-        "[Q=85,interlace,optimize_coding,strip]"
+        "[Q=95,interlace,optimize_coding,strip]"
       else
         # could be higher Q for downloads if we want, but we don't right now
         # We do avoid striping metadata, no 'strip' directive.
-        "[Q=85,interlace,optimize_coding]"
+        "[Q=95,interlace,optimize_coding]"
       end
 
       extra_args = if style.to_s == "thumb"
