@@ -62,7 +62,7 @@ module CurationConcerns
 
     def urls_to_catalog
       @urls_to_catalog ||= catalog_bib_numbers.collect do |bib_num|
-        "http://othmerlib.sciencehistory.org/record=#{CGI.escape bib_num}"
+        "https://othmerlib.sciencehistory.org/record=#{CGI.escape bib_num}"
       end
     end
 

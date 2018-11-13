@@ -14,7 +14,7 @@ https://github.com/projectblacklight/blacklight/blob/v6.7.2/app/views/catalog/_s
       <li class="list-group-item"><%= link_to "https://www.sciencehistory.org/search/site/#{Addressable::URI.encode_component(params[:q], Addressable::URI::CharacterClasses::PATH)}" do %>
         <span class="fa fa-search"></span>  Science History Institute
       <% end %></li>
-      <li class="list-group-item"><%= link_to "http://othmerlib.sciencehistory.org/search/?searchtype=X&SORT=D&searcharg=#{Addressable::URI.encode_component(params[:q], Addressable::URI::CharacterClasses::QUERY)}" do %>
+      <li class="list-group-item"><%= link_to "https://othmerlib.sciencehistory.org/search/?searchtype=X&SORT=D&searcharg=#{Addressable::URI.encode_component(params[:q], Addressable::URI::CharacterClasses::QUERY)}" do %>
         <span class="fa fa-search"></span>  Othmer Library Catalog
       <% end %></li>
       <li class="list-group-item"><%= link_to "https://oh.sciencehistory.org/search/site/#{Addressable::URI.encode_component(params[:q], Addressable::URI::CharacterClasses::PATH)}" do %>
