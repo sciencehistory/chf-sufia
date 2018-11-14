@@ -19,12 +19,14 @@ module CHF
 
     def urls_to_catalog
       return [] unless @solr_document.related_url.present?
-      @urls_to_catalog ||= @solr_document.related_url.find_all do |url|
-        url.start_with?("http://othmerlib.chemheritage.org/record=") || url.start_with?("http://othmerlib.sciencehistory.org/record=")
-      end
+      @urls_to_catalog ||= @solr_document.related_url.
+        find_all { |url| is_opac_url?(url) }
     end
 
-
+    def is_opac_url?(url)
+      test_regex = /^https?:\/\/othmerlib\.(chemheritage|sciencehistory)\.org\/record=/
+      test_regex.match(url).nil? ? false : true
+    end
 
   end
 end

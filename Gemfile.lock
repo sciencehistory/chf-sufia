@@ -584,7 +584,7 @@ GEM
       faraday
       nokogiri (~> 1.6)
       rails (>= 4.2.0, < 6.0)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-protection (2.0.3)
       rack
     rack-test (0.6.3)

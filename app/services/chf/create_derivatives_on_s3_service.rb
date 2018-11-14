@@ -151,7 +151,6 @@ module CHF
     # it to helper methods, definitely not thread-safe, don't share instances
     # between threads, you weren't going to anyway.
     def call
-
       futures = []
 
       # mktmpdir will clean up tmp dir and all it's contents for us
@@ -179,7 +178,12 @@ module CHF
         @working_original_path = CHF::GetFedoraBytestreamService.new(file_id, local_path: File.join(@working_dir, "original")).get
 
         desired_types.each_pair do |key, defn|
-          futures << create_image_derivative_future(width: defn.width, type_key: key)
+          future = if file_set_content_type == "application/pdf"
+              create_pdf_thumb_future(width: defn.width, type_key: key)
+            else
+              create_image_jpg_derivative_future(width: defn.width, type_key: key)
+            end
+          futures << future
         end
 
         futures.compact.each(&:value!)
@@ -193,6 +197,7 @@ module CHF
         # if desired_types.count == 0
         #   file_set.create_derivatives(working_original_path)
         # end
+
       end
     ensure
       @working_dir = nil
@@ -240,7 +245,7 @@ module CHF
     #     * https://developers.google.com/speed/docs/insights/OptimizeImages
     #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
     #     * https://github.com/jcupitt/libvips/issues/775
-    def create_image_derivative_future(width:, type_key:)
+    def create_image_jpg_derivative_future(width:, type_key:)
       defn = get_type_defn(type_key)
       style = defn.style
       output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
@@ -249,11 +254,11 @@ module CHF
       sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
 
       vips_jpg_params = if style.to_s == "thumb"
-        "[Q=95,interlace,optimize_coding,strip]"
+        "[Q=85,interlace,optimize_coding,strip]"
       else
         # could be higher Q for downloads if we want, but we don't right now
         # We do avoid striping metadata, no 'strip' directive.
-        "[Q=95,interlace,optimize_coding]"
+        "[Q=85,interlace,optimize_coding]"
       end
 
       extra_args = if style.to_s == "thumb"
@@ -295,5 +300,79 @@ module CHF
                            cache_control: cache_control)
       end
     end
+
+    def create_pdf_thumb_future(width:, type_key:)
+      defn = get_type_defn(type_key)
+      style = defn.style
+
+      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
+      tmp_output_path = output_path.sub('.jpg', "_tmp.jpg")
+
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
+
+      sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
+
+      vips_jpg_params = if style.to_s == "thumb"
+        "[Q=98,interlace,optimize_coding,strip]"
+      else
+        "[Q=98,interlace,optimize_coding]"
+      end
+
+      extra_args = if style.to_s == "thumb"
+        # for thumbs, ensure convert to sRGB and strip embedded profile,
+        # as browsers assume sRGB.
+        ["--eprofile", sRGB_profile_path, "--delete"]
+      else
+        []
+      end
+
+      # if we're not resizing, way more convenient to use a different
+      # vips command line.
+      args = if width
+        # Due to bug in vips, we need to provide a height constraint, we make
+        # really huge one million pixels so it should not come into play, and
+        # we're constraining proportionally by width.
+        # https://github.com/jcupitt/libvips/issues/781
+        [
+          "vipsthumbnail",
+          working_original_path,
+          *extra_args,
+          "--size", "#{width}x1000000",
+          "-o", "#{tmp_output_path}#{vips_jpg_params}"
+        ]
+      else
+        [ "vips", "copy",
+          working_original_path,
+          *extra_args,
+          "#{tmp_output_path}#{vips_jpg_params}"
+        ]
+      end
+
+      sigma = (width > 150) ? 3 : 1
+      sigma_string = sigma.to_s
+
+      vips_sharpen_command_arr = [
+        "vips",  "sharpen",
+         tmp_output_path,
+         output_path,
+        "--sigma",     sigma_string,
+        "--x1",        "2"   ,
+        "--y2",        "10"  , # (don't brighten by more than 10 L*)
+        "--y3",        "10"  , # (can darken by up to 20 L*)
+        "--m1",        "0"   , # (no sharpening in flat areas)
+        "--m2",        "3"   , # (some sharpening in jaggy areas)
+      ]
+
+      Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
+        cmd = TTY::Command.new(printer: :null)
+        cmd.run(*args)
+        cmd.run(*vips_sharpen_command_arr)
+        s3_obj.upload_file(output_path,
+                           acl: acl,
+                           content_type: "image/jpeg",
+                           content_disposition: ("attachment" if style != :thumb),
+                           cache_control: cache_control)
+      end #concurrent future execute do
+    end # method
   end
 end
