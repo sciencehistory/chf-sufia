@@ -182,10 +182,6 @@
       // aspect ratio, cause the dimensions are so responsive. This is just
       // a rough huge limit, if it's not working out just delete this and give up.
       max-height: 300vw;
-
-      &.pdf_border {
-        border: 2px solid #050939;
-      }
     }
 
     .show-page-member-title {
