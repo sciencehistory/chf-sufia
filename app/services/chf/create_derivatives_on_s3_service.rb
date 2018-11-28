@@ -234,33 +234,17 @@ module CHF
       @working_original_path || (raise TypeError.new("Unexpected nil @working_original_path"))
     end
 
-    # create and push to s3. Operates on an IMAGE (tiff, jpeg, whatever) input.
-    #
-    # returns a Future
-    #
-    # For thumbnails, we use more aggressive image conversion parameters, as opposed
-    # to downloads. Later, thumbs might also apply some cropping to enforce maximum
-    # aspect ratios. For thumbnail aggressive conversion parameters, some background:
-    #     * http://www.imagemagick.org/Usage/thumbnails/
-    #     * https://developers.google.com/speed/docs/insights/OptimizeImages
-    #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
-    #     * https://github.com/jcupitt/libvips/issues/775
-    def create_image_jpg_derivative_future(width:, type_key:)
-      defn = get_type_defn(type_key)
-      style = defn.style
-      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
-      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
-
+    def thumbnail_shell_args(type_key, width, quality, output_path)
+      style = get_type_defn(type_key).style
       sRGB_profile_path = Rails.root.join("vendor", "icc", "sRGB2014.icc").to_s
 
       vips_jpg_params = if style.to_s == "thumb"
-        "[Q=85,interlace,optimize_coding,strip]"
+        "[Q=#{quality},interlace,optimize_coding,strip]"
       else
         # could be higher Q for downloads if we want, but we don't right now
         # We do avoid striping metadata, no 'strip' directive.
-        "[Q=85,interlace,optimize_coding]"
+        "[Q=#{quality},interlace,optimize_coding]"
       end
-
       extra_args = if style.to_s == "thumb"
         # for thumbs, ensure convert to sRGB and strip embedded profile,
         # as browsers assume sRGB.
@@ -290,7 +274,62 @@ module CHF
           "#{output_path}#{vips_jpg_params}"
         ]
       end
+      args
+    end
 
+
+    def sharpen_shell_args(type_key, width, input_path, output_path)
+      sigma = (width > 150) ? 3 : 1
+      sigma_string = sigma.to_s
+      result = [
+        "vips",  "sharpen",
+         input_path,
+         output_path,
+        "--sigma",     sigma_string,
+        "--x1",        "2"   ,
+        "--y2",        "10"  , # (don't brighten by more than 10 L*)
+        "--y3",        "10"  , # (can darken by up to 20 L*)
+        "--m1",        "0"   , # (no sharpening in flat areas)
+        "--m2",        "3"   , # (some sharpening in jaggy areas)
+      ]
+      result
+    end
+
+    def add_border_shell_args(old_width, old_height, border_width, input_path, output_path)
+      border_color = "5, 9, 57" # #050939
+
+      ['vips',
+       'embed',
+        input_path,
+        output_path,
+        border_width,
+        border_width,
+        old_width + border_width * 2,
+        old_height + border_width * 2,
+        '--extend',
+        'background',
+        '--background',
+        border_color
+      ]
+    end
+
+    # create and push to s3. Operates on an IMAGE (tiff, jpeg, whatever) input.
+    #
+    # returns a Future
+    #
+    # For thumbnails, we use more aggressive image conversion parameters, as opposed
+    # to downloads. Later, thumbs might also apply some cropping to enforce maximum
+    # aspect ratios. For thumbnail aggressive conversion parameters, some background:
+    #     * http://www.imagemagick.org/Usage/thumbnails/
+    #     * https://developers.google.com/speed/docs/insights/OptimizeImages
+    #     * http://libvips.blogspot.com/2013/11/tips-and-tricks-for-vipsthumbnail.html
+    #     * https://github.com/jcupitt/libvips/issues/775
+    def create_image_jpg_derivative_future(width:, type_key:)
+      defn = get_type_defn(type_key)
+      style = defn.style
+      s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
+      output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
+      args = thumbnail_shell_args(type_key, width, 80, output_path)
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
         TTY::Command.new(printer: :null).run(*args)
         s3_obj.upload_file(output_path,
@@ -301,45 +340,51 @@ module CHF
       end
     end
 
+    def get_height_shell_args(image_path)
+      ['vipsheader', '-f', 'Ysize', image_path]
+    end
 
     # Takes a pdf, makes a thumb. Includes small border around thumb, since this
     # works better for typical white-bg print-like PDFs.
     def create_pdf_jpg_thumb_future(width:, type_key:)
       defn = get_type_defn(type_key)
       style = defn.style
+
+      #paths
       output_path = Pathname.new(working_dir).join(type_key.to_s).sub_ext(defn.suffix).to_s
+      blurry_output_path = output_path.sub('.jpg', "_blurry.jpg")
+      sharp_output_path = output_path.sub('.jpg', "_sharp.jpg")
+
+      # image widths
+      border_width = 1
+      width_minus_borders = width - (2 * border_width)
+
+      # shell commands
+      thumbnail_sh = thumbnail_shell_args(type_key, width_minus_borders, 98, blurry_output_path)
+      get_height_sh = get_height_shell_args (blurry_output_path)
+      sharpen_sh = sharpen_shell_args(type_key, width_minus_borders, blurry_output_path, sharp_output_path)
+      height_sh = get_height_shell_args(blurry_output_path)
+
       s3_obj = self.class.s3_bucket!.object(self.class.s3_path(file_set_id: file_set.id, file_checksum: file_checksum, type_key: type_key))
 
-      # very hard to get ImageMagick to take a PDF page and resize it as a smaller jpg, without it looking
-      # like a blurry mess.
-      # These commands are the best I could get so far, with density and unsharp. Still not totally sure
-      # what's going on, better may be possible.
-
-      image_magick_command_arr = [
-        "convert",
-        "-density", "400",
-        "-colorspace",  "sRGB",
-        # remove 2 from width to account for two pixels of border we're adding, and still get the right width.
-        "-thumbnail", "#{width - 2}x",
-        "-unsharp", "0x3.0",
-        "-define", "jpeg:size=#{width * 2}x", # not sure if this is hurting resolution, using width*2 in case, although that might defeat the purpose
-        "-alpha",  "remove",
-        "-quality", "85",
-        "-bordercolor", "#050939",  # brand dark blue
-        "-border",  "1",
-        "#{working_original_path}[0]", # index is PDF page number
-        output_path
-      ]
-
-
       Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        TTY::Command.new(printer: :null).run(*image_magick_command_arr)
+        cmd = TTY::Command.new(printer: :null)
+        # First, create a blurry thumbnail.
+        cmd.run(*thumbnail_sh)
+        # Then, sharpen it.
+        cmd.run(*sharpen_sh)
+        # Determine its height.
+        height_minus_borders = cmd.run(*height_sh).out.to_i
+        # Add a border around the sharpened thumbnail.
+        add_border_sh =  add_border_shell_args(width_minus_borders, height_minus_borders, border_width, sharp_output_path, output_path)
+        cmd.run(*add_border_sh)
+        # Upload the result to s3
         s3_obj.upload_file(output_path,
-           acl: acl,
-           content_type: "image/jpeg",
-           cache_control: cache_control)
-      end
-    end
-
+          acl: acl,
+          content_type: "image/jpeg",
+          content_disposition: ("attachment" if style != :thumb),
+          cache_control: cache_control)
+      end #concurrent future execute do
+    end # method
   end
 end
