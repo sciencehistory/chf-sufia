@@ -6,5 +6,6 @@ FactoryGirl.modify do
     trait :with_image do
       representative_image_path "1831ck36t_2x.jpg"
     end
+    description ['See also <a href="https://en.wikipedia.org" target="_blank">Wikipedia</a>.']
   end
 end

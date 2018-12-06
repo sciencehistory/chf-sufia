@@ -11,10 +11,19 @@ RSpec.feature "Collections", js: true do
   let!(:collection) { FactoryGirl.create(:collection, :public, :with_image, members: [work]) }
 
   scenario "displays collection with item, searches" do
+
     visit collection_path(collection)
 
     expect(page).to have_text("1 item")
     expect(page).to have_link(title, href: curation_concerns_generic_work_path(work.id))
+
+    # The factory (spec/factories/collections_factory.rb) sets the link to
+    # "<a href="https://en.wikipedia.org" target="_blank">Wikipedia</a>".
+    # The scrubber invoked in app/views/collections/_collection_description.erb
+    # is supposed to allow the link, but scrub the 'target' attribute.
+
+    expect(page).to have_link('Wikipedia', 'https://en.wikipedia.org')
+    expect(page.find_link('Wikipedia')[:target]).to eq('')
 
     # Could not get test of facet search functionality to work reliably on Travis, it was
     # flaky, seemed to be on waiting for the page transition to actually show facet results,
