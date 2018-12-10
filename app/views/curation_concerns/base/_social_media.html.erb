@@ -74,22 +74,4 @@ end %>
     <i class="fa fa-pinterest-p"></i>
   <% end %>
 
-  <!-- Sharingbutton Tumblr -->
-  <%# see https://www.tumblr.com/docs/en/share_button %>
-  <%# We're removing this button, per
-  https://github.com/sciencehistory/chf-sufia/issues/1172 .  %>
-  <% if false %>
-    <%= link_to "https://www.tumblr.com/widgets/share/tool?#{{posttype: 'photo', content: share_media, caption: title_plus_description, canonicalUrl: share_url, shareSource: 'tumblr_share_button'}.to_param}",
-                class: 'social-media-link tumblr btn btn-brand-dark',
-                target: '_blank',
-                rel: 'noopener noreferrer',
-                data: {
-                  analytics_category: "Work",
-                  analytics_action: "share_tumblr",
-                  analytics_label: id
-                },
-                title: t('curation_concerns.base.social_media.tumblr') do %>
-      <i class="fa fa-tumblr"></i>
-    <% end %>
-  <% end %>
 </div>
