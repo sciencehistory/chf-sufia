@@ -16,6 +16,8 @@ module DescriptionFormatterHelper
     # a sufia helper to turn URLs into links.
     text = iconify_auto_link(text)
 
+    text = add_target_blank(text)
+
     text
   end
 
@@ -29,4 +31,15 @@ module DescriptionFormatterHelper
 
     format_description(text, truncate: true)
   end
+
+
+  def add_target_blank(html)
+    doc = Nokogiri::HTML.fragment(html)
+    doc.css('a').each do |link|
+      link['target'] = '_blank'
+    end
+    doc.to_s.html_safe
+  end
+
+
 end
