@@ -10,7 +10,7 @@ RSpec.feature "Collections", js: true do
   let!(:work) { FactoryGirl.create(:work, :with_complete_metadata, title: [title], subject: [subject]) }
   let!(:collection) { FactoryGirl.create(
     :collection, :public, :with_image, members: [work],
-    description: ['See also <a href="https://en.wikipedia.org" target="_blank">Wikipedia</a>.'])
+    description: ['See also <a href="https://en.wikipedia.org">Wikipedia</a>.'])
   }
 
   scenario "displays collection with item, searches" do
@@ -20,11 +20,12 @@ RSpec.feature "Collections", js: true do
     expect(page).to have_text("1 item")
     expect(page).to have_link(title, href: curation_concerns_generic_work_path(work.id))
 
-    # The scrubber invoked in app/views/collections/_collection_description.erb
-    # is supposed to allow the link, but scrub the 'target' attribute.
+    # The description formatter (in app/helpers/description_formatter_helper.rb)
+    # adds a 'target' attribute to all links on collections.
+    # (See https://github.com/sciencehistory/chf-sufia/pull/1196/)
 
     expect(page).to have_link('Wikipedia', href: 'https://en.wikipedia.org')
-    expect(page.find_link('Wikipedia')[:target]).to eq('')
+    expect(page.find_link('Wikipedia')[:target]).to eq('_blank')
 
     # Could not get test of facet search functionality to work reliably on Travis, it was
     # flaky, seemed to be on waiting for the page transition to actually show facet results,
