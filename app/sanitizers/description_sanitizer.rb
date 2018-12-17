@@ -13,10 +13,18 @@ class DescriptionSanitizer < Rails::Html::Sanitizer
 
   attr_reader :scrubber
 
-  def initialize
+  def initialize(add_target_blank: false)
+    @add_target_blank = add_target_blank
+
     @scrubber = Rails::Html::PermitScrubber.new.tap do |scrubber|
       scrubber.tags = allowed_tags
       scrubber.attributes = allowed_attributes
+    end
+
+    @link_blank_target_scrubber = Loofah::Scrubber.new do |node|
+      if node.name = "a"
+        node['target'] = '_blank'
+      end
     end
   end
 
@@ -27,6 +35,14 @@ class DescriptionSanitizer < Rails::Html::Sanitizer
     loofah_fragment = Loofah.fragment(html)
     loofah_fragment.scrub!(@scrubber)
 
+    if add_target_blank?
+      loofah_fragment.scrub!(@link_blank_target_scrubber)
+    end
+
     properly_encode(loofah_fragment, encoding: 'UTF-8')
+  end
+
+  def add_target_blank?
+    @add_target_blank
   end
 end
