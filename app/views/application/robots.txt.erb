@@ -3,9 +3,15 @@
 #
 <% if CHF::Env.production? %>
 # production robots.txt
+
+# We are blocking all robots from /downloads, becuase we have a hypothesis
+# that slow proxied-from-fedora /downloads requests from robots are part
+# of what's causing problems for our apache. This does mean robots won't
+# index PDF originals.
 User-agent: *
-Disallow:
+Disallow: /downloads/
 Crawl-delay: 5
+
 
 Sitemap: https://s3.amazonaws.com/<%= CHF::Env.lookup("sitemap_s3_bucket") %>/sitemap/sitemap.xml.gz
 
