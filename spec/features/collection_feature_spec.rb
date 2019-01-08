@@ -10,7 +10,7 @@ RSpec.feature "Collections", js: true do
   let!(:work) { FactoryGirl.create(:work, :with_complete_metadata, title: [title], subject: [subject]) }
   let!(:collection) { FactoryGirl.create(
     :collection, :public, :with_image, members: [work],
-    description: ['See also <a href="https://en.wikipedia.org">Wikipedia</a>.'])
+    description: ['See also <a href="https://en.wikipedia.org">Wikipedia</a>. <i>italics</i> <b>bold</b> <cite>citation</cite>'])
   }
 
   scenario "displays collection with item, searches" do
@@ -26,6 +26,10 @@ RSpec.feature "Collections", js: true do
 
     expect(page).to have_link('Wikipedia', href: 'https://en.wikipedia.org')
     expect(page.find_link('Wikipedia')[:target]).to eq('_blank')
+
+    expect(page).to have_css("i",    :text => "italics")
+    expect(page).to have_css("b",    :text => "bold")
+    expect(page).to have_css("cite", :text => "citation")
 
     # Could not get test of facet search functionality to work reliably on Travis, it was
     # flaky, seemed to be on waiting for the page transition to actually show facet results,
