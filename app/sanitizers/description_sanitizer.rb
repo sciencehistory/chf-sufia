@@ -22,7 +22,7 @@ class DescriptionSanitizer < Rails::Html::Sanitizer
     end
 
     @link_blank_target_scrubber = Loofah::Scrubber.new do |node|
-      if node.name = "a"
+      if node.name == "a"
         node['target'] = '_blank'
       end
     end
