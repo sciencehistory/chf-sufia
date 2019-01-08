@@ -149,6 +149,7 @@ module Chufia
       'Engravings',
       'Ephemera',
       'Etchings',
+      'Figurines',
       'Glassware',
       'Handbooks and manuals',
       'Illustrations',
@@ -183,23 +184,24 @@ module Chufia
     ]
 
     config.exhibitions = [
-      "Making Modernity",
-      'The Whole of Nature and the Mirror of Art',
-      "Transmutations",
-      "Lobby 2017",
-      'ExhibitLab',
-      'Age of Alchemy',
-      "Things Fall Apart",
-      "Second Skin",
-      "Science at Play",
+      "Age of Alchemy",
       "Books of Secrets",
-      "Sensing Change",
-      "The Alchemical Quest",
-      "Inspiring Youth in Chemistry",
       "Elemental Matters",
+      "ExhibitLab",
+      "Inspiring Youth in Chemistry",
+      "Lobby 2017",
+      "Making Modernity",
       "Marvels and Ciphers",
       "Molecules That Matter",
-      "The Sky's the Limit"
+      "Object Explorer",
+      "Science at Play",
+      "Second Skin",
+      "Sensing Change",
+      "The Alchemical Quest",
+      "The Sky's the Limit",
+      "The Whole of Nature and the Mirror of Art",
+      "Things Fall Apart",
+      "Transmutations"
     ]
 
     config.physical_container_fields = {
