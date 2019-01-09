@@ -35,9 +35,16 @@ module CHF
       @collection = collection.nil? ? work.in_collection_presenters.first : collection
       @parent_work = parent_work.nil? ? work.parent_work_presenters.first : parent_work
       @edge_case_date_literals = !!edge_case_date_literals
-      @implementation = treat_as_local_photograph? ?
-        TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work) :
-        StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
+
+      #if work.genre_string != nil && work.genre_string.include?('Oral histories')
+      #  @implementation = TreatAsOralHistory.new(@work, collection: @collection, parent_work: @parent_work)
+      #elsif treat_as_local_photograph?
+      if treat_as_local_photograph?
+        @implementation = TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work)
+      else
+        @implementation = StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
+      end
+
     end
 
     # Photos of objects we want to cite as an Institute photo, not the object
@@ -474,6 +481,49 @@ module CHF
         nil
       end
     end
+
+    class TreatAsOralHistory < StandardTreatment
+
+      def title
+        "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} at #{work.place_of_interview.first} on #{work.date_of_work.first}"
+      end
+
+      def csl_type
+        "interview"
+      end
+
+      def authors
+        [] # Having no "authors" is regrettable, but such is the consequence
+        # of having ruby-csl treat this as an "interview".
+      end
+
+      def medium
+        nil
+      end
+
+      def publisher_place
+        'Philadelphia'
+      end
+
+      def publisher
+        'Science History Institute'.freeze
+      end
+
+      def date
+        return nil if work.date_of_work.length == 0
+        begin
+          date_recorded = Date.strptime(work.date_of_work.first, '%Y-%m-%d')
+        rescue ArgumentError
+          return nil
+        end
+        date_recorded ? CiteProc::Date.new([date_recorded.year]) : nil
+      end
+
+      def archive_location
+        nil
+      end
+    end
+
 
   end
 end
