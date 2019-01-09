@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-#   "Hawes, R. C.", "Beckman Instruments, inc."]
-
 describe CHF::CitableAttributes do
   let(:collection) { nil }
   let(:presenter) { CurationConcerns::GenericWorkShowPresenter.new(SolrDocument.new(work.to_solr), Ability.new(nil)) }
@@ -356,9 +354,6 @@ describe CHF::CitableAttributes do
     it "replaces medium" do
       expect(citable_attributes.medium).to eq("photograph")
     end
-    it "replaces medium" do
-      expect(citable_attributes.medium).to eq("photograph")
-    end
     it "has no publisher" do
       expect(citable_attributes.publisher).to be_nil
     end
@@ -369,4 +364,37 @@ describe CHF::CitableAttributes do
       expect(citable_attributes.date).to eq(CiteProc::Date.new([date_uploaded.year]))
     end
   end
+
+  describe "Special case oral history" do
+    let(:date_uploaded) { DateTime.now }
+    let(:work) { FactoryGirl.build(:work,
+      genre_string: ["Oral histories"],
+      interviewee: ['Interviewee, Juanita Perez, 1921-1989'],
+      interviewer: ['Interviewer, Amanda H.'],
+      place_of_interview: ['Drexel University'],
+      resource_type: ["Physical Object"],
+      creator_of_work: ["Joe Factory"],
+      publisher: ["Not Publisher"],
+      place_of_publication: ["Not this place"],
+      date_uploaded: date_uploaded,
+    )}
+    before do
+      allow(work).to receive(:date_of_work).and_return([DateOfWork.new(start: "1986-06-03")])
+    end
+    it "has oral-history-style title" do
+      expect(citable_attributes.title).to eq("Juanita Perez Interviewee, interviewed by Amanda H. Interviewer at Drexel University on 1986-06-03")
+    end
+    it "has no authors" do
+      expect(citable_attributes.authors.length).to eq(0)
+    end
+    it "has no medium" do
+     expect(citable_attributes.medium).to eq(nil)
+    end
+    it "replaces publisher" do
+      expect(citable_attributes.publisher).to eq("Science History Institute")
+    end
+    it "replaces publisher place" do
+      expect(citable_attributes.publisher_place).to eq ('Philadelphia')
+    end
+  end # describe special case oral history
 end

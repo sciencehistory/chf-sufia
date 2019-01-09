@@ -36,10 +36,9 @@ module CHF
       @parent_work = parent_work.nil? ? work.parent_work_presenters.first : parent_work
       @edge_case_date_literals = !!edge_case_date_literals
 
-      #if work.genre_string != nil && work.genre_string.include?('Oral histories')
-      #  @implementation = TreatAsOralHistory.new(@work, collection: @collection, parent_work: @parent_work)
-      #elsif treat_as_local_photograph?
-      if treat_as_local_photograph?
+      if treat_as_oral_history?
+        @implementation = TreatAsOralHistory.new(@work, collection: @collection, parent_work: @parent_work)
+      elsif treat_as_local_photograph?
         @implementation = TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work)
       else
         @implementation = StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
@@ -53,6 +52,12 @@ module CHF
         work.resource_type && work.resource_type.include?("Physical Object") &&
         work.resource_type.count == 1
     end
+
+    # Oral histories
+    def treat_as_oral_history?
+      work.genre_string != nil && work.genre_string.include?('Oral histories')
+    end
+
 
     # ruby-csl can't really do date ranges yet.
     # And the CSL chicago style isn't marking "circa" dates for some reason.
@@ -483,9 +488,11 @@ module CHF
     end
 
     class TreatAsOralHistory < StandardTreatment
-
       def title
-        "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} at #{work.place_of_interview.first} on #{work.date_of_work.first}"
+        return work.title if work.interviewee.nil? || work.interviewer.nil?
+        place = work.place_of_interview.nil? ? "" : "at #{work.place_of_interview.first}"
+        time = date.nil? ? "" : "on #{date.iso8601}"
+        "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} #{place} #{time}"
       end
 
       def csl_type
@@ -516,7 +523,7 @@ module CHF
         rescue ArgumentError
           return nil
         end
-        date_recorded ? CiteProc::Date.new([date_recorded.year]) : nil
+        date_recorded ? CiteProc::Date.new(date_recorded) : nil
       end
 
       def archive_location
