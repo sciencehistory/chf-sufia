@@ -20,6 +20,18 @@ FactoryGirl.define do
       visibility Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
     end
 
+    factory :oral_history_work do
+      genre_string ["Oral histories"]
+      interviewee ['Interviewee, Juanita Perez, 1921-1989']
+      interviewer ['Interviewer, Amanda H.']
+      place_of_interview ['Drexel University']
+      resource_type ["Physical Object"]
+      creator_of_work ["Joe Factory"]
+      publisher ["Not Publisher"]
+      place_of_publication ["Not this place"]
+      date_uploaded DateTime.now
+    end
+
     # Not every possible attribute, but a bunch.
     trait :with_complete_metadata do
       sequence(:title) { |n| ["It's Science! pt. #{n}"] }

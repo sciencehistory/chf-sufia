@@ -366,21 +366,10 @@ describe CHF::CitableAttributes do
   end
 
   describe "Special case oral history" do
+    let(:date_of_work) { DateOfWork.new(start: "1986-06-03") }
     let(:date_uploaded) { DateTime.now }
-    let(:work) { FactoryGirl.build(:work,
-      genre_string: ["Oral histories"],
-      interviewee: ['Interviewee, Juanita Perez, 1921-1989'],
-      interviewer: ['Interviewer, Amanda H.'],
-      place_of_interview: ['Drexel University'],
-      resource_type: ["Physical Object"],
-      creator_of_work: ["Joe Factory"],
-      publisher: ["Not Publisher"],
-      place_of_publication: ["Not this place"],
-      date_uploaded: date_uploaded,
-    )}
-    before do
-      allow(work).to receive(:date_of_work).and_return([DateOfWork.new(start: "1986-06-03")])
-    end
+    let(:work) { FactoryGirl.build(:oral_history_work, date_uploaded: date_uploaded, dates_of_work: [date_of_work]) }
+
     it "has oral-history-style title" do
       expect(citable_attributes.title).to eq("Juanita Perez Interviewee, interviewed by Amanda H. Interviewer at Drexel University on 1986-06-03")
     end
