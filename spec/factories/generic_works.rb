@@ -20,15 +20,20 @@ FactoryGirl.define do
       visibility Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
     end
 
+    # based on https://digital.sciencehistory.org/concern/generic_works/gh93h041p
+    # https://othmerlib.sciencehistory.org/record=b1043559
     factory :oral_history_work do
+      title ["Oral history interview with William John Bailey"]
+      identifier ["bib-b1043559", "interview-0012"]
+      interviewee ['Bailey, William John, 1921-1989']
+      interviewer ['Bohning, James J.']
+      dates_of_work [DateOfWork.new(start: "1986-06-03")]
+      place_of_interview ['University of Maryland, College Park']
+      resource_type ['Text']
       genre_string ["Oral histories"]
-      interviewee ['Interviewee, Juanita Perez, 1921-1989']
-      interviewer ['Interviewer, Amanda H.']
-      place_of_interview ['Drexel University']
-      resource_type ["Physical Object"]
-      creator_of_work ["Joe Factory"]
-      publisher ["Not Publisher"]
-      place_of_publication ["Not this place"]
+      extent ['50 pages']
+      language ['English']
+      division 'Center for Oral History'
       date_uploaded DateTime.now
     end
 

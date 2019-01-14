@@ -366,12 +366,12 @@ describe CHF::CitableAttributes do
   end
 
   describe "Special case oral history" do
-    let(:date_of_work) { DateOfWork.new(start: "1986-06-03") }
-    let(:date_uploaded) { DateTime.now }
-    let(:work) { FactoryGirl.build(:oral_history_work, date_uploaded: date_uploaded, dates_of_work: [date_of_work]) }
+    # based on https://digital.sciencehistory.org/concern/generic_works/gh93h041p
+    # https://othmerlib.sciencehistory.org/record=b1043559
+    let(:work) { FactoryGirl.build(:oral_history_work) }
 
     it "has oral-history-style title" do
-      expect(citable_attributes.title).to eq("Juanita Perez Interviewee, interviewed by Amanda H. Interviewer at Drexel University on 1986-06-03")
+      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on 1986-06-03")
     end
     it "has no authors" do
       expect(citable_attributes.authors.length).to eq(0)
