@@ -385,5 +385,10 @@ describe CHF::CitableAttributes do
     it "replaces publisher place" do
       expect(citable_attributes.publisher_place).to eq ('Philadelphia')
     end
+    it "supplies OH interview number as archive location" do
+      expect(citable_attributes.archive_location).to eq ('Oral History Transcript 0012')
+    end
+
+
   end # describe special case oral history
 end

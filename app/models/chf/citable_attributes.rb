@@ -527,7 +527,10 @@ module CHF
       end
 
       def archive_location
-        nil
+        if work.identifier && interview_id_str = work.identifier.find { |id| id.start_with? /interview-/}
+          interview_number = interview_id_str.sub(/\Ainterview-/, '')
+          "Oral History Transcript #{interview_number}" if interview_number.present?
+        end
       end
     end
 
