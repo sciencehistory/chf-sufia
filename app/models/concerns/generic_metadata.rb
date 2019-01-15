@@ -72,6 +72,9 @@ module GenericMetadata
     property :contributor, predicate: ::RDF::Vocab::DC11.contributor do |index|
       index.as :stored_searchable
     end
+    property :editor, predicate: ::RDF::Vocab::MARCRelators.edt  do |index|
+      index.as :stored_searchable
+    end
     property :engraver, predicate: ::RDF::Vocab::MARCRelators.egr do |index|
       index.as :stored_searchable
     end

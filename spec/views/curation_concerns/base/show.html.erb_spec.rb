@@ -16,6 +16,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.artist = ['Boo']
       w.author = ['Cheep Cheep']
       w.addressee = ['Koopa']
+      w.editor = ['Cackletta']
       w.engraver = ['Thwump']
       w.interviewee = ['Birdo']
       w.interviewer = ['Thwomp']
