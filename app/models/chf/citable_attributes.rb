@@ -491,7 +491,7 @@ module CHF
       def title
         return work.title if work.interviewee.nil? || work.interviewer.nil?
         place = work.place_of_interview.nil? ? "" : "at #{work.place_of_interview.first}"
-        time = date.nil? ? "" : "on #{date.iso8601}"
+        time = original_date.nil? ? "" : "on #{original_date.strftime("%B %-d, %Y")}"
         "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} #{place} #{time}"
       end
 
@@ -516,7 +516,13 @@ module CHF
         'Science History Institute'.freeze
       end
 
+      # no date in CSL, we're embedding it in title instead
       def date
+        nil
+      end
+
+      # we don't want to be used in CSL, but we want to pull it out to use in title
+      def original_date
         return nil if work.date_of_work.length == 0
         begin
           date_recorded = Date.strptime(work.date_of_work.first, '%Y-%m-%d')

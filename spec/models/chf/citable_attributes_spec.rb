@@ -371,7 +371,7 @@ describe CHF::CitableAttributes do
     let(:work) { FactoryGirl.build(:oral_history_work) }
 
     it "has oral-history-style title" do
-      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on 1986-06-03")
+      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986")
     end
     it "has no authors" do
       expect(citable_attributes.authors.length).to eq(0)
