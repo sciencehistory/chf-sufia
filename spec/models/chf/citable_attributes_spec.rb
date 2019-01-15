@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-#   "Hawes, R. C.", "Beckman Instruments, inc."]
-
 describe CHF::CitableAttributes do
   let(:collection) { nil }
   let(:presenter) { CurationConcerns::GenericWorkShowPresenter.new(SolrDocument.new(work.to_solr), Ability.new(nil)) }
@@ -356,9 +354,6 @@ describe CHF::CitableAttributes do
     it "replaces medium" do
       expect(citable_attributes.medium).to eq("photograph")
     end
-    it "replaces medium" do
-      expect(citable_attributes.medium).to eq("photograph")
-    end
     it "has no publisher" do
       expect(citable_attributes.publisher).to be_nil
     end
@@ -369,4 +364,48 @@ describe CHF::CitableAttributes do
       expect(citable_attributes.date).to eq(CiteProc::Date.new([date_uploaded.year]))
     end
   end
+
+  describe "Special case oral history" do
+    # based on https://digital.sciencehistory.org/concern/generic_works/gh93h041p
+    # https://othmerlib.sciencehistory.org/record=b1043559
+    let(:work) { FactoryGirl.build(:oral_history_work) }
+
+    it "has oral-history-style title" do
+      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986")
+    end
+    it "has no authors" do
+      expect(citable_attributes.authors.length).to eq(0)
+    end
+    it "has no medium" do
+     expect(citable_attributes.medium).to eq(nil)
+    end
+    it "replaces publisher" do
+      expect(citable_attributes.publisher).to eq("Science History Institute")
+    end
+    it "replaces publisher place" do
+      expect(citable_attributes.publisher_place).to eq ('Philadelphia')
+    end
+    it "supplies OH interview number as archive location" do
+      expect(citable_attributes.archive_location).to eq ('Oral History Transcript 0012')
+    end
+
+    it "renders html" do
+      expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
+    end
+
+    describe "weird citation missing fields" do
+      let(:work) { FactoryGirl.build(:work, :with_complete_metadata,
+        interviewer: nil,
+        interviewee: nil,
+        dates_of_work: [],
+        genre_string: ["Oral histories"],
+        division: "Center for Oral History")}
+      it "does not raise" do
+        citable_attributes
+        CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html
+      end
+    end
+
+
+  end # describe special case oral history
 end

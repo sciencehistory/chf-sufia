@@ -35,9 +35,15 @@ module CHF
       @collection = collection.nil? ? work.in_collection_presenters.first : collection
       @parent_work = parent_work.nil? ? work.parent_work_presenters.first : parent_work
       @edge_case_date_literals = !!edge_case_date_literals
-      @implementation = treat_as_local_photograph? ?
-        TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work) :
-        StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
+
+      if treat_as_oral_history?
+        @implementation = TreatAsOralHistory.new(@work, collection: @collection, parent_work: @parent_work)
+      elsif treat_as_local_photograph?
+        @implementation = TreatAsLocalPhotograph.new(@work, collection: @collection, parent_work: @parent_work)
+      else
+        @implementation = StandardTreatment.new(@work, collection: @collection, parent_work: @parent_work)
+      end
+
     end
 
     # Photos of objects we want to cite as an Institute photo, not the object
@@ -46,6 +52,12 @@ module CHF
         work.resource_type && work.resource_type.include?("Physical Object") &&
         work.resource_type.count == 1
     end
+
+    # Oral histories
+    def treat_as_oral_history?
+      work.genre_string != nil && work.genre_string.include?('Oral histories')
+    end
+
 
     # ruby-csl can't really do date ranges yet.
     # And the CSL chicago style isn't marking "circa" dates for some reason.
@@ -190,7 +202,7 @@ module CHF
         memoize(:authors) do
           # ordered list of maker fields we're willing to use for author, when we
           # find one with elements, we stop and use those.
-          first_present_field_values(%w{creator_of_work author artist photographer engraver}).collect do |str_name|
+          first_present_field_values(%w{creator_of_work author artist photographer engraver interviewer}).collect do |str_name|
             parse_name(str_name)
           end
         end
@@ -474,6 +486,60 @@ module CHF
         nil
       end
     end
+
+    class TreatAsOralHistory < StandardTreatment
+      def title
+        return work.title if work.interviewee.nil? || work.interviewer.nil?
+        place = work.place_of_interview.nil? ? "" : "at #{work.place_of_interview.first}"
+        time = original_date.nil? ? "" : "on #{original_date.strftime("%B %-d, %Y")}"
+        "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} #{place} #{time}"
+      end
+
+      def csl_type
+        "interview"
+      end
+
+      def authors
+        [] # Having no "authors" is regrettable, but such is the consequence
+        # of having ruby-csl treat this as an "interview".
+      end
+
+      def medium
+        nil
+      end
+
+      def publisher_place
+        'Philadelphia'
+      end
+
+      def publisher
+        'Science History Institute'.freeze
+      end
+
+      # no date in CSL, we're embedding it in title instead
+      def date
+        nil
+      end
+
+      # we don't want to be used in CSL, but we want to pull it out to use in title
+      def original_date
+        return nil if work.date_of_work.length == 0
+        begin
+          date_recorded = Date.strptime(work.date_of_work.first, '%Y-%m-%d')
+        rescue ArgumentError
+          return nil
+        end
+        date_recorded ? CiteProc::Date.new(date_recorded) : nil
+      end
+
+      def archive_location
+        if work.identifier && interview_id_str = work.identifier.find { |id| id.start_with? /interview-/}
+          interview_number = interview_id_str.sub(/\Ainterview-/, '')
+          "Oral History Transcript #{interview_number}" if interview_number.present?
+        end
+      end
+    end
+
 
   end
 end
