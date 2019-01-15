@@ -371,7 +371,7 @@ describe CHF::CitableAttributes do
     let(:work) { FactoryGirl.build(:oral_history_work) }
 
     it "has oral-history-style title" do
-      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986")
+      expect(citable_attributes.title).to eq("William John Bailey, interviewed by James J. Bohning in University of Maryland, College Park on June 3, 1986")
     end
     it "has no authors" do
       expect(citable_attributes.authors.length).to eq(0)
@@ -390,7 +390,7 @@ describe CHF::CitableAttributes do
     end
 
     it "renders html" do
-      expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
+      expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning in University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
     end
 
     describe "unusual interviewee name format" do
@@ -398,6 +398,14 @@ describe CHF::CitableAttributes do
 
       it "has interviewee in title" do
         expect(citable_attributes.title).to start_with("Biemann, K. (Klaus), interviewed by")
+      end
+    end
+
+    describe "place with dashes" do
+      let(:work) { FactoryGirl.build(:oral_history_work, place_of_interview: ['New Hampshire--Alton Bay']) }
+
+      it "has place reversed in title" do
+        expect(citable_attributes.title).to include("in Alton Bay, New Hampshire")
       end
     end
 
