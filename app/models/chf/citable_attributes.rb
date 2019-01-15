@@ -492,7 +492,7 @@ module CHF
         return work.title if work.interviewee.nil? || work.interviewer.nil?
         place = work.place_of_interview.nil? ? "" : "at #{work.place_of_interview.first}"
         time = original_date.nil? ? "" : "on #{original_date.strftime("%B %-d, %Y")}"
-        "#{parse_name(work.interviewee.first)}, interviewed by #{parse_name(work.interviewer.first)} #{place} #{time}"
+        "#{parse_name(work.interviewee.first).format}, interviewed by #{parse_name(work.interviewer.first).format} #{place} #{time}"
       end
 
       def csl_type

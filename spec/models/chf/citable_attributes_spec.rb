@@ -393,6 +393,14 @@ describe CHF::CitableAttributes do
       expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
     end
 
+    describe "unusual interviewee name format" do
+      let(:work) { FactoryGirl.build(:oral_history_work, interviewee: ["Biemann, K. (Klaus)"]) }
+
+      it "has interviewee in title" do
+        expect(citable_attributes.title).to start_with("Biemann, K. (Klaus), interviewed by")
+      end
+    end
+
     describe "weird citation missing fields" do
       let(:work) { FactoryGirl.build(:work, :with_complete_metadata,
         interviewer: nil,
