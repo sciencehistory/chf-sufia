@@ -389,6 +389,10 @@ describe CHF::CitableAttributes do
       expect(citable_attributes.archive_location).to eq ('Oral History Transcript 0012')
     end
 
+    it "renders html" do
+      expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
+    end
+
 
   end # describe special case oral history
 end
