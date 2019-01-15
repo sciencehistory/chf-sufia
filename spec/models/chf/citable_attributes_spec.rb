@@ -393,6 +393,19 @@ describe CHF::CitableAttributes do
       expect(CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html).to eq "William John Bailey, interviewed by James J. Bohning at University of Maryland, College Park on June 3, 1986. Philadelphia: Science History Institute, n.d. Oral History Transcript 0012. http://test.app/works/."
     end
 
+    describe "weird citation missing fields" do
+      let(:work) { FactoryGirl.build(:work, :with_complete_metadata,
+        interviewer: nil,
+        interviewee: nil,
+        dates_of_work: [],
+        genre_string: ["Oral histories"],
+        division: "Center for Oral History")}
+      it "does not raise" do
+        citable_attributes
+        CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html
+      end
+    end
+
 
   end # describe special case oral history
 end
