@@ -46,6 +46,7 @@ FactoryGirl.define do
       language      ['English']
       creator       ['creatorcreator']
       contributor   ['contributorcontributor']
+      editor        ['G. Henle Verlag']
       publisher     ['Publisher']
       place_of_creation ["Europe--Holy Roman Empire"]
       subject       ['Celery']
