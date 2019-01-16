@@ -112,6 +112,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Boo/
       expect(rendered).to match /Cheep Cheep/
       expect(rendered).to match /Koopa/
+      expect(rendered).to match /Cackletta/
       expect(rendered).to match /Birdo/
       expect(rendered).to match /Thwomp/
       expect(rendered).to match /Piranha Plant/

@@ -51,6 +51,7 @@ RSpec.describe GenericWork do
     GenericWork.create(title: ['title1']) do |f|
       f.apply_depositor_metadata('dpt')
       f.creator = ['Beckett, Samuel']
+      f.editor = ['Editor']
       f.extent = ["infinitely long"]
       f.date_of_work_attributes = [{start: "2003", finish: "2015"}, {start:'1200', start_qualifier:'century'}]
       f.inscription_attributes = [{location: "chapter 7", text: "words"}, {location: 'place', text: 'stuff'}]
@@ -99,6 +100,11 @@ RSpec.describe GenericWork do
     it 'has a single creator' do
       expect(gf.creator.count).to eq 1
       expect(gf.creator).to include 'Beckett, Samuel'
+    end
+
+    it 'has an editor' do
+      expect(gf.editor.count).to eq 1
+      expect(gf.editor).to include 'Editor'
     end
 
     it 'has a toc' do
