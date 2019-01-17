@@ -55,6 +55,9 @@ class SolrDocument
   def addressee
     self[Solrizer.solr_name('addressee')]
   end
+  def editor
+    self[Solrizer.solr_name('editor')]
+  end
   def engraver
     self[Solrizer.solr_name('engraver')]
   end

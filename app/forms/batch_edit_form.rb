@@ -27,6 +27,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     :addressee,
     :creator_of_work,
     :contributor,
+    :editor,
     :engraver,
     :interviewee,
     :interviewer,

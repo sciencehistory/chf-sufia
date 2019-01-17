@@ -16,6 +16,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.artist = ['Boo']
       w.author = ['Cheep Cheep']
       w.addressee = ['Koopa']
+      w.editor = ['Cackletta']
       w.engraver = ['Thwump']
       w.interviewee = ['Birdo']
       w.interviewer = ['Thwomp']
@@ -111,6 +112,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Boo/
       expect(rendered).to match /Cheep Cheep/
       expect(rendered).to match /Koopa/
+      expect(rendered).to match /Cackletta/
       expect(rendered).to match /Birdo/
       expect(rendered).to match /Thwomp/
       expect(rendered).to match /Piranha Plant/

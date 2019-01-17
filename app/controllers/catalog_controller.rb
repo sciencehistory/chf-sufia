@@ -33,6 +33,7 @@ class CatalogController < ApplicationController
       "#{solr_name("addressee", :stored_searchable)}^500",
       "#{solr_name("creator_of_work", :stored_searchable)}^500",
       "#{solr_name("contributor", :stored_searchable)}^500",
+      "#{solr_name("editor",   :stored_searchable)}^500",
       "#{solr_name("engraver", :stored_searchable)}^500",
       "#{solr_name("interviewee", :stored_searchable)}^500",
       "#{solr_name("interviewer", :stored_searchable)}^500",
@@ -133,6 +134,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'subject', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("editor", :stored_searchable), label: "Editor", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("engraver", :stored_searchable), label: "Engraver", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("interviewee", :stored_searchable), label: "Interviewee", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("interviewer", :stored_searchable), label: "Interviewer", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)

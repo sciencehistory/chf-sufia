@@ -181,6 +181,7 @@ module CHF
       arr =  work_presenter.addressee || []
       arr += work_presenter.after || []
       arr += work_presenter.contributor || []
+      arr += work_presenter.editor      || []
       arr += work_presenter.interviewee || []
       arr += work_presenter.interviewer || []
       arr += work_presenter.manner_of || []

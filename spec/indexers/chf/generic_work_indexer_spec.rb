@@ -19,6 +19,7 @@ RSpec.describe CHF::GenericWorkIndexer do
       w.author = ["Bruce McMillan"]
       w.photographer = ["Bruce McMillan"]
       w.publisher = ["publishing house"]
+      w.editor = ["the editor"]
       w.engraver = ["engraving professional"]
       w.save
     end
@@ -46,8 +47,9 @@ RSpec.describe CHF::GenericWorkIndexer do
   it 'creates a maker copy field' do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).not_to be nil
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'Bruce McMillan'
+    expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'the editor'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'publishing house'
-    expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 3
+    expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 4
   end
 
   describe "with a real file child" do

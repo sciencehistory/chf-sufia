@@ -71,6 +71,7 @@ module Chufia
       :addressee,
       :creator_of_work,
       :contributor,
+      :editor,
       :engraver,
       :interviewee,
       :interviewer,
