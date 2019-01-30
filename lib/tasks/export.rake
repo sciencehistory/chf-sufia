@@ -8,12 +8,12 @@ namespace :chf do
     to_do = {'Collection'=> [], 'GenericWork'=> [], 'FileSet' => []}
     collection_ids = ENV['ONLY_COLLECTIONS'].split(",") if ENV['ONLY_COLLECTIONS']
 
-    collection_ids.uniq!
-    collection_ids.sort!
-
     if collection_ids.nil?
       to_do = nil
+      puts "Export the ENTIRE COLLECTION?"
     else
+      collection_ids.uniq!
+      collection_ids.sort!
       collection_ids.each do |c_id|
         coll = Collection.find(c_id)
         to_do['Collection'] << c_id
@@ -47,11 +47,12 @@ namespace :chf do
       puts "Collections:  #{collection_ids.count}"
       puts "GenericWorks: #{to_do['GenericWork'].count}"
       puts "FileSets:     #{to_do['FileSet'].count}"
-      puts "To proceed with the export, type yes"
-      answer = STDIN.gets.strip
-      exit unless answer == 'yes'
 
     end # if we are traversing collections
+
+    puts "To proceed with the export, type yes"
+    answer = STDIN.gets.strip
+    exit unless answer == 'yes'
 
 
     the_classes = %w(FileSet GenericWork Collection)
@@ -63,12 +64,19 @@ namespace :chf do
       exportee_class = exporter_class.exportee
       dir = Rails.root.join('tmp', 'export', exporter_class.dirname)
       Dir.mkdir(dir)
-      exportee_class.find_each() do | item |
-        unless to_do.nil?
-          next unless to_do[s].include? item.id
-        end
+
+
+      items_to_look_up = []
+      if to_do.nil?
+        exportee_class.find_each {|x| items_to_look_up << x }
+      else
+        items_to_look_up = to_do[s].collect { |x| exportee_class.find(x) }
+      end
+
+      items_to_look_up.each do | item |
         exporter_class.new(item).write_to_file()
       end
+
     end # exporters.each
   end # task
 end # namespace
