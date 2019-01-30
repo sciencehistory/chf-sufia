@@ -8,6 +8,9 @@ namespace :chf do
     to_do = {'Collection'=> [], 'GenericWork'=> [], 'FileSet' => []}
     collection_ids = ENV['ONLY_COLLECTIONS'].split(",") if ENV['ONLY_COLLECTIONS']
 
+    collection_ids.uniq!
+    collection_ids.sort!
+
     if collection_ids.nil?
       to_do = nil
     else
@@ -35,7 +38,21 @@ namespace :chf do
           end  # each m_1_id
         end # each collection member
       end # each collection
+
+      to_do['GenericWork'].uniq!
+      to_do['GenericWork'].sort!
+      to_do['FileSet'].uniq!
+      to_do['FileSet'].sort!
+
+      puts "Collections:  #{collection_ids.count}"
+      puts "GenericWorks: #{to_do['GenericWork'].count}"
+      puts "FileSets:     #{to_do['FileSet'].count}"
+      puts "To proceed with the export, type yes"
+      answer = STDIN.gets.strip
+      exit unless answer == 'yes'
+
     end # if we are traversing collections
+
 
     the_classes = %w(FileSet GenericWork Collection)
     export_dir = Rails.root.join('tmp', 'export')
