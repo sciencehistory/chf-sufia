@@ -5,7 +5,8 @@ class FileSetExporter < Exporter
   end
 
   def file_urls()
-    target_item.files.collect{|f| f.uri.to_s}
+    # target_item.files.collect{|f| f.uri.to_s}
+    ["https://digital.sciencehistory.org/downloads/#{target_item.id}"]
   end
 
   def self.exportee()
