@@ -49,6 +49,9 @@ class SolrDocument
   def artist
     self[Solrizer.solr_name('artist')]
   end
+  def attributed_to
+    self[Solrizer.solr_name('attributed_to')]
+  end
   def author
     self[Solrizer.solr_name('author')]
   end

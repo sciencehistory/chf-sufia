@@ -35,7 +35,7 @@ RSpec.feature "OAI-PMH feed", js: false do
     expect(records.count).to eq (1)
     dc_contributors = xml.xpath("//dc:contributor", dc:"http://purl.org/dc/elements/1.1/").children.map(&:to_s)
     # dc:contributors should include both the plain vanilla "contributor" but also the "editor".
-    expect(dc_contributors.map).to include("contributorcontributor", "G. Henle Verlag")
+    expect(dc_contributors.map).to include("contributorcontributor", "G. Henle Verlag", "John Lennon")
     record_id = records.first.at_xpath("./oai:header/oai:identifier", oai: "http://www.openarchives.org/OAI/2.0/")
     expect(record_id.text).to eq("oai:sciencehistoryorg:#{work.id}")
   end

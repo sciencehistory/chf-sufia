@@ -22,6 +22,7 @@ module WorkFormBehavior
         { additional_credit_attributes: permitted_additional_credit_params },
         after: [],
         artist: [],
+        attributed_to: [],
         author: [],
         addressee: [],
         creator_of_work: [],
@@ -117,6 +118,7 @@ module WorkFormBehavior
     def hidden_field_terms
       [:after,
       :artist,
+      :attributed_to,
       :author,
       :addressee,
       :creator_of_work,

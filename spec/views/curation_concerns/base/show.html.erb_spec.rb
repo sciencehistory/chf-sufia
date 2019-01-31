@@ -14,6 +14,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.contributor = ['Blooper']
       w.after = ['Lakitu']
       w.artist = ['Boo']
+      w.attributed_to = ['Mummipokey']
       w.author = ['Cheep Cheep']
       w.addressee = ['Koopa']
       w.editor = ['Cackletta']
@@ -110,6 +111,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Blooper/
       expect(rendered).to match /Lakitu/
       expect(rendered).to match /Boo/
+      expect(rendered).to match /Mummipokey/
       expect(rendered).to match /Cheep Cheep/
       expect(rendered).to match /Koopa/
       expect(rendered).to match /Cackletta/

@@ -11,7 +11,7 @@ module CurationConcerns
     # There's no such thing as self.terms in the presenter anymore.
 
     delegate :genre_string, :medium, :physical_container, :creator_of_work,
-      :artist, :author, :addressee, :interviewee, :interviewer,
+      :artist, :attributed_to, :author, :addressee, :interviewee, :interviewer,
       :manufacturer, :manner_of, :photographer, :place_of_interview,
       :place_of_manufacture, :place_of_creation, :place_of_publication,
       :extent, :division, :exhibition, :source, :series_arrangement, :rights_holder,

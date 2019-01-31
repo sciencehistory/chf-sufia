@@ -30,6 +30,7 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       names = inputs_hidden.map { |ih|  ih['name'] }
       expect(names).to include "generic_work[after][]"
       expect(names).to include "generic_work[artist][]"
+      expect(names).to include "generic_work[attributed_to][]"
       expect(names).to include "generic_work[author][]"
       expect(names).to include "generic_work[addressee][]"
       expect(names).to include "generic_work[creator_of_work][]"

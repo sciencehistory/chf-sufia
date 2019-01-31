@@ -28,6 +28,7 @@ RSpec.describe GenericWork do
     exhibition: 'http://opaquenamespace.org/ns/exhibit',
     after: 'http://chemheritage.org/ns/after',
     artist: 'http://id.loc.gov/vocabulary/relators/art',
+    attributed_to: 'http://id.loc.gov/vocabulary/relators/att',
     author: 'http://id.loc.gov/vocabulary/relators/aut',
     credit_line: 'http://bibframe.org/vocab/creditsNote',
     file_creator: 'http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasCreator',

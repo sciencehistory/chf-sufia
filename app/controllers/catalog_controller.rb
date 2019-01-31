@@ -29,6 +29,7 @@ class CatalogController < ApplicationController
 
       "#{solr_name("after", :stored_searchable)}^500",
       "#{solr_name("artist", :stored_searchable)}^500",
+      "#{solr_name("attributed_to", :stored_searchable)}^500",
       "#{solr_name("author", :stored_searchable)}^500",
       "#{solr_name("addressee", :stored_searchable)}^500",
       "#{solr_name("creator_of_work", :stored_searchable)}^500",
@@ -131,6 +132,7 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
     config.add_index_field solr_name("artist", :stored_searchable), label: "Artist", itemprop: 'artist', link_to_search: solr_name("maker_facet", :facetable)
+    config.add_index_field solr_name("attributed_to", :stored_searchable), label: "Attributed to", itemprop: 'contributor', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("author", :stored_searchable), label: "Author", itemprop: 'author', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("addressee", :stored_searchable), label: "Addressee", itemprop: 'subject', link_to_search: solr_name("maker_facet", :facetable)
     config.add_index_field solr_name("creator_of_work", :stored_searchable), label: "Creator", itemprop: 'creator', link_to_search: solr_name("maker_facet", :facetable)

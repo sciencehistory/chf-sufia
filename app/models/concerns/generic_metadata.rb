@@ -60,6 +60,9 @@ module GenericMetadata
     property :artist, predicate: ::RDF::Vocab::MARCRelators.art do |index|
       index.as :stored_searchable
     end
+    property :attributed_to, predicate: ::RDF::Vocab::MARCRelators.att do |index|
+      index.as :stored_searchable
+    end
     property :author, predicate: ::RDF::Vocab::MARCRelators.aut do |index|
       index.as :stored_searchable
     end
