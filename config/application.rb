@@ -67,6 +67,7 @@ module Chufia
     config.makers = [
       :after,
       :artist,
+      :attributed_to,
       :author,
       :addressee,
       :creator_of_work,

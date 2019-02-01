@@ -47,6 +47,7 @@ FactoryGirl.define do
       creator       ['creatorcreator']
       contributor   ['contributorcontributor']
       editor        ['G. Henle Verlag']
+      attributed_to ['John Lennon']
       publisher     ['Publisher']
       place_of_creation ["Europe--Holy Roman Empire"]
       subject       ['Celery']

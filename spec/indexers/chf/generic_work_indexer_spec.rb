@@ -20,6 +20,7 @@ RSpec.describe CHF::GenericWorkIndexer do
       w.photographer = ["Bruce McMillan"]
       w.publisher = ["publishing house"]
       w.editor = ["the editor"]
+      w.attributed_to = ["presumptive author"]
       w.engraver = ["engraving professional"]
       w.save
     end
@@ -49,7 +50,8 @@ RSpec.describe CHF::GenericWorkIndexer do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'Bruce McMillan'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'the editor'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'publishing house'
-    expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 4
+    expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'presumptive author'
+    expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 5
   end
 
   describe "with a real file child" do

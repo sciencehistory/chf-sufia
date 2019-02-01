@@ -179,6 +179,7 @@ module CHF
 
     def dc_contributors
       arr =  work_presenter.addressee || []
+      arr += work_presenter.attributed_to || []
       arr += work_presenter.after || []
       arr += work_presenter.contributor || []
       arr += work_presenter.editor      || []

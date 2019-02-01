@@ -23,6 +23,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     :related_url,
     :after,
     :artist,
+    :attributed_to,
     :author,
     :addressee,
     :creator_of_work,
