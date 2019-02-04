@@ -61,11 +61,10 @@ module CHF
         subject: ["Alchemy", "Alchemists"],
         description: "This digital collection features selected manuscripts, rare books, paintings, and ephemera relating to alchemical topics and experimentation. Materials in this collection include depictions of alchemists’ workshops and pursuits on philosophy, magic, medicine, spiritual wisdom, and the transformation of matter."
       },
-      portraits_and_people: {
-        genre: ["Portraits"],
-        subject: ["Portraits, Group", "Women in science", "Employees"],
-        title: "Portraits & People",
-        description: "This digital collection features selected prints and photographs of people dating from the 18th to the 20th century. Materials in this collection include individual and company portraits of scientists, group shots of conference attendees, and images of laboratory employees, factory workers, and plant technicians from various research and manufacturing industries."
+      periodic_tables: {
+        subject: ["Chemical elements", "Mendeleyev, Dmitry Ivanovich, 1834-1907", "Periodic law", "Periodic table of the elements"],
+        title: "Periodic Tables",
+        description: "This digital collection features selected visual representations of the periodic table of the elements, with an emphasis on alternative layouts including circular, cylindrical, pyramidal, spiral, and triangular forms. Ranging in date from the 1860s to the 1990s, the materials provide a panorama of the historic evolution of the periodic table following Dmitri Mendeleev's initial 1869 design. Illustrations depicting chemical elements and concepts in atomic theory are also included in this collection."
       },
       science_on_stamps: {
         subject: ["Science on postage stamps"],
