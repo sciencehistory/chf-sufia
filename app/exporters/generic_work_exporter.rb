@@ -9,7 +9,7 @@ class GenericWorkExporter < Exporter
   end
 
   def child_ids()
-    target_item.ordered_members.to_a.map(&:id)
+    target_item.member_ids
   end
 
   def associations()

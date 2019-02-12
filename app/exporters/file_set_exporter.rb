@@ -5,7 +5,6 @@ class FileSetExporter < Exporter
     h
   end
 
-
   # Fun fact: if you upload a new version of a file to a FileSet,
   # the number of items in the_file_set.files array does NOT change.
   # Instead, a reference to the latest version of the file

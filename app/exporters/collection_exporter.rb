@@ -5,7 +5,7 @@ class CollectionExporter < Exporter
   end
 
   def members()
-    target_item.members.map(&:id)
+    target_item.member_ids
   end
 
   def self.exportee()
