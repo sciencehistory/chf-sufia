@@ -11,10 +11,12 @@ class FileSetExporter < Exporter
   # replaces the single element in the array.
 
   def file_url()
+    return nil if target_item.files.empty?
     target_item.files.last.uri.to_s
   end
 
   def sha_1()
+    return nil if target_item.files.empty?
     sha_1_string = target_item.files.last.file_hash.last.id
     raise RuntimeError, "SHA-1 hash not found for FileSet #{target_item.id}" unless sha_1_string.start_with? 'urn:sha1:'
     sha_1_string.sub(/^urn:sha1:/, '')
