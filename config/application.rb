@@ -169,6 +169,7 @@ module Chufia
       'Personal correspondence',
       'Pesticides',
       'Photographs',
+      'Photomechanical prints',
       'Plastics',
       'Portraits',
       'Postage stamps',

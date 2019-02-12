@@ -2,7 +2,7 @@
 set :stage, :staging
 set :rails_env, 'production'
 server 'staging.digital.sciencehistory.org', user: 'hydep', roles: [:web, :app, :db, :jobs]
-server '34.227.26.131', user: 'hydep', roles: [:solr]
+server '52.90.114.203', user: 'hydep', roles: [:solr]
 server '54.204.60.1', user: 'hydep', roles: [:jobs, :cron] # dzi bg job box
 
 
