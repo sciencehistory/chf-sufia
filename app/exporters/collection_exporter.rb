@@ -5,7 +5,7 @@ class CollectionExporter < Exporter
   end
 
   def members()
-    target_item.member_ids
+    target_item.ordered_member_ids
   end
 
   def self.exportee()

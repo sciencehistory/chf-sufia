@@ -13,6 +13,10 @@ class Exporter
     result.each do |k, v|
       result[k] = v.to_a if v.is_a? ActiveTriples::Relation
     end
+
+    # These are useless to us, so let's not print them out:
+    result.reject! { |k, v| (v.is_a? Array) &&  (v.first.is_a? ActiveTriples::Resource) }
+
     result
   end
 
