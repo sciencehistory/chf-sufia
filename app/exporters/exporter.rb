@@ -33,11 +33,7 @@ class Exporter
   end
 
   def to_json()
-    #begin
-      JSON.pretty_generate(to_hash())
-    #rescue
-    #  byebug
-    #end
+    JSON.fast_generate(to_hash())
   end
 
   def dir()
