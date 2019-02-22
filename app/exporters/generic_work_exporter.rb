@@ -20,7 +20,7 @@ class GenericWorkExporter < Exporter
   end
 
   def child_ids()
-    target_item.ordered_member_ids
+    target_item.ordered_member_ids.compact
   end
 
   def associations()
