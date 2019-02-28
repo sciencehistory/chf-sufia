@@ -20,8 +20,8 @@ class Exporter
     result
   end
 
-  def post_clean(hash)
-    hash.select { |key, value| value!=[] && value != nil }
+  def post_clean(the_hash)
+    the_hash.select { |key, value| value!=[] && value != nil }
   end
 
   def to_hash()
@@ -45,7 +45,6 @@ class Exporter
   end
 
   def write_to_file()
-    puts ("writing #{filename}")
     File.open("#{dir}/#{filename}.json", 'w') { |file| file.write(to_json()) }
   end
 
