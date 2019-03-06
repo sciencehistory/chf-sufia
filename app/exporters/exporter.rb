@@ -13,11 +13,14 @@ class Exporter
     result.each do |k, v|
       result[k] = v.to_a if v.is_a? ActiveTriples::Relation
     end
+    # These are useless to us, so let's not print them out:
+    result.reject! { |k, v| (v.is_a? Array) &&  (v.first.is_a? ActiveTriples::Resource) }
     result
   end
 
-  def post_clean(hash)
-    hash.select { |key, value| value!=[] && value != nil }
+  def post_clean(the_hash)
+    the_hash['date_uploaded'] =  the_hash['date_uploaded'].utc.to_s if the_hash['date_uploaded']
+    the_hash.select { |key, value| value!=[] && value != nil }
   end
 
   def to_hash()
@@ -33,11 +36,7 @@ class Exporter
   end
 
   def to_json()
-    #begin
-      JSON.pretty_generate(to_hash())
-    #rescue
-    #  byebug
-    #end
+    JSON.fast_generate(to_hash())
   end
 
   def dir()
@@ -45,7 +44,6 @@ class Exporter
   end
 
   def write_to_file()
-    puts ("writing #{filename}")
     File.open("#{dir}/#{filename}.json", 'w') { |file| file.write(to_json()) }
   end
 
