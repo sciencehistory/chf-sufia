@@ -10,6 +10,9 @@ class Exporter
 
   def pre_clean()
     result = target_item.attributes
+    result['date_uploaded'] = date_export_format(target_item.date_uploaded)
+    result['date_modified'] = date_export_format(target_item.date_modified)
+
     result.each do |k, v|
       result[k] = v.to_a if v.is_a? ActiveTriples::Relation
     end
@@ -18,8 +21,14 @@ class Exporter
     result
   end
 
+  def date_export_format(date)
+    return if date.nil?
+    return date.utc.to_s if date.is_a? DateTime
+    return DateTime.parse(date).utc.to_s if date.is_a? String
+    return
+  end
+
   def post_clean(the_hash)
-    the_hash['date_uploaded'] =  the_hash['date_uploaded'].utc.to_s if the_hash['date_uploaded']
     the_hash.select { |key, value| value!=[] && value != nil }
   end
 
