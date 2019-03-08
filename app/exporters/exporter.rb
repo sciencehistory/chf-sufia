@@ -16,6 +16,8 @@ class Exporter
     result.each do |k, v|
       result[k] = v.to_a if v.is_a? ActiveTriples::Relation
     end
+
+    result ['access_control'] = access_control
     # These are useless to us, so let's not print them out:
     result.reject! { |k, v| (v.is_a? Array) &&  (v.first.is_a? ActiveTriples::Resource) }
     result
@@ -68,5 +70,13 @@ class Exporter
     raise NotImplementedError
   end
 
+  def access_control()
+    @target_item.access_control.contains.each do |ac|
+      if ac.agent.first.id.include?('public') && ac.mode.first.id.include?('Read')
+        return 'public'
+      end
+    end
+    'private'
+  end
 
 end

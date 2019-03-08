@@ -5,19 +5,10 @@ class GenericWorkExporter < Exporter
     associations.each do |label, data|
       h[label] = process_association(data)
     end
-    h['access_control'] = access_control
     h
   end
 
-  # This is the first, drastically simple version. We'll refine it over time.
-  def access_control()
-    @target_item.access_control.contains.each do |ac|
-      if ac.agent.first.id.include?('public') && ac.mode.first.id.include?('Read')
-        return 'public'
-      end
-    end
-    'private'
-  end
+
 
   def child_ids()
     target_item.ordered_member_ids.compact
