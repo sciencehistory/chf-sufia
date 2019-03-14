@@ -1,4 +1,5 @@
 require "json"
+require "byebug"
 
 class Exporter
   attr_reader :target_item
@@ -23,7 +24,7 @@ class Exporter
         first.object.to_s
     else
         raw_date_uploaded = target_item.date_uploaded
-        raw_date_uploaded = target_item.date_modified
+        raw_date_modified = target_item.date_modified
     end
 
     result['date_uploaded'] = date_export_format(raw_date_uploaded)
