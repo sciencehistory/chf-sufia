@@ -10,8 +10,24 @@ class Exporter
 
   def pre_clean()
     result = target_item.attributes
-    result['date_uploaded'] = date_export_format(target_item.date_uploaded)
-    result['date_modified'] = date_export_format(target_item.date_modified)
+
+    # For collections, we need to get this metadata from Fedora.
+    if target_item.is_a? Collection
+      date_uploaded_predicate = 'http://fedora.info/definitions/v4/repository#created'
+      date_modified_predicate = 'http://fedora.info/definitions/v4/repository#lastModified'
+      raw_date_uploaded = target_item.resource.to_a.
+        select { |x| x.predicate.to_s == date_uploaded_predicate }.
+        first.object.to_s
+      raw_date_modified = target_item.resource.to_a.
+        select { |x| x.predicate.to_s == date_modified_predicate }.
+        first.object.to_s
+    else
+        raw_date_uploaded = target_item.date_uploaded
+        raw_date_uploaded = target_item.date_modified
+    end
+
+    result['date_uploaded'] = date_export_format(raw_date_uploaded)
+    result['date_modified'] = date_export_format(raw_date_modified)
 
     result.each do |k, v|
       result[k] = v.to_a if v.is_a? ActiveTriples::Relation
