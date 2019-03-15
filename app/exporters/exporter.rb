@@ -88,6 +88,7 @@ class Exporter
   end
 
   def access_control()
+    return 'private' if @target_item.access_control.nil?
     @target_item.access_control.contains.each do |ac|
       if ac.agent.first.id.include?('public') && ac.mode.first.id.include?('Read')
         return 'public'
