@@ -1,6 +1,5 @@
 # bundle exec rake chf:export
 require 'fileutils'
-require 'byebug'
 
 namespace :chf do
   desc """Export all Collections, GenericWorks and FileSets to JSON files.

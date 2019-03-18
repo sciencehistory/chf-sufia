@@ -1,6 +1,4 @@
 require "json"
-require "byebug"
-
 class Exporter
   attr_reader :target_item
 
