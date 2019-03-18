@@ -11,7 +11,12 @@ class GenericWorkExporter < Exporter
 
 
   def child_ids()
-    target_item.ordered_member_ids.compact
+    begin
+      target_item.ordered_member_ids.compact
+    rescue Ldp::Gone
+      # This is a bandaid for corrupt item 3r074v259
+      target_item.member_ids.compact
+    end
   end
 
   def associations()
