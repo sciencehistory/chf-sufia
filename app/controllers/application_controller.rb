@@ -22,6 +22,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def error_job
+    DoAnErrorJob.perform_later(100)
+    render text: "we queued an error job"
+  end
+
 
   def intentional_error
     raise "Intentional error to test our error handling"

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   end
   mount BrowseEverything::Engine => '/browse'
 
+  get "job_error", to: "application#error_job"
+
 
   # this will fall through to ./views/application/robots.txt.erb, no need for an action method
   get 'robots.txt', to: "application#robots.txt", format: "text"
