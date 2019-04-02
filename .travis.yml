@@ -10,12 +10,20 @@ cache:
     # things up a bit.
     - $HOME/.phantomjs
 
+# NOTE:
+# To make the tests go much faster, you can
+# remove this "addons" stanza (which installs ffmpeg)
+# and set:
+# ffmpeg_is_available = false
+# in audio_derivative_maker.spec.
 addons:
   apt:
     sources:
     - sourceline: "ppa:mc3man/trusty-media"
     packages:
     - ffmpeg
+# END NOTE
+
 
 before_script:
   - jdk_switcher use oraclejdk8
