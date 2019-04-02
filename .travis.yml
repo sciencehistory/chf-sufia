@@ -9,6 +9,14 @@ cache:
     # cache phantomjs auto-installed by jasmine and phantomjs gem, speed
     # things up a bit.
     - $HOME/.phantomjs
+
+addons:
+  apt:
+    sources:
+    - sourceline: "ppa:mc3man/trusty-media"
+    packages:
+    - ffmpeg
+
 before_script:
   - jdk_switcher use oraclejdk8
   - psql -c 'create database scihist_sufia_test;' -U postgres

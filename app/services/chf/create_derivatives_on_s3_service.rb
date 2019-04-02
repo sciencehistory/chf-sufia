@@ -151,6 +151,27 @@ module CHF
     # it to helper methods, definitely not thread-safe, don't share instances
     # between threads, you weren't going to anyway.
     def call
+
+      # NOTE: When audio files are ingested, we bypass this method and
+      # use methods in AudioDerivativeMaker instead. The code in this
+      # class is focused on creating image files and could not easily be
+      # adapted to the special needs of audio files. We decided not to
+      # refactor this file and AudioDerivativeMaker into one more general file
+      # for expediency, as we are reaching the end of the line for Sufia
+      # as of Spring 2019.
+
+      # START BYPASS CODE
+      if CHF::AudioDerivativeMaker.is_audio?(file_set_content_type)
+        file_info = {
+          :file_id => file_id, :file_set => file_set,
+          :file_set_content_type => file_set_content_type,
+          :file_checksum => file_checksum
+        }
+        deriv_maker = CHF::AudioDerivativeMaker.new(file_info, lazy)
+        return deriv_maker.create_and_upload_derivatives()
+      end
+      # END BYPASS CODE
+
       futures = []
 
       # mktmpdir will clean up tmp dir and all it's contents for us
