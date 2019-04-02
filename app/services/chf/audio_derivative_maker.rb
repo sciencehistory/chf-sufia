@@ -52,6 +52,10 @@ class AudioDerivativeMaker
     AUDIO_ORIGINAL_FORMATS.keys.include? mimetype
   end
 
+  def self.run_command (tty_command_object, command_array)
+    tty_command_object.run(*command_array)
+  end
+
   # Create and upload all audio derivatives for audio file file_set
   def create_and_upload_derivatives()
     derivs_we_need = check_which_derivs_we_need()
@@ -66,7 +70,11 @@ class AudioDerivativeMaker
       convert_audio_command = convert_command_args(properties, deriv_local_path)
       # START CONCURRENCY
       deriv_creation_futures << Concurrent::Future.execute(executor: Concurrent.global_io_executor) do
-        result = cmd.run(*convert_audio_command)
+
+        #result = cmd.run(*convert_audio_command)
+
+        result = self.class.run_command(cmd, convert_audio_command)
+
         if upload_file_to_s3(deriv_local_path, properties)
           report_success(properties)
         else
