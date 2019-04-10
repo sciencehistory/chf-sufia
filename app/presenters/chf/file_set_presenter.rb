@@ -2,7 +2,7 @@ module CHF
   # Add some things we can use for our custom UI
   class FileSetPresenter < Sufia::FileSetPresenter
 
-    delegate :original_file_id, to: :solr_document
+    delegate :original_file_id, :original_checksum, to: :solr_document
 
     # Consistent API with GenericWorkShowPresenter, on show pages we often
     # only show permissoin badge if not open access.
@@ -47,6 +47,23 @@ module CHF
 
     def representative_width
       width
+    end
+
+    def audio?
+      representative_content_type =~ /audio/
+    end
+
+    def audio_derivative_links
+      return unless audio?
+      #other_checksum = FileSet.find(id).files.first.checksum.value
+      # file_checksum = original_checksum.first
+      # byebug
+      # byebug
+
+      {
+        :webm => CHF::AudioDerivativeMaker.s3_public_url(id, :standard_mp3,  representative_checksum),
+        :mp3  => CHF::AudioDerivativeMaker.s3_public_url(id, :standard_webm, representative_checksum)
+      }
     end
 
   end

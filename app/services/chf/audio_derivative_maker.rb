@@ -6,15 +6,17 @@ module CHF
 # CHF::CreateDerivativesOnS3Service, but does borrow a couple of class methods
 # and properties from it (search for "CHF::CreateDerivativesOnS3Service" below).
 class AudioDerivativeMaker
-
-  # Class method: the URL of the s3 URL for an audio derivative for a given fileset.
-  # Bucket and checksum are optional, but pass them in if you have them.
-  def self.s3_public_url(file_set, deriv_type, checksum=nil, bucket=nil)
-    raise ArgumentError, "Nil fileset passed" unless file_set
-    if bucket.nil?
-      bucket = CHF::CreateDerivativesOnS3Service.s3_bucket!
-    end
-    self.s3_obj(bucket, deriv_type, file_set, checksum).public_url
+  # Class method: the URL of the s3 URL for an audio derivative for a given fileset_id.
+  # Requires a checksum for the file, but that is easy to get from solr.
+  def self.s3_public_url(file_set_id, deriv_type, checksum)
+    raise ArgumentError, "Nil fileset_id passed" unless file_set_id
+    # s3_bucket! is already memoized in CreateDerivativesOnS3Service.
+    bucket = CHF::CreateDerivativesOnS3Service.s3_bucket!
+    raise(ArgumentError, "Don't recognize format #{deriv_type.to_s}") unless AUDIO_DERIVATIVE_FORMATS.keys.include? deriv_type
+    suffix = AUDIO_DERIVATIVE_FORMATS[deriv_type].suffix
+    part_1 = "#{file_set_id}_checksum#{checksum}"
+    part_2 = "#{Pathname.new(deriv_type.to_s).sub_ext(suffix)}"
+    bucket.object("#{part_1}/#{part_2}").public_url
   end
 
   # Formats we accept as ORIGINALS:
@@ -133,6 +135,8 @@ class AudioDerivativeMaker
     part_2 = "#{Pathname.new(deriv_type.to_s).sub_ext(suffix)}"
     bucket.object("#{part_1}/#{part_2}")
   end
+
+
 
   # Given the ID of a Sufia file, download it from Fedora.
   def download_file_from_fedora()

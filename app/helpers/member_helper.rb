@@ -76,6 +76,7 @@ module MemberHelper
       download_options.each do |option_config|
         list_elements << dropdown_menuitem(
           link_to(option_config[:url],
+            download: '', #forces the download of audio files
             data: {
               content_hook: "dl-original-link",
               analytics_category: "Work",

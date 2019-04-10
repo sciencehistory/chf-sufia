@@ -16,10 +16,18 @@
                   class: "show-page-image",
                   data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)) do %>
 
+      <% if member.audio? %>
+        <audio controls>
+            <source src="<%= member.audio_derivative_links[:mp3] %>" type="audio/mpeg" />
+            <source src="<%= member.audio_derivative_links[:webm] %>" type="audio/webm" />
+            <p><a href="/downloads/<%= member.id %>">Original audio</a></p>
+        </audio>
+      <% else %>
       <%= member_image_tag(parent_id: @presenter.id, member: member,
                            size_key: local_assigns[:size],
                            lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
       %>
+      <% end %>
 
       <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
         <div class="show-page-member-title">
