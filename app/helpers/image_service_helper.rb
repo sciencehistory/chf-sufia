@@ -100,6 +100,30 @@ module ImageServiceHelper
     image_tag(args.delete(:src) || "", args)
   end
 
+
+  # Create an HTML5 tag for a FileSet or ChildWork.
+  def member_audio_tag(parent_id:, member:)
+    return default_image(member: nil) if member.nil?
+
+    mp3_url  = CHF::AudioDerivativeMaker.s3_public_url(member.id, :standard_mp3, member.representative_checksum)
+    webm_url = CHF::AudioDerivativeMaker.s3_public_url(member.id, :standard_webm, member.representative_checksum)
+
+    result = "<h2 class=\"attribute-sub-head\">#{member.title.first}"
+    if member.title.first != member.label
+      result += " (#{member.label })"
+    end
+    result += "</h2>"
+    result += "<audio controls controlsList=\"nodownload\">"
+    result += "    <source src=\"#{mp3_url}\"  type=\"audio/mpeg\" />"
+    result += "    <source src=\"#{webm_url}\" type=\"audio/webm\" />"
+    result += "    <p><a href=\"/downloads/#{ member.id }\">Original audio</a></p>"
+    result += "</audio>"
+
+    raw(result)
+  end
+
+
+
   # For feeding to OpenSeadragon
   def tile_source_url(member_presenter)
     service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
@@ -116,6 +140,8 @@ module ImageServiceHelper
     orig_height = member_presenter.representative_height
     orig_page_count = member_presenter.representative_page_count
 
+    is_image = member_presenter.representative_content_type&.start_with?("image/")
+    is_audio = member_presenter.representative_content_type&.start_with?("audio/")
 
     subhead = CHF::Util.humanized_content_type(member_presenter.representative_content_type)
     if orig_width && orig_height
@@ -133,20 +159,31 @@ module ImageServiceHelper
       url: main_app.download_path(member_presenter.representative_file_set_id)
     } if member_presenter.representative_file_set_id
 
-    unless member_presenter.representative_content_type&.start_with?("image/")
-      # we don't currently have alternate downloads for PDFs or non-images.
-      return [direct_original].compact
-    end
-
-
-    service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
-
-    service.download_options(filename_base: filename_base).tap do |list|
-      unless list.any? {|h| h[:option_key] == "original" }
-        (list << direct_original) if direct_original
+    if is_image
+      service = _image_url_service(CHF::Env.lookup(:image_server_downloads), member_presenter)
+      image_server_download = service.download_options(filename_base: filename_base).tap do |list|
+        unless list.any? {|h| h[:option_key] == "original" }
+          (list << direct_original) if direct_original
+        end
+      end.collect do |option|
+        _fill_out_download_option(member_presenter, option)
       end
-    end.collect do |option|
-      _fill_out_download_option(member_presenter, option)
+      return image_server_download
+
+    elsif is_audio
+      mp3_url  = CHF::AudioDerivativeMaker.s3_public_url(member_presenter.id, :standard_mp3, member_presenter.representative_checksum)
+      mp3_download_link = {
+        option_key: "mp3",
+        label: "mp3 Audio",
+        subhead: subhead,
+        analyticsAction: "download_mp3",
+        url: mp3_url
+      }
+      return [mp3_download_link, direct_original].compact
+
+    else
+      # we don't currently have alternate downloads for PDFs.
+      return [direct_original].compact
     end
   end
 

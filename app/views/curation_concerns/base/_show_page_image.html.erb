@@ -9,21 +9,19 @@
       * extra_classes: optional. extra CSS calsses added to the wrapper <div> tag.
 
 %>
+<% wrapper_tag = member.audio? ? 'show-page-audio-wrapper' : 'show-page-image-wrapper' %>
+
 <%= content_tag("div",
-      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes])
+      class: [wrapper_tag] + Array(local_assigns[:extra_classes])
     ) do %>
   <%= content_tag("div",
                   class: "show-page-image",
                   data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)) do %>
 
-      <% if member.audio? %>
-        <audio controls>
-            <source src="<%= member.audio_derivative_links[:mp3] %>" type="audio/mpeg" />
-            <source src="<%= member.audio_derivative_links[:webm] %>" type="audio/webm" />
-            <p><a href="/downloads/<%= member.id %>">Original audio</a></p>
-        </audio>
+      <% if member.representative_content_type =~ /audio/ %>
+         <%= member_audio_tag(parent_id: @presenter.id, member: member)%>
       <% else %>
-      <%= member_image_tag(parent_id: @presenter.id, member: member,
+        <%= member_image_tag(parent_id: @presenter.id, member: member,
                            size_key: local_assigns[:size],
                            lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
       %>
