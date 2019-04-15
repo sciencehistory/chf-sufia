@@ -214,7 +214,7 @@
   }
 
   .show-page-audio-wrapper {
-    width: $max-image-column;
+    width: ($max-image-column - ($thumb-horizontal-margin * 3)) !important;
     display: inline-block;
     vertical-align: bottom;
     margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
@@ -227,7 +227,7 @@
     }
     audio {
       cursor: pointer;
-      width: 90%;
+      width: 100%;
     }
   }
 
