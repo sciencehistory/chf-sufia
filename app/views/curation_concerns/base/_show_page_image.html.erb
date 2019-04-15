@@ -9,7 +9,7 @@
       * extra_classes: optional. extra CSS calsses added to the wrapper <div> tag.
 
 %>
-<% wrapper_tag = member.audio? ? 'show-page-audio-wrapper' : 'show-page-image-wrapper' %>
+<% wrapper_tag = member.representative_content_type =~ /audio/ ? 'show-page-audio-wrapper' : 'show-page-image-wrapper' %>
 
 <%= content_tag("div",
       class: [wrapper_tag] + Array(local_assigns[:extra_classes])
