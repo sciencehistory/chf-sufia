@@ -60,7 +60,10 @@ DownloadsController.class_eval do
   def content_options
     base = super
 
+    # Note any mime type you want to deliver as a download should be registered
+    # in ./config/initializers/mime_types.rb
     extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
+
     if extension
       download_name = helpers._download_name_base(asset) + ".#{extension}"
       base.merge!(
