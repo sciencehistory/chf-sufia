@@ -67,6 +67,10 @@
     .show-page-image-wrapper.thumb {
       width: ($max-image-column / 3 - ($thumb-horizontal-margin * 3)) !important;
     }
+
+    .show-page-audio-wrapper {
+      width: $max-image-column;
+    }
   }
 
   .show-genre {
@@ -206,6 +210,24 @@
         border-top-left-radius: 0;
         border-bottom-right-radius: 0;
       }
+    }
+  }
+
+  .show-page-audio-wrapper {
+    width: ($max-image-column - ($thumb-horizontal-margin * 3)) !important;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
+    .btn {
+      @extend .btn-sm;
+      border-radius: 2px;
+    }
+    .show-page-member-title{
+      display:none;
+    }
+    audio {
+      cursor: pointer;
+      width: 100%;
     }
   }
 

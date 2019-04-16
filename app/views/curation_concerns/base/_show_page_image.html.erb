@@ -9,17 +9,23 @@
       * extra_classes: optional. extra CSS calsses added to the wrapper <div> tag.
 
 %>
+<% wrapper_tag = member.representative_content_type =~ /audio/ ? 'show-page-audio-wrapper' : 'show-page-image-wrapper' %>
+
 <%= content_tag("div",
-      class: ["show-page-image-wrapper"] + Array(local_assigns[:extra_classes])
+      class: [wrapper_tag] + Array(local_assigns[:extra_classes])
     ) do %>
   <%= content_tag("div",
                   class: "show-page-image",
                   data: viewer_trigger_data_attributes(parent_id: @presenter.id, member: member)) do %>
 
-      <%= member_image_tag(parent_id: @presenter.id, member: member,
+      <% if member.representative_content_type =~ /audio/ %>
+         <%= member_audio_tag(parent_id: @presenter.id, member: member)%>
+      <% else %>
+        <%= member_image_tag(parent_id: @presenter.id, member: member,
                            size_key: local_assigns[:size],
                            lazy: (local_assigns[:lazy_after] && member_counter > local_assigns[:lazy_after] - 1))
       %>
+      <% end %>
 
       <% if current_ability.current_user.staff? || member.model_name.singular.to_sym != :file_set %>
         <div class="show-page-member-title">
