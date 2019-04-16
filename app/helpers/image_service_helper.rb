@@ -175,7 +175,7 @@ module ImageServiceHelper
 
       mp3_download_link = {
         option_key: "mp3",
-        label: "mp3 audio",
+        label: "Optimized MP3",
         subhead: subhead,
         analyticsAction: "download_mp3",
         url: mp3_url,
