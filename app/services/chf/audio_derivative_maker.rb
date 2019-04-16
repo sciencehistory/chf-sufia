@@ -7,16 +7,25 @@ module CHF
 # and properties from it (search for "CHF::CreateDerivativesOnS3Service" below).
 class AudioDerivativeMaker
   # Class method: the URL of the s3 URL for an audio derivative for a given fileset_id.
-  # Requires a checksum for the file, but that is easy to get from solr.
-  def self.s3_public_url(file_set_id, deriv_type, checksum)
-    raise ArgumentError, "Nil fileset_id passed" unless file_set_id
+  def self.s3_url(file_set_id:, file_checksum:, type_key:, filename_base: nil, include_content_disposition: true)
     # s3_bucket! is already memoized in CreateDerivativesOnS3Service.
     bucket = CHF::CreateDerivativesOnS3Service.s3_bucket!
+    deriv_type = type_key.to_sym
     raise(ArgumentError, "Don't recognize format #{deriv_type.to_s}") unless AUDIO_DERIVATIVE_FORMATS.keys.include? deriv_type
     suffix = AUDIO_DERIVATIVE_FORMATS[deriv_type].suffix
-    part_1 = "#{file_set_id}_checksum#{checksum}"
+    part_1 = "#{file_set_id}_checksum#{file_checksum}"
     part_2 = "#{Pathname.new(deriv_type.to_s).sub_ext(suffix)}"
-    bucket.object("#{part_1}/#{part_2}").public_url
+    obj = bucket.object("#{part_1}/#{part_2}")
+
+    if filename_base
+      suffix_minus_dot = suffix.sub(/^\./, '')
+      file_name = "#{filename_base}_#{deriv_type.to_s}.#{suffix_minus_dot}"
+      obj.presigned_url(:get,
+                        expires_in: 3.days.to_i, # no hurry
+                        response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(file_name) : "")
+    else
+      obj.public_url
+    end
   end
 
   # Formats we accept as ORIGINALS:

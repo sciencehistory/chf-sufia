@@ -104,9 +104,8 @@ module ImageServiceHelper
   # Create an HTML5 tag for a FileSet or ChildWork.
   def member_audio_tag(parent_id:, member:)
     return default_image(member: nil) if member.nil?
-
-    mp3_url  = CHF::AudioDerivativeMaker.s3_public_url(member.id, :standard_mp3, member.representative_checksum)
-    webm_url = CHF::AudioDerivativeMaker.s3_public_url(member.id, :standard_webm, member.representative_checksum)
+    mp3_url =  CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3)
+    webm_url = CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm)
 
     result = "<h2 class=\"attribute-sub-head\">#{member.title.first}"
     if member.title.first != member.label
@@ -171,13 +170,15 @@ module ImageServiceHelper
       return image_server_download
 
     elsif is_audio
-      mp3_url  = CHF::AudioDerivativeMaker.s3_public_url(member_presenter.id, :standard_mp3, member_presenter.representative_checksum)
+      # TODO try getting this using a nice rails path function
+      mp3_url = "/download_redirect/#{member_presenter.id}/standard_mp3?filename_base=#{member_presenter.id}&no_content_disposition=false"
+
       mp3_download_link = {
         option_key: "mp3",
-        label: "mp3 Audio",
+        label: "mp3 audio",
         subhead: subhead,
         analyticsAction: "download_mp3",
-        url: mp3_url
+        url: mp3_url,
       }
       return [mp3_download_link, direct_original].compact
 

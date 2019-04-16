@@ -10,6 +10,8 @@ DownloadsController.class_eval do
   # to S3 response that will NOT have content-disposition header forcing download,
   # for using "download" images in a web page. Used for OAI-PMH feed for DPLA.
   def s3_download_redirect
+
+
     unless CHF::Env.lookup("image_server_downloads").to_s == "dzi_s3"
       raise ActionController::RoutingError.new('Not Found')
     end
@@ -28,7 +30,13 @@ DownloadsController.class_eval do
 
     filename_base = params[:filename_base].presence || "#{file_set_id}_#{params[:filename_key]}"
 
-    s3_url = CHF::CreateDerivativesOnS3Service.s3_url(
+    if file_set.original_file.mime_type =~ /audio/
+      deriv_service_class = CHF::AudioDerivativeMaker
+    else
+      deriv_service_class = CHF::CreateDerivativesOnS3Service
+    end
+
+    s3_url = deriv_service_class.s3_url(
       file_set_id: file_set_id,
       file_checksum: file_checksum,
       type_key: params[:filename_key],
