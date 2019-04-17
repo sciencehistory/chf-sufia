@@ -170,9 +170,11 @@ module ImageServiceHelper
       return image_server_download
 
     elsif is_audio
-      # TODO try getting this using a nice rails path function
-      mp3_url = "/download_redirect/#{member_presenter.id}/standard_mp3?filename_base=#{member_presenter.id}&no_content_disposition=false"
-
+      mp3_url = Rails.application.routes.url_helpers.s3_download_redirect_path(
+        member_presenter.id, 'standard_mp3',
+        filename_base: member_presenter.id,
+        no_content_disposition: false
+      )
       mp3_download_link = {
         option_key: "mp3",
         label: "Optimized MP3",
