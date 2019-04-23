@@ -106,6 +106,9 @@ class SolrDocument
   def exhibition
     self[Solrizer.solr_name('exhibition')]
   end
+  def project
+    self[Solrizer.solr_name('project')]
+  end
   def source
     self[Solrizer.solr_name('source')]
   end
