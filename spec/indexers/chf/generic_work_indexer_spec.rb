@@ -22,6 +22,7 @@ RSpec.describe CHF::GenericWorkIndexer do
       w.editor = ["the editor"]
       w.attributed_to = ["presumptive author"]
       w.engraver = ["engraving professional"]
+      w.project = ['Mass Spectrometry', 'Nanotechnology']
       w.save
     end
   end
@@ -52,6 +53,10 @@ RSpec.describe CHF::GenericWorkIndexer do
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'publishing house'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)]).to include 'presumptive author'
     expect(solr_document[mapper.solr_name('maker_facet', :facetable)].size).to eq 5
+  end
+
+  it 'indexes the project' do
+    expect(solr_document['project_tesim']).to match_array ["Mass Spectrometry", "Nanotechnology"]
   end
 
   describe "with a real file child" do

@@ -49,6 +49,7 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       expect(names).to include "generic_work[place_of_manufacture][]"
       expect(names).to include "generic_work[place_of_publication][]"
       expect(names).to include "generic_work[place_of_creation][]"
+
     end
 
     it "renders a nested attribute field" do
@@ -64,6 +65,10 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
 
     it "renders exhibition as a select" do
       expect(page).to have_selector "select[id='generic_work_exhibition']"
+    end
+    it "renders project as a select" do
+      expect(page).to have_content('Science and Disability')
+      expect(page).to have_selector "select[id='generic_work_project']"
     end
   end
 end

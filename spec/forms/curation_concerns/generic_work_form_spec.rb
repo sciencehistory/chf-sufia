@@ -17,7 +17,5 @@ describe CurationConcerns::GenericWorkForm do
       expect(form.required_fields.count).to eq 2
     end
   end
-
   it_behaves_like "work_form_behavior"
-
 end
