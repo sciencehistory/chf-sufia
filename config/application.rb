@@ -110,6 +110,19 @@ module Chufia
       'Library',
     ]
 
+    config.projects = [
+      'Atmospheric Science',
+      'Chemical History of Electronics',
+      "Imagining Philadelphia's Energy Futures",
+      'Mass Spectrometry',
+      'Nanotechnology',
+      'Oral History of the Toxic Substances Control Act',
+      'Pew Biomedical Scholars',
+      'REACH Ambler',
+      'Scientific and Technical Information Systems',
+      'Science and Disability',
+    ]
+
     config.file_creators = [
       'Brown, Will',
       'Center for Oral History',

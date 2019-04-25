@@ -10,14 +10,12 @@ describe CurationConcerns::GenericWorkForm do
 
   describe "form terms" do
     it "exclude defaults" do
-      expect(form.primary_terms.count).to eq 26
+      expect(form.primary_terms.count).to eq 27
       expect(form.primary_terms).not_to include :keyword
     end
     it "requires 2 fields" do
       expect(form.required_fields.count).to eq 2
     end
   end
-
   it_behaves_like "work_form_behavior"
-
 end
