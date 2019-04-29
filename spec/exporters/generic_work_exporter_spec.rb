@@ -1,5 +1,10 @@
 require 'rails_helper'
 
+
+def my_count(x)
+  x.sum { |x| 1 }
+end
+
 RSpec.describe GenericWorkExporter do
   let (:work) do
     FactoryGirl.create(:generic_work, dates_of_work: []).tap do |w|
@@ -44,10 +49,7 @@ RSpec.describe GenericWorkExporter do
       "9aa815ab-53f4-427a-913f-4c3347f96823"
     ],
     "access_control" => "public",
-    "dates" => [{
-        "start" => "2003",
-        "finish" => "2015"
-      },
+    "dates" => [
       {
         "start" => "1200",
         "start_qualifier" => "century"
@@ -55,17 +57,9 @@ RSpec.describe GenericWorkExporter do
       {
         "start" => "2003",
         "finish" => "2015"
-      },
-      {
-        "start" => "1200",
-        "start_qualifier" => "century"
       }
     ],
-    "inscriptions" => [{
-        "location" => "chapter 7",
-        "text" => "words",
-        "display_label" => "(chapter 7) \"words\""
-      },
+    "inscriptions" => [
       {
         "location" => "place",
         "text" => "stuff",
@@ -75,18 +69,9 @@ RSpec.describe GenericWorkExporter do
         "location" => "chapter 7",
         "text" => "words",
         "display_label" => "(chapter 7) \"words\""
-      },
-      {
-        "location" => "place",
-        "text" => "stuff",
-        "display_label" => "(place) \"stuff\""
       }
     ],
-    "additional_credits" => [{
-        "role" => "photographer",
-        "name" => "Puffins",
-        "display_label" => "Photographed by Puffins"
-      },
+    "additional_credits" => [
       {
         "role" => "photographer",
         "name" => "Squirrels",
@@ -97,17 +82,17 @@ RSpec.describe GenericWorkExporter do
         "name" => "Puffins",
         "display_label" => "Photographed by Puffins"
       },
-      {
-        "role" => "photographer",
-        "name" => "Squirrels",
-        "display_label" => "Photographed by Squirrels"
-      }
     ]
     }
   end #let :expected_export_hash
 
   it "exports" do
-    actual_hash = GenericWorkExporter.new(work).to_hash
+    work_2 = GenericWork.find(work.id)
+
+    puts my_count(work_2.additional_credit) # 2
+    puts my_count(work  .additional_credit) # 4
+
+    actual_hash = GenericWorkExporter.new(work_2).to_hash
     %w(id depositor access_control_id date_of_work_ids inscription_ids additional_credit_ids).each do |k|
       actual_hash.delete(k)
       expected_export_hash.delete(k)
@@ -119,84 +104,10 @@ RSpec.describe GenericWorkExporter do
     expected_export_hash['project'].sort!
     # end Travis hack
 
+    byebug unless actual_hash == expected_export_hash
+
     expect(actual_hash).to eq expected_export_hash
     end
-
-
-  # context "public work" do
-  #   let(:metadata) do
-  #     {
-  #       "id"=>"8049g504g",
-  #       "head" => [
-  #         "#<ActiveTriples::Resource:0x0000558a2682fa68>"
-  #       ],
-  #       "tail" => [
-  #         "#<ActiveTriples::Resource:0x0000558a26826030>"
-  #       ],
-  #       "depositor"=> "njoniec@sciencehistory.org",
-  #       "title" => [
-  #         "Adulterations of food; with short processes for their detection."
-  #       ],
-  #       "date_uploaded"=> "2019-02-08T20:45:54+00:00",
-  #       "date_modified"=> "2019-02-08T20:49:43+00:00",
-  #       "state" => "#<ActiveTriples::Resource:0x0000558a2d321088>",
-  #       "part_of" => [
-  #         "#<ActiveTriples::Resource:0x0000558a2681aff0>"
-  #       ],
-  #       "identifier" => [
-  #         "bib-b1075796"
-  #       ],
-  #       "author" => [
-  #         "Atcherley, Rowland J."
-  #       ],
-  #       "credit_line" => [
-  #         "Courtesy of Science History Institute"
-  #       ],
-  #       "division" => "",
-  #       "file_creator" =>  "",
-  #       "physical_container" =>  "",
-  #       "rights_holder" =>  "",
-  #       "access_control_id" =>  "90cb04df-61a7-4d61-84e2-130fc7ddbee3",
-  #       "access_control" => "public",
-  #       "representative_id" =>  "2v23vv55g",
-  #       "thumbnail_id" =>  "2v23vv55g",
-  #       "admin_set_id" =>  "admin_set/default",
-  #       "child_ids" =>  [
-  #         "kp78gh433",
-  #         "1v53jz06w",
-  #         "nk322f35j",
-  #         "0r9674786",
-  #         "6q182m18c",
-  #         "1831cm25h",
-  #         "8623hz81w"
-  #       ]
-  #     }
-  #   end
-
-  #   it "imports as published" do
-  #     generic_work_importer.import
-  #     new_work = Work.first
-
-  #     expect(new_work.published?).to be(true)
-  #   end
-
-  #   describe "with existing item" do
-  #     let!(:existing_item) { FactoryBot.create(:work,
-  #       friendlier_id: metadata["id"],
-  #       title: "old title",
-  #       external_id: { category: "object", value: "old_id"},
-  #       published: false)}
-
-  #     it "imports and updates data" do
-  #       generic_work_importer.import
-
-  #       expect(Work.where(friendlier_id: metadata["id"]).count).to eq(1)
-  #       item = Work.find_by_friendlier_id!(metadata["id"])
-
-  #       expect(item.title).to eq "Adulterations of food; with short processes for their detection."
-  #       expect(item.published?).to be(true)
-  #       expect(item.external_id).to eq([Work::ExternalId.new(category: "bib", value: "b1075796")])
-  #     end
-  #   end
-  # end
 end # describe
+
+

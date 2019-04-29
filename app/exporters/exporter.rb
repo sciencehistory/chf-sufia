@@ -49,7 +49,13 @@ class Exporter
     the_hash.select { |key, value| value!=[] && value != nil }
   end
 
+  def my_count(x)
+    x.sum { |x| 1 }
+  end
+
   def to_hash()
+    my_count(GenericWork.find(target_item.id).additional_credit) # 2
+    my_count(target_item.additional_credit) # 4
     result = pre_clean()
     result = edit_hash(result)
     result = post_clean(result)
