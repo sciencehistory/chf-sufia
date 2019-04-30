@@ -5,6 +5,7 @@ class BatchUploadForm < Sufia::Forms::BatchUploadForm
   def self.chf_terms
     [ :additional_title,
       :identifier, :maker,
+      :provenance,
       :date_of_work,
       :place,
       :genre_string,
