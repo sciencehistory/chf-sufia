@@ -26,7 +26,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.photographer = ['Sparky']
       w.printer_of_plates = ['Shy Guy']
       w.printer = ['Joe Printer']
-      w.provenance = ['Woohoo Hooniversity Archives']
+      w.provenance = 'Woohoo Hooniversity Archives'
       w.publisher = ['Hammer Bro']
       w.place_of_interview = ['Underwater']
       w.place_of_manufacture = ['Cloudland']
