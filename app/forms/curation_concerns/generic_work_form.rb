@@ -12,6 +12,7 @@ module CurationConcerns
       [:title,
         :additional_title,
         :identifier, :maker,
+        :provenance,
         :date_of_work,
         :place,
         :resource_type, :genre_string,

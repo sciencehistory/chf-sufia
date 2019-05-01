@@ -6,6 +6,7 @@ RSpec.describe BatchEditForm do
     title: ["title 1"],
     language: ['en'],
     contributor: ['contributor1'],
+    provenance: 'On sale at the Acme',
     description: ['description1'],
     rights: ['rights1'],
     subject: ['subject1'],
@@ -20,6 +21,7 @@ RSpec.describe BatchEditForm do
     language: ['en'],
     resource_type: ['bar'],
     contributor: ['contributor2'],
+    provenance: 'On sale at the Wawa',
     description: ['description2'],
     rights: ['rights2'],
     subject: ['subject2'],
@@ -41,6 +43,7 @@ RSpec.describe BatchEditForm do
       is_expected.to eq [
         :division,
         :rights_holder,
+        :provenance,
         :file_creator,
         :additional_title,
         :identifier,

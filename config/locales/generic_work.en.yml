@@ -39,6 +39,7 @@ en:
         division: "Select the CHF administrative entity responsible for the management and curation of the physical work. Required."
         exhibition: "Select any current or past Museum exhibition(s) that the work has been displayed in, if applicable. If a desired entry is not available, contact the Digital Projects and Metadata Librarian."
         project: "Select any current or past projects that the work is a part of, if applicable. If a desired entry is not available, contact the Digital Projects and Metadata Librarian."
+        provenance: 'For fine art materials, input provenance information following Provenance Style Guide document (P:\Eddleman Institute\Museum\Collections\Art Collections\Provenance\Provenance_Style_Guide.docx). Provenance information can either be found in Past Perfect or within provenance files in the Museum department.'
         source: "For standalone digitization from a larger work, use for the name of the work from which the described material is derived. Can be left blank if the digital object is related to its parent work in the repository."
         series_arrangement: "Archival materials only: specify series and subseries of work, where relevant. Capture the information as listed in the finding aid."
         physical_container: "For archival and serialized materials: specify either box/folder or volume/part numbers, where relevant. For library manuscripts, specify shelfmark."
