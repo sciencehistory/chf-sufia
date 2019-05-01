@@ -74,6 +74,13 @@ RSpec.feature "Work form", js: true do
       find_by_id("#{gwia}_2_text")    .set(inscription_text_2)
     end
 
+    find_by_id("generic_work_provenance").set ("""<a href=\"https://www.nytimes.com\" target=\"_blank\">The New York Times.</a>
+          <i>italics</i>
+          <b>bold</b>
+          <cite>citation</cite>
+          <goat>this tag should not make it, except for its contents</goat>
+          <i>and this tag should get closed.""")
+
     select "Image", from: "generic_work[resource_type][]"
 
     choose "Your Institution"
@@ -84,13 +91,21 @@ RSpec.feature "Work form", js: true do
       newly_added_work = GenericWork.last
       expect(page).to have_current_path(curation_concerns_generic_work_path(newly_added_work.id), only_path: true)
     }.to change(GenericWork, :count).by(1)
-
     expect(page).to have_css("h1", text: title)
     expect(page).to have_css(".attribute.resource_type", text: "Image")
     expect(page).to have_text("Sierra Bib. No.: #{bib_num}")
     expect(page).to have_text(artist_name)
     expect(page).to have_text(publisher_name)
     expect(page).to have_text("circa #{date}")
+
+    expect(page.source).to include("<a href=\"https://www.nytimes.com\" target=\"_blank\">The New York Times.</a>")
+    expect(page.source).to include("<i>italics</i>")
+    expect(page.source).to include("<b>bold</b>")
+    expect(page.source).not_to include("goat")
+    expect(page.source).to include("this tag should not make it, except for its contents")
+    expect(page.source).to include("<cite>citation</cite>")
+    expect(page.source).to include("<i>and this tag should get closed.</i>")
+
 
     # Regression test for bug
     # https://github.com/sciencehistory/chf-sufia/issues/1049
