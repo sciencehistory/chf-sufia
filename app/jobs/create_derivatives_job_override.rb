@@ -28,9 +28,6 @@ module CreateDerivativesJobOverride
   # @param [String] file_id identifier for a Hydra::PCDM::File
   # @param [String, NilClass] filepath the cached file within the CurationConcerns.config.working_path
   def perform(file_set, file_id, filepath = nil)
-    # hack for dev
-    create_derivatives_mode =  "dzi_s3"
-    # end hack for dev
     if create_derivatives_mode == "dzi_s3"
       # Doesn't use filepath, it's gonna fetch from fedora, and clean up after itself
       CHF::CreateDerivativesOnS3Service.new(file_set, file_id).call

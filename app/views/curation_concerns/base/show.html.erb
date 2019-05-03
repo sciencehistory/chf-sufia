@@ -122,15 +122,27 @@
             </td>
           </tr>
         <% end %>
-        <!-- TODO add toggle -->
         <% if @presenter.provenance_notes&.length %>
           <tr>
             <th>Provenance notes</th>
-            <td>
-              <%=format_description(@presenter.provenance_notes.first) %>
+            <%#
+            A quick-and-dirty solution for the fact that provenance notes can get really lengthy and most users
+            are only want to going to want to see the provenance info itself, not the notes.
+            This is based on:
+            https://medium.com/@beedaan/partial-collapse-with-bootstrap-3-ef4e6bf85537
+            See app/assets/stylesheets/local/attribute-table.scss
+            for the CSS.
+            %>
+            <td class="provenance_notes">
+              <p class="collapse" id="collapseExample" aria-expanded="false">
+                <%= format_description(@presenter.provenance_notes.first, truncate: false, wrapper_tag: 'span') %>
+              </p>
+              <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></a>
             </td>
           </tr>
         <% end %>
+
+
         <%= @presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
         <%= @presenter.attribute_to_html(:place_of_creation, render_as: :faceted, search_field: 'place_facet') %>
         <%= @presenter.attribute_to_html(:place_of_interview, render_as: :faceted, search_field: 'place_facet') %>

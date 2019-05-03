@@ -88,7 +88,6 @@ RSpec.feature "Work form", js: true do
 
     # Save, go to browse page, confirm everything is there
     expect {
-      byebug
       click_button "Save"
       newly_added_work = GenericWork.last
       expect(page).to have_current_path(curation_concerns_generic_work_path(newly_added_work.id), only_path: true)
