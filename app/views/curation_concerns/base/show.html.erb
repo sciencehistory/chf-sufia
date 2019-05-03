@@ -122,6 +122,15 @@
             </td>
           </tr>
         <% end %>
+        <!-- TODO add toggle -->
+        <% if @presenter.provenance_notes&.length %>
+          <tr>
+            <th>Provenance notes</th>
+            <td>
+              <%=format_description(@presenter.provenance_notes.first) %>
+            </td>
+          </tr>
+        <% end %>
         <%= @presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
         <%= @presenter.attribute_to_html(:place_of_creation, render_as: :faceted, search_field: 'place_facet') %>
         <%= @presenter.attribute_to_html(:place_of_interview, render_as: :faceted, search_field: 'place_facet') %>

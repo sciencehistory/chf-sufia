@@ -11,6 +11,7 @@ class BatchEditForm < Sufia::Forms::BatchEditForm
     # :physical_container,
     :rights_holder,
     :provenance,
+    :provenance_notes,
     :file_creator,
     :additional_title,
     :identifier,

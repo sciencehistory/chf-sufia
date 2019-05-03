@@ -48,8 +48,9 @@ class CatalogController < ApplicationController
 
       "#{solr_name("subject", :stored_searchable)}^100",
 
-      "#{solr_name("description", :stored_searchable)}^50",
-      "#{solr_name("provenance", :stored_searchable)}^50",
+      "#{solr_name("description",      :stored_searchable)}^50",
+      "#{solr_name("provenance",       :stored_searchable)}^50",
+      "#{solr_name("provenance_notes", :stored_searchable)}^50",
 
       solr_name("depositor"),
       solr_name("language", :stored_searchable),

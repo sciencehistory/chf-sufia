@@ -102,6 +102,9 @@ module GenericMetadata
     property :provenance, predicate: ::RDF::URI.new("http://chemheritage.org/ns/provenance"), multiple: false do |index|
       index.as :stored_searchable
     end
+    property :provenance_notes, predicate: ::RDF::URI.new("http://chemheritage.org/ns/provenance_notes"), multiple: false do |index|
+      index.as :stored_searchable
+    end
 
     property :printer_of_plates, predicate: ::RDF::Vocab::MARCRelators.pop do |index|
       index.as :stored_searchable

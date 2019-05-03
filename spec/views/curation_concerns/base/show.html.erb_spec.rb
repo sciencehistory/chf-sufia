@@ -27,6 +27,7 @@ describe 'curation_concerns/base/show.html.erb' do
       w.printer_of_plates = ['Shy Guy']
       w.printer = ['Joe Printer']
       w.provenance = 'Woohoo Hooniversity Archives'
+      w.provenance_notes = "(Some obscure nintendo joke)"
       w.publisher = ['Hammer Bro']
       w.place_of_interview = ['Underwater']
       w.place_of_manufacture = ['Cloudland']
@@ -123,6 +124,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Hammer Bro/
       expect(rendered).to match /Underwater/
       expect(rendered).to match /Woohoo Hooniversity Archives/
+      expect(rendered).to match /obscure nintendo/
       expect(rendered).to match /Cloudland/
       expect(rendered).to match /Pyramid/
       expect(rendered).to match /Castle/
