@@ -6,7 +6,6 @@ class BatchUploadForm < Sufia::Forms::BatchUploadForm
     [ :additional_title,
       :identifier, :maker,
       :provenance,
-      :provenance_notes,
       :date_of_work,
       :place,
       :genre_string,

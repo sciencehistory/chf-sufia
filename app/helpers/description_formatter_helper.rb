@@ -1,6 +1,6 @@
 module DescriptionFormatterHelper
 
-  def format_description(text, truncate: false, wrapper_tag: 'p')
+  def format_description(text, truncate: false)
     # sanitize. should have been sanitized on input, but just to
     # be safe.
     text = DescriptionSanitizer.new(add_target_blank: true).sanitize(text).html_safe
@@ -12,7 +12,7 @@ module DescriptionFormatterHelper
 
     # And convert line breaks to paragraphs. Don't need to sanitize, we
     # already did.
-    text = simple_format(text, {}, sanitize: false, wrapper_tag: wrapper_tag)
+    text = simple_format(text, {}, sanitize: false)
 
     # Extracted from sufia helper `text = iconify_auto_link(text), a sufia helper to turn URLs
     # into links. But we want to turn off sanitization, cause we're already sanitizing how we

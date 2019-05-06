@@ -19,27 +19,6 @@ $attribute-table-max-tabular: 380px;
     hyphens: auto;
   }
 
-  /* https://medium.com/@beedaan/partial-collapse-with-bootstrap-3-ef4e6bf85537 */
-  .provenance_notes p.collapse[aria-expanded="false"] {
-    height: 42px !important;
-    overflow: hidden;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .provenance_notes p.collapsing[aria-expanded="false"] {
-    height: 42px !important;
-  }
-
-  .provenance_notes a.collapsed:after  {
-    content: '+ Show More';
-  }
-
-  .provenance_notes a:not(.collapsed):after {
-    content: '- Show Less';
-  }
 
   // small, break down table
   @media (max-width: $attribute-table-max-tabular) {

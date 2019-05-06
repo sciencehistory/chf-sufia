@@ -78,10 +78,6 @@ module WorkFormBehavior
       if params[:provenance]
         clean_params[:provenance] = ::DescriptionSanitizer.
           new.sanitize(params[:provenance])
-      end      # Model expects provenance as single-value.
-      if params[:provenance_notes]
-        clean_params[:provenance_notes] = ::DescriptionSanitizer.
-          new.sanitize(params[:provenance_notes])
       end
 
       # Oops; we're blanking out these values when changing permissions and probably versions, too

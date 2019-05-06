@@ -20,7 +20,6 @@ RSpec.describe GenericWork do
     additional_title: 'http://purl.org/dc/terms/alternative',
     printer: 'http://id.loc.gov/vocabulary/relators/prt',
     provenance: 'http://chemheritage.org/ns/provenance',
-    provenance_notes: 'http://chemheritage.org/ns/provenance_notes',
     printer_of_plates: 'http://id.loc.gov/vocabulary/relators/pop',
     editor: 'http://id.loc.gov/vocabulary/relators/edt',
     engraver: 'http://id.loc.gov/vocabulary/relators/egr',

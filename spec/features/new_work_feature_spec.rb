@@ -74,7 +74,6 @@ RSpec.feature "Work form", js: true do
       find_by_id("#{gwia}_2_text")    .set(inscription_text_2)
     end
 
-
     find_by_id("generic_work_provenance").set ("""<a href=\"https://www.nytimes.com\" target=\"_blank\">The New York Times.</a>
           <i>italics</i>
           <b>bold</b>

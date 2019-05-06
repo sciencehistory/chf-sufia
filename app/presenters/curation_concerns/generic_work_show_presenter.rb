@@ -13,7 +13,7 @@ module CurationConcerns
     delegate :genre_string, :medium, :physical_container, :creator_of_work,
       :artist, :attributed_to, :author, :addressee, :interviewee, :interviewer,
       :manufacturer, :manner_of, :photographer, :place_of_interview,
-      :place_of_manufacture, :place_of_creation, :place_of_publication, :provenance, :provenance_notes,
+      :place_of_manufacture, :place_of_creation, :place_of_publication, :provenance,
       :extent, :division, :exhibition, :project, :source, :series_arrangement, :rights_holder,
       :credit_line, :additional_credit, :file_creator, :admin_note,
       :inscription, :date_of_work, :editor, :engraver, :printer,
@@ -254,6 +254,15 @@ module CurationConcerns
       field_values(field_config, options)
     end
 
+    # The string NOTES, in all caps, followed by an optional colon,
+    # needs to be on its own line in the Provenance field.
+    # The regular expression also captures extra blank space
+    # before and after the match, as well as before and after the word "NOTES".
+    def split_provenance
+      return [nil, nil] if provenance.nil? || provenance == []
+      return ["",  nil] if provenance == ""
+      provenance.first.split(/\s*\n\n\s*NOTES:?\s*\n\n\s*/m)
+    end
 
     private
 

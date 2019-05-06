@@ -88,9 +88,6 @@ class SolrDocument
   def provenance
     self[Solrizer.solr_name('provenance')]
   end
-  def provenance_notes
-    self[Solrizer.solr_name('provenance_notes')]
-  end
   def place_of_interview
     self[Solrizer.solr_name('place_of_interview')]
   end
