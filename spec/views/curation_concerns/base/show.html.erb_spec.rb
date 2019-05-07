@@ -128,7 +128,6 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Hammer Bro/
       expect(rendered).to match /Underwater/
       expect(rendered).to match /Woohoo Hooniversity Archives/
-      expect(presenter.split_provenance).to contain_exactly("This item is from the\n        Woohoo Hooniversity Archives.", "And here are some notes.")
       expect(rendered).to match /Cloudland/
       expect(rendered).to match /Pyramid/
       expect(rendered).to match /Castle/
