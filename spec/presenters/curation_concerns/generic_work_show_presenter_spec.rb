@@ -133,8 +133,6 @@ describe CurationConcerns::GenericWorkShowPresenter do
         to contain_exactly("provenance metadata", "notes")
       expect(presenter.split_provenance([nil])).
         to contain_exactly(nil, nil)
-      expect(presenter.split_provenance("")).
-        to contain_exactly(nil, nil)
       expect { presenter.split_provenance("Should not accept a string; provenance is delegated to the SOLR document.") }.
         to raise_error(ArgumentError)
       expect { presenter.split_provenance(["Should not accept more", "than one item in the array."]) }.

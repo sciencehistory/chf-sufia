@@ -265,13 +265,11 @@ module CurationConcerns
     # and thus can be either nil or an *array* of a single string.
     #
     # Do not pass an argument to this method, except for testing.
-    def split_provenance(prov=nil)
-      prov = provenance if prov.nil?
-      return [nil, nil] if prov.blank?
-      return ["",  nil] if prov == [""]
-      raise ArgumentError.new("Provenance should be either nil or an array of length 1.") unless prov.is_a? Array
-      raise ArgumentError.new("Provenance should be either nil or an array of length 1.") unless prov.length == 1
-      return [nil, nil] if prov.first.blank?
+    def split_provenance(prov=provenance)
+      unless prov.nil? || ((prov.is_a? Array) && prov.length == 1)
+        raise ArgumentError.new("Provenance should be either nil or an array of length 1.")
+      end
+      return [nil, nil] if prov.blank? || prov.first.blank?
       prov.first.split(/\s*\n\s*NOTES:?\s*\n\s*/, 2)
     end
 
