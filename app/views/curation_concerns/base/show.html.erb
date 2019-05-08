@@ -123,10 +123,10 @@
             <td>
               <%=format_description(provenance_summary) %>
               <% unless provenance_notes.nil? %>
-                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                  Notes...
-                </a><br/>
-                <div class="collapse" id="collapseExample">
+                <a data-toggle="collapse" href="#collapseProvenanceNotes"
+                  role="button" aria-expanded="false"
+                  aria-controls="collapseProvenanceNotes">Show notes</a>
+                <div class="collapse" id="collapseProvenanceNotes">
                   <%= format_description(provenance_notes) %>
                 </div>
               <% end %>
