@@ -422,6 +422,16 @@ describe CHF::CitableAttributes do
       end
     end
 
+    describe "weird citation missing fields (2)" do
+      let(:work) { FactoryGirl.build(:work, :with_complete_metadata,
+        dates_of_work: nil,
+        genre_string: ["Oral histories"],
+        division: "Center for Oral History")}
+      it "does not raise" do
+        citable_attributes
+        CHF::CitableAttributes::Renderer.from_work_presenter(presenter).render_html
+      end
+    end
 
   end # describe special case oral history
 end
