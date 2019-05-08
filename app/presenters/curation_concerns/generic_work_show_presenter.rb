@@ -270,7 +270,7 @@ module CurationConcerns
         raise ArgumentError.new("Provenance should be either nil or an array of length 1.")
       end
       return [nil, nil] if prov.blank? || prov.first.blank?
-      prov.first.split(/\s*\n\s*NOTES:?\s*\n\s*/, 2)
+      prov.first.split(/\s*\n\s*(NOTES|Notes):?\s*\n\s*/, 2)
     end
 
     private

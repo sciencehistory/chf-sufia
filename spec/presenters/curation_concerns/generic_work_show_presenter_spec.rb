@@ -141,6 +141,8 @@ describe CurationConcerns::GenericWorkShowPresenter do
         to contain_exactly("provenance metadata")
       expect(presenter.split_provenance(["provenance metadata \n\n NOTES: \n\n notes"])).
         to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance(["provenance metadata \n\n Notes: \n\n notes"])).
+        to contain_exactly("provenance metadata", "notes")
       expect(presenter.split_provenance(["provenance metadata \r\n NOTES: \r\n notes"])).
         to contain_exactly("provenance metadata", "notes")
       expect(presenter.split_provenance(["provenance metadata \r\n NOTES: \r\n notes \r\n NOTES: \r\n notes \r\n NOTES: \r\n notes"])).
