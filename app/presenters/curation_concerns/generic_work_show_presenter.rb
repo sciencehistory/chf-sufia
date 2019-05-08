@@ -254,6 +254,24 @@ module CurationConcerns
       field_values(field_config, options)
     end
 
+    # To split the provenance field into regular provenance info and a set of notes,
+    # use as a delimiter the string NOTES, in all caps, followed by an optional colon.
+    #
+    # The regular expression also captures extra blank space
+    # before and after the match, as well as before and after the word "NOTES".
+    #
+    # Note that GenericWork.provenance is either nil or a single string,
+    # but the GenericWorkPresenter.provenance is delegated to the solr document,
+    # and thus can be either nil or an *array* of a single string.
+    #
+    # Do not pass an argument to this method, except for testing.
+    def split_provenance(prov=provenance)
+      unless prov.nil? || ((prov.is_a? Array) && prov.length == 1)
+        raise ArgumentError.new("Provenance should be either nil or an array of length 1.")
+      end
+      return [nil, nil] if prov.blank? || prov.first.blank?
+      prov.first.split(/\s*\n\s*NOTES:?\s*\n\s*/, 2)
+    end
 
     private
 
