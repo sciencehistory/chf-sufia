@@ -1,10 +1,5 @@
 require 'rails_helper'
 
-
-def my_count(x)
-  x.sum { |x| 1 }
-end
-
 RSpec.describe GenericWorkExporter do
   let (:work) do
     FactoryGirl.create(:generic_work, dates_of_work: []).tap do |w|
@@ -15,6 +10,7 @@ RSpec.describe GenericWorkExporter do
       w.author = ["Bruce McMillan"]
       w.photographer = ["Bruce McMillan"]
       w.publisher = ["publishing house"]
+      w.provenance = "Stoop sale in Point Breeze"
       w.editor = ["the editor"]
       w.attributed_to = ["presumptive author"]
       w.engraver = ["engraving professional"]
@@ -25,13 +21,14 @@ RSpec.describe GenericWorkExporter do
 
 
   # TODO: investigate why dates and inscriptions appear to contain duplicate material.
-  let (:expected_export_hash) do {
+  let (:expected_hash) do {
     "id" => "st74cq441",
     "depositor" => "user1_72e0@example.com",
     "title" => ["Test title"],
     "attributed_to" => ["presumptive author"],
     "author" => ["Bruce McMillan"],
     "editor" => ["the editor"],
+    "provenance" => "Stoop sale in Point Breeze",
     "engraver" => ["engraving professional"],
     "photographer" => ["Bruce McMillan"],
     "publisher" => ["publishing house"],
@@ -84,30 +81,30 @@ RSpec.describe GenericWorkExporter do
       },
     ]
     }
-  end #let :expected_export_hash
+  end #let :expected_hash
 
   it "exports" do
-    work_2 = GenericWork.find(work.id)
-
-    puts my_count(work_2.additional_credit) # 2
-    puts my_count(work  .additional_credit) # 4
-
-    actual_hash = GenericWorkExporter.new(work_2).to_hash
-    %w(id depositor access_control_id date_of_work_ids inscription_ids additional_credit_ids).each do |k|
-      actual_hash.delete(k)
-      expected_export_hash.delete(k)
+    messed_up = work.additional_credit
+    if messed_up.sum { |x| 1 } != messed_up.count
+      # Not worth investigating this ActiveFedora
+      # bug. just re-fetch the item.
+      work.reload
     end
+    actual_hash = GenericWorkExporter.new(work).to_hash
 
-    # Travis hack:
-    # For whatever reason, these two sort lines are only needed to get Travis to pass...
-    actual_hash['project'].sort!
-    expected_export_hash['project'].sort!
-    # end Travis hack
-
-    byebug unless actual_hash == expected_export_hash
-
-    expect(actual_hash).to eq expected_export_hash
+    # Make some adjustments so the items match:
+    [actual_hash, expected_hash].each do |the_hash|
+      #ids are generated from scratch -- no need to compare.
+      %w(id depositor access_control_id date_of_work_ids inscription_ids additional_credit_ids).each do |k|
+        the_hash.delete(k)
+      end
+      # Fedora stores these items in an arbitrary order;
+      # sort them before comparing.
+      the_hash['project'].sort!
+      the_hash['additional_credits'] = the_hash['additional_credits'].sort_by { |k| k['name'] }
+      the_hash['inscriptions'] = the_hash['inscriptions'].sort_by { |k| k['location'] }
+      the_hash['dates'] = the_hash['dates'].sort_by { |k| k['start'] }
     end
+    expect(actual_hash).to eq expected_hash
+  end # it exports
 end # describe
-
-

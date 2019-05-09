@@ -109,6 +109,47 @@ describe CurationConcerns::GenericWorkShowPresenter do
       end
     end
   end
+
+  describe "split method for nil provenance data" do
+    let(:solr_document) { SolrDocument.new(work.to_solr) }
+    let(:work) do
+      FactoryGirl.build(:generic_work, provenance: nil)
+    end
+    it 'correctly splits provenance' do
+      expect(presenter.split_provenance).
+        to contain_exactly(nil, nil)
+    end
+  end
+
+  describe "split method for non-nil provenance data" do
+    let(:solr_document) { SolrDocument.new(work.to_solr) }
+    let(:work) do
+      FactoryGirl.build(:generic_work, provenance: "provenance metadata \n\n NOTES: \n\n notes")
+    end
+    it 'correctly splits provenance data' do
+      expect(presenter.split_provenance(presenter.provenance)).
+        to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance).
+        to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance([nil])).
+        to contain_exactly(nil, nil)
+      expect { presenter.split_provenance("Should not accept a string; provenance is delegated to the SOLR document.") }.
+        to raise_error(ArgumentError)
+      expect { presenter.split_provenance(["Should not accept more", "than one item in the array."]) }.
+        to raise_error(ArgumentError)
+      expect(presenter.split_provenance(["provenance metadata"])).
+        to contain_exactly("provenance metadata")
+      expect(presenter.split_provenance(["provenance metadata \n\n NOTES: \n\n notes"])).
+        to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance(["provenance metadata \n\n Notes: \n\n notes"])).
+        to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance(["provenance metadata \r\n NOTES: \r\n notes"])).
+        to contain_exactly("provenance metadata", "notes")
+      expect(presenter.split_provenance(["provenance metadata \r\n NOTES: \r\n notes \r\n NOTES: \r\n notes \r\n NOTES: \r\n notes"])).
+        to contain_exactly("provenance metadata", "notes \r\n NOTES: \r\n notes \r\n NOTES: \r\n notes")
+    end
+  end
+
 end
 
 def date_array

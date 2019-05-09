@@ -523,7 +523,7 @@ module CHF
 
       # we don't want to be used in CSL, but we want to pull it out to use in title
       def original_date
-        return nil if work.date_of_work.length == 0
+        return nil if work.date_of_work.nil? || work.date_of_work.length == 0
         begin
           date_recorded = Date.strptime(work.date_of_work.first, '%Y-%m-%d')
         rescue ArgumentError

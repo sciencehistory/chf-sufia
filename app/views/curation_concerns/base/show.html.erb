@@ -114,6 +114,26 @@
         <%= @presenter.attribute_to_html(:printer, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:printer_of_plates, render_as: :faceted, search_field: 'maker_facet') %>
         <%= @presenter.attribute_to_html(:publisher, render_as: :faceted, search_field: 'maker_facet') %>
+
+
+        <% if @presenter.provenance&.length %>
+          <% provenance_summary, provenance_notes = @presenter.split_provenance %>
+          <tr>
+            <th>Provenance</th>
+            <td>
+              <%=format_description(provenance_summary) %>
+              <% unless provenance_notes.nil? %>
+                <a data-toggle="collapse" href="#collapseProvenanceNotes"
+                  role="button" aria-expanded="false"
+                  aria-controls="collapseProvenanceNotes">Show notes</a>
+                <div class="collapse" id="collapseProvenanceNotes">
+                  <%= format_description(provenance_notes) %>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+
         <%= @presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim' ) %>
         <%= @presenter.attribute_to_html(:place_of_creation, render_as: :faceted, search_field: 'place_facet') %>
         <%= @presenter.attribute_to_html(:place_of_interview, render_as: :faceted, search_field: 'place_facet') %>

@@ -26,6 +26,12 @@ describe 'curation_concerns/base/show.html.erb' do
       w.photographer = ['Sparky']
       w.printer_of_plates = ['Shy Guy']
       w.printer = ['Joe Printer']
+      w.provenance = """This item is from the
+        Woohoo Hooniversity Archives.
+
+        NOTES:
+
+        And here are some notes."""
       w.publisher = ['Hammer Bro']
       w.place_of_interview = ['Underwater']
       w.place_of_manufacture = ['Cloudland']
@@ -121,6 +127,7 @@ describe 'curation_concerns/base/show.html.erb' do
       expect(rendered).to match /Sparky/
       expect(rendered).to match /Hammer Bro/
       expect(rendered).to match /Underwater/
+      expect(rendered).to match /Woohoo Hooniversity Archives/
       expect(rendered).to match /Cloudland/
       expect(rendered).to match /Pyramid/
       expect(rendered).to match /Castle/

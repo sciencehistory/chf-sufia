@@ -85,6 +85,9 @@ class SolrDocument
   def printer_of_plates
     self[Solrizer.solr_name('printer_of_plates')]
   end
+  def provenance
+    self[Solrizer.solr_name('provenance')]
+  end
   def place_of_interview
     self[Solrizer.solr_name('place_of_interview')]
   end

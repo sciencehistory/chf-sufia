@@ -96,8 +96,10 @@ module GenericMetadata
     property :photographer, predicate: ::RDF::Vocab::MARCRelators.pht do |index|
       index.as :stored_searchable
     end
-
     property :printer, predicate: ::RDF::Vocab::MARCRelators.prt do |index|
+      index.as :stored_searchable
+    end
+    property :provenance, predicate: ::RDF::URI.new("http://chemheritage.org/ns/provenance"), multiple: false do |index|
       index.as :stored_searchable
     end
 
