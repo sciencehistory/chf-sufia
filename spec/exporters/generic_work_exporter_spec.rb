@@ -21,7 +21,7 @@ RSpec.describe GenericWorkExporter do
 
 
   # TODO: investigate why dates and inscriptions appear to contain duplicate material.
-  let (:expected_export_hash) do {
+  let (:expected_hash) do {
     "id" => "st74cq441",
     "depositor" => "user1_72e0@example.com",
     "title" => ["Test title"],
@@ -46,10 +46,7 @@ RSpec.describe GenericWorkExporter do
       "9aa815ab-53f4-427a-913f-4c3347f96823"
     ],
     "access_control" => "public",
-    "dates" => [{
-        "start" => "2003",
-        "finish" => "2015"
-      },
+    "dates" => [
       {
         "start" => "1200",
         "start_qualifier" => "century"
@@ -57,17 +54,9 @@ RSpec.describe GenericWorkExporter do
       {
         "start" => "2003",
         "finish" => "2015"
-      },
-      {
-        "start" => "1200",
-        "start_qualifier" => "century"
       }
     ],
-    "inscriptions" => [{
-        "location" => "chapter 7",
-        "text" => "words",
-        "display_label" => "(chapter 7) \"words\""
-      },
+    "inscriptions" => [
       {
         "location" => "place",
         "text" => "stuff",
@@ -77,18 +66,9 @@ RSpec.describe GenericWorkExporter do
         "location" => "chapter 7",
         "text" => "words",
         "display_label" => "(chapter 7) \"words\""
-      },
-      {
-        "location" => "place",
-        "text" => "stuff",
-        "display_label" => "(place) \"stuff\""
       }
     ],
-    "additional_credits" => [{
-        "role" => "photographer",
-        "name" => "Puffins",
-        "display_label" => "Photographed by Puffins"
-      },
+    "additional_credits" => [
       {
         "role" => "photographer",
         "name" => "Squirrels",
@@ -99,29 +79,32 @@ RSpec.describe GenericWorkExporter do
         "name" => "Puffins",
         "display_label" => "Photographed by Puffins"
       },
-      {
-        "role" => "photographer",
-        "name" => "Squirrels",
-        "display_label" => "Photographed by Squirrels"
-      }
     ]
     }
-  end #let :expected_export_hash
+  end #let :expected_hash
 
   it "exports" do
+    messed_up = work.additional_credit
+    if messed_up.sum { |x| 1 } != messed_up.count
+      # Not worth investigating this ActiveFedora
+      # bug. just re-fetch the item.
+      work.reload
+    end
     actual_hash = GenericWorkExporter.new(work).to_hash
-    %w(id depositor access_control_id date_of_work_ids inscription_ids additional_credit_ids).each do |k|
-      actual_hash.delete(k)
-      expected_export_hash.delete(k)
+
+    # Make some adjustments so the items match:
+    [actual_hash, expected_hash].each do |the_hash|
+      #ids are generated from scratch -- no need to compare.
+      %w(id depositor access_control_id date_of_work_ids inscription_ids additional_credit_ids).each do |k|
+        the_hash.delete(k)
+      end
+      # Fedora stores these items in an arbitrary order;
+      # sort them before comparing.
+      the_hash['project'].sort!
+      the_hash['additional_credits'] = the_hash['additional_credits'].sort_by { |k| k['name'] }
+      the_hash['inscriptions'] = the_hash['inscriptions'].sort_by { |k| k['location'] }
+      the_hash['dates'] = the_hash['dates'].sort_by { |k| k['start'] }
     end
-
-    # Travis hack:
-    # For whatever reason, these two sort lines are only needed to get Travis to pass...
-    actual_hash['project'].sort!
-    expected_export_hash['project'].sort!
-    # end Travis hack
-
-    expect(actual_hash).to eq expected_export_hash
-    end
-
+    expect(actual_hash).to eq expected_hash
+  end # it exports
 end # describe

@@ -8,9 +8,7 @@ class GenericWorkExporter < Exporter
     h
   end
 
-
-
-  def child_ids()
+  def child_ids
     begin
       target_item.ordered_member_ids.compact
     rescue Ldp::Gone
@@ -19,7 +17,7 @@ class GenericWorkExporter < Exporter
     end
   end
 
-  def associations()
+  def associations
     {
       'dates' =>  {
         :target_item_key => 'date_of_work',
@@ -40,6 +38,7 @@ class GenericWorkExporter < Exporter
     result = []
     associations = target_item.send(data[:target_item_key])
     associations.to_a.each do |d|
+      #byebug
       new_assoc = {}
       data[:keys].each do |k|
         v = d.send(k)
@@ -50,7 +49,7 @@ class GenericWorkExporter < Exporter
     result
   end
 
-  def self.exportee()
+  def self.exportee
     return GenericWork
   end
 
