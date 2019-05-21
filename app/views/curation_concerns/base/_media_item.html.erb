@@ -1,0 +1,9 @@
+<tr class="track_listing"
+    data-title="<%= member.title.first %>"
+    data-member-id="<%= member.id %>"
+    data-mp3-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>"
+    data-webm-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm) %>"
+>
+    <!-- TODO instead of a table, make this a list of links.  -->
+    <td class="title" title="Listen to '<%= member.title.first %>' "><%= member_counter + 1 %>. <%= member.title.first %></td>
+</tr>

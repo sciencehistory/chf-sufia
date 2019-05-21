@@ -178,6 +178,11 @@ module CurationConcerns
       @direct_representative_presenter ||= member_presenters([representative_id]).first
     end
 
+    # Used by _media_player.
+    def viewable_audio_member_presenters
+      viewable_member_presenters.select {|x| x.audio?}
+    end
+
     # Like member_presenters without args, but filters to only those current
     # user has permissions to see. Used on our show page and viewer.
     #
