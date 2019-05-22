@@ -178,9 +178,9 @@ module CurationConcerns
       @direct_representative_presenter ||= member_presenters([representative_id]).first
     end
 
-    # Used by _media_player.
-    def viewable_audio_member_presenters
-      viewable_member_presenters.select {|x| x.audio?}
+    # Used by the audio player (see _media_player.html.erb).
+    def audio_playlist_presenters
+      viewable_member_presenters.select {|x| x.representative_content_type =~ /audio/}
     end
 
     # Like member_presenters without args, but filters to only those current
@@ -197,15 +197,25 @@ module CurationConcerns
     end
 
 
-    # viewable_member_presenters, but if our representative image is the FIRST image,
-    # don't repeat it below.
+    # An array of member presenters that should be displayed below the representative.
     def show_thumb_member_presenters
       @show_thumb_member_presenters ||= begin
-        if viewable_member_presenters.present? && viewable_member_presenters.first.id == representative_id
-          viewable_member_presenters.dup.tap { |a| a.delete_at(0) }
-        else
-          viewable_member_presenters
+        # Start with all viewable member presenters.
+        result = viewable_member_presenters.dup
+        # Remove audio presenters from the array unless the user is staff.
+        # (It's OK, all users can interact with audio via the playlist,
+        # which shows any presenters returned by audio_playlist_presenters.)
+        unless current_ability.current_user.staff?
+          if result.present?
+            result.delete_if { |x| x.representative_content_type =~ /audio/ }
+          end
         end
+        # If our representative image is the FIRST image,
+        # don't repeat it below.
+        if result.present? && result.first.id == representative_id
+          result.delete_at(0)
+        end
+        result
       end
     end
 
