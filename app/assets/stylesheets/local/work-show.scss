@@ -17,7 +17,8 @@
   $max-image-column: 545px;
   // this is the point the image column is 'naturally' 525px, any bigger it's 'naturally' bigger
   $max-image-column-breakpoint: 1150px;
-  $thumb-horizontal-margin: 4px;
+  // $thumb-horizontal-margin is defined in __variables.scss.
+
 
 
   .work-show-representative {
@@ -215,16 +216,6 @@
       }
     }
   }
-
-  .show-page-audio-playlist-wrapper {
-    vertical-align: bottom;
-    margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
-    .btn {
-      @extend .btn-sm;
-      border-radius: 2px;
-    }
-  }
-
 
   .show-page-audio-wrapper {
     width: ($max-image-column - ($thumb-horizontal-margin * 3)) !important;

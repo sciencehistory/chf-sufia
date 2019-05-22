@@ -21,9 +21,4 @@
  * Used by blacklight_range_limit
  *= require  'blacklight_range_limit'
  *
- * TEMOPORARY -- fold this into work-show.scss before merging.
- * Audio player:
- *= require playlist.css
- *=
- *
 */
