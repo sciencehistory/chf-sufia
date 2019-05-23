@@ -1,63 +1,47 @@
-// $thumb-horizontal-margin is defined in __variables.scss.
-
 .show-page-audio-playlist-wrapper {
-vertical-align: bottom;
-margin: $thumb-horizontal-margin $thumb-horizontal-margin ($line-height-computed * 1.5) 0;
-  .btn {
-    @extend .btn-sm;
-    border-radius: 2px;
+  margin-bottom: $line-height-computed * 1.5;
+
+  h2.attribute-sub-head {
+    margin-top: 0; // kinda ugly override sorry
+    padding-top: 0;
   }
-}
 
-.show-page-audio-playlist-wrapper audio {
+  .show-sub-head-body {
+    // sorry for evil overrides of re-used class, we want the horizontal
+    // edges to line up with hero thumb below, not sure why padding was there normally.
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+
+  .now_playing_container {
+    margin-bottom: $paragraph-spacer;
+  }
+
+  .now_playing_info {
+    float: right;
+    margin-bottom: $paragraph-spacer;
+  }
+
+  audio {
     width: 100%;
-}
+  }
 
-.current-track-label {
-    font-size: 20px;
-}
 
-.mp3_download, .original_download {
-    display:block;
-    float:right;
-    font-size: 12px;
-    margin-right: 5px;
-}
+  .track_listing {
+    @extend %text-font;
 
-.track-listings {
-    margin-block-start:   0em;
-    margin-block-end:     0em;
-    margin-inline-start:  0px;
-    margin-inline-end:    0px;
-    padding-inline-start: 0px;
-}
+    a {
+      display: block; // 100% width bigger click target
+      padding: 5px;
+    }
 
-.track_listing {
-    display: block;
-    list-style-type: none;
-
-}
-
-.track_listing a {
-    font-family: "adelle-sans", "Helvetica Neue", Helvetica, Arial, sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: black;
-    display: block;
-    min-height: 30px;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.track_listing a:hover {
-  background-color: #ddd;
-}
-
-.track_listing.currently_selected {
-    font-weight: bold;
-}
-
-.now_playing_container {
-    padding: 5px;
-    border: 1px solid lightgrey;
+    &.currently_selected {
+      background-color: $brand-bright-green;
+      color: $brand-dark-blue;
+      a, a:link, a:visited, a:hover, a:active {
+        color: $brand-dark-blue;
+      }
+    }
+  }
 }

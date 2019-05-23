@@ -13,6 +13,7 @@ $( document ).ready(function() {
 	}
 
 	function user_clicked_on_a_track(ev) {
+		ev.preventDefault();
 		var the_track = $(ev.target).parent();
 		prepare_track_for_play(the_track);
 		play_audio();
