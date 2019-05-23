@@ -1,3 +1,4 @@
+<% if @presenter.audio_playlist_presenters.present? %>
 <div class="show-page-audio-playlist-wrapper">
     <h2 class="attribute-sub-head"><%= pluralize(@presenter.audio_playlist_presenters.count, 'Sound file')%></h2>
     <div class="show-sub-head-body">
@@ -37,15 +38,30 @@
                     data-mp3-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>"
                     data-webm-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm) %>"
                 >
-                    <a class="title" title="Listen to '<%= member.title.first %>'" href="#">
+                    <a class="title play-link" title="Listen to '<%= member.title.first %>'" href="#">
                         <i class="fa fa-play-circle" aria-hidden="true"></i>
                         <%= member.title.first %>
                     </a>
+                    <div class="btn-group download-link">
+                        <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Download <span class="caret"></span>
+                         </a>
+                         <ul class="dropdown-menu">
+                            <li>
+                                <a href="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>" title="Download an optimized mp3 version of this file.">
+                                    Optimized MP3
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<%= main_app.download_path(member.id) %>" title="Download the original version of this file.">
+                                    Original file
+                                </a>
+                            </li>
+                         </ul>
+                    </div>
                 </li>
             <% end %>
         </ul>
     </div>
 </div>
-
-
-
+<% end # if there are any audio presenters to show %>

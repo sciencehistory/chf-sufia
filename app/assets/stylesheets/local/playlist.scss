@@ -29,18 +29,32 @@
 
 
   .track_listing {
+    display: flex;
+
     @extend %text-font;
 
-    a {
-      display: block; // 100% width bigger click target
+    .play-link {
+      flex-grow: 1;
       padding: 5px;
     }
+
+    .download-link {
+      display: none;
+
+      font-family: $brand-sans-serif;
+      white-space: nowrap;
+      padding: 5px;
+    }
+
 
     &.currently_selected {
       background-color: $brand-bright-green;
       color: $brand-dark-blue;
       a, a:link, a:visited, a:hover, a:active {
         color: $brand-dark-blue;
+      }
+      .download-link {
+        display: inline;
       }
     }
   }
