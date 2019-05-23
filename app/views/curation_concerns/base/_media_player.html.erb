@@ -18,7 +18,7 @@
     </div>
 
     <ul class="track-listings">
-        <% @presenter.audio_playlist_presenters.each_with_index do |member| %>
+        <% @presenter.audio_playlist_presenters.each do |member| %>
             <li class="track_listing"
                 data-title="<%= member.title.first %>"
                 data-member-id="<%= member.id %>"
