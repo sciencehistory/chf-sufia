@@ -19,7 +19,7 @@
 
     <!-- TODO : make this a list of links, not a table. -->
     <!-- TODO: if the table is more than 2 or 3 items, make it scroll and hide overflow. Don't want the PDF to go below the fold. -->
-    <ol class="track-listings">
+    <ul class="track-listings">
         <% @presenter.audio_playlist_presenters.each_with_index do |member| %>
             <!-- TODO instead of a table, make this a list of links.  -->
             <li class="track_listing"
@@ -34,7 +34,7 @@
             </li>
         <% end %>
 
-    </ol>
+    </ul>
 </div>
 
 
