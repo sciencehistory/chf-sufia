@@ -26,10 +26,6 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 
-
-// For playing media:
-//= require ./playlist.js
-
 // We do NOT want to require_tree here, because we do NOT want to require
 // the 'sufia' subdir -- we want to let sufia itself use those files
 // as overrides when needed. So we require_directory to get the .js
@@ -48,6 +44,4 @@
 
 
 //= require 'lazysizes'
-
-
 
