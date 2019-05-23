@@ -18,7 +18,7 @@
         </audio>
     </div>
 
-    <ul class="track-listings">
+    <ul class="track-listings list-unstyled">
         <% @presenter.audio_playlist_presenters.each do |member| %>
             <li class="track_listing"
                 data-title="<%= member.title.first %>"
