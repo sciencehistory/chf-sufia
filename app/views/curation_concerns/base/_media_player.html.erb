@@ -1,22 +1,22 @@
 <% if @presenter.audio_playlist_presenters.present? %>
-<div class="show-page-audio-playlist-wrapper">
-    <h2 class="attribute-sub-head"><%= pluralize(@presenter.audio_playlist_presenters.count, 'Sound file')%></h2>
+<div class="show-page-audio-playlist-wrapper" data-role="audio-playlist-wrapper">
+    <h2 class="attribute-sub-head"><%= pluralize(@presenter.audio_playlist_presenters.count, 'sound file')%></h2>
     <div class="show-sub-head-body">
-        <div class="now_playing_container">
-            <div class="now_playing_info">
-                <span class="current-track-label"></span>
+        <div class="now-playing-container" data-role="now-playing-container">
+            <div class="now-playing-info" data-role="now-playing-info">
+                <span class="current-track-label" data-role="current-track-label"></span>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-download" aria-hidden="true"></i>  Download
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="mp3_url"      class="mp3_download" title="Download an optimized mp3 version of this file.">
+                            <a href="mp3_url" class="mp3-download" data-role="mp3-download" title="Download an optimized mp3 version of this file.">
                                 Optimized MP3
                             </a>
                         </li>
                         <li>
-                            <a href="original_url" class="original_download" title="Download the original version of this file.">
+                            <a href="original_url" class="original-download" data-role="original-download" title="Download the original version of this file.">
                                 Original file
                             </a>
                         </li>
@@ -24,29 +24,29 @@
                 </div>
             </div>
 
-            <audio controls controlsList="nodownload">
-                <source src=""  type="audio/mpeg" />
-                <source src=""  type="audio/webm" />
+            <audio controls controlsList="nodownload" data-role="audio-elem" >
+                <source src=""  type="audio/mpeg"     data-role="audio-mp3-source"/>
+                <source src=""  type="audio/webm"     data-role="audio-webm-source" />
             </audio>
         </div>
-
-        <ul class="track-listings list-unstyled">
+        <ul class="track-listings list-unstyled" data-role="track-listings" >
             <% @presenter.audio_playlist_presenters.each do |member| %>
-                <li class="track_listing"
+                <li class="track-listing"
+                    data-role="track-listing"
                     data-title="<%= member.title.first %>"
                     data-member-id="<%= member.id %>"
                     data-mp3-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>"
                     data-webm-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm) %>"
                 >
-                    <a class="title play-link" title="Listen to '<%= member.title.first %>'" href="#">
+                    <a class="title play-link" title="Listen to '<%= member.title.first %>'" href="#" data-role="play-link">
                         <i class="fa fa-play-circle" aria-hidden="true"></i>
                         <%= member.title.first %>
                     </a>
-                    <div class="btn-group download-link">
+                    <div class="btn-group download-link" data-role="download-link">
                         <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Download <span class="caret"></span>
                          </a>
-                         <ul class="dropdown-menu">
+                         <ul class="dropdown-menu"  data-role="dropdown-menu">
                             <li>
                                 <a href="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>" title="Download an optimized mp3 version of this file.">
                                     Optimized MP3
@@ -64,4 +64,4 @@
         </ul>
     </div>
 </div>
-<% end # if there are any audio presenters to show %>
+<% end %>

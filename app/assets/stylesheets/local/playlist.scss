@@ -14,11 +14,11 @@
   }
 
 
-  .now_playing_container {
+  .now-playing-container {
     margin-bottom: $paragraph-spacer;
   }
 
-  .now_playing_info {
+  .now-playing-info {
     float: right;
     margin-bottom: $paragraph-spacer;
   }
@@ -28,7 +28,7 @@
   }
 
 
-  .track_listing {
+  .track-listing {
     display: flex;
 
     @extend %text-font;
@@ -47,7 +47,7 @@
     }
 
 
-    &.currently_selected {
+    &.currently-selected {
       background-color: $brand-bright-green;
       color: $brand-dark-blue;
       a, a:link, a:visited, a:hover, a:active {

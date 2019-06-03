@@ -2,12 +2,16 @@ $( document ).ready(function() {
 
 	setup();
 
+	function da_select(key){
+		return $("[data-role='" + key + "']");
+	}
+
 	function setup() {
-		if ($('.show-page-audio-playlist-wrapper').length == 0) {
+		if (da_select('audio-playlist-wrapper').length = 0) {
 			return;
 		}
-		$('.track_listing .title').click(user_clicked_on_a_track);
-		var first_track = $('.track_listing')[0];
+		$("[data-role='play-link']").click(user_clicked_on_a_track);
+		var first_track = da_select('track-listing')[0];
 		prepare_track_for_play(first_track);
 		audio_element().onended = play_next_track;
 	}
@@ -20,17 +24,26 @@ $( document ).ready(function() {
 	}
 
 	function prepare_track_for_play(track) {
-		$('.track_listing').removeClass("currently_selected");
-		$(track).addClass("currently_selected");
-		$('.current-track-label').html( $(track).data('title'));
-		$('.now_playing_info a.mp3_download'     )[0].href = $(track).data('mp3Url');
-		$('.now_playing_info a.original_download')[0].href = '/downloads/' + $(track).data('memberId');
-		$('.show-page-audio-playlist-wrapper audio source')[0].src = $(track).data('mp3Url');
-		$('.show-page-audio-playlist-wrapper audio source')[1].src = $(track).data('webmUrl');
+		// css (for styling)
+		da_select('track-listing').removeClass("currently-selected");
+		$(track).addClass("currently-selected");
+
+		// data attribute (for identifying the item).
+		// da_select('track-listing').data('currently-selected', false);
+		// $(track).data('currently-selected', true);
+		da_select('track-listing').attr('data-currently-selected', 'false');
+		$(track).attr('data-currently-selected', 'true');
+
+
+		da_select('current-track-label').html( $(track).data('title'));
+		da_select('mp3-download')[0].href = $(track).data('mp3Url');
+		da_select('original-download')[0].href = $(track).data('mp3Url');
+        da_select('audio-mp3-source' )[0].src = $(track).data('mp3Url');
+        da_select('audio-webm-source')[0].src = $(track).data('webmUrl');
 	}
 
 	function audio_element() {
-		return $('.show-page-audio-playlist-wrapper audio')[0];
+		return da_select('audio-elem')[0];
 	}
 
 	function play_audio() {
@@ -42,7 +55,7 @@ $( document ).ready(function() {
 	}
 
 	function play_next_track() {
-		prepare_track_for_play($('.currently_selected').next()[0]);
+		prepare_track_for_play($("[data-currently-selected='true']").next()[0]);
 		play_audio();
 	}
-});
+ });
