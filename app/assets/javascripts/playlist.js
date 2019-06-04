@@ -17,7 +17,6 @@ $( document ).ready(function() {
 	  this.firstTrack 		 = this.findByRole('track-listing')[0];
 	  this.audioElement    = this.findByRole('audio-elem')[0];
 
-
 	  this.audioElement.onended = this.playNextTrack.bind(this);
 	  this.playlistWrapper.on("click", "[data-role='play-link']", this.onTrackClick.bind(this));
 
