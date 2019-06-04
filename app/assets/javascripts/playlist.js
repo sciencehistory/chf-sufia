@@ -55,8 +55,6 @@ $( document ).ready(function() {
 		$(track).addClass("currently-selected");
 
 		// data attribute (for identifying the item).
-		// findByRole('track-listing').data('currently-selected', false);
-		// $(track).data('currently-selected', true);
 		this.findByRole('track-listing').attr('data-currently-selected', 'false');
 		$(track).attr('data-currently-selected', 'true');
 
