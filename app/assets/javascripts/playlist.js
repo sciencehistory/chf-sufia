@@ -27,8 +27,11 @@ $( document ).ready(function() {
 	};
 
 	ChfAudioPlaylist.prototype.playNextTrack = function() {
-		this.loadTrack($("[data-currently-selected='true']").next()[0]);
-		this.playAudio();
+		var nextTrack = $("[data-currently-selected='true']").next()[0];
+		if (nextTrack) {
+			this.loadTrack(nextTrack);
+			this.playAudio();
+		}
 	};
 
 	ChfAudioPlaylist.prototype.onTrackClick = function(ev) {
