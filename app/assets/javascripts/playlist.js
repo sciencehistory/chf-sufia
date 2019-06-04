@@ -36,8 +36,8 @@ $( document ).ready(function() {
 
 	ChfAudioPlaylist.prototype.onTrackClick = function(ev) {
 		ev.preventDefault();
-		var the_track = $(ev.target).parent();
-		this.loadTrack(the_track);
+		var trackListing = $(ev.target).closest("[data-role='track-listing']");
+		this.loadTrack(trackListing);
 		this.playAudio();
 	};
 
