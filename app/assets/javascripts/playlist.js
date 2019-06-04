@@ -27,7 +27,7 @@ $( document ).ready(function() {
 	};
 
 	ChfAudioPlaylist.prototype.playNextTrack = function() {
-		var nextTrack = $("[data-currently-selected='true']").next()[0];
+		var nextTrack = this.playlistWrapper.find("[data-currently-selected='true']").next()[0];
 		if (nextTrack) {
 			this.loadTrack(nextTrack);
 			this.playAudio();
