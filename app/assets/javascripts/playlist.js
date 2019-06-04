@@ -21,9 +21,7 @@ $( document ).ready(function() {
 	  this.audioElement.onended = this.playNextTrack.bind(this);
 	  this.playlistWrapper.on("click", "[data-role='play-link']", this.onTrackClick.bind(this));
 
-	  var first_track = this.findByRole('track-listing')[0];
-		this.loadTrack(first_track);
-
+		this.loadTrack(this.firstTrack);
 	};
 
 	ChfAudioPlaylist.prototype.playNextTrack = function() {
