@@ -35,6 +35,7 @@
                     data-role="track-listing"
                     data-title="<%= member.title.first %>"
                     data-member-id="<%= member.id %>"
+                    data-original-url="<%= main_app.download_path(member.id) %>"
                     data-mp3-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>"
                     data-webm-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm) %>"
                 >

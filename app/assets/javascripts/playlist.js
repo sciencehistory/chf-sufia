@@ -64,7 +64,7 @@ $( document ).ready(function() {
 
 		this.findByRole('current-track-label').html( $(track).data('title'));
 		this.findByRole('mp3-download')[0].href = $(track).data('mp3Url');
-		this.findByRole('original-download')[0].href = $(track).data('mp3Url');
+		this.findByRole('original-download')[0].href = $(track).data('originalUrl');
 		this.findByRole('audio-mp3-source' )[0].src = $(track).data('mp3Url');
 		this.findByRole('audio-webm-source')[0].src = $(track).data('webmUrl');
 
