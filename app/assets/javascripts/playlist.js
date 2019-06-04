@@ -7,7 +7,7 @@ $( document ).ready(function() {
 	}
 
 	function setup() {
-		if (da_select('audio-playlist-wrapper').length = 0) {
+		if (da_select('audio-playlist-wrapper').length == 0) {
 			return;
 		}
 		$("[data-role='play-link']").click(user_clicked_on_a_track);
