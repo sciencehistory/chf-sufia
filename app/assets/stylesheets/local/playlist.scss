@@ -39,8 +39,6 @@
     }
 
     .download-link {
-      display: none;
-
       font-family: $brand-sans-serif;
       white-space: nowrap;
       padding: 5px;
@@ -52,9 +50,6 @@
       color: $brand-dark-blue;
       a, a:link, a:visited, a:hover, a:active {
         color: $brand-dark-blue;
-      }
-      .download-link {
-        display: inline;
       }
     }
   }
