@@ -58,8 +58,6 @@ $( document ).ready(function() {
 		$(track).attr('data-currently-selected', 'true');
 
 		this.findByRole('current-track-label').html( $(track).data('title'));
-		this.findByRole('mp3-download')[0].href = $(track).data('mp3Url');
-		this.findByRole('original-download')[0].href = $(track).data('originalUrl');
 
 		$(this.audioElement).find("source[type='audio/mpeg']").attr("src", $(track).data('mp3Url'));
 		$(this.audioElement).find("source[type='audio/webm']").attr("src", $(track).data('webmUrl'));
