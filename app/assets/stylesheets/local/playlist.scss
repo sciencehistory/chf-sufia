@@ -19,8 +19,9 @@
   }
 
   .now-playing-info {
-    float: right;
     margin-bottom: $paragraph-spacer;
+    text-align: center;
+    @extend %text-font;
   }
 
   audio {
@@ -39,8 +40,6 @@
     }
 
     .download-link {
-      display: none;
-
       font-family: $brand-sans-serif;
       white-space: nowrap;
       padding: 5px;
@@ -52,9 +51,6 @@
       color: $brand-dark-blue;
       a, a:link, a:visited, a:hover, a:active {
         color: $brand-dark-blue;
-      }
-      .download-link {
-        display: inline;
       }
     }
   }

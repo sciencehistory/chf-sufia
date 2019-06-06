@@ -5,28 +5,11 @@
         <div class="now-playing-container" data-role="now-playing-container">
             <div class="now-playing-info" data-role="now-playing-info">
                 <span class="current-track-label" data-role="current-track-label"></span>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-download" aria-hidden="true"></i>  Download
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="mp3_url" class="mp3-download" data-role="mp3-download" title="Download an optimized mp3 version of this file.">
-                                Optimized MP3
-                            </a>
-                        </li>
-                        <li>
-                            <a href="original_url" class="original-download" data-role="original-download" title="Download the original version of this file.">
-                                Original file
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <audio controls controlsList="nodownload" data-role="audio-elem" >
-                <source src=""  type="audio/mpeg"     data-role="audio-mp3-source"/>
-                <source src=""  type="audio/webm"     data-role="audio-webm-source" />
+                <source src=""  type="audio/mpeg"/>
+                <source src=""  type="audio/webm"/>
             </audio>
         </div>
         <ul class="track-listings list-unstyled" data-role="track-listings" >
@@ -35,6 +18,7 @@
                     data-role="track-listing"
                     data-title="<%= member.title.first %>"
                     data-member-id="<%= member.id %>"
+                    data-original-url="<%= main_app.download_path(member.id) %>"
                     data-mp3-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>"
                     data-webm-url="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm) %>"
                 >
