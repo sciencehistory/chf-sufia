@@ -69,6 +69,9 @@
   </div>
 
   <div class="show-representative">
+      <% if @presenter.audio_playlist_presenters.present? %>
+        <%= render 'playlist', presenter: @presenter %>
+      <% end %>
       <% if representative_presenter = @presenter.respond_to?(:direct_representative_presenter) ? @presenter.direct_representative_presenter : @presenter.representative_presenter %>
         <%= render 'show_page_image', member: representative_presenter, size: :large %>
       <% else %>
