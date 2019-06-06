@@ -32,7 +32,6 @@
                          </a>
                          <ul class="dropdown-menu"  data-role="dropdown-menu">
                             <li>
-                                <%# TODO: remove extra extensions as needed. %>
                                 <%
                                 mp3_filename_base = CHF::AudioDerivativeMaker.download_filename(member, 'mp3')
                                 mp3_download_url = CHF::AudioDerivativeMaker.s3_url(
