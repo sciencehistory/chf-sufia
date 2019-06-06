@@ -46,7 +46,12 @@ class AudioDerivativeMaker
 
     # Now add underscores and, if needed, the extension we want.
     extension = original_extension if extension.blank?
-    base = base.gsub(' ', '_').downcase
+
+    base = base.gsub(/[']/, ''). # get rid of apostrophes
+      gsub(/([[:space:]]|[[:punct:]])+/, '_'). # replace spaces and punctuation w/ underscores
+      gsub(/^[_]+|[_]+$/, ''). # but get rid of leading and trailing underscordes.
+      downcase
+
     return base if extension.blank?
     return base if base.end_with? ".#{extension}"
     "#{base}.#{extension}"
