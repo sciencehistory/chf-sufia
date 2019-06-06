@@ -48,7 +48,17 @@
                          </a>
                          <ul class="dropdown-menu"  data-role="dropdown-menu">
                             <li>
-                                <a href="<%= CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3) %>" title="Download an optimized mp3 version of this file.">
+                                <%# TODO: remove extra extensions as needed. %>
+                                <%
+                                mp3_filename_base = CHF::AudioDerivativeMaker.download_filename(member, 'mp3')
+                                mp3_download_url = CHF::AudioDerivativeMaker.s3_url(
+                                  file_set_id:member.id,
+                                  filename_base: mp3_filename_base,
+                                  file_checksum:member.representative_checksum,
+                                  type_key: :standard_mp3
+                                )
+                                %>
+                                <a href="<%= mp3_download_url %>" title="Download an optimized mp3 version of this file.">
                                     Optimized MP3
                                 </a>
                             </li>

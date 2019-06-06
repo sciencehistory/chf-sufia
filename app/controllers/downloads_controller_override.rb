@@ -63,9 +63,12 @@ DownloadsController.class_eval do
     # Note any mime type you want to deliver as a download should be registered
     # in ./config/initializers/mime_types.rb
     extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
-
     if extension
-      download_name = helpers._download_name_base(asset) + ".#{extension}"
+      if asset.mime_type.present? && asset.mime_type =~ /^audio/
+        download_name = CHF::AudioDerivativeMaker.download_filename(asset)
+      else
+        download_name = helpers._download_name_base(asset) + ".#{extension}"
+      end
       base.merge!(
         filename: download_name,
         disposition: params["disposition"] == "inline" ? "inline" : "attachment"

@@ -172,7 +172,7 @@ module ImageServiceHelper
     elsif is_audio
       mp3_url = Rails.application.routes.url_helpers.s3_download_redirect_path(
         member_presenter.id, 'standard_mp3',
-        filename_base: filename_base.nil? ? member_presenter.id : filename_base,
+        filename_base: CHF::AudioDerivativeMaker.download_filename(member_presenter, 'mp3'),
         no_content_disposition: false
       )
       mp3_download_link = {

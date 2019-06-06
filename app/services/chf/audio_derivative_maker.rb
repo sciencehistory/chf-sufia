@@ -18,14 +18,38 @@ class AudioDerivativeMaker
     obj = bucket.object("#{part_1}/#{part_2}")
 
     if filename_base
-      suffix_minus_dot = suffix.sub(/^\./, '')
-      file_name = "#{filename_base}_#{deriv_type.to_s}.#{suffix_minus_dot}"
       obj.presigned_url(:get,
                         expires_in: 3.days.to_i, # no hurry
-                        response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(file_name) : "")
+                        response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(filename_base) : "")
     else
       obj.public_url
     end
+  end
+
+  # Class method: come up with a filename suitable for download, with only one extension.
+  # @param item [FileSet or FileSetPresenter] an item being requested for download
+  # @param derivative_extension [string] the file extension for the derivative being downloaded.
+  # @return [String] a filename suitable for download
+  # @example The filename for an mp3 derivative
+  #   "CHF::AudioDerivativeMaker.download_filename(member, 'mp3')" #=> "the_title_of_the_file.mp3"
+  # @example The filename for an original
+  #   "CHF::AudioDerivativeMaker.download_filename(member)" #=> "the_title_of_the_file.mp3"
+  def self.download_filename(item, extension=nil)
+    original_extension = Mime::Type.lookup(item.mime_type)&.symbol&.to_s
+
+    # If needed, strip the filename of its original extension:
+    # that way, we don't end up with e.g. file_name.flac.mp3.
+    base = item.title.first
+    if base.end_with? ".#{original_extension}"
+      base = File.basename(base, ".#{original_extension}")
+    end
+
+    # Now add underscores and, if needed, the extension we want.
+    extension = original_extension if extension.blank?
+    base = base.gsub(' ', '_').downcase
+    return base if extension.blank?
+    return base if base.end_with? ".#{extension}"
+    "#{base}.#{extension}"
   end
 
   # Formats we accept as ORIGINALS:
