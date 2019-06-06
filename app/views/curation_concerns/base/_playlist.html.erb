@@ -1,6 +1,5 @@
-<% if @presenter.audio_playlist_presenters.present? %>
 <div class="show-page-audio-playlist-wrapper" data-role="audio-playlist-wrapper">
-    <h2 class="attribute-sub-head"><%= pluralize(@presenter.audio_playlist_presenters.count, 'sound file')%></h2>
+    <h2 class="attribute-sub-head"><%= pluralize(presenter.audio_playlist_presenters.count, 'sound file')%></h2>
     <div class="show-sub-head-body">
         <div class="now-playing-container" data-role="now-playing-container">
             <div class="now-playing-info" data-role="now-playing-info">
@@ -13,7 +12,7 @@
             </audio>
         </div>
         <ul class="track-listings list-unstyled" data-role="track-listings" >
-            <% @presenter.audio_playlist_presenters.each do |member| %>
+            <% presenter.audio_playlist_presenters.each do |member| %>
                 <li class="track-listing"
                     data-role="track-listing"
                     data-title="<%= member.title.first %>"
@@ -48,4 +47,3 @@
         </ul>
     </div>
 </div>
-<% end %>
