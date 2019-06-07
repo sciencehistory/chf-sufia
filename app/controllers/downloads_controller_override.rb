@@ -48,6 +48,40 @@ DownloadsController.class_eval do
   end
 
 
+
+  # Class method: come up with a filename suitable for audio track downloads, with only one extension.
+  # @param item [FileSet or FileSetPresenter] an audio item being requested for download
+  # @param derivative_extension [string] the file extension for the derivative being downloaded.
+  # @return [String] a filename suitable for download
+  # @example The filename for an mp3 derivative
+  #   "DownloadsController.download_filename(member, 'mp3')" #=> "the_title_of_the_file.mp3"
+  # @example The filename for an original
+  #   "DownloadsController.download_filename(member)" #=> "the_title_of_the_file.mp3"
+  # Note similar method _download_name_base in app/helpers/image_service_helper.rb, used, among
+  # other things, for non-audio download filenames.
+  def self.download_filename(item, extension=nil)
+    original_extension = Mime::Type.lookup(item.mime_type)&.symbol&.to_s
+
+    # If needed, strip the filename of its original extension:
+    # that way, we don't end up with e.g. file_name.flac.mp3.
+    base = item.title.first
+    if base.end_with? ".#{original_extension}"
+      base = File.basename(base, ".#{original_extension}")
+    end
+
+    # Now add underscores and, if needed, the extension we want.
+    extension = original_extension if extension.blank?
+
+    base = base.gsub(/[']/, ''). # get rid of apostrophes
+      gsub(/([[:space:]]|[[:punct:]])+/, '_'). # replace spaces and punctuation w/ underscores
+      gsub(/^[_]+|[_]+$/, ''). # but get rid of leading and trailing underscordes.
+      downcase
+
+    return base if extension.blank?
+    return base if base.end_with? ".#{extension}"
+    "#{base}.#{extension}"
+  end
+
   private
 
   # override to add content-disposition to force download for our PDFs, don't want
@@ -65,7 +99,7 @@ DownloadsController.class_eval do
     extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
     if extension
       if asset.mime_type.present? && asset.mime_type =~ /^audio/
-        download_name = CHF::AudioDerivativeMaker.download_filename(asset)
+        download_name = self.class.download_filename(asset)
       else
         download_name = helpers._download_name_base(asset) + ".#{extension}"
       end
