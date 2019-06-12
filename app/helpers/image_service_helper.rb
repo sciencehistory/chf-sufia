@@ -101,7 +101,7 @@ module ImageServiceHelper
   end
 
 
-  # Create an HTML5 tag for a FileSet or ChildWork.
+  # Create an HTML5 tag for an audio FileSet.
   def member_audio_tag(parent_id:, member:)
     return default_image(member: nil) if member.nil?
     mp3_url =  CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3)
