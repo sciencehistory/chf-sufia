@@ -36,6 +36,11 @@ RSpec.feature "Audio front end", js: true do
       allow(file_sets[i]).to receive(:original_file).and_return(mock_files[i])
       allow(file_sets[i]).to receive(:files).and_return([mock_files[i]])
     end
+    allow(CHF::AudioDerivativeMaker).to receive(:s3_url) do |args|
+      suffixes = {standard_mp3: 'mp3', standard_webm: 'webm'}
+      suffix = suffixes[args[:type_key]]
+      "https://s3.amazonaws.com/#{args[:file_set_id]}_checksum#{args[:file_checksum]}/#{args[:type_key]}.#{suffix}"
+    end
   end
 
   scenario "Non-staff user can see the playlist but not the regular item listings" do
