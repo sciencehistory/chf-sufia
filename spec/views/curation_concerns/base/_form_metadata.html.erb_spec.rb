@@ -50,7 +50,6 @@ describe 'curation_concerns/base/_form_metadata.html.erb', type: :view do
       expect(names).to include "generic_work[place_of_manufacture][]"
       expect(names).to include "generic_work[place_of_publication][]"
       expect(names).to include "generic_work[place_of_creation][]"
-
     end
 
     it "renders a nested attribute field" do
