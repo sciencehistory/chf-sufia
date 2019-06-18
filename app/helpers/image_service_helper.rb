@@ -206,8 +206,11 @@ module ImageServiceHelper
     end
   end
 
-  # Used for constructing download filenames when we can.
-  # truncated first three words, plus id.
+  # Used for constructing download filenames when we can, based on the containing
+  # WORK title's truncated first three words, plus relevant ids.
+  #
+  # Used by default for our image/pdf files, but NOT used for audio files, where
+  # we want the actual FileSet title to be used as the download name.
   #
   # Wanted to include the 'index number' for better sortability when
   # downloading multiple pages, but got too hard to actually keep track of/calculate

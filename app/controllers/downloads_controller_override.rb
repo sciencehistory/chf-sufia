@@ -48,18 +48,26 @@ DownloadsController.class_eval do
   end
 
 
-
-  # Class method: come up with a filename suitable for audio track downloads, with only one extension.
+  # A content-disposition filename based on the **FileSet title**. Used for audio files,
+  # rather than the filename based on the WORK TITLE as used for other files.
+  #
   # @param item [FileSet or FileSetPresenter] an audio item being requested for download
-  # @param derivative_extension [string] the file extension for the derivative being downloaded.
-  # @return [String] a filename suitable for download
+  #
+  # @param derivative_extension [String] optional, the file extension for the derivative being
+  # downloaded, if not given extension based on original file mime type will be used,if found.
+  #
+  # @return [String] a filename suitable for download. Literal string, still needs to be
+  # escaped/prepped for actual content-disposition header literal.
+  #
   # @example The filename for an mp3 derivative
-  #   "DownloadsController.download_filename(member, 'mp3')" #=> "the_title_of_the_file.mp3"
+  #   "DownloadsController.download_filename_on_fileset(member, 'mp3')" #=> "the_title_of_the_file.mp3"
+  #
   # @example The filename for an original
-  #   "DownloadsController.download_filename(member)" #=> "the_title_of_the_file.mp3"
-  # Note similar method _download_name_base in app/helpers/image_service_helper.rb, used, among
-  # other things, for non-audio download filenames.
-  def self.download_filename(item, extension=nil)
+  #   "DownloadsController.download_filename_on_fileset(member)" #=> "the_title_of_the_file.flac"
+  #
+  # Note similar method _download_name_base in app/helpers/image_service_helper.rb, used
+  # for non-audio download filenames, based on containing WORK TITLE.
+  def self.download_filename_on_fileset(item, extension=nil)
     original_extension = Mime::Type.lookup(item.mime_type)&.symbol&.to_s
 
     # If needed, strip the filename of its original extension:
@@ -101,7 +109,7 @@ DownloadsController.class_eval do
     extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
 
     if asset.mime_type.present? && asset.mime_type =~ /^audio/
-      download_name = self.class.download_filename(asset)
+      download_name = self.class.download_filename_on_fileset(asset)
     elsif extension
       download_name = helpers._download_name_base(asset) + ".#{extension}"
     end
