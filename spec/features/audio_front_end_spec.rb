@@ -93,10 +93,9 @@ RSpec.feature "Audio front end", js: true do
     expect(first_audio_item_sources[0]).to match /s3.amazonaws.com\/.*_checksum0a1b2c3\/standard_mp3.mp3/
     expect(first_audio_item_sources[1]).to match /s3.amazonaws.com\/.*_checksum0a1b2c3\/standard_webm.webm/
 
-    mp3_download, original_download, admin_link = first_wrapper_div.
+    original_download, admin_link = first_wrapper_div.
       find_all('ul li a', :visible =>all).
       map {|x| x['href']}
-    expect(mp3_download).to match "download_redirect\/#{file_sets[0].id}\/standard_mp3.filename_base=test_title_.*&no_content_disposition=false"
     expect(original_download).to match "downloads/#{file_sets[0].id}"
     expect(admin_link).to match "concern\/parent\/#{work.id}\/file_sets\/#{file_sets[0].id}"
   end

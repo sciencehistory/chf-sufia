@@ -100,6 +100,29 @@ module ImageServiceHelper
     image_tag(args.delete(:src) || "", args)
   end
 
+
+  # Create an HTML5 tag for a FileSet or ChildWork.
+  def member_audio_tag(parent_id:, member:)
+    return default_image(member: nil) if member.nil?
+    mp3_url =  CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3)
+    webm_url = CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_webm)
+
+    result = "<h2 class=\"attribute-sub-head\">#{member.title.first}"
+    if member.title.first != member.label
+      result += " (#{member.label })"
+    end
+    result += "</h2>"
+    result += "<audio controls controlsList=\"nodownload\">"
+    result += "    <source src=\"#{mp3_url}\"  type=\"audio/mpeg\" />"
+    result += "    <source src=\"#{webm_url}\" type=\"audio/webm\" />"
+    result += "    <p><a href=\"/downloads/#{ member.id }\">Original audio</a></p>"
+    result += "</audio>"
+
+    raw(result)
+  end
+
+
+
   # For feeding to OpenSeadragon
   def tile_source_url(member_presenter)
     service = _image_url_service(CHF::Env.lookup(:image_server_on_viewer), member_presenter)
