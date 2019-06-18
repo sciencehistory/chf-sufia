@@ -13,3 +13,14 @@ $(document).on('click', '*[data-analytics-category]', function(e) {
              e.target.getAttribute("data-analytics-value")
             ]);
 });
+
+
+// Track the "Back to search results" link specially, because we don't
+// control it's data attributes from sufia
+$(document).on("click", "ul.breadcrumb li a", function(e) {
+  if (e.target && e.target.text == "Back to search results") {
+    _gaq.push(['_trackEvent',
+               "interesting_clicks",
+               "back_to_search_results"]);
+  }
+});
