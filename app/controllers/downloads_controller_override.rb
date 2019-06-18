@@ -94,19 +94,20 @@ DownloadsController.class_eval do
   def content_options
     base = super
 
+    base[:disposition] = params["disposition"] == "inline" ? "inline" : "attachment"
+
     # Note any mime type you want to deliver as a download should be registered
     # in ./config/initializers/mime_types.rb
     extension = Mime::Type.lookup(asset.mime_type)&.symbol&.to_s
-    if extension
-      if asset.mime_type.present? && asset.mime_type =~ /^audio/
-        download_name = self.class.download_filename(asset)
-      else
-        download_name = helpers._download_name_base(asset) + ".#{extension}"
-      end
-      base.merge!(
-        filename: download_name,
-        disposition: params["disposition"] == "inline" ? "inline" : "attachment"
-      )
+
+    if asset.mime_type.present? && asset.mime_type =~ /^audio/
+      download_name = self.class.download_filename(asset)
+    elsif extension
+      download_name = helpers._download_name_base(asset) + ".#{extension}"
+    end
+
+    if download_name
+      base[:filename] = download_name
     end
 
     base
