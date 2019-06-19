@@ -18,11 +18,9 @@ class AudioDerivativeMaker
     obj = bucket.object("#{part_1}/#{part_2}")
 
     if filename_base
-      suffix_minus_dot = suffix.sub(/^\./, '')
-      file_name = "#{filename_base}_#{deriv_type.to_s}.#{suffix_minus_dot}"
       obj.presigned_url(:get,
                         expires_in: 3.days.to_i, # no hurry
-                        response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(file_name) : "")
+                        response_content_disposition: include_content_disposition ? ApplicationHelper.encoding_safe_content_disposition(filename_base) : "")
     else
       obj.public_url
     end
@@ -183,7 +181,7 @@ class AudioDerivativeMaker
 
   # Upload a derivative to s3.
   # Returns true on success, false on failure.
-  def upload_file_to_s3 (deriv_local_path, properties)
+  def upload_file_to_s3(deriv_local_path, properties)
     properties.s3_obj.upload_file(
       deriv_local_path,
       acl: CHF::CreateDerivativesOnS3Service.acl,

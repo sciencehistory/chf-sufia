@@ -101,7 +101,7 @@ module ImageServiceHelper
   end
 
 
-  # Create an HTML5 tag for an audio FileSet.
+  # Create an HTML5 tag for a FileSet or ChildWork.
   def member_audio_tag(parent_id:, member:)
     return default_image(member: nil) if member.nil?
     mp3_url =  CHF::AudioDerivativeMaker.s3_url(file_set_id:member.id, file_checksum:member.representative_checksum, type_key: :standard_mp3)
@@ -140,7 +140,6 @@ module ImageServiceHelper
     orig_page_count = member_presenter.representative_page_count
 
     is_image = member_presenter.representative_content_type&.start_with?("image/")
-    is_audio = member_presenter.representative_content_type&.start_with?("audio/")
 
     subhead = CHF::Util.humanized_content_type(member_presenter.representative_content_type)
     if orig_width && orig_height
@@ -168,22 +167,6 @@ module ImageServiceHelper
         _fill_out_download_option(member_presenter, option)
       end
       return image_server_download
-
-    elsif is_audio
-      mp3_url = Rails.application.routes.url_helpers.s3_download_redirect_path(
-        member_presenter.id, 'standard_mp3',
-        filename_base: filename_base.nil? ? member_presenter.id : filename_base,
-        no_content_disposition: false
-      )
-      mp3_download_link = {
-        option_key: "mp3",
-        label: "Optimized MP3",
-        subhead: subhead,
-        analyticsAction: "download_mp3",
-        url: mp3_url,
-      }
-      return [mp3_download_link, direct_original].compact
-
     else
       # we don't currently have alternate downloads for PDFs.
       return [direct_original].compact
@@ -246,8 +229,11 @@ module ImageServiceHelper
     end
   end
 
-  # Used for constructing download filenames when we can.
-  # truncated first three words, plus id.
+  # Used for constructing download filenames when we can, based on the containing
+  # WORK title's truncated first three words, plus relevant ids.
+  #
+  # Used by default for our image/pdf files, but NOT used for audio files, where
+  # we want the actual FileSet title to be used as the download name.
   #
   # Wanted to include the 'index number' for better sortability when
   # downloading multiple pages, but got too hard to actually keep track of/calculate
