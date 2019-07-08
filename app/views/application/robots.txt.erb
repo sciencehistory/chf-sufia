@@ -12,6 +12,18 @@ User-agent: *
 Disallow: /downloads/
 Crawl-delay: 5
 
+User-agent: MauiBot 
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: centurybot9@gmail.com
+Disallow: /
+
 
 Sitemap: https://s3.amazonaws.com/<%= CHF::Env.lookup("sitemap_s3_bucket") %>/sitemap/sitemap.xml.gz
 
