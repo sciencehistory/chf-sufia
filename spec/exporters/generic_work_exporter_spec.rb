@@ -17,6 +17,7 @@ RSpec.describe GenericWorkExporter do
       w.project = ['Mass Spectrometry', 'Nanotechnology']
       w.manner_of = ["Speaking"]
       w.school_of = ["Hard Knocks"]
+      w.digitization_funder = ["Daniel Sanford"]
       w.save
     end # tap do
   end # let work
@@ -31,6 +32,7 @@ RSpec.describe GenericWorkExporter do
     "author" => ["Bruce McMillan"],
     "editor" => ["the editor"],
     "provenance" => "Stoop sale in Point Breeze",
+    "digitization_funder" => ["Daniel Sanford"],
     "engraver" => ["engraving professional"],
     "photographer" => ["Bruce McMillan"],
     "publisher" => ["publishing house"],
@@ -85,7 +87,7 @@ RSpec.describe GenericWorkExporter do
       },
     ]
     }
-  end #let :expected_hash
+  end
 
   it "exports" do
     messed_up = work.additional_credit
