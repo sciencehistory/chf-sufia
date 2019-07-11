@@ -25,3 +25,7 @@
 
 # MacOS housekeeping file
 .DS_Store
+
+# sometimes dev use this, it has secret info in it
+# and should never be committed
+/local_env.yml
