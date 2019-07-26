@@ -29,7 +29,6 @@
 <%= presenter.attribute_to_html(:extent) %>
 <%= presenter.attribute_to_html(:language, render_as: :faceted ) %>
 <%= presenter.attribute_to_html(:inscription) %>
-<%= presenter.attribute_to_html(:digitization_funder) %>
 <%= presenter.attribute_to_html(:subject, render_as: :faceted ) %>
 <%= presenter.attribute_to_html(:division, label: "Department", render_as: :faceted) %>
 <%= presenter.attribute_to_html(:exhibition) %>
@@ -42,6 +41,7 @@
 <%= presenter.attribute_to_html(:rights_holder) %>
 <%= presenter.attribute_to_html(:credit_line) %>
 <%= presenter.attribute_to_html(:additional_credit) %>
+<%= presenter.attribute_to_html(:digitization_funder) %>
 
 <% if current_ability.current_user.staff? %>
   <tr><th colspan=2><h2>Staff-only Viewable Descriptions</h2></th></tr>
