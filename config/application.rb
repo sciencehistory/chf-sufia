@@ -171,6 +171,7 @@ module Chufia
       'Illustrations',
       'Implements, utensils, etc.',
       'Lithographs',
+      'Maps',
       'Manuscripts',
       'Medical equipment & supplies',
       'Minutes (Records)',
