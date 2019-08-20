@@ -16,6 +16,7 @@ RSpec.feature "OAI-PMH feed", js: false do
     visit(oai_pmh_oai_path(verb: "ListRecords", metadataPrefix: "oai_dc"))
 
     expect(page.status_code).to eq 200
+    expect(page.response_headers["Content-Type"]).to eq("text/xml; charset=utf-8")
 
     # parse strict, so we get an exception if it's not well-formed XML
     xml = Nokogiri::XML(page.body) { |config| config.strict }
