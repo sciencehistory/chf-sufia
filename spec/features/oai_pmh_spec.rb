@@ -9,6 +9,7 @@ RSpec.feature "OAI-PMH feed", js: false do
   end
 
   let!(:work) { FactoryGirl.create(:public_work, :with_complete_metadata, :real_public_image) }
+  let(:public_work_url) { "#{CHF::Env.lookup(:app_url_base)}/works/#{work.id}" }
   let!(:collection) { FactoryGirl.create(:public_collection) }
   let(:oai_pmh_xsd_path) { Rails.root + "spec/fixtures/xsd/OAI-PMH.xsd" }
 
@@ -37,10 +38,23 @@ RSpec.feature "OAI-PMH feed", js: false do
     expect(records.count).to eq(1)
     work_record = records.first
 
+    # We just check for a few significant/tricky things, count on oai_dc_serialization_spec.rb to
+    # be more complete check of serialization.
+
     dc_contributors = work_record.xpath("//dc:contributor", dc:"http://purl.org/dc/elements/1.1/").children.map(&:to_s)
+
     # dc:contributors should include both the plain vanilla "contributor" but also the "editor".
     expect(dc_contributors.map).to include("contributorcontributor", "G. Henle Verlag", "John Lennon")
+
     record_id = work_record.at_xpath("./oai:header/oai:identifier", oai: "http://www.openarchives.org/OAI/2.0/")
     expect(record_id.text).to eq("oai:sciencehistoryorg:#{work.id}")
+
+    dc_identifiers_str = work_record.xpath("//dc:identifier", dc:"http://purl.org/dc/elements/1.1/").map(&:text)
+    expect(dc_identifiers_str).to include(public_work_url)
+
+    dpla_original_record_str = work_record.xpath("//dpla:originalRecord", dpla: "http://dp.la/about/map/").map(&:text)
+    expect(dpla_original_record_str).to include(public_work_url)
+
+    # TODO: Thumbnail specs?
   end
 end
