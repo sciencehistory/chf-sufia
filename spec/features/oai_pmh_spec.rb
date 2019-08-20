@@ -33,11 +33,14 @@ RSpec.feature "OAI-PMH feed", js: false do
 
     # includes one item, which is the work, not the collection
     records = xml.xpath("//oai:record", oai: "http://www.openarchives.org/OAI/2.0/")
-    expect(records.count).to eq (1)
-    dc_contributors = xml.xpath("//dc:contributor", dc:"http://purl.org/dc/elements/1.1/").children.map(&:to_s)
+
+    expect(records.count).to eq(1)
+    work_record = records.first
+
+    dc_contributors = work_record.xpath("//dc:contributor", dc:"http://purl.org/dc/elements/1.1/").children.map(&:to_s)
     # dc:contributors should include both the plain vanilla "contributor" but also the "editor".
     expect(dc_contributors.map).to include("contributorcontributor", "G. Henle Verlag", "John Lennon")
-    record_id = records.first.at_xpath("./oai:header/oai:identifier", oai: "http://www.openarchives.org/OAI/2.0/")
+    record_id = work_record.at_xpath("./oai:header/oai:identifier", oai: "http://www.openarchives.org/OAI/2.0/")
     expect(record_id.text).to eq("oai:sciencehistoryorg:#{work.id}")
   end
 end
