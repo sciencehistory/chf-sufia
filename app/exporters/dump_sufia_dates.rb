@@ -3,10 +3,11 @@
 
 # bin/rails  runner dump_sufia_dates.rb
 # cat  sufia_dates.json   |  python -m json.tool
+
 def to_utc(some_date)
   return nil if some_date.nil?
   return some_date.utc if some_date.class == DateTime
-  return DateTime.rfc2822(some_date).utc if some_date.class == String
+  return DateTime.parse(some_date).utc if some_date.class == String
 end
 
 progress_bar_total = FileSet.count + GenericWork.count + Collection.count
