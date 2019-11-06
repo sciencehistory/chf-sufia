@@ -24,7 +24,10 @@ addons:
     - ffmpeg
 # END NOTE
 
-
+before_install:
+  # Try to get around bug that's weirdly suddenly started affecting us.
+  # https://bundler.io/blog/2019/05/14/solutions-for-cant-find-gem-bundler-with-executable-bundle.html
+  - gem update --system
 before_script:
   - jdk_switcher use oraclejdk8
   - psql -c 'create database scihist_sufia_test;' -U postgres
