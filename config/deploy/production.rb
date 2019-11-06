@@ -1,7 +1,7 @@
 # using an ssh-config entry to set the user, key, and address of the machine
 set :stage, :production
 set :rails_env, 'production'
-server 'digital.sciencehistory.org', user: 'hydep', roles: [:web, :app, :db, :jobs]
+server 'sufia-digital.sciencehistory.org', user: 'hydep', roles: [:web, :app, :db, :jobs]
 server '3.93.216.251', user: 'hydep', roles: [:solr]
 server '34.202.19.107', user: 'hydep', roles: [:jobs, :cron] # dzi bg job box
 
