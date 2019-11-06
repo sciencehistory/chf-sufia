@@ -1,3 +1,4 @@
+dist: trusty
 language: ruby
 script: bundle exec rake dev:spec_with_app_load
 rvm:
